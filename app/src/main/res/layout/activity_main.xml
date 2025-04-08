@@ -12,13 +12,11 @@
         android:id="@+id/darkBlueLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="62dp"
         android:background="@color/darkBlue"
-        app:layout_constraintBottom_toTopOf="@id/socialNetworksLayout"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_height="0dp">
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/sett_and_log"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginHorizontal="17dp"
@@ -54,6 +52,17 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="124dp"
+            android:contentDescription="@null"
+            android:src="@drawable/photo"
+            android:layout_marginTop="71dp"
+            android:layout_marginBottom="160dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
@@ -133,6 +142,10 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
