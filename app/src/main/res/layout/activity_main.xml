@@ -69,7 +69,7 @@
         <ImageButton
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:background="@android:color/transparent"
+            android:background="@drawable/social_networks_background"
             android:contentDescription="@null"
             android:src="@drawable/ic_facebook"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -78,7 +78,7 @@
         <ImageButton
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:background="@android:color/transparent"
+            android:background="@drawable/social_networks_background"
             android:contentDescription="@null"
             android:src="@drawable/ic_linkedin"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -90,7 +90,7 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginStart="60dp"
-            android:background="@android:color/transparent"
+            android:background="@drawable/social_networks_background"
             android:contentDescription="@null"
             android:src="@drawable/ic_inst"
             app:layout_constraintBottom_toBottomOf="parent"
