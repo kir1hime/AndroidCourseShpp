@@ -15,6 +15,40 @@
         android:background="@color/darkBlue"
         app:layout_constraintTop_toTopOf="parent">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/prof_photo"
+            android:layout_marginTop="24dp"
+            android:orientation="vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginHorizontal="114dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/lucile_alvarado"
+                android:textSize="18sp"
+                android:textFontWeight="600"
+                android:fontFamily="@font/open_sans"
+                android:lineHeight="23.4dp"
+                android:textColor="@color/white"
+                android:gravity="center"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/graphic_designer"
+                android:fontFamily="@font/open_sans"
+                android:textFontWeight="600"
+                android:lineHeight="18.2sp"
+                android:gravity="center"
+                android:layout_marginTop="8dp"
+                android:textSize="14sp"
+                />
+
+        </LinearLayout>
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/sett_and_log"
             android:layout_width="match_parent"
@@ -53,6 +87,7 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
         <ImageView
+            android:id="@+id/prof_photo"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginHorizontal="124dp"
