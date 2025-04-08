@@ -5,6 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".MainActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -29,8 +30,26 @@
         android:paddingVertical="8dp"
         android:text="@string/view_my_contacts"
         android:textFontWeight="600"
+        android:textColor="@color/white"
         android:textSize="16sp"
         app:backgroundTint="@null"
         app:layout_constraintBottom_toBottomOf="parent" />
+
+    <Button
+        android:id="@+id/edit_prof_butt"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/edit_profile_background"
+        android:fontFamily="@font/open_sans"
+        android:lineHeight="18.2dp"
+        android:paddingVertical="8dp"
+        android:text="@string/edit_profile"
+        android:textColor="@color/darkGray"
+        android:textFontWeight="600"
+        android:textSize="14sp"
+        app:backgroundTint="@null"
+        app:layout_constraintBottom_toTopOf="@id/view_my_cont_butt" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
