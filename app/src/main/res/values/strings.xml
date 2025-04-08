@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">AndroidCourseShpp</string>
+
+    <!--My profile (activity_main.xml)-->
     <string name="view_my_contacts">VIEW MY CONTACTS</string>
     <string name="edit_profile">Edit profile</string>
     <string name="settings">Settings</string>
@@ -7,4 +9,8 @@
     <string name="name">Name</string>
     <string name="career">Career</string>
     <string name="home_address">Home address</string>
+    <string name="instagram_button">instagram_button</string>
+    <string name="linkedin_button">linkedin_button</string>
+    <string name="facebook_button">facebook_button</string>
+    <string name="profile_photo">profile_photo</string>
 </resources>
