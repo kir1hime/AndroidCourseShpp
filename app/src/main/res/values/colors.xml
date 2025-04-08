@@ -1,5 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <!--My profile (activity_main.xml)-->
+    <color name="bottom_view_color">#FFFFFFFF</color>
+    <color name="view_my_contacts_text_color">@color/bottom_view_color</color>
+    <color name="name_text_color">@color/bottom_view_color</color>
+    <color name="settings_text_color">@color/bottom_view_color</color>
+
+    <color name="top_view_color">#242235</color>
+    <color name="edit_profile_border_color">@color/top_view_color</color>
+
+    <color name="view_my_contacts_color">#FB5E06</color>
+    <color name="social_networks_border_color">@color/view_my_contacts_color</color>
+
+    <color name="edit_profile_text_color">#18181F</color>
+
+    <color name="log_out_border_and_text_color">#B2B2B3</color>
+    <color name="career_text_color">@color/log_out_border_and_text_color</color>
+    <color name="home_address_text_color">@color/log_out_border_and_text_color</color>
 </resources>

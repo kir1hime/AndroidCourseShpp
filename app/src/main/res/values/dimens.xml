@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--margins-->
+    <dimen name="main_side_margin">16dp</dimen>
+
+    <dimen name="bt_margin_bottom">16dp</dimen>
+
+    <dimen name="main_top_margin">16dp</dimen>
+
+    <dimen name="social_network_margin_top">62dp</dimen>
+    <dimen name="social_network_margin_bottom">222dp</dimen>
+    <dimen name="social_network_side_margin">58dp</dimen>
+
+    <dimen name="profile_photo_margin_top">71dp</dimen>
+    <dimen name="profile_photo_margin_bottom">160dp</dimen>
+    <dimen name="profile_photo_margin_horizontal">160dp</dimen>
+
+    <dimen name="name_and_career_margin_horizontal">114dp</dimen>
+    <dimen name="name_and_career_margin_top">208dp</dimen>
+    <dimen name="name_and_career_margin_bottom">87dp</dimen>
+
+    <dimen name="career_margin_horizontal">9dp</dimen>
+    <dimen name="career_margin_top">8dp</dimen>
+
+    <dimen name="home_address_margin_horizontal">83dp</dimen>
+    <dimen name="home_address_margin_top">273dp</dimen>
+    <dimen name="home_address_margin_bottom">53dp</dimen>
+
+    <!--paddings-->
+    <dimen name="settings_padding_vertical">4.5dp</dimen>
+
+    <!--button dimens-->
+    <dimen name="view_my_contacts_bt_h">55dp</dimen>
+    <dimen name="edit_profile_bt_h">40dp</dimen>
+    <dimen name="social_network_bt_wh">60dp</dimen>
+    <dimen name="log_out_bt_w">119dp</dimen>
+    <dimen name="log_out_bt_h">40dp</dimen>
+
+    <!--text sizes-->
+    <dimen name="middle_text_size">16sp</dimen>
+    <dimen name="small_text_size">14sp</dimen>
+    <dimen name="large_text_size">24sp</dimen>
+    <dimen name="big_text_size">18sp</dimen>
+
+</resources>

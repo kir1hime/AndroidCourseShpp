@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="social_network_style">
+        <item name="android:layout_width">@dimen/social_network_bt_wh</item>
+        <item name="android:layout_height">@dimen/social_network_bt_wh</item>
+        <item name="android:layout_marginTop">@dimen/social_network_margin_top</item>
+        <item name="android:layout_marginBottom">@dimen/social_network_margin_bottom</item>
+        <item name="android:background">@drawable/social_networks_background</item>
+    </style>
+</resources>
