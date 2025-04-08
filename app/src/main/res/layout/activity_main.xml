@@ -23,7 +23,8 @@
             android:layout_marginBottom="53dp"
             android:fontFamily="@font/open_sans"
             android:lineHeight="18.2dp"
-            android:text="5295 Gaylord Walks Apk. 110"
+            android:text="@string/home_address"
+            android:textColor="@color/lightGray"
             android:textFontWeight="600"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -48,7 +49,7 @@
                 android:fontFamily="@font/open_sans"
                 android:gravity="center"
                 android:lineHeight="23.4dp"
-                android:text="@string/lucile_alvarado"
+                android:text="@string/name"
                 android:textColor="@color/white"
                 android:textFontWeight="600"
                 android:textSize="18sp" />
@@ -59,8 +60,9 @@
                 android:layout_marginTop="8dp"
                 android:fontFamily="@font/open_sans"
                 android:gravity="center"
-                android:lineHeight="18.2sp"
-                android:text="@string/graphic_designer"
+                android:lineHeight="18.2dp"
+                android:text="@string/career"
+                android:textColor="@color/lightGray"
                 android:textFontWeight="600"
                 android:textSize="14sp" />
 
@@ -106,16 +108,17 @@
 
         <ImageView
             android:id="@+id/prof_photo"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:layout_marginHorizontal="124dp"
             android:layout_marginTop="71dp"
             android:layout_marginBottom="160dp"
             android:contentDescription="@null"
-            android:src="@drawable/photo"
+            android:src="@drawable/mockup"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
@@ -128,7 +131,6 @@
         android:fontFamily="@font/open_sans"
         android:letterSpacing="0.15"
         android:lineHeight="24dp"
-        android:paddingVertical="8dp"
         android:text="@string/view_my_contacts"
         android:textColor="@color/white"
         android:textFontWeight="600"
@@ -145,7 +147,6 @@
         android:background="@drawable/edit_profile_background"
         android:fontFamily="@font/open_sans"
         android:lineHeight="18.2dp"
-        android:paddingVertical="8dp"
         android:text="@string/edit_profile"
         android:textColor="@color/darkGray"
         android:textFontWeight="600"
