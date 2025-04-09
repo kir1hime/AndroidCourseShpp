@@ -10,8 +10,10 @@ import com.example.androidcourseshpp.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private val EMAIL_KEY = "EMAIL_KEY"
 
+    private companion object {
+        const val EMAIL_KEY = "EMAIL_KEY"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -13,10 +13,14 @@ import com.example.androidcourseshpp.databinding.ActivityAuthBinding
 class AuthActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAuthBinding
-    private val SPECIAL_SYMBOLS = " !#$%&'()*+,-./:;<=>?@[\\]^_`{|}~\""
-    private val NUMBERS = "0123456789"
-    private val MIN_NUMBER_OF_CHARS_IN_PASSWORD = 8
-    private val EMAIL_KEY = "EMAIL_KEY"
+
+    private companion object {
+        const val SPECIAL_SYMBOLS = " !#$%&'()*+,-./:;<=>?@[\\]^_`{|}~\""
+        const val NUMBERS = "0123456789"
+        const val MIN_NUM_OF_CHARS_IN_PSWD = 8
+        const val EMAIL_KEY = "EMAIL_KEY"
+
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,19 +35,19 @@ class AuthActivity : AppCompatActivity() {
         }
 
         binding.btRegister.setOnClickListener {
-            /*val isEMailCorrect = checkEMailInput()
+            val isEMailCorrect = checkEMailInput()
             val isPasswordCorrect = checkPasswordInput()
-            if (isEMailCorrect && isPasswordCorrect) {*/
+            if (isEMailCorrect && isPasswordCorrect) {
 
-            val intent = Intent(this@AuthActivity, MainActivity::class.java)
+                val intent = Intent(this@AuthActivity, MainActivity::class.java)
 
-            intent.putExtra(EMAIL_KEY, binding.etEMail.text.toString())
+                intent.putExtra(EMAIL_KEY, binding.etEMail.text.toString())
 
-            val options = ActivityOptions.makeCustomAnimation(
-                this, R.anim.fade_in, R.anim.fade_out
-            )
-            startActivity(intent, options.toBundle())
-            /* }*/
+                val options = ActivityOptions.makeCustomAnimation(
+                    this, R.anim.fade_in, R.anim.fade_out
+                )
+                startActivity(intent, options.toBundle())
+            }
         }
 
     }
@@ -67,23 +71,23 @@ class AuthActivity : AppCompatActivity() {
         with(binding) {
 
             val inputPassword: String = etPassword.text.toString()
-            if (inputPassword.length < MIN_NUMBER_OF_CHARS_IN_PASSWORD) {
-                tilPassword.helperText = getString(R.string.less_8_symbols_pswd_error)
+            val checks: MutableList<(s: String) -> String> = mutableListOf(
+                ::checkForNumOfLetters,
+                ::checkForUpperCase,
+                ::checkForLowerCase,
+                ::checkForSpecialSymbols,
+                ::checkForNumbers,
+            )
+
+            for (check in checks) {
+                val helpMess = check.invoke(inputPassword)
+
+                if (helpMess == "") {
+                    continue
+                }
+
+                tilPassword.helperText = helpMess
                 return false
-            } else if (!checkForUpperCase(inputPassword)) {
-                tilPassword.helperText = getString(R.string.capital_letter_error)
-                return false
-            } else if (!checkForLowerCase(inputPassword)) {
-                tilPassword.helperText = getString(R.string.lowercase_letter_error)
-                return false
-            } else if (!checkForSpecialSymbols(inputPassword)) {
-                tilPassword.helperText = getString(R.string.special_symbol_error)
-                return false
-            } else if (!checkForNumbers(inputPassword)) {
-                tilPassword.helperText = getString(R.string.numbers_error)
-                return false
-            } else {
-                tilPassword.helperText = null
             }
 
         }
@@ -91,31 +95,38 @@ class AuthActivity : AppCompatActivity() {
         return true
     }
 
-    private fun checkForUpperCase(inPswd: String): Boolean {
+    private fun checkForNumOfLetters(inPswd: String): String {
+        if (inPswd.length < MIN_NUM_OF_CHARS_IN_PSWD) {
+            return getString(R.string.less_8_symbols_pswd_error)
+        }
+        return ""
+    }
+
+    private fun checkForUpperCase(inPswd: String): String {
         for (ch in inPswd) {
             if (ch.isUpperCase()) {
-                return true
+                return ""
             }
         }
-        return false
+        return getString(R.string.capital_letter_error)
     }
 
-    private fun checkForLowerCase(inPswd: String): Boolean {
+    private fun checkForLowerCase(inPswd: String): String {
         for (ch in inPswd) {
             if (ch.isLowerCase()) {
-                return true
+                return ""
             }
         }
-        return false
+        return  getString(R.string.lowercase_letter_error)
     }
 
-    private fun checkForSpecialSymbols(inPswd: String): Boolean {
+    private fun checkForSpecialSymbols(inPswd: String): String  {
         for (ch in inPswd) {
             if (checkForSpecialSymbol(ch)) {
-                return true
+                return ""
             }
         }
-        return false
+        return getString(R.string.special_symbol_error)
     }
 
     private fun checkForSpecialSymbol(symbol: Char): Boolean {
@@ -127,13 +138,13 @@ class AuthActivity : AppCompatActivity() {
         return false
     }
 
-    private fun checkForNumbers(inPswd: String): Boolean {
+    private fun checkForNumbers(inPswd: String): String  {
         for (ch in inPswd) {
             if (checkForNumber(ch)) {
-                return true
+                return ""
             }
         }
-        return false
+        return getString(R.string.numbers_error)
     }
 
     private fun checkForNumber(symbol: Char): Boolean {
