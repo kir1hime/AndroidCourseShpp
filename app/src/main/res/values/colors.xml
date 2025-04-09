@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="cursor_color">#FFFFFFFF</color>
+
     <!--My profile (activity_main.xml)-->
     <color name="bottom_view_color">#FFFFFFFF</color>
     <color name="view_my_contacts_text_color">@color/bottom_view_color</color>
@@ -27,6 +29,9 @@
     <color name="sign_in_color">@color/agreements_text_color</color>
     <color name="google_background_color">@color/agreements_text_color</color>
     <color name="or_text_color">@color/agreements_text_color</color>
-
-    <color name="account_question_text">#B2B2B3</color>
+    <color name="register_text_color">@color/agreements_text_color</color>
+    <color name="input_text_color">@color/agreements_text_color</color>
+    <color name="account_question_text_color">#B2B2B3</color>
+    <color name="e_mail_text_color">@color/account_question_text_color</color>
+    <color name="password_text_color">@color/account_question_text_color</color>
 </resources>

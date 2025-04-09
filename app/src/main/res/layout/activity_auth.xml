@@ -48,6 +48,7 @@
         android:background="@drawable/register_background"
         android:fontFamily="@font/open_sans"
         android:letterSpacing="0.15"
+        android:textColor="@color/register_text_color"
         android:text="@string/register"
         android:textSize="@dimen/middle_text_size"
         android:textStyle="bold"
@@ -82,7 +83,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/open_sans"
             android:text="@string/accountQuestion"
-            android:textColor="@color/account_question_text"
+            android:textColor="@color/account_question_text_color"
             android:textSize="@dimen/small_text_size"
             android:textStyle="bold" />
 
@@ -129,6 +130,70 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/ll_e_mail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/e_mail_input_margin_top"
+        android:layout_marginBottom="@dimen/e_mail_input_margin_bottom"
+        android:orientation="vertical"
+        android:layout_marginHorizontal="@dimen/main_margin_side"
+        app:layout_constraintTop_toBottomOf="@id/ll_acquaintanceAndFillingOut"
+        app:layout_constraintBottom_toTopOf="@id/bt_google">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/open_sans"
+            android:text="@string/e_mail"
+            android:textColor="@color/e_mail_text_color"
+            android:textSize="@dimen/small_text_size"
+            android:textStyle="bold" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints=""
+            android:inputType="textEmailAddress"
+            android:textSize="@dimen/big_text_size"
+            android:textStyle="bold"
+            android:textCursorDrawable="@color/cursor_color"
+            android:textColor="@color/input_text_color"
+            android:fontFamily="@font/open_sans"
+            tools:ignore="LabelFor" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/password_margin_top"
+        android:orientation="vertical"
+        android:layout_marginHorizontal="@dimen/main_margin_side"
+        app:layout_constraintTop_toBottomOf="@id/ll_e_mail">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/open_sans"
+            android:text="@string/password"
+            android:textColor="@color/password_text_color"
+            android:textSize="@dimen/small_text_size"
+            android:textStyle="bold" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints=""
+            android:inputType="textPassword"
+            android:textSize="@dimen/big_text_size"
+            android:textStyle="bold"
+            android:textCursorDrawable="@color/cursor_color"
+            android:textColor="@color/input_text_color"
+            android:fontFamily="@font/open_sans"
+            tools:ignore="LabelFor" />
+    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

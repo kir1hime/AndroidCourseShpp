@@ -35,6 +35,11 @@
 
     <dimen name="or_margin_bottom">153dp</dimen>
 
+    <dimen name="e_mail_input_margin_top">24dp</dimen>
+    <dimen name="e_mail_input_margin_bottom">182dp</dimen>
+
+    <dimen name="password_margin_top">24dp</dimen>
+
     <!--paddings-->
     <dimen name="settings_padding_vertical">4.5dp</dimen>
     <dimen name="fill_out_the_profile_padding_top">8dp</dimen>
