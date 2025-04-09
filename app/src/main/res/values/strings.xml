@@ -19,4 +19,8 @@
     <string name="filling_out">Fill out the profile and go the application!</string>
     <string name="register">REGISTER</string>
     <string name="agreements">By clicking Register you agree to our Terms \n and Conditions</string>
+    <string name="accountQuestion">Already have account?</string>
+    <string name="sign_in">Sign in</string>
+    <string name="google">GOOGLE</string>
+    <string name="or">or</string>
 </resources>

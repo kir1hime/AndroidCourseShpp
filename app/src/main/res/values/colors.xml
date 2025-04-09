@@ -24,4 +24,9 @@
     <color name="register_border_color">#FB5E06</color>
 
     <color name="agreements_text_color">#FFFFFFFF</color>
+    <color name="sign_in_color">@color/agreements_text_color</color>
+    <color name="google_background_color">@color/agreements_text_color</color>
+    <color name="or_text_color">@color/agreements_text_color</color>
+
+    <color name="account_question_text">#B2B2B3</color>
 </resources>
