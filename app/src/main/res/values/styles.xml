@@ -22,4 +22,8 @@
         <item name="android:textSize">@dimen/tiny_text_size</item>
         <item name="android:fontFamily">@font/open_sans</item>
     </style>
+
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight">
+        <item name="android:windowActivityTransitions">true</item>
+    </style>
 </resources>

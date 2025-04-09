@@ -1,10 +1,8 @@
 package com.example.androidcourseshpp
 
 import android.content.Intent
-import android.content.res.ColorStateList
 import android.os.Bundle
 import android.util.Patterns
-import android.widget.AutoCompleteTextView.Validator
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -14,6 +12,9 @@ import com.example.androidcourseshpp.databinding.ActivityAuthBinding
 class AuthActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAuthBinding
+    private val  SPECIAL_SYMBOLS = " !#$%&'()*+,-./:;<=>?@[\\]^_`{|}~\""
+    private val NUMBERS = "0123456789"
+    private val MIN_NUMBER_OF_CHARS_IN_PASSWORD = 8
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,20 +29,111 @@ class AuthActivity : AppCompatActivity() {
         }
 
         binding.btRegister.setOnClickListener {
-            checkEMailInput()
+            val isEMailCorrect = checkEMailInput()
+            val isPasswordCorrect = checkPasswordInput()
+            if (isEMailCorrect && isPasswordCorrect) {
+                val intent = Intent(this@AuthActivity, MainActivity::class.java)
+                startActivity(intent)
+            }
         }
 
     }
 
     private fun checkEMailInput(): Boolean {
-        val userEMail: String = binding.etEMail.text.toString()
+        with(binding) {
 
-        if (!Patterns.EMAIL_ADDRESS.matcher(userEMail).matches()) {
-            binding.tilEMail.helperText = getString(R.string.email_error)
-            return false
-        } else {
-            binding.tilEMail.helperText = null
+            val inputEMail: String = etEMail.text.toString()
+
+            if (!Patterns.EMAIL_ADDRESS.matcher(inputEMail).matches()) {
+                tilEMail.helperText = getString(R.string.email_error)
+                return false
+            } else {
+                tilEMail.helperText = null
+            }
         }
         return true
     }
+
+    private fun checkPasswordInput(): Boolean {
+        with(binding) {
+
+            val inputPassword: String = etPassword.text.toString()
+            if (inputPassword.length < MIN_NUMBER_OF_CHARS_IN_PASSWORD) {
+                tilPassword.helperText = getString(R.string.less_8_symbols_pswd_error)
+                return false
+            } else if (!checkForUpperCase(inputPassword)) {
+                tilPassword.helperText = getString(R.string.capital_letter_error)
+                return false
+            } else if (!checkForLowerCase(inputPassword)) {
+                tilPassword.helperText = getString(R.string.lowercase_letter_error)
+                return false
+            } else if (!checkForSpecialSymbols(inputPassword)) {
+                tilPassword.helperText = getString(R.string.special_symbol_error)
+                return false
+            } else if (!checkForNumbers(inputPassword)) {
+                tilPassword.helperText = getString(R.string.numbers_error)
+                return false
+            } else {
+                tilPassword.helperText = null
+            }
+
+        }
+
+        return true
+    }
+
+    private fun checkForUpperCase(inPswd: String): Boolean {
+        for (ch in inPswd) {
+            if (ch.isUpperCase()) {
+                return true
+            }
+        }
+        return false
+    }
+
+    private fun checkForLowerCase(inPswd: String): Boolean {
+        for (ch in inPswd) {
+            if (ch.isLowerCase()) {
+                return true
+            }
+        }
+        return false
+    }
+
+    private fun checkForSpecialSymbols(inPswd: String): Boolean {
+        for (ch in inPswd) {
+            if (checkForSpecialSymbol(ch)) {
+                return true
+            }
+        }
+        return false
+    }
+
+    private fun checkForSpecialSymbol(symbol: Char): Boolean {
+        for (specialSymbol in SPECIAL_SYMBOLS) {
+            if (symbol == specialSymbol) {
+                return true
+            }
+        }
+        return false
+    }
+
+    private fun checkForNumbers(inPswd: String): Boolean {
+        for (ch in inPswd) {
+            if (checkForNumber(ch)) {
+                return true
+            }
+        }
+        return false
+    }
+
+    private fun checkForNumber(symbol: Char): Boolean {
+        for (number in NUMBERS) {
+            if (symbol == number) {
+                return true
+            }
+        }
+        return false
+    }
+
 }
