@@ -17,4 +17,9 @@
     <color name="log_out_border_and_text_color">#B2B2B3</color>
     <color name="career_text_color">@color/log_out_border_and_text_color</color>
     <color name="home_address_text_color">@color/log_out_border_and_text_color</color>
+
+    <!--Sign up (activity_auth.xml)-->
+    <color name="screen_color">#242235</color>
+
+    <color name="register_border_color">#FB5E06</color>
 </resources>

@@ -5,7 +5,7 @@
     android:id="@+id/auth"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/top_view_color"
+    android:background="@color/screen_color"
     tools:context=".AuthActivity">
 
     <LinearLayout
@@ -37,8 +37,21 @@
             android:text="@string/filling_out"
             android:textColor="@android:color/white"
             android:textSize="@dimen/tiny_text_size" />
-
-
     </LinearLayout>
+
+    <Button
+        android:id="@+id/bt_register"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/register_bt_h"
+        android:layout_marginHorizontal="@dimen/main_side_margin"
+        android:layout_marginBottom="@dimen/register_margin_bottom"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@drawable/register_background"
+        android:textStyle="bold"
+        android:fontFamily="@font/open_sans"
+        android:textSize="@dimen/middle_text_size"
+        android:text="@string/register"
+        android:letterSpacing="0.15"
+        app:backgroundTint="@null"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -29,6 +29,8 @@
     <dimen name="acquaintance_and_filling_out_margin_top">146dp</dimen>
     <dimen name="acquaintance_and_filling_out_margin_bottom">487dp</dimen>
 
+    <dimen name="register_margin_bottom">90dp</dimen>
+
     <!--paddings-->
     <dimen name="settings_padding_vertical">4.5dp</dimen>
     <dimen name="fill_out_the_profile_padding_top">8dp</dimen>
@@ -39,6 +41,7 @@
     <dimen name="social_network_bt_wh">60dp</dimen>
     <dimen name="log_out_bt_w">119dp</dimen>
     <dimen name="log_out_bt_h">40dp</dimen>
+    <dimen name="register_bt_h">@dimen/view_my_contacts_bt_h</dimen>
 
     <!--text sizes-->
     <dimen name="middle_text_size">16sp</dimen>
