@@ -20,8 +20,6 @@ class AuthActivity : AppCompatActivity() {
         const val SPECIAL_SYMBOLS = " !#$%&'()*+,-./:;<=>?@[\\]^_`{|}~\""
         const val NUMBERS = "0123456789"
         const val MIN_NUM_OF_CHARS_IN_PSWD = 8
-        const val EMAIL_KEY = "EMAIL_KEY"
-        const val PSWD_KEY = "PASSWORD_KEY"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,24 +36,17 @@ class AuthActivity : AppCompatActivity() {
             insets
         }
 
-        with(binding) {
-            val userInfo = getUserInfo()
-            etEMail.setText(userInfo[0])
-            etPassword.setText(userInfo[1])
+        val userInfo = getUserInfo()
+        if(userInfo[0] != "" && userInfo[1] != "" ){
+            moveToMyProfile(userInfo[0])
+        }
 
+            with(binding) {
             binding.btRegister.setOnClickListener {
                 val isEMailCorrect = checkEMailInput()
                 val isPasswordCorrect = checkPasswordInput()
                 if (isEMailCorrect && isPasswordCorrect) {
-
-                    val intent = Intent(this@AuthActivity, MainActivity::class.java)
-
-                    intent.putExtra(EMAIL_KEY, binding.etEMail.text.toString())
-
-                    val options = ActivityOptions.makeCustomAnimation(
-                        this@AuthActivity, R.anim.fade_in, R.anim.fade_out
-                    )
-                    startActivity(intent, options.toBundle())
+                    moveToMyProfile(etEMail.text.toString())
                 }
             }
 
@@ -64,6 +55,18 @@ class AuthActivity : AppCompatActivity() {
             }
         }
 
+    }
+
+    private fun moveToMyProfile(userEMail : String){
+        val intent = Intent(this@AuthActivity, MainActivity::class.java)
+
+        intent.putExtra(R.string.email_key.toString(), userEMail)
+
+        val options = ActivityOptions.makeCustomAnimation(
+            this@AuthActivity, R.anim.my_profile_fade_in, R.anim.sing_up_fade_out
+        )
+
+        startActivity(intent, options.toBundle())
     }
 
     private fun checkEMailInput(): Boolean {
@@ -172,15 +175,15 @@ class AuthActivity : AppCompatActivity() {
 
     private fun saveUserInfo(eMail: String, pswd: String) {
         val editor = sharedPref.edit()
-        editor.putString(EMAIL_KEY, eMail)
-        editor.putString(PSWD_KEY, pswd)
+        editor.putString(R.string.email_key.toString(), eMail)
+        editor.putString(R.string.pswd_key.toString(), pswd)
         editor.apply()
     }
 
     private fun getUserInfo(): Array<String> {
         val userInfo: Array<String> = Array(2) { "" }
-        userInfo[0] = sharedPref.getString(EMAIL_KEY, "").toString()
-        userInfo[1] = sharedPref.getString(PSWD_KEY, "").toString()
+        userInfo[0] = sharedPref.getString(R.string.email_key.toString(), "").toString()
+        userInfo[1] = sharedPref.getString(R.string.pswd_key.toString(), "").toString()
 
         return userInfo
     }

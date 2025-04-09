@@ -1,5 +1,8 @@
 package com.example.androidcourseshpp
 
+import android.app.ActivityOptions
+import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -10,10 +13,8 @@ import com.example.androidcourseshpp.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var sharedPref: SharedPreferences
 
-    private companion object {
-        const val EMAIL_KEY = "EMAIL_KEY"
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,6 +22,7 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        sharedPref = getSharedPreferences("userInfo", MODE_PRIVATE)
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -28,8 +30,24 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        val userEMail = intent.getStringExtra(EMAIL_KEY)
+        val userEMail = intent.getStringExtra(R.string.email_key.toString())
         binding.tvName.text = parseEMail(userEMail.toString())
+
+        binding.btLogOut.setOnClickListener{
+            val intent = Intent(this@MainActivity, AuthActivity::class.java)
+
+            val options = ActivityOptions.makeCustomAnimation(
+                this@MainActivity, R.anim.sing_up_fade_in, R.anim.my_profile_fade_out
+            )
+
+            startActivity(intent, options.toBundle())
+
+            val editor = sharedPref.edit()
+            editor.putString(R.string.email_key.toString(), "")
+            editor.putString(R.string.pswd_key.toString(), "")
+            editor.apply()
+
+        }
     }
 
     private fun parseEMail(eMail: String): String {

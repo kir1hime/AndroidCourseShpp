@@ -138,7 +138,7 @@
         android:layout_marginHorizontal="@dimen/main_margin_side"
         android:layout_marginTop="@dimen/e_mail_input_margin_top"
         android:layout_marginBottom="@dimen/e_mail_input_margin_bottom"
-        android:hint="@string/e_mail"
+        android:hint="@string/email"
         android:paddingStart="@dimen/input_text_padding"
         android:textColorHint="@color/e_mail_hint_text_color"
         android:theme="@style/input_style"
