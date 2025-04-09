@@ -13,7 +13,7 @@ import com.example.androidcourseshpp.databinding.ActivityAuthBinding
 class AuthActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAuthBinding
-    private val  SPECIAL_SYMBOLS = " !#$%&'()*+,-./:;<=>?@[\\]^_`{|}~\""
+    private val SPECIAL_SYMBOLS = " !#$%&'()*+,-./:;<=>?@[\\]^_`{|}~\""
     private val NUMBERS = "0123456789"
     private val MIN_NUMBER_OF_CHARS_IN_PASSWORD = 8
 
@@ -33,12 +33,13 @@ class AuthActivity : AppCompatActivity() {
             /*val isEMailCorrect = checkEMailInput()
             val isPasswordCorrect = checkPasswordInput()
             if (isEMailCorrect && isPasswordCorrect) {*/
-                val intent = Intent(this@AuthActivity, MainActivity::class.java)
-                startActivity(intent)
+
+            val intent = Intent(this@AuthActivity, MainActivity::class.java)
             val options = ActivityOptions.makeCustomAnimation(
-                this, R.anim.fade_in, R.anim.fade_out)
+                this, R.anim.fade_in, R.anim.fade_out
+            )
             startActivity(intent, options.toBundle())
-           /* }*/
+            /* }*/
         }
 
     }
