@@ -12,7 +12,7 @@
         android:id="@+id/ll_acquaintanceAndFillingOut"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/main_side_margin"
+        android:layout_marginHorizontal="@dimen/main_margin_side"
         android:layout_marginTop="@dimen/acquaintance_and_filling_out_margin_top"
         android:layout_marginBottom="@dimen/acquaintance_and_filling_out_margin_bottom"
         android:orientation="vertical"
@@ -43,7 +43,7 @@
         android:id="@+id/bt_register"
         android:layout_width="match_parent"
         android:layout_height="@dimen/register_bt_h"
-        android:layout_marginHorizontal="@dimen/main_side_margin"
+        android:layout_marginHorizontal="@dimen/main_margin_side"
         android:layout_marginBottom="@dimen/register_margin_bottom"
         app:layout_constraintBottom_toBottomOf="parent"
         android:background="@drawable/register_background"
@@ -53,5 +53,17 @@
         android:text="@string/register"
         android:letterSpacing="0.15"
         app:backgroundTint="@null"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/main_margin_side"
+        android:layout_marginBottom="@dimen/agreements_margin_bottom"
+        android:text="@string/agreements"
+        android:textSize="@dimen/tiny_text_size"
+        android:textColor="@color/agreements_text_color"
+        android:fontFamily="@font/open_sans"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

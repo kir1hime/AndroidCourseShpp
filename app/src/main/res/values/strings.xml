@@ -18,4 +18,5 @@
     <string name="acquaintance">Let\'s get acquainted</string>
     <string name="filling_out">Fill out the profile and go the application!</string>
     <string name="register">REGISTER</string>
+    <string name="agreements">By clicking Register you agree to our Terms \n and Conditions</string>
 </resources>

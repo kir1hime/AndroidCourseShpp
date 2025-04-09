@@ -22,4 +22,6 @@
     <color name="screen_color">#242235</color>
 
     <color name="register_border_color">#FB5E06</color>
+
+    <color name="agreements_text_color">#FFFFFFFF</color>
 </resources>
