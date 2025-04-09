@@ -1,5 +1,6 @@
 package com.example.androidcourseshpp
 
+import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
 import android.util.Patterns
@@ -29,12 +30,15 @@ class AuthActivity : AppCompatActivity() {
         }
 
         binding.btRegister.setOnClickListener {
-            val isEMailCorrect = checkEMailInput()
+            /*val isEMailCorrect = checkEMailInput()
             val isPasswordCorrect = checkPasswordInput()
-            if (isEMailCorrect && isPasswordCorrect) {
+            if (isEMailCorrect && isPasswordCorrect) {*/
                 val intent = Intent(this@AuthActivity, MainActivity::class.java)
                 startActivity(intent)
-            }
+            val options = ActivityOptions.makeCustomAnimation(
+                this, R.anim.fade_in, R.anim.fade_out)
+            startActivity(intent, options.toBundle())
+           /* }*/
         }
 
     }
