@@ -22,6 +22,7 @@
 
     <!--Sign up (activity_auth.xml)-->
     <color name="screen_color">#242235</color>
+    <color name="input_background_color">@color/screen_color</color>
 
     <color name="register_border_color">#FB5E06</color>
 
@@ -34,7 +35,8 @@
     <color name="remember_me_check_box_color">@color/agreements_text_color</color>
 
     <color name="account_question_text_color">#B2B2B3</color>
-    <color name="e_mail_text_color">@color/account_question_text_color</color>
-    <color name="password_text_color">@color/account_question_text_color</color>
+    <color name="e_mail_hint_text_color">@color/account_question_text_color</color>
+    <color name="password_hint_text_color">@color/account_question_text_color</color>
     <color name="remember_me_text_color">@color/account_question_text_color</color>
+    <color name="input_line_color">@color/account_question_text_color</color>
 </resources>

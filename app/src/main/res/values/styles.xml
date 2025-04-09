@@ -7,4 +7,15 @@
         <item name="android:layout_marginBottom">@dimen/social_network_margin_bottom</item>
         <item name="android:background">@drawable/social_networks_background</item>
     </style>
+
+
+    <style name="hint_style" >
+        <item name="android:textSize">@dimen/small_text_size</item>
+    </style>
+
+    <style name="input_style">
+        <item name="colorPrimary">@color/input_line_color</item>
+        <item name="colorOutline">@color/input_line_color</item>
+    </style>
+
 </resources>

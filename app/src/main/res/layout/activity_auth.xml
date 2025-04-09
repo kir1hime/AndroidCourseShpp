@@ -132,84 +132,92 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <LinearLayout
-        android:id="@+id/ll_e_mail"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_eMail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/main_margin_side"
         android:layout_marginTop="@dimen/e_mail_input_margin_top"
         android:layout_marginBottom="@dimen/e_mail_input_margin_bottom"
-        android:orientation="vertical"
+        android:hint="@string/e_mail"
+        android:paddingStart="@dimen/input_text_padding"
+        android:textColorHint="@color/e_mail_hint_text_color"
+        android:theme="@style/input_style"
+        app:boxBackgroundColor="@color/input_background_color"
+        app:boxBackgroundMode="filled"
+        app:boxStrokeWidthFocused="@dimen/input_box_stroke_w_focused"
+        app:cursorColor="@color/cursor_color"
+        app:errorEnabled="true"
+        app:expandedHintEnabled="false"
+        app:hintTextAppearance="@style/hint_style"
+        app:hintTextColor="@color/e_mail_hint_text_color"
         app:layout_constraintBottom_toTopOf="@id/bt_google"
-        app:layout_constraintTop_toBottomOf="@id/ll_acquaintanceAndFillingOut">
+        app:layout_constraintTop_toBottomOf="@id/ll_acquaintanceAndFillingOut"
+        tools:ignore="RtlSymmetry">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/open_sans"
-            android:text="@string/e_mail"
-            android:textColor="@color/e_mail_text_color"
-            android:textSize="@dimen/small_text_size"
-            android:textStyle="bold" />
+        <com.google.android.material.textfield.TextInputEditText
 
-        <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:autofillHints=""
+
             android:fontFamily="@font/open_sans"
             android:inputType="textEmailAddress"
             android:textColor="@color/input_text_color"
-            android:textCursorDrawable="@color/cursor_color"
-            android:textSize="@dimen/big_text_size"
-            android:textStyle="bold"
-            tools:ignore="LabelFor" />
-    </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/ll_password"
+            android:textSize="@dimen/big_text_size"
+            android:textStyle="bold" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/main_margin_side"
         android:layout_marginTop="@dimen/password_margin_top"
-        android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@id/ll_e_mail">
+        android:hint="@string/password"
+        android:paddingStart="@dimen/input_text_padding"
+        android:textColorHint="@color/password_hint_text_color"
+        android:theme="@style/input_style"
+        app:boxBackgroundColor="@color/input_background_color"
+        app:boxBackgroundMode="filled"
+        app:boxStrokeWidthFocused="@dimen/input_box_stroke_w_focused"
+        app:cursorColor="@color/cursor_color"
+        app:errorEnabled="true"
+        app:expandedHintEnabled="false"
+        app:hintTextAppearance="@style/hint_style"
+        app:hintTextColor="@color/password_hint_text_color"
+        app:layout_constraintTop_toBottomOf="@id/til_eMail"
+        tools:ignore="RtlSymmetry">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/open_sans"
-            android:text="@string/password"
-            android:textColor="@color/password_text_color"
-            android:textSize="@dimen/small_text_size"
-            android:textStyle="bold" />
-
-        <EditText
+        <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:autofillHints=""
             android:fontFamily="@font/open_sans"
             android:inputType="textPassword"
+            android:paddingTop="@dimen/input_text_edit_padding_top"
+            android:paddingBottom="@dimen/input_text_edit_padding_bottom"
             android:textColor="@color/input_text_color"
             android:textCursorDrawable="@color/cursor_color"
             android:textSize="@dimen/big_text_size"
-            android:textStyle="bold"
-            tools:ignore="LabelFor" />
-    </LinearLayout>
+            android:textStyle="bold" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.checkbox.MaterialCheckBox
         android:id="@+id/cb_rememberMe"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/open_sans"
-        android:padding="16dp"
         android:button="@drawable/remember_me_selector"
-        app:buttonTint="@null"
+        android:fontFamily="@font/open_sans"
+        android:padding="@dimen/remember_me_text_padding"
         android:text="@string/remember_me"
         android:textColor="@color/remember_me_text_color"
         android:textSize="@dimen/small_text_size"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@id/ll_password"
-        app:layout_constraintTop_toBottomOf="@id/ll_password" />
+        app:buttonTint="@null"
+        app:layout_constraintStart_toStartOf="@id/til_password"
+        app:layout_constraintTop_toBottomOf="@id/til_password" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
