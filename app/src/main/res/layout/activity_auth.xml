@@ -8,4 +8,37 @@
     android:background="@color/top_view_color"
     tools:context=".AuthActivity">
 
+    <LinearLayout
+        android:id="@+id/ll_acquaintanceAndFillingOut"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/main_side_margin"
+        android:layout_marginTop="@dimen/acquaintance_and_filling_out_margin_top"
+        android:layout_marginBottom="@dimen/acquaintance_and_filling_out_margin_bottom"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/open_sans"
+            android:gravity="center"
+            android:text="@string/acquaintance"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/large_text_size"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/open_sans"
+            android:gravity="center"
+            android:paddingTop="@dimen/fill_out_the_profile_padding_top"
+            android:text="@string/filling_out"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/tiny_text_size" />
+
+
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

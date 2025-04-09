@@ -13,4 +13,8 @@
     <string name="linkedin_button">linkedin_button</string>
     <string name="facebook_button">facebook_button</string>
     <string name="profile_photo">profile_photo</string>
+
+    <!--Sing up (activity_auth.xml)-->
+    <string name="acquaintance">Let\'s get acquainted</string>
+    <string name="filling_out">Fill out the profile and go the application!</string>
 </resources>
