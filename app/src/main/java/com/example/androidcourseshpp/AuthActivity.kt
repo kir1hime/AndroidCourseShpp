@@ -41,25 +41,17 @@ class AuthActivity : AppCompatActivity() {
             moveToMainActivity(userInfo[0])
         }
 
-        var isRememberedMe = false
-
         with(binding) {
-            cbRememberMe.setOnClickListener {
-                isRememberedMe = !isRememberedMe
-            }
+
             binding.btRegister.setOnClickListener {
                 val isEMailCorrect = checkEMailInput()
                 val isPasswordCorrect = checkPasswordInput()
                 if (isEMailCorrect && isPasswordCorrect) {
-                    if (isRememberedMe) {
+                    if (cbRememberMe.isChecked) {
                         saveUserInfo(etEMail.text.toString(), etPassword.text.toString())
                     }
                     moveToMainActivity(etEMail.text.toString())
                 }
-            }
-
-            cbRememberMe.setOnClickListener {
-                saveUserInfo(etEMail.text.toString(), etPassword.text.toString())
             }
         }
 
