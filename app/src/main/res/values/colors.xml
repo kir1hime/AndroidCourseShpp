@@ -39,4 +39,6 @@
     <color name="password_hint_text_color">@color/account_question_text_color</color>
     <color name="remember_me_text_color">@color/account_question_text_color</color>
     <color name="input_line_color">@color/account_question_text_color</color>
+
+    <color name="error_text_color">#F93E3E</color>
 </resources>

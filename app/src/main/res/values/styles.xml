@@ -18,4 +18,8 @@
         <item name="colorOutline">@color/input_line_color</item>
     </style>
 
+    <style name="helper_text_style">
+        <item name="android:textSize">@dimen/tiny_text_size</item>
+        <item name="android:fontFamily">@font/open_sans</item>
+    </style>
 </resources>

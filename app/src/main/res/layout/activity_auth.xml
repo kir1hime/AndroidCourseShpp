@@ -6,8 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/screen_color"
-    tools:context=".AuthActivity"
-    tools:ignore="ExtraText">
+    tools:context=".AuthActivity">
 
     <LinearLayout
         android:id="@+id/ll_acquaintanceAndFillingOut"
@@ -145,10 +144,14 @@
         android:theme="@style/input_style"
         app:boxBackgroundColor="@color/input_background_color"
         app:boxBackgroundMode="filled"
+        app:boxStrokeErrorColor="@color/input_line_color"
         app:boxStrokeWidthFocused="@dimen/input_box_stroke_w_focused"
         app:cursorColor="@color/cursor_color"
         app:errorEnabled="true"
         app:expandedHintEnabled="false"
+        app:helperTextEnabled="true"
+        app:helperTextTextAppearance="@style/helper_text_style"
+        app:helperTextTextColor="@color/error_text_color"
         app:hintTextAppearance="@style/hint_style"
         app:hintTextColor="@color/e_mail_hint_text_color"
         app:layout_constraintBottom_toTopOf="@id/bt_google"
@@ -156,14 +159,12 @@
         tools:ignore="RtlSymmetry">
 
         <com.google.android.material.textfield.TextInputEditText
-
+            android:id="@+id/et_eMail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             android:fontFamily="@font/open_sans"
             android:inputType="textEmailAddress"
             android:textColor="@color/input_text_color"
-
             android:textSize="@dimen/big_text_size"
             android:textStyle="bold" />
 
@@ -181,16 +182,21 @@
         android:theme="@style/input_style"
         app:boxBackgroundColor="@color/input_background_color"
         app:boxBackgroundMode="filled"
+        app:boxStrokeErrorColor="@color/input_line_color"
         app:boxStrokeWidthFocused="@dimen/input_box_stroke_w_focused"
         app:cursorColor="@color/cursor_color"
         app:errorEnabled="true"
         app:expandedHintEnabled="false"
+        app:helperTextEnabled="true"
+        app:helperTextTextAppearance="@style/helper_text_style"
+        app:helperTextTextColor="@color/error_text_color"
         app:hintTextAppearance="@style/hint_style"
         app:hintTextColor="@color/password_hint_text_color"
         app:layout_constraintTop_toBottomOf="@id/til_eMail"
         tools:ignore="RtlSymmetry">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/open_sans"
