@@ -38,7 +38,7 @@ class AuthActivity : AppCompatActivity() {
 
         val userInfo = getUserInfo()
         if(userInfo[0] != "" && userInfo[1] != "" ){
-            moveToMyProfile(userInfo[0])
+            moveToMainActivity(userInfo[0])
         }
 
             with(binding) {
@@ -46,7 +46,7 @@ class AuthActivity : AppCompatActivity() {
                 val isEMailCorrect = checkEMailInput()
                 val isPasswordCorrect = checkPasswordInput()
                 if (isEMailCorrect && isPasswordCorrect) {
-                    moveToMyProfile(etEMail.text.toString())
+                    moveToMainActivity(etEMail.text.toString())
                 }
             }
 
@@ -57,7 +57,7 @@ class AuthActivity : AppCompatActivity() {
 
     }
 
-    private fun moveToMyProfile(userEMail : String){
+    private fun moveToMainActivity(userEMail : String){
         val intent = Intent(this@AuthActivity, MainActivity::class.java)
 
         intent.putExtra(R.string.email_key.toString(), userEMail)
@@ -107,9 +107,9 @@ class AuthActivity : AppCompatActivity() {
                 return false
             }
 
+            tilPassword.helperText = null
+            return true
         }
-
-        return true
     }
 
     private fun checkForNumOfLetters(inPswd: String): String {

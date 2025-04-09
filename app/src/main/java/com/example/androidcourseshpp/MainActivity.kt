@@ -33,21 +33,28 @@ class MainActivity : AppCompatActivity() {
         val userEMail = intent.getStringExtra(R.string.email_key.toString())
         binding.tvName.text = parseEMail(userEMail.toString())
 
-        binding.btLogOut.setOnClickListener{
-            val intent = Intent(this@MainActivity, AuthActivity::class.java)
-
-            val options = ActivityOptions.makeCustomAnimation(
-                this@MainActivity, R.anim.sing_up_fade_in, R.anim.my_profile_fade_out
-            )
-
-            startActivity(intent, options.toBundle())
-
-            val editor = sharedPref.edit()
-            editor.putString(R.string.email_key.toString(), "")
-            editor.putString(R.string.pswd_key.toString(), "")
-            editor.apply()
+        binding.btLogOut.setOnClickListener {
+            moveToAuthActivity()
+            deleteUserInfo()
 
         }
+    }
+
+    private fun moveToAuthActivity() {
+        val intent = Intent(this@MainActivity, AuthActivity::class.java)
+
+        val options = ActivityOptions.makeCustomAnimation(
+            this@MainActivity, R.anim.sing_up_fade_in, R.anim.my_profile_fade_out
+        )
+
+        startActivity(intent, options.toBundle())
+    }
+
+    private fun deleteUserInfo() {
+        val editor = sharedPref.edit()
+        editor.putString(R.string.email_key.toString(), "")
+        editor.putString(R.string.pswd_key.toString(), "")
+        editor.apply()
     }
 
     private fun parseEMail(eMail: String): String {

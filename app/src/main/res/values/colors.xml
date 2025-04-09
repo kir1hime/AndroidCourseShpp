@@ -23,6 +23,7 @@
     <!--Sign up (activity_auth.xml)-->
     <color name="screen_color">#242235</color>
     <color name="input_background_color">@color/screen_color</color>
+    <color name="register_background_color">@color/screen_color</color>
 
     <color name="register_border_color">#FB5E06</color>
 
@@ -41,4 +42,6 @@
     <color name="input_line_color">@color/account_question_text_color</color>
 
     <color name="error_text_color">#F93E3E</color>
+
+    <color name="google_text_color">#000000</color>
 </resources>
