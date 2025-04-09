@@ -37,15 +37,23 @@ class AuthActivity : AppCompatActivity() {
         }
 
         val userInfo = getUserInfo()
-        if(userInfo[0] != "" && userInfo[1] != "" ){
+        if (userInfo[0] != "" && userInfo[1] != "") {
             moveToMainActivity(userInfo[0])
         }
 
-            with(binding) {
+        var isRememberedMe = false
+
+        with(binding) {
+            cbRememberMe.setOnClickListener {
+                isRememberedMe = !isRememberedMe
+            }
             binding.btRegister.setOnClickListener {
                 val isEMailCorrect = checkEMailInput()
                 val isPasswordCorrect = checkPasswordInput()
                 if (isEMailCorrect && isPasswordCorrect) {
+                    if (isRememberedMe) {
+                        saveUserInfo(etEMail.text.toString(), etPassword.text.toString())
+                    }
                     moveToMainActivity(etEMail.text.toString())
                 }
             }
@@ -57,7 +65,7 @@ class AuthActivity : AppCompatActivity() {
 
     }
 
-    private fun moveToMainActivity(userEMail : String){
+    private fun moveToMainActivity(userEMail: String) {
         val intent = Intent(this@AuthActivity, MainActivity::class.java)
 
         intent.putExtra(R.string.email_key.toString(), userEMail)
@@ -134,10 +142,10 @@ class AuthActivity : AppCompatActivity() {
                 return ""
             }
         }
-        return  getString(R.string.lowercase_letter_error)
+        return getString(R.string.lowercase_letter_error)
     }
 
-    private fun checkForSpecialSymbols(inPswd: String): String  {
+    private fun checkForSpecialSymbols(inPswd: String): String {
         for (ch in inPswd) {
             if (checkForSpecialSymbol(ch)) {
                 return ""
@@ -155,7 +163,7 @@ class AuthActivity : AppCompatActivity() {
         return false
     }
 
-    private fun checkForNumbers(inPswd: String): String  {
+    private fun checkForNumbers(inPswd: String): String {
         for (ch in inPswd) {
             if (checkForNumber(ch)) {
                 return ""
