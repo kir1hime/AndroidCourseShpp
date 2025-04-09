@@ -12,7 +12,7 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:background="@color/top_view_color"
-        app:layout_constraintEnd_toStartOf="@id/gl_MiddleSeparator"
+        app:layout_constraintEnd_toStartOf="@id/gl_middle_hor"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -23,10 +23,10 @@
         android:background="@color/bottom_view_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@id/gl_MiddleSeparator" />
+        app:layout_constraintEnd_toStartOf="@id/gl_middle_hor" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/gl_MiddleSeparator"
+        android:id="@+id/gl_middle_hor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -80,8 +80,8 @@
         android:layout_marginTop="@dimen/profile_photo_margin_top"
         android:layout_marginBottom="@dimen/profile_photo_margin_bottom"
         android:contentDescription="@string/profile_photo"
-        android:src="@drawable/mockup"
-        app:layout_constraintBottom_toBottomOf="@id/gl_MiddleSeparator"
+        android:src="@drawable/profile_photo"
+        app:layout_constraintBottom_toBottomOf="@id/gl_middle_hor"
         app:layout_constraintEnd_toEndOf="@id/vw_bluePartOfScreen"
         app:layout_constraintStart_toStartOf="@id/vw_bluePartOfScreen"
         app:layout_constraintTop_toTopOf="@id/vw_bluePartOfScreen" />

@@ -16,6 +16,7 @@ class AuthActivity : AppCompatActivity() {
     private val SPECIAL_SYMBOLS = " !#$%&'()*+,-./:;<=>?@[\\]^_`{|}~\""
     private val NUMBERS = "0123456789"
     private val MIN_NUMBER_OF_CHARS_IN_PASSWORD = 8
+    private val EMAIL_KEY = "EMAIL_KEY"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +36,9 @@ class AuthActivity : AppCompatActivity() {
             if (isEMailCorrect && isPasswordCorrect) {*/
 
             val intent = Intent(this@AuthActivity, MainActivity::class.java)
+
+            intent.putExtra(EMAIL_KEY, binding.etEMail.text.toString())
+
             val options = ActivityOptions.makeCustomAnimation(
                 this, R.anim.fade_in, R.anim.fade_out
             )

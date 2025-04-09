@@ -24,8 +24,8 @@
     <dimen name="home_address_margin_top">273dp</dimen>
     <dimen name="home_address_margin_bottom">53dp</dimen>
 
-    <dimen name="acquaintance_and_filling_out_margin_top">146dp</dimen>
-    <dimen name="acquaintance_and_filling_out_margin_bottom">487dp</dimen>
+    <dimen name="acquaintance_and_filling_out_margin_top_ver">146dp</dimen>
+    <dimen name="acquaintance_and_filling_out_margin_top_hor">35dp</dimen>
 
     <dimen name="register_margin_bottom">90dp</dimen>
 
@@ -39,7 +39,9 @@
     <dimen name="e_mail_input_margin_bottom">182dp</dimen>
 
     <dimen name="password_margin_top">24dp</dimen>
-    <dimen name="remember_me_margin_top">16dp</dimen>
+
+    <dimen name="remember_me_margin_top_ver">16dp</dimen>
+    <dimen name="remember_me_margin_top_hor">35dp</dimen>
 
     <!--paddings-->
     <dimen name="settings_padding_vertical">4.5dp</dimen>
