@@ -2,6 +2,7 @@ package com.example.androidcourseshpp
 
 import android.app.ActivityOptions
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Patterns
 import androidx.activity.enableEdgeToEdge
@@ -13,13 +14,14 @@ import com.example.androidcourseshpp.databinding.ActivityAuthBinding
 class AuthActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAuthBinding
+    private lateinit var sharedPref: SharedPreferences
 
     private companion object {
         const val SPECIAL_SYMBOLS = " !#$%&'()*+,-./:;<=>?@[\\]^_`{|}~\""
         const val NUMBERS = "0123456789"
         const val MIN_NUM_OF_CHARS_IN_PSWD = 8
         const val EMAIL_KEY = "EMAIL_KEY"
-
+        const val PSWD_KEY = "PASSWORD_KEY"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,25 +30,37 @@ class AuthActivity : AppCompatActivity() {
         binding = ActivityAuthBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        sharedPref = getSharedPreferences("userInfo", MODE_PRIVATE)
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.auth)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
 
-        binding.btRegister.setOnClickListener {
-            val isEMailCorrect = checkEMailInput()
-            val isPasswordCorrect = checkPasswordInput()
-            if (isEMailCorrect && isPasswordCorrect) {
+        with(binding) {
+            val userInfo = getUserInfo()
+            etEMail.setText(userInfo[0])
+            etPassword.setText(userInfo[1])
 
-                val intent = Intent(this@AuthActivity, MainActivity::class.java)
+            binding.btRegister.setOnClickListener {
+                val isEMailCorrect = checkEMailInput()
+                val isPasswordCorrect = checkPasswordInput()
+                if (isEMailCorrect && isPasswordCorrect) {
 
-                intent.putExtra(EMAIL_KEY, binding.etEMail.text.toString())
+                    val intent = Intent(this@AuthActivity, MainActivity::class.java)
 
-                val options = ActivityOptions.makeCustomAnimation(
-                    this, R.anim.fade_in, R.anim.fade_out
-                )
-                startActivity(intent, options.toBundle())
+                    intent.putExtra(EMAIL_KEY, binding.etEMail.text.toString())
+
+                    val options = ActivityOptions.makeCustomAnimation(
+                        this@AuthActivity, R.anim.fade_in, R.anim.fade_out
+                    )
+                    startActivity(intent, options.toBundle())
+                }
+            }
+
+            cbRememberMe.setOnClickListener {
+                saveUserInfo(etEMail.text.toString(), etPassword.text.toString())
             }
         }
 
@@ -71,7 +85,7 @@ class AuthActivity : AppCompatActivity() {
         with(binding) {
 
             val inputPassword: String = etPassword.text.toString()
-            val checks: MutableList<(s: String) -> String> = mutableListOf(
+            val passwordChecks: MutableList<(s: String) -> String> = mutableListOf(
                 ::checkForNumOfLetters,
                 ::checkForUpperCase,
                 ::checkForLowerCase,
@@ -79,7 +93,7 @@ class AuthActivity : AppCompatActivity() {
                 ::checkForNumbers,
             )
 
-            for (check in checks) {
+            for (check in passwordChecks) {
                 val helpMess = check.invoke(inputPassword)
 
                 if (helpMess == "") {
@@ -154,6 +168,21 @@ class AuthActivity : AppCompatActivity() {
             }
         }
         return false
+    }
+
+    private fun saveUserInfo(eMail: String, pswd: String) {
+        val editor = sharedPref.edit()
+        editor.putString(EMAIL_KEY, eMail)
+        editor.putString(PSWD_KEY, pswd)
+        editor.apply()
+    }
+
+    private fun getUserInfo(): Array<String> {
+        val userInfo: Array<String> = Array(2) { "" }
+        userInfo[0] = sharedPref.getString(EMAIL_KEY, "").toString()
+        userInfo[1] = sharedPref.getString(PSWD_KEY, "").toString()
+
+        return userInfo
     }
 
 }

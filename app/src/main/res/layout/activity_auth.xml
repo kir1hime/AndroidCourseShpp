@@ -105,10 +105,12 @@
         android:layout_marginHorizontal="@dimen/main_margin_side"
         android:layout_marginBottom="@dimen/google_margin_bottom"
         android:background="@drawable/google_background"
+        android:fontFamily="@font/open_sans"
         android:letterSpacing="0.15"
         android:text="@string/google"
         android:textColor="@android:color/black"
         android:textSize="@dimen/middle_text_size"
+        android:textStyle="bold"
         app:backgroundTint="@null"
         app:icon="@drawable/ic_google"
         app:iconGravity="textStart"
@@ -162,6 +164,8 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/open_sans"
             android:inputType="textEmailAddress"
+            android:paddingTop="@dimen/input_text_edit_padding_top"
+            android:paddingBottom="@dimen/input_text_edit_padding_bottom"
             android:textColor="@color/input_text_color"
             android:textSize="@dimen/big_text_size"
             android:textStyle="bold" />
@@ -202,11 +206,11 @@
             android:paddingTop="@dimen/input_text_edit_padding_top"
             android:paddingBottom="@dimen/input_text_edit_padding_bottom"
             android:textColor="@color/input_text_color"
-            android:textCursorDrawable="@color/cursor_color"
             android:textSize="@dimen/big_text_size"
             android:textStyle="bold" />
 
     </com.google.android.material.textfield.TextInputLayout>
+
 
     <com.google.android.material.checkbox.MaterialCheckBox
         android:id="@+id/cb_rememberMe"
