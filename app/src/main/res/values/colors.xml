@@ -31,7 +31,10 @@
     <color name="or_text_color">@color/agreements_text_color</color>
     <color name="register_text_color">@color/agreements_text_color</color>
     <color name="input_text_color">@color/agreements_text_color</color>
+    <color name="remember_me_check_box_color">@color/agreements_text_color</color>
+
     <color name="account_question_text_color">#B2B2B3</color>
     <color name="e_mail_text_color">@color/account_question_text_color</color>
     <color name="password_text_color">@color/account_question_text_color</color>
+    <color name="remember_me_text_color">@color/account_question_text_color</color>
 </resources>

@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/screen_color"
-    tools:context=".AuthActivity">
+    tools:context=".AuthActivity"
+    tools:ignore="ExtraText">
 
     <LinearLayout
         android:id="@+id/ll_acquaintanceAndFillingOut"
@@ -48,8 +49,8 @@
         android:background="@drawable/register_background"
         android:fontFamily="@font/open_sans"
         android:letterSpacing="0.15"
-        android:textColor="@color/register_text_color"
         android:text="@string/register"
+        android:textColor="@color/register_text_color"
         android:textSize="@dimen/middle_text_size"
         android:textStyle="bold"
         app:backgroundTint="@null"
@@ -135,12 +136,12 @@
         android:id="@+id/ll_e_mail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/main_margin_side"
         android:layout_marginTop="@dimen/e_mail_input_margin_top"
         android:layout_marginBottom="@dimen/e_mail_input_margin_bottom"
         android:orientation="vertical"
-        android:layout_marginHorizontal="@dimen/main_margin_side"
-        app:layout_constraintTop_toBottomOf="@id/ll_acquaintanceAndFillingOut"
-        app:layout_constraintBottom_toTopOf="@id/bt_google">
+        app:layout_constraintBottom_toTopOf="@id/bt_google"
+        app:layout_constraintTop_toBottomOf="@id/ll_acquaintanceAndFillingOut">
 
         <TextView
             android:layout_width="wrap_content"
@@ -155,12 +156,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:autofillHints=""
+            android:fontFamily="@font/open_sans"
             android:inputType="textEmailAddress"
+            android:textColor="@color/input_text_color"
+            android:textCursorDrawable="@color/cursor_color"
             android:textSize="@dimen/big_text_size"
             android:textStyle="bold"
-            android:textCursorDrawable="@color/cursor_color"
-            android:textColor="@color/input_text_color"
-            android:fontFamily="@font/open_sans"
             tools:ignore="LabelFor" />
     </LinearLayout>
 
@@ -168,9 +169,9 @@
         android:id="@+id/ll_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/main_margin_side"
         android:layout_marginTop="@dimen/password_margin_top"
         android:orientation="vertical"
-        android:layout_marginHorizontal="@dimen/main_margin_side"
         app:layout_constraintTop_toBottomOf="@id/ll_e_mail">
 
         <TextView
@@ -186,14 +187,29 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:autofillHints=""
+            android:fontFamily="@font/open_sans"
             android:inputType="textPassword"
+            android:textColor="@color/input_text_color"
+            android:textCursorDrawable="@color/cursor_color"
             android:textSize="@dimen/big_text_size"
             android:textStyle="bold"
-            android:textCursorDrawable="@color/cursor_color"
-            android:textColor="@color/input_text_color"
-            android:fontFamily="@font/open_sans"
             tools:ignore="LabelFor" />
     </LinearLayout>
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/cb_rememberMe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/open_sans"
+        android:padding="16dp"
+        android:button="@drawable/remember_me_selector"
+        app:buttonTint="@null"
+        android:text="@string/remember_me"
+        android:textColor="@color/remember_me_text_color"
+        android:textSize="@dimen/small_text_size"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@id/ll_password"
+        app:layout_constraintTop_toBottomOf="@id/ll_password" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
