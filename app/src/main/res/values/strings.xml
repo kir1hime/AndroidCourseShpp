@@ -31,7 +31,7 @@
     <string name="email_error">Incorrect E-mail</string>
     <string name="less_8_symbols_pswd_error">There must be at least 8 symbols</string>
     <string name="capital_letter_error">There must be at least one capital letter</string>
-    <string name="lowercase_letter_error">There must be at least one lowercase  letter</string>
+    <string name="lowercase_letter_error">There must be at least one lowercase letter</string>
     <string name="special_symbol_error">There must be at least one special symbol</string>
     <string name="numbers_error">There must be at least one number</string>
     <string name="email_key">EMAIL_KEY</string>
