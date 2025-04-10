@@ -18,8 +18,10 @@ class AuthActivity : AppCompatActivity() {
 
     private companion object {
         const val SPECIAL_SYMBOLS = " !#$%&'()*+,-./:;<=>?@[\\]^_`{|}~\""
-        const val NUMBERS = "0123456789"
         const val MIN_NUM_OF_CHARS_IN_PSWD = 8
+        const val USER_INFO_STORE = "userInfo"
+        const val EMAIL_KEY = "EMAIL_KEY"
+        const val PSWD_KEY = "PSWD_KEY"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,25 +30,31 @@ class AuthActivity : AppCompatActivity() {
         binding = ActivityAuthBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        sharedPref = getSharedPreferences("userInfo", MODE_PRIVATE)
+        sharedPref = getSharedPreferences(USER_INFO_STORE, MODE_PRIVATE)
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.auth)) { v, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(binding.auth) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
 
-        val userInfo = getUserInfo()
-        if (userInfo[0] != "" && userInfo[1] != "") {
-            moveToMainActivity(userInfo[0])
-        }
+        moveToExistingAccount()
+        setListeners()
+    }
 
+    private fun moveToExistingAccount() {
+        val savedName = sharedPref.getString(EMAIL_KEY, "").toString()
+        if (savedName != "") {
+            moveToMainActivity(savedName)
+        }
+    }
+
+    private fun setListeners() {
         with(binding) {
 
             binding.btRegister.setOnClickListener {
-                val isEMailCorrect = checkEMailInput()
-                val isPasswordCorrect = checkPasswordInput()
-                if (isEMailCorrect && isPasswordCorrect) {
+
+                if (UserInfoValidator.isEMailCorrect() && UserInfoValidator.isPasswordCorrect()) {
                     if (cbRememberMe.isChecked) {
                         saveUserInfo(etEMail.text.toString(), etPassword.text.toString())
                     }
@@ -54,22 +62,28 @@ class AuthActivity : AppCompatActivity() {
                 }
             }
         }
-
     }
+
+    object UserInfoValidator {
+        fun isEMailCorrect() = AuthActivity().checkEMailInput()
+        fun isPasswordCorrect() = AuthActivity().checkPasswordInput()
+    }
+
 
     private fun moveToMainActivity(userEMail: String) {
         val intent = Intent(this@AuthActivity, MainActivity::class.java)
 
-        intent.putExtra(R.string.email_key.toString(), userEMail)
+        intent.putExtra(EMAIL_KEY, userEMail)
 
         val options = ActivityOptions.makeCustomAnimation(
             this@AuthActivity, R.anim.my_profile_fade_in, R.anim.sing_up_fade_out
         )
 
         startActivity(intent, options.toBundle())
+        finish()
     }
 
-    private fun checkEMailInput(): Boolean {
+      fun checkEMailInput(): Boolean {
         with(binding) {
 
             val inputEMail: String = etEMail.text.toString()
@@ -96,15 +110,13 @@ class AuthActivity : AppCompatActivity() {
                 ::checkForNumbers,
             )
 
-            for (check in passwordChecks) {
+            passwordChecks.forEach { check ->
                 val helpMess = check.invoke(inputPassword)
 
-                if (helpMess == "") {
-                    continue
+                if (helpMess.isNotEmpty()) {
+                    tilPassword.helperText = helpMess
+                    return false
                 }
-
-                tilPassword.helperText = helpMess
-                return false
             }
 
             tilPassword.helperText = null
@@ -113,79 +125,34 @@ class AuthActivity : AppCompatActivity() {
     }
 
     private fun checkForNumOfLetters(inPswd: String): String {
-        if (inPswd.length < MIN_NUM_OF_CHARS_IN_PSWD) {
-            return getString(R.string.less_8_symbols_pswd_error)
-        }
-        return ""
+        return if (inPswd.length < MIN_NUM_OF_CHARS_IN_PSWD)
+            getString(R.string.less_8_symbols_pswd_error, MIN_NUM_OF_CHARS_IN_PSWD) else ""
     }
 
     private fun checkForUpperCase(inPswd: String): String {
-        for (ch in inPswd) {
-            if (ch.isUpperCase()) {
-                return ""
-            }
-        }
-        return getString(R.string.capital_letter_error)
+        return if (inPswd.any { it.isUpperCase() }) ""
+        else getString(R.string.capital_letter_error)
     }
 
     private fun checkForLowerCase(inPswd: String): String {
-        for (ch in inPswd) {
-            if (ch.isLowerCase()) {
-                return ""
-            }
-        }
-        return getString(R.string.lowercase_letter_error)
+        return if (inPswd.any { it.isLowerCase() }) ""
+        else getString(R.string.lowercase_letter_error)
     }
 
     private fun checkForSpecialSymbols(inPswd: String): String {
-        for (ch in inPswd) {
-            if (checkForSpecialSymbol(ch)) {
-                return ""
-            }
-        }
-        return getString(R.string.special_symbol_error)
-    }
-
-    private fun checkForSpecialSymbol(symbol: Char): Boolean {
-        for (specialSymbol in SPECIAL_SYMBOLS) {
-            if (symbol == specialSymbol) {
-                return true
-            }
-        }
-        return false
+        return if (inPswd.any { SPECIAL_SYMBOLS.contains(it) }) ""
+        else getString(R.string.special_symbol_error)
     }
 
     private fun checkForNumbers(inPswd: String): String {
-        for (ch in inPswd) {
-            if (checkForNumber(ch)) {
-                return ""
-            }
-        }
-        return getString(R.string.numbers_error)
-    }
-
-    private fun checkForNumber(symbol: Char): Boolean {
-        for (number in NUMBERS) {
-            if (symbol == number) {
-                return true
-            }
-        }
-        return false
+        return if (inPswd.any { it.isDigit() }) ""
+        else getString(R.string.numbers_error)
     }
 
     private fun saveUserInfo(eMail: String, pswd: String) {
         val editor = sharedPref.edit()
-        editor.putString(R.string.email_key.toString(), eMail)
-        editor.putString(R.string.pswd_key.toString(), pswd)
+        editor.putString(EMAIL_KEY, eMail)
+        editor.putString(PSWD_KEY, pswd)
         editor.apply()
     }
-
-    private fun getUserInfo(): Array<String> {
-        val userInfo: Array<String> = Array(2) { "" }
-        userInfo[0] = sharedPref.getString(R.string.email_key.toString(), "").toString()
-        userInfo[1] = sharedPref.getString(R.string.pswd_key.toString(), "").toString()
-
-        return userInfo
-    }
-
 }

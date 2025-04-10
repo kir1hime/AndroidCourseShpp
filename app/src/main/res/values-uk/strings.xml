@@ -29,13 +29,10 @@
 
     <!--Sing up AuthActivity.kt-->
     <string name="email_error">Невірна електронна пошта</string>
-    <string name="less_8_symbols_pswd_error">Повинно бути щонайменше 8 символів</string>
+    <string name="less_8_symbols_pswd_error">Повинно бути щонайменше %d символів</string>
     <string name="capital_letter_error">"Повинна бути щонайменше одна велика літера "</string>
     <string name="lowercase_letter_error">Повинна бути щонайменше одна маленька літера</string>
     <string name="special_symbol_error">Повинен бути щонайменше один спеціальний символ</string>
     <string name="numbers_error">Повинно бути щонайменше одне число</string>
-    <string name="email_key">EMAIL_KEY</string>
-    <string name="pswd_key">PASSWORD_KEY</string>
-
 
 </resources>

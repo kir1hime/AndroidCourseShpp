@@ -15,6 +15,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var sharedPref: SharedPreferences
 
+    companion object {
+        const val USER_INFO_STORE = "userInfo"
+        const val EMAIL_KEY = "EMAIL_KEY"
+        const val PSWD_KEY = "PSWD_KEY"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,17 +27,24 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        sharedPref = getSharedPreferences("userInfo", MODE_PRIVATE)
+        sharedPref = getSharedPreferences(USER_INFO_STORE, MODE_PRIVATE)
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
 
-        val userEMail = intent.getStringExtra(R.string.email_key.toString())
-        binding.tvName.text = parseEMail(userEMail.toString())
+        defineUserName()
+        setListeners()
+    }
 
+    private fun defineUserName() {
+        val userEMail = intent.getStringExtra(EMAIL_KEY)
+        binding.tvName.text = EmailParser.parseEMail(userEMail.toString())
+    }
+
+    private fun setListeners() {
         binding.btLogOut.setOnClickListener {
             moveToAuthActivity()
             deleteUserInfo()
@@ -48,37 +60,38 @@ class MainActivity : AppCompatActivity() {
         )
 
         startActivity(intent, options.toBundle())
+        finish()
+
     }
 
     private fun deleteUserInfo() {
         val editor = sharedPref.edit()
-        editor.putString(R.string.email_key.toString(), "")
-        editor.putString(R.string.pswd_key.toString(), "")
+        editor.putString(EMAIL_KEY, "")
+        editor.putString(PSWD_KEY, "")
         editor.apply()
     }
 
-    private fun parseEMail(eMail: String): String {
+}
+
+object EmailParser{
+
+     fun parseEMail(eMail: String): String {
         val parsedName = StringBuilder()
 
-        for (ch in eMail) {
-            if (ch == '@') {
-                break
-            }
-            if (ch == '.') {
-                parsedName.append(" ")
-                continue
-            }
-            if (ch.isLetter()) {
-                parsedName.append(ch)
-            }
+        val parsedEmail: MutableList<String> = eMail.split('@').toMutableList()
+        val name = parsedEmail[0].filter { it.isLetter() || it == '.' }.split('.')
 
+        parsedName.append(name[0])
+        if (name.size > 1) {
+            parsedName.append(" ").append(name[1])
         }
 
-        parsedName[0] = parsedName[0].uppercaseChar()
-        parsedName[parsedName.indexOf(' ') + 1] =
-            parsedName[parsedName.indexOf(' ') + 1].uppercaseChar()
-
-        return parsedName.toString()
+        return parsedName.capitalize().toString()
     }
 
+    private fun StringBuilder.capitalize() {
+        this[0] = this[0].uppercaseChar()
+        this[this.indexOf(' ' + 1)] =
+            this[this.indexOf(' ') + 1].uppercaseChar()
+    }
 }
