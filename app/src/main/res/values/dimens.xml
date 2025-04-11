@@ -14,8 +14,8 @@
     <dimen name="profile_photo_margin_horizontal">160dp</dimen>
 
     <dimen name="name_and_career_margin_horizontal">114dp</dimen>
-    <dimen name="name_and_career_margin_top">208dp</dimen>
-    <dimen name="name_and_career_margin_bottom">87dp</dimen>
+    <dimen name="name_margin_top">208dp</dimen>
+    <dimen name="name_margin_bottom">113dp</dimen>
 
     <dimen name="career_margin_horizontal">9dp</dimen>
     <dimen name="career_margin_top">8dp</dimen>
@@ -40,8 +40,9 @@
 
     <dimen name="password_margin_top">24dp</dimen>
 
-    <dimen name="remember_me_margin_top_ver">16dp</dimen>
-    <dimen name="remember_me_margin_top_hor">35dp</dimen>
+    <dimen name="account_question_margin_start">71dp</dimen>
+    <dimen name="account_question_margin_end">116dp</dimen>
+    <dimen name="sign_in_margin_start">12dp</dimen>
 
     <!--paddings-->
     <dimen name="settings_padding_vertical">4.5dp</dimen>

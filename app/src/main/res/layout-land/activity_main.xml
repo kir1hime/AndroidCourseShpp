@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <View
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/vw_bluePartOfScreen"
         android:layout_width="0dp"
         android:layout_height="match_parent"
@@ -16,7 +16,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <View
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/vw_whitePartOfScreen"
         android:layout_width="0dp"
         android:layout_height="match_parent"
@@ -32,7 +32,7 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.5" />
 
-    <View
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/vw_settingsAndLogOut"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -43,7 +43,7 @@
         app:layout_constraintStart_toStartOf="@id/vw_bluePartOfScreen"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_Settings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -57,7 +57,7 @@
         app:layout_constraintStart_toStartOf="@id/vw_settingsAndLogOut"
         app:layout_constraintTop_toTopOf="@id/vw_settingsAndLogOut" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/bt_logOut"
         android:layout_width="@dimen/log_out_bt_w"
         android:layout_height="@dimen/log_out_bt_h"
@@ -87,46 +87,41 @@
         app:layout_constraintStart_toStartOf="@id/vw_bluePartOfScreen"
         app:layout_constraintTop_toTopOf="@id/vw_bluePartOfScreen" />
 
-    <LinearLayout
-        android:id="@+id/ll_nameAndCareer"
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/name_and_career_margin_horizontal"
-        android:layout_marginTop="@dimen/name_and_career_margin_top"
-        android:layout_marginBottom="@dimen/name_and_career_margin_bottom"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="@id/vw_bluePartOfScreen"
-        app:layout_constraintEnd_toEndOf="@id/vw_bluePartOfScreen"
-        app:layout_constraintStart_toStartOf="@id/vw_bluePartOfScreen"
-        app:layout_constraintTop_toTopOf="@id/vw_bluePartOfScreen">
+        android:layout_marginTop="@dimen/name_margin_top"
+        android:layout_marginBottom="@dimen/name_margin_bottom"
+        android:fontFamily="@font/open_sans"
+        android:gravity="center"
+        android:text="@string/name"
+        android:textColor="@color/name_text_color"
+        android:textSize="@dimen/big_text_size"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/gl_middle_hor"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/tv_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/open_sans"
-            android:gravity="center"
-            android:text="@string/name"
-            android:textColor="@color/name_text_color"
-            android:textSize="@dimen/big_text_size"
-            android:textStyle="bold" />
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_career"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/career_margin_top"
+        android:fontFamily="@font/open_sans"
+        android:gravity="center"
+        android:text="@string/career"
+        android:textColor="@color/career_text_color"
+        android:textSize="@dimen/small_text_size"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@id/gl_middle_hor"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_name" />
 
-        <TextView
-            android:id="@+id/tv_career"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/career_margin_horizontal"
-            android:layout_marginTop="@dimen/career_margin_top"
-            android:fontFamily="@font/open_sans"
-            android:gravity="center"
-            android:text="@string/career"
-            android:textColor="@color/career_text_color"
-            android:textSize="@dimen/small_text_size"
-            android:textStyle="bold" />
 
-    </LinearLayout>
-
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_homeAddress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -143,7 +138,7 @@
         app:layout_constraintStart_toStartOf="@id/vw_bluePartOfScreen"
         app:layout_constraintTop_toTopOf="@id/vw_bluePartOfScreen" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/bt_viewMyContacts"
         android:layout_width="0dp"
         android:layout_height="@dimen/view_my_contacts_bt_h"
@@ -161,7 +156,7 @@
         app:layout_constraintEnd_toEndOf="@id/vw_whitePartOfScreen"
         app:layout_constraintStart_toStartOf="@id/vw_whitePartOfScreen" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/bt_editProfile"
         android:layout_width="0dp"
         android:layout_height="@dimen/edit_profile_bt_h"
@@ -172,13 +167,14 @@
         android:text="@string/edit_profile"
         android:textColor="@color/edit_profile_text_color"
         android:textSize="@dimen/small_text_size"
+        android:textAllCaps="false"
         android:textStyle="bold"
         app:backgroundTint="@null"
         app:layout_constraintBottom_toTopOf="@id/bt_viewMyContacts"
         app:layout_constraintEnd_toEndOf="@id/vw_whitePartOfScreen"
         app:layout_constraintStart_toStartOf="@id/vw_whitePartOfScreen" />
 
-    <ImageButton
+    <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/ibt_facebook"
         style="@style/social_network_style"
         android:layout_marginStart="@dimen/social_network_side_margin"
@@ -188,7 +184,7 @@
         app:layout_constraintStart_toStartOf="@id/vw_whitePartOfScreen"
         app:layout_constraintTop_toTopOf="@id/vw_whitePartOfScreen" />
 
-    <ImageButton
+    <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/ibt_linkedin"
         style="@style/social_network_style"
         android:contentDescription="@string/linkedin_button"
@@ -198,7 +194,7 @@
         app:layout_constraintStart_toStartOf="@id/vw_whitePartOfScreen"
         app:layout_constraintTop_toTopOf="@id/vw_whitePartOfScreen" />
 
-    <ImageButton
+    <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/ibt_instagram"
         style="@style/social_network_style"
         android:layout_marginEnd="@dimen/social_network_side_margin"

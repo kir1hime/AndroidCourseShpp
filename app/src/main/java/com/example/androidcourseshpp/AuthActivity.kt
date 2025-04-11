@@ -53,8 +53,10 @@ class AuthActivity : AppCompatActivity() {
         with(binding) {
 
             binding.btRegister.setOnClickListener {
+                val isEMailCorrect = checkEMailInput()
+                val isPasswordCorrect = checkPasswordInput()
 
-                if (UserInfoValidator.isEMailCorrect() && UserInfoValidator.isPasswordCorrect()) {
+                if (isEMailCorrect && isPasswordCorrect) {
                     if (cbRememberMe.isChecked) {
                         saveUserInfo(etEMail.text.toString(), etPassword.text.toString())
                     }
@@ -63,12 +65,6 @@ class AuthActivity : AppCompatActivity() {
             }
         }
     }
-
-    object UserInfoValidator {
-        fun isEMailCorrect() = AuthActivity().checkEMailInput()
-        fun isPasswordCorrect() = AuthActivity().checkPasswordInput()
-    }
-
 
     private fun moveToMainActivity(userEMail: String) {
         val intent = Intent(this@AuthActivity, MainActivity::class.java)
@@ -83,7 +79,7 @@ class AuthActivity : AppCompatActivity() {
         finish()
     }
 
-      fun checkEMailInput(): Boolean {
+    private fun checkEMailInput(): Boolean {
         with(binding) {
 
             val inputEMail: String = etEMail.text.toString()
@@ -91,9 +87,9 @@ class AuthActivity : AppCompatActivity() {
             if (!Patterns.EMAIL_ADDRESS.matcher(inputEMail).matches()) {
                 tilEMail.helperText = getString(R.string.email_error)
                 return false
-            } else {
-                tilEMail.helperText = null
             }
+
+            tilEMail.helperText = null
         }
         return true
     }

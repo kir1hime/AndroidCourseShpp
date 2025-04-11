@@ -8,37 +8,35 @@
     android:background="@color/screen_color"
     tools:context=".AuthActivity">
 
-    <LinearLayout
-        android:id="@+id/ll_acquaintanceAndFillingOut"
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_acquainted"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/main_margin_side"
         android:layout_marginTop="@dimen/acquaintance_and_filling_out_margin_top_ver"
-        android:orientation="vertical"
-        app:layout_constraintTop_toTopOf="parent">
+        android:fontFamily="@font/open_sans"
+        android:gravity="center"
+        android:text="@string/acquaintance"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/large_text_size"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/open_sans"
-            android:gravity="center"
-            android:text="@string/acquaintance"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/large_text_size"
-            android:textStyle="bold" />
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_fillOutTheProfile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/main_margin_side"
+        android:layout_marginTop="@dimen/fill_out_the_profile_padding_top"
+        android:fontFamily="@font/open_sans"
+        android:gravity="center"
+        android:text="@string/filling_out"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/tiny_text_size"
+        app:layout_constraintTop_toBottomOf="@id/tv_acquainted" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/open_sans"
-            android:gravity="center"
-            android:paddingTop="@dimen/fill_out_the_profile_padding_top"
-            android:text="@string/filling_out"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/tiny_text_size" />
-    </LinearLayout>
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/bt_register"
         android:layout_width="match_parent"
         android:layout_height="@dimen/register_bt_h"
@@ -54,7 +52,8 @@
         app:backgroundTint="@null"
         app:layout_constraintBottom_toBottomOf="parent" />
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_ByClicking"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/main_margin_side"
@@ -66,37 +65,36 @@
         android:textSize="@dimen/tiny_text_size"
         app:layout_constraintBottom_toBottomOf="parent" />
 
-    <LinearLayout
-        android:id="@+id/ll_accountQuestion"
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_accountQuestion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/main_margin_side"
+        android:layout_marginStart="@dimen/account_question_margin_start"
+        android:layout_marginEnd="@dimen/account_question_margin_end"
         android:layout_marginBottom="@dimen/main_margin_side"
-        android:orientation="horizontal"
+        android:fontFamily="@font/open_sans"
+        android:text="@string/accountQuestion"
+        android:textColor="@color/account_question_text_color"
+        android:textSize="@dimen/small_text_size"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/open_sans"
-            android:text="@string/accountQuestion"
-            android:textColor="@color/account_question_text_color"
-            android:textSize="@dimen/small_text_size"
-            android:textStyle="bold" />
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_signIn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/sign_in_margin_start"
+        android:layout_marginBottom="@dimen/main_margin_side"
+        android:fontFamily="@font/open_sans"
+        android:text="@string/sign_in"
+        android:textColor="@color/sign_in_color"
+        android:textSize="@dimen/small_text_size"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tv_accountQuestion" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:fontFamily="@font/open_sans"
-            android:text="@string/sign_in"
-            android:textColor="@color/sign_in_color"
-            android:textSize="@dimen/small_text_size"
-            android:textStyle="bold" />
-
-    </LinearLayout>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/bt_google"
@@ -118,7 +116,7 @@
         app:iconTint="@null"
         app:layout_constraintBottom_toBottomOf="parent" />
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/or_margin_bottom"
@@ -155,7 +153,7 @@
         app:hintTextAppearance="@style/hint_style"
         app:hintTextColor="@color/e_mail_hint_text_color"
         app:layout_constraintBottom_toTopOf="@id/bt_google"
-        app:layout_constraintTop_toBottomOf="@id/ll_acquaintanceAndFillingOut"
+        app:layout_constraintTop_toBottomOf="@id/tv_fillOutTheProfile"
         tools:ignore="RtlSymmetry">
 
         <com.google.android.material.textfield.TextInputEditText

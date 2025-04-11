@@ -70,28 +70,29 @@ class MainActivity : AppCompatActivity() {
         editor.putString(PSWD_KEY, "")
         editor.apply()
     }
+    object EmailParser {
 
-}
+        fun parseEMail(eMail: String): String {
+            val parsedName = StringBuilder()
 
-object EmailParser{
+            val parsedEmail: MutableList<String> = eMail.split('@').toMutableList()
+            val name = parsedEmail[0].filter { it.isLetter() || it == '.' }.split('.')
 
-     fun parseEMail(eMail: String): String {
-        val parsedName = StringBuilder()
+            parsedName.append(name[0])
+            if (name.size > 1) {
+                parsedName.append(" ").append(name[1])
+            }
 
-        val parsedEmail: MutableList<String> = eMail.split('@').toMutableList()
-        val name = parsedEmail[0].filter { it.isLetter() || it == '.' }.split('.')
+            parsedName.capitalize()
 
-        parsedName.append(name[0])
-        if (name.size > 1) {
-            parsedName.append(" ").append(name[1])
+            return parsedName.toString()
         }
 
-        return parsedName.capitalize().toString()
-    }
-
-    private fun StringBuilder.capitalize() {
-        this[0] = this[0].uppercaseChar()
-        this[this.indexOf(' ' + 1)] =
-            this[this.indexOf(' ') + 1].uppercaseChar()
+        private fun StringBuilder.capitalize()  {
+            this[0] = this[0].uppercaseChar()
+            this[this.indexOf(' ') + 1] =
+                this[this.indexOf(' ') + 1].uppercaseChar()
+        }
     }
 }
+
