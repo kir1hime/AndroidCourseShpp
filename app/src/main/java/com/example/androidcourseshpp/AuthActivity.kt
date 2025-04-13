@@ -1,6 +1,7 @@
 package com.example.androidcourseshpp
 
 import android.app.ActivityOptions
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -51,12 +52,9 @@ class AuthActivity : AppCompatActivity() {
 
     private fun setListeners() {
         with(binding) {
-
             binding.btRegister.setOnClickListener {
-                val isEMailCorrect = checkEMailInput()
-                val isPasswordCorrect = checkPasswordInput()
 
-                if (isEMailCorrect && isPasswordCorrect) {
+                if (isEMailCorrect() and isPasswordCorrect()) {
                     if (cbRememberMe.isChecked) {
                         saveUserInfo(etEMail.text.toString(), etPassword.text.toString())
                     }
@@ -79,40 +77,31 @@ class AuthActivity : AppCompatActivity() {
         finish()
     }
 
-    private fun checkEMailInput(): Boolean {
+    private fun isEMailCorrect(): Boolean {
         with(binding) {
 
             val inputEMail: String = etEMail.text.toString()
+            val helpMess = SignUpValidator.checkEMail(inputEMail, this@AuthActivity)
 
-            if (!Patterns.EMAIL_ADDRESS.matcher(inputEMail).matches()) {
-                tilEMail.helperText = getString(R.string.email_error)
+            if (helpMess.isNotEmpty()) {
+                tilEMail.helperText = helpMess
                 return false
             }
 
             tilEMail.helperText = null
+            return true
         }
-        return true
     }
 
-    private fun checkPasswordInput(): Boolean {
+    private fun isPasswordCorrect(): Boolean {
         with(binding) {
 
             val inputPassword: String = etPassword.text.toString()
-            val passwordChecks: MutableList<(s: String) -> String> = mutableListOf(
-                ::checkForNumOfLetters,
-                ::checkForUpperCase,
-                ::checkForLowerCase,
-                ::checkForSpecialSymbols,
-                ::checkForNumbers,
-            )
+            val helpMess = SignUpValidator.checkPasswordInput(inputPassword, this@AuthActivity)
 
-            passwordChecks.forEach { check ->
-                val helpMess = check.invoke(inputPassword)
-
-                if (helpMess.isNotEmpty()) {
-                    tilPassword.helperText = helpMess
-                    return false
-                }
+            if (helpMess.isNotEmpty()) {
+                tilPassword.helperText = helpMess
+                return false
             }
 
             tilPassword.helperText = null
@@ -120,35 +109,68 @@ class AuthActivity : AppCompatActivity() {
         }
     }
 
-    private fun checkForNumOfLetters(inPswd: String): String {
-        return if (inPswd.length < MIN_NUM_OF_CHARS_IN_PSWD)
-            getString(R.string.less_8_symbols_pswd_error, MIN_NUM_OF_CHARS_IN_PSWD) else ""
-    }
-
-    private fun checkForUpperCase(inPswd: String): String {
-        return if (inPswd.any { it.isUpperCase() }) ""
-        else getString(R.string.capital_letter_error)
-    }
-
-    private fun checkForLowerCase(inPswd: String): String {
-        return if (inPswd.any { it.isLowerCase() }) ""
-        else getString(R.string.lowercase_letter_error)
-    }
-
-    private fun checkForSpecialSymbols(inPswd: String): String {
-        return if (inPswd.any { SPECIAL_SYMBOLS.contains(it) }) ""
-        else getString(R.string.special_symbol_error)
-    }
-
-    private fun checkForNumbers(inPswd: String): String {
-        return if (inPswd.any { it.isDigit() }) ""
-        else getString(R.string.numbers_error)
-    }
-
     private fun saveUserInfo(eMail: String, pswd: String) {
         val editor = sharedPref.edit()
         editor.putString(EMAIL_KEY, eMail)
         editor.putString(PSWD_KEY, pswd)
         editor.apply()
+    }
+
+    object SignUpValidator {
+
+        fun checkEMail(inputEMail: String, context: Context): String {
+            return if (!Patterns.EMAIL_ADDRESS.matcher(inputEMail).matches())
+                context.getString(R.string.email_error) else ""
+        }
+
+        fun checkPasswordInput(inputPassword: String, context: Context): String {
+            val passwordChecks: MutableList<(s: String, context: Context) -> String> =
+                mutableListOf(
+                    ::checkForNumOfLetters,
+                    ::checkForUpperCase,
+                    ::checkForLowerCase,
+                    ::checkForSpecialSymbols,
+                    ::checkForNumbers,
+                )
+
+            passwordChecks.forEach { check ->
+                val errorText = check.invoke(inputPassword, context)
+
+                if (errorText.isNotEmpty()) {
+                    return errorText
+                }
+            }
+
+            return ""
+
+        }
+
+        private fun checkForNumOfLetters(inPswd: String, context: Context): String {
+            return if (inPswd.length < MIN_NUM_OF_CHARS_IN_PSWD)
+                context.getString(
+                    R.string.less_8_symbols_pswd_error,
+                    MIN_NUM_OF_CHARS_IN_PSWD
+                ) else ""
+        }
+
+        private fun checkForUpperCase(inPswd: String, context: Context): String {
+            return if (inPswd.any { it.isUpperCase() }) ""
+            else context.getString(R.string.capital_letter_error)
+        }
+
+        private fun checkForLowerCase(inPswd: String, context: Context): String {
+            return if (inPswd.any { it.isLowerCase() }) ""
+            else context.getString(R.string.lowercase_letter_error)
+        }
+
+        private fun checkForSpecialSymbols(inPswd: String, context: Context): String {
+            return if (inPswd.any { SPECIAL_SYMBOLS.contains(it) }) ""
+            else context.getString(R.string.special_symbol_error)
+        }
+
+        private fun checkForNumbers(inPswd: String, context: Context): String {
+            return if (inPswd.any { it.isDigit() }) ""
+            else context.getString(R.string.numbers_error)
+        }
     }
 }
