@@ -50,4 +50,6 @@
 
     <color name="contacts_color">#FFFFFFFF</color>
     <color name="add_contact_color">@color/contacts_color</color>
+
+    <color name="contacts_recycleView_border_color">#B2B2B3</color>
 </resources>
