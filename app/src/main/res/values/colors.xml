@@ -53,5 +53,7 @@
 
     <color name="contacts_recycleView_border_color">#B2B2B3</color>
 
+    <color name="item_career_text_color">#828282</color>
+
     <color name="item_name_text_color">#18181F</color>
 </resources>

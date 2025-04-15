@@ -25,18 +25,33 @@
         app:layout_constraintTop_toTopOf="@id/vw_itemField" />
 
     <androidx.appcompat.widget.AppCompatTextView
+        android:id="@id/tv_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/item_name_margin_start"
-        android:fontFamily="@font/open_sans"
-        android:text="@string/name"
+        android:layout_marginStart="@dimen/item_info_margin_start"
         android:layout_marginTop="@dimen/item_name_margin_top"
         android:layout_marginBottom="@dimen/item_name_margin_bottom"
+        android:fontFamily="@font/open_sans"
+        android:text="@string/name"
         android:textColor="@color/item_name_text_color"
         android:textSize="@dimen/big_text_size"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@id/vw_itemField"
         app:layout_constraintStart_toEndOf="@id/Iv_avatar"
+        app:layout_constraintTop_toTopOf="@id/vw_itemField" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_career"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/item_career_margin_top"
+        android:layout_marginBottom="@dimen/item_career_margin_bottom"
+        android:textColor="@color/item_career_text_color"
+        android:fontFamily="@font/open_sans"
+        android:text="@string/career"
+        android:textSize="@dimen/tiny_text_size"
+        app:layout_constraintBottom_toBottomOf="@id/vw_itemField"
+        app:layout_constraintStart_toStartOf="@id/tv_name"
         app:layout_constraintTop_toTopOf="@id/vw_itemField" />
 
 
