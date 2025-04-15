@@ -52,4 +52,6 @@
     <color name="add_contact_color">@color/contacts_color</color>
 
     <color name="contacts_recycleView_border_color">#B2B2B3</color>
+
+    <color name="item_name_text_color">#18181F</color>
 </resources>
