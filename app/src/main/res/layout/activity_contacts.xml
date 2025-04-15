@@ -39,4 +39,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="17.5dp"
+        android:layout_marginEnd="@dimen/main_margin_side"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:src="@drawable/ic_search"
+        android:background="null"
+        app:layout_constraintTop_toTopOf="parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
