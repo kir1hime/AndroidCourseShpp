@@ -37,5 +37,8 @@
 
     <!--My contacts (activity_contacts.xml)-->
     <string name="contacts">Contacts</string>
+    <string name="add_contacts">Add contacts</string>
+    <string name="search_imagebutton">search_imageButton</string>
+    <string name="arrow_back_imagebutton">arrow_back_ImageButton</string>
 
 </resources>

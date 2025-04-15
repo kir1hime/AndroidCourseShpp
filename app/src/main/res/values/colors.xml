@@ -47,4 +47,7 @@
 
     <!--Sign up (activity_auth.xml)-->
     <color name="contacts_bar_color">#242235</color>
+
+    <color name="contacts_color">#FFFFFFFF</color>
+    <color name="add_contact_color">@color/contacts_color</color>
 </resources>

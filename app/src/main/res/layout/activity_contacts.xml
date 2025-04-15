@@ -22,7 +22,7 @@
         android:layout_marginTop="@dimen/contacts_margin_top"
         android:fontFamily="@font/open_sans"
         android:text="@string/contacts"
-        android:textColor="@android:color/white"
+        android:textColor="@color/contacts_color"
         android:textSize="@dimen/large_text_size"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -30,23 +30,43 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/Ibt_arrowBack"
         android:layout_width="wrap_content"
+        android:contentDescription="@string/arrow_back_imagebutton"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="17.5dp"
-        android:src="@drawable/ic_arrow_back"
+        android:layout_marginStart="@dimen/arrow_back_margin_start"
+        android:layout_marginTop="@dimen/arrow_back_margin_top"
         android:background="null"
+        android:src="@drawable/ic_arrow_back"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/Ibt_search"
+        android:layout_width="wrap_content"
+        android:contentDescription="@string/search_imagebutton"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/search_margin_top"
+        android:layout_marginEnd="@dimen/main_margin_side"
+        android:background="null"
+        android:src="@drawable/ic_search"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_addContacts"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="17.5dp"
-        android:layout_marginEnd="@dimen/main_margin_side"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:src="@drawable/ic_search"
-        android:background="null"
-        app:layout_constraintTop_toTopOf="parent"/>
+        android:layout_marginStart="@dimen/main_margin_side"
+        android:layout_marginTop="@dimen/add_contacts_margin_top"
+        android:layout_marginBottom="@dimen/add_contacts_margin_bottom"
+        android:fontFamily="@font/open_sans"
+        android:text="@string/add_contacts"
+        android:textColor="@color/add_contact_color"
+        android:textSize="@dimen/small_text_size"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/vw_contactsBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
