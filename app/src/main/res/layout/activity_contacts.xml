@@ -8,4 +8,13 @@
     android:background="@android:color/white"
     tools:context=".ContactsActivity">
 
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_contactsBar"
+        android:layout_width="match_parent"
+        android:layout_height="149dp"
+        android:background="@color/top_view_color"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
