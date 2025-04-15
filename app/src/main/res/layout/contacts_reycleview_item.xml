@@ -46,12 +46,22 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/item_career_margin_top"
         android:layout_marginBottom="@dimen/item_career_margin_bottom"
-        android:textColor="@color/item_career_text_color"
         android:fontFamily="@font/open_sans"
         android:text="@string/career"
+        android:textColor="@color/item_career_text_color"
         android:textSize="@dimen/tiny_text_size"
         app:layout_constraintBottom_toBottomOf="@id/vw_itemField"
         app:layout_constraintStart_toStartOf="@id/tv_name"
+        app:layout_constraintTop_toTopOf="@id/vw_itemField" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/item_trash_can_margin_end"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_trash_can"
+        app:layout_constraintBottom_toBottomOf="@id/vw_itemField"
+        app:layout_constraintEnd_toEndOf="@id/vw_itemField"
         app:layout_constraintTop_toTopOf="@id/vw_itemField" />
 
 
