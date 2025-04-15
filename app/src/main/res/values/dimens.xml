@@ -44,6 +44,8 @@
     <dimen name="account_question_margin_end">116dp</dimen>
     <dimen name="sign_in_margin_start">12dp</dimen>
 
+    <dimen name="contacts_margin_top">10dp</dimen>
+
     <!--paddings-->
     <dimen name="settings_padding_vertical">4.5dp</dimen>
     <dimen name="fill_out_the_profile_padding_top">8dp</dimen>
@@ -62,6 +64,9 @@
     <dimen name="register_bt_h">@dimen/view_my_contacts_bt_h</dimen>
     <dimen name="google_bt_h">@dimen/edit_profile_bt_h</dimen>
     <dimen name="remember_me_size">18dp</dimen>
+
+    <!--view/textView dimens-->
+    <dimen name="contacts_bar_h">149dp</dimen>
 
     <!--text sizes-->
     <dimen name="middle_text_size">16sp</dimen>

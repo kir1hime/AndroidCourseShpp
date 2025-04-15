@@ -9,12 +9,24 @@
     tools:context=".ContactsActivity">
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_contactsBar"
+        android:id="@+id/vw_contactsBar"
         android:layout_width="match_parent"
-        android:layout_height="149dp"
+        android:layout_height="@dimen/contacts_bar_h"
         android:background="@color/top_view_color"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
-
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_contacts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/contacts_margin_top"
+        android:fontFamily="@font/open_sans"
+        android:text="@string/contacts"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/large_text_size"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

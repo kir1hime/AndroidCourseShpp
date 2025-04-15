@@ -44,4 +44,7 @@
     <color name="error_text_color">#F93E3E</color>
 
     <color name="google_text_color">#000000</color>
+
+    <!--Sign up (activity_auth.xml)-->
+    <color name="contacts_bar_color">#242235</color>
 </resources>

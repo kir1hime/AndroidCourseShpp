@@ -35,4 +35,7 @@
     <string name="special_symbol_error">There must be at least one special symbol</string>
     <string name="numbers_error">There must be at least one number</string>
 
+    <!--My contacts (activity_contacts.xml)-->
+    <string name="contacts">Contacts</string>
+
 </resources>
