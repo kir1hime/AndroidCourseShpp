@@ -1,4 +1,4 @@
-package com.example.androidcourseshpp
+package com.example.androidcourseshpp.activities
 
 import android.app.ActivityOptions
 import android.content.Intent

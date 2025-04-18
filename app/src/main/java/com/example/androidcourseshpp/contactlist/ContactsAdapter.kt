@@ -1,4 +1,4 @@
-package com.example.androidcourseshpp
+package com.example.androidcourseshpp.contactlist
 
 
 import android.view.LayoutInflater
@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.androidcourseshpp.R
 import de.hdodenhof.circleimageview.CircleImageView
 
 class ContactsAdapter(private val contacts: List<ContactItem>) :

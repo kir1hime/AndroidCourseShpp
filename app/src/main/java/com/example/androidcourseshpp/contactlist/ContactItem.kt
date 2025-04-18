@@ -1,4 +1,4 @@
-package com.example.androidcourseshpp
+package com.example.androidcourseshpp.contactlist
 
 class ContactItem(private val name : String, private val career : String, private val avatarResId : Int ) {
     fun getName() = name

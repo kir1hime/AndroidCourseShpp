@@ -54,8 +54,6 @@
     <dimen name="add_contacts_margin_top">73dp</dimen>
     <dimen name="add_contacts_margin_bottom">26dp</dimen>
 
-    <dimen name="contacts_recycle_view_margin_bottom">50dp</dimen>
-
     <dimen name="contacts_recycle_view_margin_start">8dp</dimen>
     <dimen name="item_info_margin_start">16dp</dimen>
     <dimen name="item_name_margin_top">14dp</dimen>
@@ -89,6 +87,7 @@
     <dimen name="contacts_bar_h">149dp</dimen>
     <dimen name="contacts_recycle_view_item_h">66dp</dimen>
     <dimen name="contacts_recycle_view_item_ava_size">50dp</dimen>
+    <dimen name="contacts_recycle_view_space_size_between_items">16dp</dimen>
 
     <!--text sizes-->
     <dimen name="middle_text_size">16sp</dimen>

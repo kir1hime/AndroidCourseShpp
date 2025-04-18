@@ -1,4 +1,4 @@
-package com.example.androidcourseshpp
+package com.example.androidcourseshpp.activities
 
 import android.app.ActivityOptions
 import android.content.Context
@@ -10,6 +10,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.databinding.ActivityAuthBinding
 
 class AuthActivity : AppCompatActivity() {
