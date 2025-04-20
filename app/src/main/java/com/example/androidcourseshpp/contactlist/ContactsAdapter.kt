@@ -1,11 +1,13 @@
 package com.example.androidcourseshpp.contactlist
 
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.databinding.ContactsReycleviewItemBinding
 
@@ -18,7 +20,7 @@ class ContactsAdapter(private val contacts: List<ContactItem>) :
         fun bind(item: ContactItem) = with(binding) {
             tvName.text = item.getName()
             tvCareer.text = item.getCareer()
-            IvAvatar.setImageResource(item.getAvatarResId())
+            Glide.with(itemView.context).load(item.getAvatarResId()).circleCrop().into(IvAvatar)
         }
     }
 

@@ -14,7 +14,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <de.hdodenhof.circleimageview.CircleImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/Iv_avatar"
         android:layout_width="@dimen/contacts_recycle_view_item_ava_size"
         android:layout_height="@dimen/contacts_recycle_view_item_ava_size"
