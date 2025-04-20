@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.contactlist.ContactItem
+import com.example.androidcourseshpp.contactlist.ContactItemDecoration
 import com.example.androidcourseshpp.contactlist.ContactsAdapter
 import com.example.androidcourseshpp.databinding.ActivityContactsBinding
 
@@ -39,6 +40,7 @@ class ContactsActivity : AppCompatActivity() {
         contactList = binding.rvContacts
         contactList.layoutManager = LinearLayoutManager(this)
         contactList.adapter = adapter
+        contactList.addItemDecoration(ContactItemDecoration(resources.getDimensionPixelSize(R.dimen.contacts_recycle_view_space_size_between_items)))
     }
 
     private fun getContactItems() : List<ContactItem>{

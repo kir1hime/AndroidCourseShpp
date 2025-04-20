@@ -7,16 +7,19 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidcourseshpp.R
-import de.hdodenhof.circleimageview.CircleImageView
+import com.example.androidcourseshpp.databinding.ContactsReycleviewItemBinding
 
 class ContactsAdapter(private val contacts: List<ContactItem>) :
     RecyclerView.Adapter<ContactsAdapter.ViewHolder>() {
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val itemName: TextView = itemView.findViewById(R.id.tv_name)
-        val itemCareer: TextView = itemView.findViewById(R.id.tv_career)
-        val itemAvatar: CircleImageView = itemView.findViewById(R.id.Iv_avatar)
+     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val binding = ContactsReycleviewItemBinding.bind(itemView)
 
+        fun bind(item: ContactItem) = with(binding) {
+            tvName.text = item.getName()
+            tvCareer.text = item.getCareer()
+            IvAvatar.setImageResource(item.getAvatarResId())
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -26,9 +29,7 @@ class ContactsAdapter(private val contacts: List<ContactItem>) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-       holder.itemName.text = contacts[position].getName()
-       holder.itemCareer.text = contacts[position].getCareer()
-       holder.itemAvatar.setImageResource(contacts[position].getAvatarResId())
+        holder.bind(contacts[position])
     }
 
     override fun getItemCount() = contacts.size

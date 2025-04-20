@@ -64,10 +64,4 @@
         app:layout_constraintEnd_toEndOf="@id/vw_itemField"
         app:layout_constraintTop_toTopOf="@id/vw_itemField" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/contacts_recycle_view_space_size_between_items"
-        app:layout_constraintTop_toBottomOf="@id/vw_itemField"/>
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
