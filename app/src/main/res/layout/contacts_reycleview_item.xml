@@ -1,18 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@android:color/white">
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/vw_itemField"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/contacts_recycle_view_item_h"
-        android:background="@drawable/contacts_recycle_view_item_background"
-        android:backgroundTint="@null"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    android:background="@drawable/contacts_recycle_view_item_background">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/Iv_avatar"
@@ -20,9 +12,9 @@
         android:layout_height="@dimen/contacts_recycle_view_item_ava_size"
         android:layout_marginStart="@dimen/contacts_recycle_view_margin_start"
         android:src="@drawable/profile_photo"
-        app:layout_constraintBottom_toBottomOf="@id/vw_itemField"
+        app:layout_constraintBottom_toBottomOf="@id/item"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/vw_itemField" />
+        app:layout_constraintTop_toTopOf="@id/item" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@id/tv_name"
@@ -36,9 +28,9 @@
         android:textColor="@color/item_name_text_color"
         android:textSize="@dimen/big_text_size"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@id/vw_itemField"
+        app:layout_constraintBottom_toBottomOf="@id/item"
         app:layout_constraintStart_toEndOf="@id/Iv_avatar"
-        app:layout_constraintTop_toTopOf="@id/vw_itemField" />
+        app:layout_constraintTop_toTopOf="@id/item" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_career"
@@ -50,9 +42,9 @@
         android:text="@string/career"
         android:textColor="@color/item_career_text_color"
         android:textSize="@dimen/tiny_text_size"
-        app:layout_constraintBottom_toBottomOf="@id/vw_itemField"
+        app:layout_constraintBottom_toBottomOf="@id/item"
         app:layout_constraintStart_toStartOf="@id/tv_name"
-        app:layout_constraintTop_toTopOf="@id/vw_itemField" />
+        app:layout_constraintTop_toTopOf="@id/item" />
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:layout_width="wrap_content"
@@ -60,8 +52,8 @@
         android:layout_marginEnd="@dimen/item_trash_can_margin_end"
         android:background="@android:color/transparent"
         android:src="@drawable/ic_trash_can"
-        app:layout_constraintBottom_toBottomOf="@id/vw_itemField"
-        app:layout_constraintEnd_toEndOf="@id/vw_itemField"
-        app:layout_constraintTop_toTopOf="@id/vw_itemField" />
+        app:layout_constraintBottom_toBottomOf="@id/item"
+        app:layout_constraintEnd_toEndOf="@id/item"
+        app:layout_constraintTop_toTopOf="@id/item" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
