@@ -5,7 +5,7 @@
     android:id="@+id/contacts"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
+    android:background="@color/contacts_screen_color"
     tools:context=".activities.ContactsActivity">
 
     <androidx.appcompat.widget.AppCompatTextView
