@@ -1,26 +1,28 @@
 package com.example.androidcourseshpp.contactlist
 
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.databinding.ContactsReycleviewItemBinding
+import com.squareup.picasso.Picasso
+
 
 class ContactsAdapter(private val contacts: List<ContactItem>) :
     RecyclerView.Adapter<ContactsAdapter.ViewHolder>() {
 
-     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val binding = ContactsReycleviewItemBinding.bind(itemView)
 
         fun bind(item: ContactItem) = with(binding) {
             tvName.text = item.getName()
             tvCareer.text = item.getCareer()
-            Glide.with(itemView.context).load(item.getAvatarResId()).circleCrop().into(IvAvatar)
+
+            Glide::class.java.get(itemView.context).load(item.getAvatarURL()).into(IvAvatar)
+            //Picasso::class.java.get(itemView.context).load(item.getAvatarURL()).into(IvAvatar)
         }
     }
 

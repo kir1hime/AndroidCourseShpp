@@ -42,6 +42,7 @@ android {
 
 dependencies {
 
+    implementation (libs.picasso)
     implementation (libs.circleimageview)
     implementation(libs.glide)
     implementation(libs.androidx.core.ktx)

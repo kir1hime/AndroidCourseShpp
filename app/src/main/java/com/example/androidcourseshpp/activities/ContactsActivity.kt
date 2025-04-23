@@ -20,7 +20,7 @@ class ContactsActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: ContactsAdapter
     private lateinit var contactList: List<ContactItem>
-    private val viewModal by viewModels<ContactListViewModel>()
+    private val viewModel by viewModels<ContactListViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +35,7 @@ class ContactsActivity : AppCompatActivity() {
             insets
         }
 
-        contactList = viewModal.contactList.value!!
+        contactList = viewModel.contactList.value!!
         initRecyclerView()
     }
 
@@ -52,6 +52,4 @@ class ContactsActivity : AppCompatActivity() {
             )
         )
     }
-
-
 }
