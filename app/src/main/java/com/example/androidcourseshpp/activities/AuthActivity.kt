@@ -24,6 +24,7 @@ class AuthActivity : AppCompatActivity() {
         const val USER_INFO_STORE = "userInfo"
         const val EMAIL_KEY = "EMAIL_KEY"
         const val PSWD_KEY = "PSWD_KEY"
+        const val MIN_NUM_OF_CHARS_IN_PSWD = 8
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,7 +37,7 @@ class AuthActivity : AppCompatActivity() {
 
         ViewCompat::class.java.adaptedUserInterface(binding.auth)
 
-        if (isExistingAccount()){
+        if (isExistingAccount()) {
             val savedName = sharedPref.getString(EMAIL_KEY, "").toString()
             moveToExistingAccount(savedName)
         }
@@ -49,16 +50,14 @@ class AuthActivity : AppCompatActivity() {
         return sharedPref.getString(EMAIL_KEY, "").toString() != ""
     }
 
-    private fun setListeners() {
-        with(binding) {
-            binding.btRegister.setOnClickListener {
+    private fun setListeners() = with(binding) {
+        btRegister.setOnClickListener {
 
-                if (isEMailCorrect() and isPasswordCorrect()) {
-                    if (cbRememberMe.isChecked) {
-                        saveUserInfo(etEMail.text.toString(), etPassword.text.toString())
-                    }
-                    moveToExistingAccount(etEMail.text.toString())
+            if ((defineEMailErrorMassage() == "") and (definePasswordErrorMassage() == "")) {
+                if (cbRememberMe.isChecked) {
+                    saveUserInfo(etEMail.text.toString(), etPassword.text.toString())
                 }
+                moveToExistingAccount(etEMail.text.toString())
             }
         }
     }
@@ -76,36 +75,52 @@ class AuthActivity : AppCompatActivity() {
         finish()
     }
 
-    private fun isEMailCorrect(): Boolean {
-        with(binding) {
+    private fun defineEMailErrorMassage(): String = with(binding) {
+        var errorMassage = ""
+        val inputEMail: String = etEMail.text.toString()
 
-            val inputEMail: String = etEMail.text.toString()
-            val helpMess = SignUpValidator.checkEMail(inputEMail, this@AuthActivity)
-
-            if (helpMess.isNotEmpty()) {
-                tilEMail.helperText = helpMess
-                return false
-            }
-
-            tilEMail.helperText = null
-            return true
+        if (!SignUpValidator.checkEMail(inputEMail)) {
+            errorMassage = getString(R.string.email_error)
+            tilEMail.helperText = errorMassage
+            return errorMassage
         }
+
+        tilEMail.helperText = null
+
+        return errorMassage
     }
 
-    private fun isPasswordCorrect(): Boolean {
-        with(binding) {
+    private fun definePasswordErrorMassage(): String = with(binding) {
+        var errorMassage = ""
 
-            val inputPassword: String = etPassword.text.toString()
-            val helpMess = SignUpValidator.checkPasswordInput(inputPassword, this@AuthActivity)
+        val inputPassword: String = etPassword.text.toString()
 
-            if (helpMess.isNotEmpty()) {
-                tilPassword.helperText = helpMess
-                return false
+        val passwordChecks: MutableList<(s: String) -> Boolean> =
+            mutableListOf(
+                SignUpValidator::checkForNumOfLetters,
+                SignUpValidator::checkForUpperCase,
+                SignUpValidator::checkForLowerCase,
+                SignUpValidator::checkForSpecialSymbols,
+                SignUpValidator::checkForNumbers,
+            )
+        val passwordErrorMassages: MutableList<String> =
+            mutableListOf(
+                getString(R.string.less_8_symbols_pswd_error, MIN_NUM_OF_CHARS_IN_PSWD),
+                getString(R.string.capital_letter_error),
+                getString(R.string.lowercase_letter_error),
+                getString(R.string.special_symbol_error),
+                getString(R.string.numbers_error),
+            )
+
+        for ((index, check) in passwordChecks.withIndex()) {
+            if (!check.invoke(inputPassword)) {
+                errorMassage = passwordErrorMassages[index]
+                tilPassword.helperText = errorMassage
+                return errorMassage
             }
-
-            tilPassword.helperText = null
-            return true
         }
+        tilPassword.helperText = null
+        return errorMassage
     }
 
     private fun saveUserInfo(eMail: String, pswd: String) {

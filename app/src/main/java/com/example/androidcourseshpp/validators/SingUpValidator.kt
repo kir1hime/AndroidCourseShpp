@@ -9,13 +9,11 @@ private const val MIN_NUM_OF_CHARS_IN_PSWD = 8
 
 object SignUpValidator {
 
-
-    fun checkEMail(inputEMail: String, context: Context): String {
-        return if (!Patterns.EMAIL_ADDRESS.matcher(inputEMail).matches())
-            context.getString(R.string.email_error) else ""
+    fun checkEMail(inputEMail: String): Boolean {
+        return Patterns.EMAIL_ADDRESS.matcher(inputEMail).matches()
     }
 
-    fun checkPasswordInput(inputPassword: String, context: Context): String {
+  /*  fun checkPasswordInput(inputPassword: String, context: Context): String {
         val passwordChecks: MutableList<(s: String, context: Context) -> String> =
             mutableListOf(
                 ::checkForNumOfLetters,
@@ -36,32 +34,24 @@ object SignUpValidator {
         return ""
 
     }
-
-    private fun checkForNumOfLetters(inPswd: String, context: Context): String {
-        return if (inPswd.length < MIN_NUM_OF_CHARS_IN_PSWD)
-            context.getString(
-                R.string.less_8_symbols_pswd_error,
-                MIN_NUM_OF_CHARS_IN_PSWD
-            ) else ""
+*/
+  fun checkForNumOfLetters(inPswd: String): Boolean {
+        return inPswd.length > MIN_NUM_OF_CHARS_IN_PSWD
     }
 
-    private fun checkForUpperCase(inPswd: String, context: Context): String {
-        return if (inPswd.any { it.isUpperCase() }) ""
-        else context.getString(R.string.capital_letter_error)
+    fun checkForUpperCase(inPswd: String): Boolean {
+        return inPswd.any { it.isUpperCase() }
     }
 
-    private fun checkForLowerCase(inPswd: String, context: Context): String {
-        return if (inPswd.any { it.isLowerCase() }) ""
-        else context.getString(R.string.lowercase_letter_error)
+    fun checkForLowerCase(inPswd: String):Boolean {
+        return inPswd.any { it.isLowerCase() }
     }
 
-    private fun checkForSpecialSymbols(inPswd: String, context: Context): String {
-        return if (inPswd.any { SPECIAL_SYMBOLS.contains(it) }) ""
-        else context.getString(R.string.special_symbol_error)
+    fun checkForSpecialSymbols(inPswd: String): Boolean {
+        return inPswd.any { SPECIAL_SYMBOLS.contains(it) }
     }
 
-    private fun checkForNumbers(inPswd: String, context: Context): String {
-        return if (inPswd.any { it.isDigit() }) ""
-        else context.getString(R.string.numbers_error)
+    fun checkForNumbers(inPswd: String): Boolean {
+        return inPswd.any { it.isDigit() }
     }
 }
