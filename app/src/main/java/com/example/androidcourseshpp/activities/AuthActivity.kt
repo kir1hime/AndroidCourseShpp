@@ -9,9 +9,9 @@ import android.util.Patterns
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.databinding.ActivityAuthBinding
+import com.example.androidcourseshpp.extensions.adaptedUserInterface
 
 class AuthActivity : AppCompatActivity() {
 
@@ -30,25 +30,25 @@ class AuthActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         enableEdgeToEdge()
+
         binding = ActivityAuthBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        ViewCompat.setOnApplyWindowInsetsListener(binding.auth) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+        ViewCompat::class.java.adaptedUserInterface(binding.auth)
+
+        if (isExistingAccount()){
+            val savedName = sharedPref.getString(EMAIL_KEY, "").toString()
+            moveToExistingAccount(savedName)
         }
 
-        moveToExistingAccount()
         setListeners()
     }
 
-    private fun moveToExistingAccount() {
-        val savedName = sharedPref.getString(EMAIL_KEY, "").toString()
-        if (savedName != "") {
-            moveToMainActivity(savedName)
-        }
+
+    private fun isExistingAccount(): Boolean {
+        return sharedPref.getString(EMAIL_KEY, "").toString() != ""
     }
 
     private fun setListeners() {
@@ -59,13 +59,13 @@ class AuthActivity : AppCompatActivity() {
                     if (cbRememberMe.isChecked) {
                         saveUserInfo(etEMail.text.toString(), etPassword.text.toString())
                     }
-                    moveToMainActivity(etEMail.text.toString())
+                    moveToExistingAccount(etEMail.text.toString())
                 }
             }
         }
     }
 
-    private fun moveToMainActivity(userEMail: String) {
+    private fun moveToExistingAccount(userEMail: String) {
         val intent = Intent(this@AuthActivity, MainActivity::class.java)
 
         intent.putExtra(EMAIL_KEY, userEMail)
