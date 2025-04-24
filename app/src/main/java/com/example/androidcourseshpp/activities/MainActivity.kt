@@ -7,7 +7,7 @@ import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import com.example.androidcourseshpp.parsers.EmailParser
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.databinding.ActivityMainBinding
 import com.example.androidcourseshpp.extensions.adaptedUserInterface
@@ -46,13 +46,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun setListeners() {
         binding.btLogOut.setOnClickListener {
-            moveToAuthActivity()
+            moveToSignUpScreen()
             deleteUserInfo()
 
         }
     }
 
-    private fun moveToAuthActivity() {
+    private fun moveToSignUpScreen() {
         val intent = Intent(this@MainActivity, AuthActivity::class.java)
 
         val options = ActivityOptions.makeCustomAnimation(
@@ -69,31 +69,6 @@ class MainActivity : AppCompatActivity() {
         editor.putString(EMAIL_KEY, "")
         editor.putString(PSWD_KEY, "")
         editor.apply()
-    }
-
-    object EmailParser {
-
-        fun parseEMail(eMail: String): String {
-            val parsedName = StringBuilder()
-
-            val parsedEmail: MutableList<String> = eMail.split('@').toMutableList()
-            val name = parsedEmail[0].filter { it.isLetter() || it == '.' }.split('.')
-
-            parsedName.append(name[0])
-            if (name.size > 1) {
-                parsedName.append(" ").append(name[1])
-            }
-
-            parsedName.capitalize()
-
-            return parsedName.toString()
-        }
-
-        private fun StringBuilder.capitalize() {
-            this[0] = this[0].uppercaseChar()
-            this[this.indexOf(' ') + 1] =
-                this[this.indexOf(' ') + 1].uppercaseChar()
-        }
     }
 }
 
