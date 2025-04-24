@@ -52,7 +52,7 @@ class ContactsActivity : AppCompatActivity() {
     }
 
     private fun setListeners() = with(binding) {
-        IbtArrowBack.setOnClickListener {
+        ibtArrowBack.setOnClickListener {
             moveToMyProfileScreen()
         }
     }

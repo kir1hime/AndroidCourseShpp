@@ -21,7 +21,7 @@ class ContactsAdapter(private val contacts: List<ContactItem>) :
             tvName.text = item.getName()
             tvCareer.text = item.getCareer()
 
-            Glide::class.java.loadImageFromURL(itemView.context, item.getAvatarURL(), IvAvatar)
+            Glide::class.java.loadImageFromURL(itemView.context, item.getAvatarURL(), ivAvatar)
             //Picasso::class.java.loadImageFromURL(itemView.context, item.getAvatarURL(), IvAvatar)
         }
     }
