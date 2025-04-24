@@ -14,7 +14,9 @@ import com.example.androidcourseshpp.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var sharedPref: SharedPreferences
+    private val sharedPref: SharedPreferences by lazy {
+        getSharedPreferences(USER_INFO_STORE, MODE_PRIVATE)
+    }
 
     companion object {
         const val USER_INFO_STORE = "userInfo"
@@ -28,7 +30,6 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        sharedPref = getSharedPreferences(USER_INFO_STORE, MODE_PRIVATE)
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -71,6 +72,7 @@ class MainActivity : AppCompatActivity() {
         editor.putString(PSWD_KEY, "")
         editor.apply()
     }
+
     object EmailParser {
 
         fun parseEMail(eMail: String): String {
@@ -89,7 +91,7 @@ class MainActivity : AppCompatActivity() {
             return parsedName.toString()
         }
 
-        private fun StringBuilder.capitalize()  {
+        private fun StringBuilder.capitalize() {
             this[0] = this[0].uppercaseChar()
             this[this.indexOf(' ') + 1] =
                 this[this.indexOf(' ') + 1].uppercaseChar()

@@ -17,9 +17,10 @@ import com.example.androidcourseshpp.databinding.ActivityContactsBinding
 
 class ContactsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityContactsBinding
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var adapter: ContactsAdapter
-    private lateinit var contactList: List<ContactItem>
+
+    private val recyclerView: RecyclerView by lazy { binding.rvContacts }
+    private val adapter: ContactsAdapter by lazy { ContactsAdapter(contactList) }
+    private val contactList: List<ContactItem> by lazy { viewModel.contactList.value!! }
     private val viewModel by viewModels<ContactListViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,14 +36,10 @@ class ContactsActivity : AppCompatActivity() {
             insets
         }
 
-        contactList = viewModel.contactList.value!!
         initRecyclerView()
     }
 
     private fun initRecyclerView() {
-        adapter = ContactsAdapter(contactList)
-
-        recyclerView = binding.rvContacts
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
 

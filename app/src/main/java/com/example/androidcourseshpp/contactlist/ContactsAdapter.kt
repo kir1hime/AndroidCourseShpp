@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.databinding.ContactsReycleviewItemBinding
-import com.squareup.picasso.Picasso
+import com.example.androidcourseshpp.extensions.*
 
 
 class ContactsAdapter(private val contacts: List<ContactItem>) :
@@ -23,9 +23,6 @@ class ContactsAdapter(private val contacts: List<ContactItem>) :
 
             Glide::class.java.loadImageFromURL(itemView.context, item.getAvatarURL(), IvAvatar)
             //Picasso::class.java.loadImageFromURL(itemView.context, item.getAvatarURL(), IvAvatar)
-            // Glide::class.java.get(itemView.context).load(item.getAvatarURL()).into(IvAvatar)
-            //Picasso::class.java.get(itemView.context).load(item.getAvatarURL()).into(IvAvatar)
-
         }
     }
 

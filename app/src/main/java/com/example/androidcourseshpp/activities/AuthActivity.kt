@@ -16,7 +16,9 @@ import com.example.androidcourseshpp.databinding.ActivityAuthBinding
 class AuthActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAuthBinding
-    private lateinit var sharedPref: SharedPreferences
+    private val sharedPref: SharedPreferences by lazy {
+        getSharedPreferences(USER_INFO_STORE, MODE_PRIVATE)
+    }
 
     private companion object {
         const val SPECIAL_SYMBOLS = " !#$%&'()*+,-./:;<=>?@[\\]^_`{|}~\""
@@ -31,8 +33,6 @@ class AuthActivity : AppCompatActivity() {
         enableEdgeToEdge()
         binding = ActivityAuthBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        sharedPref = getSharedPreferences(USER_INFO_STORE, MODE_PRIVATE)
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.auth) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
