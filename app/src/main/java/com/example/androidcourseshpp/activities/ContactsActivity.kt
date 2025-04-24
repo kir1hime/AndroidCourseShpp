@@ -1,5 +1,7 @@
 package com.example.androidcourseshpp.activities
 
+import android.app.ActivityOptions
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -34,6 +36,8 @@ class ContactsActivity : AppCompatActivity() {
         ViewCompat::class.java.adaptedUserInterface(binding.contacts)
 
         initRecyclerView()
+
+        setListeners()
     }
 
     private fun initRecyclerView() {
@@ -45,5 +49,22 @@ class ContactsActivity : AppCompatActivity() {
                 resources.getDimensionPixelSize(R.dimen.contacts_recycle_view_space_size_between_items)
             )
         )
+    }
+
+    private fun setListeners() = with(binding) {
+        IbtArrowBack.setOnClickListener {
+            moveToMyProfileScreen()
+        }
+    }
+
+    private fun moveToMyProfileScreen() {
+        val intent = Intent(this, MainActivity::class.java)
+        val options = ActivityOptions.makeCustomAnimation(
+            this,
+            R.anim.my_profile_fade_in_from_left_to_right,
+            R.anim.contacts_fade_out_from_left_to_right
+        )
+        startActivity(intent, options.toBundle())
+        finish()
     }
 }

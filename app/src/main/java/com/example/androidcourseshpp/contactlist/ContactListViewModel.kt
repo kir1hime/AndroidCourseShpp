@@ -10,7 +10,7 @@ class ContactListViewModel : ViewModel() {
     private val mutableContactList = MutableLiveData<List<ContactItem>>()
 
     private companion object {
-        const val NUM_OF_USERS = 10
+        const val NUM_OF_USERS = 20
         val URLImageList = listOf(
             "https://s3-alpha-sig.figma.com/img/ddfb/d9cc/d761bf491e6218d83cd570ef902b3e61?Expires=1745798400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=aY5iHE6PluSujjUl3P6dJ3reptYqy~IIORvsMFyhuDG1GYcCX3d3bzyvIfTDhv7WecKNjna3d6LNGIvDbqUgu3fL3-FiGD55-qt-3thsu1Q3VBeQlI9ptTVXVmtTCffqawj81P2v0sSP4k54Ujg0K8hmO4DPelwXOvYJnrcwkBS3hqwXlBCmEyGdwnwCmGVbQ7ZlAR3Bm8wWkXKVRLVSL-YHBEMpnQpanKL9Yll-AAMMO1g-YABsESo6zwZI~jYiWXHWzcv3zVBhs7l-nvW-PuBuRsEEMzQ84LkOBWzr4D1sHP4OkRiqUcxGtHBQLUYu5crbGihqiS2Ar9A-IHAIgg__",
             "https://s3-alpha-sig.figma.com/img/56b7/6275/7dbde4af75876f40325a23557d89e229?Expires=1745798400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=Hmrb-95X-2hJ6y0lzBFugSYxkgmzET5YApy2G7InNhTxx0jI0A63yrTS2h1YxRiJwb5VswjNOo3ha6zt9GoU6PEn15Ly53KdRkjt0rrTQQBlq6rNqniLmRSoMCnEzXdIUcnPjfPvXWL3U93MsynUQ0emRi7sobXgmQOalJW5tUDSArYZ-3gRBNg0OsDghNsE2znIf5RUXfzhMsOZQlN2q7XEam~yHdt-GwQ5rvFYr3QChJ1jDN20pEc-d69jQcV5V~e00ThFj6kcahNrCKgf0Z3hiLL-isN~gNtHTtZJ5qi8nFE5q8D-X1kFmirkb6xB-oefXqyPbi5-wJJmmLDGWA__",
@@ -41,9 +41,9 @@ class ContactListViewModel : ViewModel() {
         for (contactId in 0..NUM_OF_USERS) {
             items.add(
                 ContactItem(
-                    nameList[contactId % (NUM_OF_USERS / 2)],
-                    careerList[contactId % (NUM_OF_USERS / 2)],
-                    URLImageList[contactId % (NUM_OF_USERS / 2)]
+                    nameList[contactId % (NUM_OF_USERS / 4)],
+                    careerList[contactId % (NUM_OF_USERS / 4)],
+                    URLImageList[contactId % (NUM_OF_USERS / 4)]
                 )
             )
         }

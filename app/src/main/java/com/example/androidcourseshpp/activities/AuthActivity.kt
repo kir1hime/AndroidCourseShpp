@@ -39,7 +39,7 @@ class AuthActivity : AppCompatActivity() {
 
         if (isExistingAccount()) {
             val savedName = sharedPref.getString(EMAIL_KEY, "").toString()
-            moveToExistingAccount(savedName)
+            moveToMyProfileScreen(savedName)
         }
 
         setListeners()
@@ -57,18 +57,20 @@ class AuthActivity : AppCompatActivity() {
                 if (cbRememberMe.isChecked) {
                     saveUserInfo(etEMail.text.toString(), etPassword.text.toString())
                 }
-                moveToExistingAccount(etEMail.text.toString())
+                moveToMyProfileScreen(etEMail.text.toString())
             }
         }
     }
 
-    private fun moveToExistingAccount(userEMail: String) {
-        val intent = Intent(this@AuthActivity, MainActivity::class.java)
+    private fun moveToMyProfileScreen(userEMail: String) {
+        val intent = Intent(this, MainActivity::class.java)
 
         intent.putExtra(EMAIL_KEY, userEMail)
 
         val options = ActivityOptions.makeCustomAnimation(
-            this@AuthActivity, R.anim.my_profile_fade_in, R.anim.sing_up_fade_out
+            this,
+            R.anim.my_profile_fade_in_from_right_to_left,
+            R.anim.sing_up_fade_out_from_right_to_left
         )
 
         startActivity(intent, options.toBundle())

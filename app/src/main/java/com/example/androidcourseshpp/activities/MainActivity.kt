@@ -40,28 +40,52 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun defineUserName() {
-        val userEMail = intent.getStringExtra(EMAIL_KEY)
+
+        var userEMail = sharedPref.getString(EMAIL_KEY, "")
+
+        if (userEMail == "") {
+            userEMail = intent.getStringExtra(EMAIL_KEY)
+        }
+
         binding.tvName.text = EmailParser.parseEMail(userEMail.toString())
+
     }
 
-    private fun setListeners() {
-        binding.btLogOut.setOnClickListener {
+    private fun setListeners() = with(binding) {
+        btLogOut.setOnClickListener {
             moveToSignUpScreen()
             deleteUserInfo()
 
         }
+        btViewMyContacts.setOnClickListener {
+            moveToMyContactsScreen()
+        }
     }
 
     private fun moveToSignUpScreen() {
-        val intent = Intent(this@MainActivity, AuthActivity::class.java)
+        val intent = Intent(this, AuthActivity::class.java)
 
         val options = ActivityOptions.makeCustomAnimation(
-            this@MainActivity, R.anim.sing_up_fade_in, R.anim.my_profile_fade_out
+            this,
+            R.anim.sing_up_fade_in_from_left_to_right,
+            R.anim.my_profile_fade_out_from_left_to_right
         )
 
         startActivity(intent, options.toBundle())
         finish()
 
+    }
+
+    private fun moveToMyContactsScreen() {
+        val intent = Intent(this, ContactsActivity::class.java)
+
+        val options = ActivityOptions.makeCustomAnimation(
+            this,
+            R.anim.contacts_fade_in_from_right_to_left,
+            R.anim.my_profile_fade_out_from_right_to_left
+        )
+        startActivity(intent, options.toBundle())
+        finish()
     }
 
     private fun deleteUserInfo() {
