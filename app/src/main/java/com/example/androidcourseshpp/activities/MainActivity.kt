@@ -21,8 +21,8 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         const val USER_INFO_STORE = "userInfo"
-        const val EMAIL_KEY = "EMAIL_KEY"
-        const val PSWD_KEY = "PSWD_KEY"
+        const val EMAIL_KEY = "userEMail"
+        const val PSWD_KEY = "userPassword"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

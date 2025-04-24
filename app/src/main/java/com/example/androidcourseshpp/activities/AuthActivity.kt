@@ -22,9 +22,9 @@ class AuthActivity : AppCompatActivity() {
 
     private companion object {
         const val USER_INFO_STORE = "userInfo"
-        const val EMAIL_KEY = "EMAIL_KEY"
-        const val PSWD_KEY = "PSWD_KEY"
-        const val MIN_NUM_OF_CHARS_IN_PSWD = 8
+        const val EMAIL_KEY = "userEMail"
+        const val PASSWORD_KEY = "userPassword"
+        const val MIN_NUM_OF_CHARS_IN_PASSWORD = 8
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -97,15 +97,15 @@ class AuthActivity : AppCompatActivity() {
 
         val passwordChecks: MutableList<(s: String) -> Boolean> =
             mutableListOf(
-                SignUpValidator::checkForNumOfLetters,
-                SignUpValidator::checkForUpperCase,
-                SignUpValidator::checkForLowerCase,
-                SignUpValidator::checkForSpecialSymbols,
-                SignUpValidator::checkForNumbers,
+                SignUpValidator::checkPasswordForNumOfLetters,
+                SignUpValidator::checkPasswordForUpperCase,
+                SignUpValidator::checkPasswordForLowerCase,
+                SignUpValidator::checkPasswordForSpecialSymbols,
+                SignUpValidator::checkPasswordForNumbers,
             )
         val passwordErrorMassages: MutableList<String> =
             mutableListOf(
-                getString(R.string.less_8_symbols_pswd_error, MIN_NUM_OF_CHARS_IN_PSWD),
+                getString(R.string.less_8_symbols_pswd_error, MIN_NUM_OF_CHARS_IN_PASSWORD),
                 getString(R.string.capital_letter_error),
                 getString(R.string.lowercase_letter_error),
                 getString(R.string.special_symbol_error),
@@ -123,10 +123,10 @@ class AuthActivity : AppCompatActivity() {
         return errorMassage
     }
 
-    private fun saveUserInfo(eMail: String, pswd: String) {
+    private fun saveUserInfo(eMail: String, password: String) {
         val editor = sharedPref.edit()
         editor.putString(EMAIL_KEY, eMail)
-        editor.putString(PSWD_KEY, pswd)
+        editor.putString(PASSWORD_KEY, password)
         editor.apply()
     }
 }
