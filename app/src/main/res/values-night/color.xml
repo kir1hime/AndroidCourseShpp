@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--My profile (activity_main.xml)-->
+    <color name="bottom_view_color">#0F0E0E</color>
+
+    <color name="top_view_color">#242235</color>
+
+    <color name="view_my_contacts_text_color">#FFFFFF</color>
+    <color name="settings_text_color">@color/view_my_contacts_text_color</color>
+    <color name="name_text_color">@color/view_my_contacts_text_color</color>
+
+    <color name="edit_profile_border_color">#B2B2B3</color>
+
+    <color name="edit_profile_text_color">@color/view_my_contacts_text_color</color>
+
+    <!--Sign up (activity_auth.xml)-->
+    <color name="screen_color">#0F0E0E</color>
+
+    <color name="google_background_color">#242235</color>
+
+    <color name="google_text_color">#FFFFFF</color>
+
+</resources>

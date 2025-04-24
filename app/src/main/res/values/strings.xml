@@ -13,4 +13,26 @@
     <string name="linkedin_button">linkedin_button</string>
     <string name="facebook_button">facebook_button</string>
     <string name="profile_photo">profile_photo</string>
+
+    <!--Sing up (activity_auth.xml)-->
+    <string name="acquaintance">Let\'s get acquainted</string>
+    <string name="filling_out">Fill out the profile and go the application!</string>
+    <string name="register">REGISTER</string>
+    <string name="agreements">By clicking Register you agree to our Terms \n and Conditions</string>
+    <string name="accountQuestion">Already have account?</string>
+    <string name="sign_in">Sign in</string>
+    <string name="google">GOOGLE</string>
+    <string name="or">or</string>
+    <string name="email">E-mail</string>
+    <string name="password">Password</string>
+    <string name="remember_me">Remember me</string>
+
+    <!--Sing up AuthActivity.kt-->
+    <string name="email_error">Incorrect E-mail</string>
+    <string name="less_8_symbols_pswd_error">There must be at least %d symbols</string>
+    <string name="capital_letter_error">There must be at least one capital letter</string>
+    <string name="lowercase_letter_error">There must be at least one lowercase letter</string>
+    <string name="special_symbol_error">There must be at least one special symbol</string>
+    <string name="numbers_error">There must be at least one number</string>
+
 </resources>

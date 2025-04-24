@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="cursor_color">#FFFFFFFF</color>
+
     <!--My profile (activity_main.xml)-->
     <color name="bottom_view_color">#FFFFFFFF</color>
     <color name="view_my_contacts_text_color">@color/bottom_view_color</color>
@@ -17,4 +19,29 @@
     <color name="log_out_border_and_text_color">#B2B2B3</color>
     <color name="career_text_color">@color/log_out_border_and_text_color</color>
     <color name="home_address_text_color">@color/log_out_border_and_text_color</color>
+
+    <!--Sign up (activity_auth.xml)-->
+    <color name="screen_color">#242235</color>
+    <color name="input_background_color">@color/screen_color</color>
+    <color name="register_background_color">@color/screen_color</color>
+
+    <color name="register_border_color">#FB5E06</color>
+
+    <color name="agreements_text_color">#FFFFFFFF</color>
+    <color name="sign_in_color">@color/agreements_text_color</color>
+    <color name="google_background_color">@color/agreements_text_color</color>
+    <color name="or_text_color">@color/agreements_text_color</color>
+    <color name="register_text_color">@color/agreements_text_color</color>
+    <color name="input_text_color">@color/agreements_text_color</color>
+    <color name="remember_me_check_box_color">@color/agreements_text_color</color>
+
+    <color name="account_question_text_color">#B2B2B3</color>
+    <color name="e_mail_hint_text_color">@color/account_question_text_color</color>
+    <color name="password_hint_text_color">@color/account_question_text_color</color>
+    <color name="remember_me_text_color">@color/account_question_text_color</color>
+    <color name="input_line_color">@color/account_question_text_color</color>
+
+    <color name="error_text_color">#F93E3E</color>
+
+    <color name="google_text_color">#000000</color>
 </resources>
