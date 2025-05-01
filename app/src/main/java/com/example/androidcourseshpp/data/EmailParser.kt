@@ -1,4 +1,4 @@
-package com.example.androidcourseshpp.parsers
+package com.example.androidcourseshpp.data
 
 object EmailParser {
 

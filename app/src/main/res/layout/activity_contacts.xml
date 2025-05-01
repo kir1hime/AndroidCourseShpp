@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/contacts_screen_color"
-    tools:context=".activities.ContactsActivity">
+    tools:context=".ui.screens.contacts.ContactsActivity">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/vw_contactsBar"
@@ -73,8 +73,9 @@
         android:id="@+id/rv_contacts"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-       android:layout_margin="@dimen/main_margin_side"
+        android:layout_margin="@dimen/main_margin_side"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/vw_contactsBar" />
+        app:layout_constraintTop_toBottomOf="@id/vw_contactsBar"
+        tools:listitem="@layout/contacts_reyclerview_item" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

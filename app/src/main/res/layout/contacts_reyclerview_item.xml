@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:background="@drawable/contacts_recycle_view_item_background">
 
-    <de.hdodenhof.circleimageview.CircleImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/iv_avatar"
         android:layout_width="@dimen/contacts_recycle_view_item_ava_size"
         android:layout_height="@dimen/contacts_recycle_view_item_ava_size"

@@ -1,28 +1,27 @@
-package com.example.androidcourseshpp.activities
+package com.example.androidcourseshpp.ui.screens.main
 
 import android.app.ActivityOptions
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import com.example.androidcourseshpp.parsers.EmailParser
 import com.example.androidcourseshpp.R
+import com.example.androidcourseshpp.data.EmailParser
+import com.example.androidcourseshpp.ui.screens.contacts.ContactsActivity
 import com.example.androidcourseshpp.databinding.ActivityMainBinding
-import com.example.androidcourseshpp.extensions.adaptedUserInterface
+import com.example.androidcourseshpp.ui.extensions.adaptUserInterface
+import com.example.androidcourseshpp.ui.utils.factory
+import com.example.androidcourseshpp.ui.screens.auth.AuthActivity
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private val sharedPref: SharedPreferences by lazy {
-        getSharedPreferences(USER_INFO_STORE, MODE_PRIVATE)
-    }
+    private val viewModel by viewModels<MyProfileViewModel> { factory() }
 
     companion object {
-        const val USER_INFO_STORE = "userInfo"
         const val EMAIL_KEY = "userEMail"
-        const val PSWD_KEY = "userPassword"
+        const val PASSWORD_KEY = "userPassword"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,7 +32,8 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        ViewCompat::class.java.adaptedUserInterface(binding.main)
+        adaptUserInterface(binding.root)
+
 
         defineUserName()
         setListeners()
@@ -41,20 +41,20 @@ class MainActivity : AppCompatActivity() {
 
     private fun defineUserName() {
 
-        var userEMail = sharedPref.getString(EMAIL_KEY, "")
+        var userEMail = viewModel.getUserEMail(EMAIL_KEY)
 
         if (userEMail == "") {
-            userEMail = intent.getStringExtra(EMAIL_KEY)
+            userEMail = intent.getStringExtra(EMAIL_KEY).toString()
         }
 
-        binding.tvName.text = EmailParser.parseEMail(userEMail.toString())
+        binding.tvName.text = EmailParser.parseEMail(userEMail)
 
     }
 
     private fun setListeners() = with(binding) {
         btLogOut.setOnClickListener {
             moveToSignUpScreen()
-            deleteUserInfo()
+            viewModel.deleteUserInfo(EMAIL_KEY, PASSWORD_KEY)
 
         }
         btViewMyContacts.setOnClickListener {
@@ -88,11 +88,5 @@ class MainActivity : AppCompatActivity() {
         finish()
     }
 
-    private fun deleteUserInfo() {
-        val editor = sharedPref.edit()
-        editor.putString(EMAIL_KEY, "")
-        editor.putString(PSWD_KEY, "")
-        editor.apply()
-    }
 }
 

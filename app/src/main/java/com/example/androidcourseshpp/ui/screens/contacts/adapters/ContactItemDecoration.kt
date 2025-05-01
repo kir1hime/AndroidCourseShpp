@@ -1,4 +1,4 @@
-package com.example.androidcourseshpp.contactlist
+package com.example.androidcourseshpp.ui.screens.contacts.adapters
 
 import android.graphics.Rect
 import android.view.View

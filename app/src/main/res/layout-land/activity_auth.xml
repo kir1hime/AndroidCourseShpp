@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/auth_screen_color"
-    tools:context=".activities.AuthActivity">
+    tools:context=".ui.screens.auth.AuthActivity">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_acquainted"

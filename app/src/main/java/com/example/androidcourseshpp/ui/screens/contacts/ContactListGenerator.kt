@@ -1,15 +1,11 @@
-package com.example.androidcourseshpp.contactlist
+package com.example.androidcourseshpp.ui.screens.contacts
 
+import com.example.androidcourseshpp.ui.screens.contacts.adapters.ContactItem
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-
-class ContactListViewModel : ViewModel() {
-    val contactList : LiveData<List<ContactItem>> get() = mutableContactList
-    private val mutableContactList = MutableLiveData<List<ContactItem>>()
+class ContactListGenerator {
 
     private companion object {
+
         const val NUM_OF_USERS = 20
         val URLImageList = listOf(
             "https://s3-alpha-sig.figma.com/img/ddfb/d9cc/d761bf491e6218d83cd570ef902b3e61?Expires=1745798400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=aY5iHE6PluSujjUl3P6dJ3reptYqy~IIORvsMFyhuDG1GYcCX3d3bzyvIfTDhv7WecKNjna3d6LNGIvDbqUgu3fL3-FiGD55-qt-3thsu1Q3VBeQlI9ptTVXVmtTCffqawj81P2v0sSP4k54Ujg0K8hmO4DPelwXOvYJnrcwkBS3hqwXlBCmEyGdwnwCmGVbQ7ZlAR3Bm8wWkXKVRLVSL-YHBEMpnQpanKL9Yll-AAMMO1g-YABsESo6zwZI~jYiWXHWzcv3zVBhs7l-nvW-PuBuRsEEMzQ84LkOBWzr4D1sHP4OkRiqUcxGtHBQLUYu5crbGihqiS2Ar9A-IHAIgg__",
@@ -31,11 +27,7 @@ class ContactListViewModel : ViewModel() {
             listOf("Photograph", "Actress", "Financier", "Make-up artist", "Secretary", "Nurse")
     }
 
-    init{
-        mutableContactList.value = getContactItems()
-    }
-
-    private fun getContactItems(): List<ContactItem> {
+     fun getContactItems(): List<ContactItem> {
         val items: MutableList<ContactItem> = mutableListOf()
 
         for (contactId in 0..NUM_OF_USERS) {

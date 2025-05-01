@@ -1,4 +1,4 @@
-package com.example.androidcourseshpp.activities
+package com.example.androidcourseshpp.ui.screens.contacts
 
 import android.app.ActivityOptions
 import android.content.Intent
@@ -6,23 +6,17 @@ import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import com.example.androidcourseshpp.extensions.adaptedUserInterface
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.androidcourseshpp.R
-import com.example.androidcourseshpp.contactlist.ContactItem
-import com.example.androidcourseshpp.contactlist.ContactItemDecoration
-import com.example.androidcourseshpp.contactlist.ContactListViewModel
-import com.example.androidcourseshpp.contactlist.ContactsAdapter
+import com.example.androidcourseshpp.ui.screens.contacts.adapters.ContactItemDecoration
+import com.example.androidcourseshpp.ui.screens.contacts.adapters.ContactsAdapter
 import com.example.androidcourseshpp.databinding.ActivityContactsBinding
+import com.example.androidcourseshpp.ui.extensions.adaptUserInterface
+import com.example.androidcourseshpp.ui.screens.main.MainActivity
 
 class ContactsActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityContactsBinding
 
-    private val recyclerView: RecyclerView by lazy { binding.rvContacts }
-    private val adapter: ContactsAdapter by lazy { ContactsAdapter(contactList) }
-    private val contactList: List<ContactItem> by lazy { viewModel.contactList.value!! }
+    private lateinit var binding: ActivityContactsBinding
     private val viewModel by viewModels<ContactListViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,18 +27,18 @@ class ContactsActivity : AppCompatActivity() {
         binding = ActivityContactsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        ViewCompat::class.java.adaptedUserInterface(binding.contacts)
+       adaptUserInterface(binding.root)
 
         initRecyclerView()
 
         setListeners()
     }
 
-    private fun initRecyclerView() {
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = adapter
+    private fun initRecyclerView() = with(binding.rvContacts) {
+        binding.rvContacts.layoutManager = LinearLayoutManager(this@ContactsActivity)
+        adapter = ContactsAdapter(viewModel.contactList.value!!)
 
-        recyclerView.addItemDecoration(
+        addItemDecoration(
             ContactItemDecoration(
                 resources.getDimensionPixelSize(R.dimen.contacts_recycle_view_space_size_between_items)
             )

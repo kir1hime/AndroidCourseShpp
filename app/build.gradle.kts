@@ -41,7 +41,7 @@ android {
 }
 
 dependencies {
-
+    implementation (libs.picasso.transformations)
     implementation (libs.picasso)
     implementation (libs.circleimageview)
     implementation(libs.glide)
@@ -54,3 +54,4 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 }
+
