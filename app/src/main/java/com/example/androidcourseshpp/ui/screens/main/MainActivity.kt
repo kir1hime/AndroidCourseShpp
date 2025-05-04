@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.androidcourseshpp.R
+import com.example.androidcourseshpp.data.*
 import com.example.androidcourseshpp.data.EmailParser
 import com.example.androidcourseshpp.ui.screens.contacts.ContactsActivity
 import com.example.androidcourseshpp.databinding.ActivityMainBinding
@@ -19,10 +20,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val viewModel by viewModels<MyProfileViewModel> { factory() }
 
-    companion object {
-        const val EMAIL_KEY = "userEMail"
-        const val PASSWORD_KEY = "userPassword"
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,27 +31,23 @@ class MainActivity : AppCompatActivity() {
 
         adaptUserInterface(binding.root)
 
-
         defineUserName()
         setListeners()
     }
 
-    private fun defineUserName() {
-
-        var userEMail = viewModel.getUserEMail(EMAIL_KEY)
-
-        if (userEMail == "") {
-            userEMail = intent.getStringExtra(EMAIL_KEY).toString()
+    private fun defineUserName() = with(binding.tvName) {
+        with(viewModel.savedEMail) {
+            text = if (value == "") EmailParser.parseEMail(
+                intent.getStringExtra(EMAIL_KEY).toString()
+            ) else
+                EmailParser.parseEMail(value!!)
         }
-
-        binding.tvName.text = EmailParser.parseEMail(userEMail)
-
     }
 
     private fun setListeners() = with(binding) {
         btLogOut.setOnClickListener {
             moveToSignUpScreen()
-            viewModel.deleteUserInfo(EMAIL_KEY, PASSWORD_KEY)
+            viewModel.deleteUserInfo()
 
         }
         btViewMyContacts.setOnClickListener {

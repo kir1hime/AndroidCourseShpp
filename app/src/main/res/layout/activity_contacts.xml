@@ -76,6 +76,6 @@
         android:layout_margin="@dimen/main_margin_side"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/vw_contactsBar"
-        tools:listitem="@layout/contacts_reyclerview_item" />
+        tools:listitem="@layout/contacts_recyclerview_item" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

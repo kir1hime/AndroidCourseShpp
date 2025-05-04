@@ -4,7 +4,8 @@ package com.example.androidcourseshpp.ui.screens.contacts
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.androidcourseshpp.ui.screens.contacts.adapters.ContactItem
+import com.example.androidcourseshpp.data.contactlistdata.ContactListGenerator
+import com.example.androidcourseshpp.data.contactlistdata.ContactItem
 
 class ContactListViewModel : ViewModel() {
     val contactList : LiveData<List<ContactItem>> get() = mutableContactList

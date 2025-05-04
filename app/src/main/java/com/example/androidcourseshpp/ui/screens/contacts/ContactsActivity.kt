@@ -27,7 +27,7 @@ class ContactsActivity : AppCompatActivity() {
         binding = ActivityContactsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-       adaptUserInterface(binding.root)
+        adaptUserInterface(binding.root)
 
         initRecyclerView()
 
@@ -35,7 +35,7 @@ class ContactsActivity : AppCompatActivity() {
     }
 
     private fun initRecyclerView() = with(binding.rvContacts) {
-        binding.rvContacts.layoutManager = LinearLayoutManager(this@ContactsActivity)
+        layoutManager = LinearLayoutManager(this@ContactsActivity)
         adapter = ContactsAdapter(viewModel.contactList.value!!)
 
         addItemDecoration(

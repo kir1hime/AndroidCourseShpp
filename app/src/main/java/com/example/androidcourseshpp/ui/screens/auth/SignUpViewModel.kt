@@ -1,19 +1,21 @@
 package com.example.androidcourseshpp.ui.screens.auth
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.androidcourseshpp.R
+import com.example.androidcourseshpp.data.*
 import com.example.androidcourseshpp.data.SignUpValidator
-import com.example.androidcourseshpp.ui.dataStore.DataStore
+import com.example.androidcourseshpp.data.dataProvider.DataProvider
 
 
-class SignUpViewModel(private val dataStore: DataStore) : ViewModel() {
+class SignUpViewModel(private val dataProvider: DataProvider) : ViewModel() {
 
-    private companion object {
-        const val MIN_NUM_OF_CHARS_IN_PASSWORD = 8
-        const val EMAIL_KEY = "userEMail"
-        const val PASSWORD_KEY = "userPassword"
+    private val mutableSavedEMail = MutableLiveData<String>()
+    val savedEMail get() = mutableSavedEMail
+
+    init {
+        savedEMail.value = getUserEMail()
     }
-
 
     /**
      * function checks all types of password checks and returns certain error text
@@ -21,7 +23,7 @@ class SignUpViewModel(private val dataStore: DataStore) : ViewModel() {
     fun definePasswordErrorMessage(inputPassword: String): String {
         var errorMessage = ""
 
-        with(dataStore.context) {
+        with(dataProvider.context) {
 
             val passwordChecks: MutableList<(s: String) -> Boolean> =
                 mutableListOf(
@@ -50,16 +52,11 @@ class SignUpViewModel(private val dataStore: DataStore) : ViewModel() {
         return errorMessage
     }
 
-    fun isExistingAccount( eMailKey: String): Boolean {
-        return dataStore.getStringData(eMailKey) != ""
+    private fun getUserEMail(): String {
+        return dataProvider.getUserEMail()
     }
 
-    fun getUserEMail( eMailKey: String): String {
-        return dataStore.getStringData(eMailKey)
-    }
-
-     fun saveUserInfo( eMail: String, password: String) {
-        dataStore.putStringData(EMAIL_KEY, eMail)
-        dataStore.putStringData(PASSWORD_KEY, password)
+    fun saveUserInfo(eMail: String, password: String) {
+        dataProvider.saveUserInfo(eMail, password)
     }
 }
