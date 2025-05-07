@@ -9,8 +9,9 @@ import com.example.androidcourseshpp.data.PASSWORD_KEY
 
 class DataProvider(val context: Context) {
 
-    private val sharedPref: SharedPreferences =
+    private val sharedPref: SharedPreferences by lazy {
         context.getSharedPreferences(USER_INFO_STORE, MODE_PRIVATE)
+    }
 
     private val editor = sharedPref.edit()
 
