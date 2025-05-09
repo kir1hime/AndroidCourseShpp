@@ -22,8 +22,8 @@ fun adaptUserInterface(view: View) {
 
 fun ImageView.loadImageFromURL(context: Context, url: String, imageLoader: ImageLoader) {
     when (imageLoader) {
-        ImageLoader.GLIDE -> Glide.with(context).load(url).placeholder(R.drawable.profile_photo).circleCrop().into(this)
-        ImageLoader.PICASSO -> Picasso.get().load(url).placeholder(R.drawable.profile_photo).transform(CropCircleTransformation()).into(this)
+        ImageLoader.GLIDE -> Glide.with(context).load(url).placeholder(R.drawable.defaultavatar).circleCrop().into(this)
+        ImageLoader.PICASSO -> Picasso.get().load(url).placeholder(R.drawable.defaultavatar).transform(CropCircleTransformation()).into(this)
     }
 }
 

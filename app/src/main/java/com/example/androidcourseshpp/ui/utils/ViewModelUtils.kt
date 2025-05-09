@@ -12,24 +12,24 @@ import com.example.androidcourseshpp.ui.screens.main.MainActivity
 import com.example.androidcourseshpp.ui.screens.main.MyProfileViewModel
 
 class ViewModelFactory(
-    private val dataProvider: DataProvider,
-    private val contentResolver: ContentResolver,
-    private val checkPermissions: ((() -> Unit) -> Unit)= {}
+    private val dataProvider: DataProvider?,
+    private val contentResolver: ContentResolver?,
+    private val isAccessToContactsAllowed : () -> Boolean = {false}
 ) : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         val viewModel = when (modelClass) {
             SignUpViewModel::class.java -> {
-                SignUpViewModel(dataProvider)
+                SignUpViewModel(dataProvider!!)
             }
 
             MyProfileViewModel::class.java -> {
-                MyProfileViewModel(dataProvider)
+                MyProfileViewModel(dataProvider!!)
             }
 
             ContactListViewModel::class.java -> {
-                ContactListViewModel(contentResolver, checkPermissions)
+                ContactListViewModel(contentResolver!!, isAccessToContactsAllowed)
             }
 
             else -> {
@@ -41,7 +41,7 @@ class ViewModelFactory(
     }
 }
 
-fun AuthActivity.factory() = ViewModelFactory(DataProvider(applicationContext), contentResolver)
-fun MainActivity.factory() = ViewModelFactory(DataProvider(applicationContext), contentResolver,)
-fun ContactsActivity.factory() = ViewModelFactory(DataProvider(applicationContext), contentResolver, ::checkPermissions)
+fun AuthActivity.factory() = ViewModelFactory(DataProvider(applicationContext), null)
+fun MainActivity.factory() = ViewModelFactory(DataProvider(applicationContext), null)
+fun ContactsActivity.factory() = ViewModelFactory(null, contentResolver, ::isAccessToContactsAllowed)
 

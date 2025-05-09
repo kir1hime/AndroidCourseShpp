@@ -10,13 +10,13 @@ import com.example.androidcourseshpp.data.contactlistdata.ContactItem
 
 class ContactListViewModel(
     private val contentResolver: ContentResolver,
-    private val checkPermissions: (() -> Unit) -> Unit
+    private val isAccessToContactsAllowed : () -> Boolean
 ) : ViewModel() {
     val contactList: LiveData<List<ContactItem>> get() = mutableContactList
     private val mutableContactList = MutableLiveData<List<ContactItem>>()
 
     init {
         mutableContactList.value =
-            ContactListGenerator(contentResolver, checkPermissions).getContactItems()
+            ContactListGenerator(contentResolver, isAccessToContactsAllowed).getContactItems()
     }
 }

@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.androidcourseshpp.R
+import com.example.androidcourseshpp.data.ACCESS_TO_CONTACTS_KEY
 import com.example.androidcourseshpp.ui.screens.contacts.adapters.ContactItemDecoration
 import com.example.androidcourseshpp.ui.screens.contacts.adapters.ContactsAdapter
 import com.example.androidcourseshpp.databinding.ActivityContactsBinding
@@ -21,10 +22,7 @@ class ContactsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityContactsBinding
     private val viewModel by viewModels<ContactListViewModel> { factory() }
-
-    companion object {
-        const val REQUEST_CODE = 1
-    }
+    private lateinit var adapter: ContactsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,16 +32,21 @@ class ContactsActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         adaptUserInterface(binding.root)
-
+        
+        adapter = ContactsAdapter(viewModel.contactList.value!!)
 
         initRecyclerView()
 
         setListeners()
     }
 
+     fun isAccessToContactsAllowed() : Boolean{
+        return intent.getBooleanExtra(ACCESS_TO_CONTACTS_KEY, false)
+    }
+
     private fun initRecyclerView() = with(binding.rvContacts) {
         layoutManager = LinearLayoutManager(this@ContactsActivity)
-        adapter = ContactsAdapter(viewModel.contactList.value!!)
+        adapter = this@ContactsActivity.adapter
 
         addItemDecoration(
             ContactItemDecoration(
@@ -67,21 +70,5 @@ class ContactsActivity : AppCompatActivity() {
         )
         startActivity(intent, options.toBundle())
         finish()
-    }
-
-    fun checkPermissions(success: () ->  Unit){
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.READ_CONTACTS)
-            != PackageManager.PERMISSION_GRANTED
-        ) {
-            this.let {
-                ActivityCompat.requestPermissions(
-                    it,
-                    arrayOf(android.Manifest.permission.READ_CONTACTS),
-                    REQUEST_CODE
-                )
-            }
-        } else {
-            success()
-        }
     }
 }
