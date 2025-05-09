@@ -14,7 +14,7 @@ import com.example.androidcourseshpp.ui.screens.main.MyProfileViewModel
 class ViewModelFactory(
     private val dataProvider: DataProvider?,
     private val contentResolver: ContentResolver?,
-    private val isAccessToContactsAllowed : () -> Boolean = {false}
+    private val isAccessToContactsAllowed : Boolean = false
 ) : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")
@@ -43,5 +43,5 @@ class ViewModelFactory(
 
 fun AuthActivity.factory() = ViewModelFactory(DataProvider(applicationContext), null)
 fun MainActivity.factory() = ViewModelFactory(DataProvider(applicationContext), null)
-fun ContactsActivity.factory() = ViewModelFactory(null, contentResolver, ::isAccessToContactsAllowed)
+fun ContactsActivity.factory() = ViewModelFactory(null, contentResolver, isAccessToContactsAllowed())
 

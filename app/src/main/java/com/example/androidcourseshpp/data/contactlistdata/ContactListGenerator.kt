@@ -2,12 +2,10 @@ package com.example.androidcourseshpp.data.contactlistdata
 
 import android.content.ContentResolver
 import android.provider.ContactsContract
-import android.util.Log
-import kotlinx.coroutines.delay
 
 class ContactListGenerator(
     private val contentResolver: ContentResolver,
-    private val isAccessToContactsAllowed: () -> Boolean
+    private val isAccessToContactsAllowed: Boolean
 ) {
 
     private companion object {
@@ -19,7 +17,14 @@ class ContactListGenerator(
             "https://static.wixstatic.com/media/9d8ed5_4725657bd5b448478d19d54669ea0883~mv2.jpg/v1/fill/w_1000,h_563,al_c,q_85,usm_0.66_1.00_0.01/9d8ed5_4725657bd5b448478d19d54669ea0883~mv2.jpg"
         )
 
-        var nameList: MutableList<String> = mutableListOf()
+        var nameList: MutableList<String> = mutableListOf(
+            "Ava Smith",
+            "Jessie Brown",
+            "Jackie Taylor",
+            "Jenny Walker",
+            "Freddy Harris",
+            "Annie King"
+        )
 
         val careerList =
             listOf("Photograph", "Actress", "Financier", "Make-up artist", "Secretary", "Nurse")
@@ -28,7 +33,7 @@ class ContactListGenerator(
     fun getContactItems(): List<ContactItem> {
         val items: MutableList<ContactItem> = mutableListOf()
 
-        if (isAccessToContactsAllowed()) {
+        if (isAccessToContactsAllowed) {
             nameList.addAll(getUserNames())
         }
 

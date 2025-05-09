@@ -32,7 +32,7 @@ class ContactsActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         adaptUserInterface(binding.root)
-        
+
         adapter = ContactsAdapter(viewModel.contactList.value!!)
 
         initRecyclerView()
@@ -40,7 +40,7 @@ class ContactsActivity : AppCompatActivity() {
         setListeners()
     }
 
-     fun isAccessToContactsAllowed() : Boolean{
+    fun isAccessToContactsAllowed(): Boolean {
         return intent.getBooleanExtra(ACCESS_TO_CONTACTS_KEY, false)
     }
 
