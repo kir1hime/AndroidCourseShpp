@@ -44,6 +44,26 @@
     <dimen name="account_question_margin_end">116dp</dimen>
     <dimen name="sign_in_margin_start">12dp</dimen>
 
+    <dimen name="contacts_margin_top">10dp</dimen>
+
+    <dimen name="arrow_back_margin_start">20dp</dimen>
+    <dimen name="arrow_back_margin_top">17.5dp</dimen>
+
+    <dimen name="search_margin_top">@dimen/arrow_back_margin_top</dimen>
+
+    <dimen name="add_contacts_margin_top">73dp</dimen>
+    <dimen name="add_contacts_margin_bottom">26dp</dimen>
+
+    <dimen name="contacts_recycle_view_margin_start">8dp</dimen>
+    <dimen name="item_info_margin_start">16dp</dimen>
+    <dimen name="item_name_margin_top">14dp</dimen>
+    <dimen name="item_name_margin_bottom">29dp</dimen>
+
+    <dimen name="item_career_margin_top">37dp</dimen>
+    <dimen name="item_career_margin_bottom">13dp</dimen>
+
+    <dimen name="item_trash_can_margin_end">13.5dp</dimen>
+
     <!--paddings-->
     <dimen name="settings_padding_vertical">4.5dp</dimen>
     <dimen name="fill_out_the_profile_padding_top">8dp</dimen>
@@ -62,6 +82,12 @@
     <dimen name="register_bt_h">@dimen/view_my_contacts_bt_h</dimen>
     <dimen name="google_bt_h">@dimen/edit_profile_bt_h</dimen>
     <dimen name="remember_me_size">18dp</dimen>
+
+    <!--view/textView dimens-->
+    <dimen name="contacts_bar_h">149dp</dimen>
+    <dimen name="contacts_recycle_view_item_h">66dp</dimen>
+    <dimen name="contacts_recycle_view_item_ava_size">50dp</dimen>
+    <dimen name="contacts_recycle_view_space_size_between_items">16dp</dimen>
 
     <!--text sizes-->
     <dimen name="middle_text_size">16sp</dimen>

@@ -14,10 +14,14 @@
     <color name="edit_profile_text_color">@color/view_my_contacts_text_color</color>
 
     <!--Sign up (activity_auth.xml)-->
-    <color name="screen_color">#0F0E0E</color>
+    <color name="auth_screen_color">#0F0E0E</color>
 
     <color name="google_background_color">#242235</color>
 
     <color name="google_text_color">#FFFFFF</color>
 
+    <!--Contacts (activity_contacts.xml)-->
+    <color name="contacts_screen_color">#0F0E0E</color>
+
+    <color name="item_name_text_color">#FFFFFF</color>
 </resources>

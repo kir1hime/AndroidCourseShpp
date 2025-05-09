@@ -41,8 +41,10 @@ android {
 }
 
 dependencies {
-
-    implementation ("de.hdodenhof:circleimageview:3.1.0")
+    implementation (libs.picasso.transformations)
+    implementation (libs.picasso)
+    implementation (libs.circleimageview)
+    implementation(libs.glide)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -52,3 +54,4 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 }
+

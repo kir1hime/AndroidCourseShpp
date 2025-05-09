@@ -21,9 +21,9 @@
     <color name="home_address_text_color">@color/log_out_border_and_text_color</color>
 
     <!--Sign up (activity_auth.xml)-->
-    <color name="screen_color">#242235</color>
-    <color name="input_background_color">@color/screen_color</color>
-    <color name="register_background_color">@color/screen_color</color>
+    <color name="auth_screen_color">#242235</color>
+    <color name="input_background_color">@color/auth_screen_color</color>
+    <color name="register_background_color">@color/auth_screen_color</color>
 
     <color name="register_border_color">#FB5E06</color>
 
@@ -44,4 +44,18 @@
     <color name="error_text_color">#F93E3E</color>
 
     <color name="google_text_color">#000000</color>
+
+    <!--Contacts (activity_contacts.xml)-->
+    <color name="contacts_bar_color">#242235</color>
+
+    <color name="contacts_screen_color">#FFFFFF</color>
+    <color name="contacts_color">#FFFFFF</color>
+    <color name="add_contact_color">@color/contacts_color</color>
+    <color name ="contacts_recycleView_item_background_color">@color/contacts_screen_color</color>
+
+    <color name="contacts_recycleView_border_color">#B2B2B3</color>
+
+    <color name="item_career_text_color">#828282</color>
+
+    <color name="item_name_text_color">#18181F</color>
 </resources>

@@ -1,0 +1,92 @@
+package com.example.androidcourseshpp.ui.screens.main
+
+import android.app.ActivityOptions
+import android.content.Intent
+import android.os.Bundle
+import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
+import com.example.androidcourseshpp.R
+import com.example.androidcourseshpp.data.EmailParser
+import com.example.androidcourseshpp.ui.screens.contacts.ContactsActivity
+import com.example.androidcourseshpp.databinding.ActivityMainBinding
+import com.example.androidcourseshpp.ui.extensions.adaptUserInterface
+import com.example.androidcourseshpp.ui.utils.factory
+import com.example.androidcourseshpp.ui.screens.auth.AuthActivity
+
+class MainActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityMainBinding
+    private val viewModel by viewModels<MyProfileViewModel> { factory() }
+
+    companion object {
+        const val EMAIL_KEY = "userEMail"
+        const val PASSWORD_KEY = "userPassword"
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        enableEdgeToEdge()
+
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        adaptUserInterface(binding.root)
+
+
+        defineUserName()
+        setListeners()
+    }
+
+    private fun defineUserName() {
+
+        var userEMail = viewModel.getUserEMail(EMAIL_KEY)
+
+        if (userEMail == "") {
+            userEMail = intent.getStringExtra(EMAIL_KEY).toString()
+        }
+
+        binding.tvName.text = EmailParser.parseEMail(userEMail)
+
+    }
+
+    private fun setListeners() = with(binding) {
+        btLogOut.setOnClickListener {
+            moveToSignUpScreen()
+            viewModel.deleteUserInfo(EMAIL_KEY, PASSWORD_KEY)
+
+        }
+        btViewMyContacts.setOnClickListener {
+            moveToMyContactsScreen()
+        }
+    }
+
+    private fun moveToSignUpScreen() {
+        val intent = Intent(this, AuthActivity::class.java)
+
+        val options = ActivityOptions.makeCustomAnimation(
+            this,
+            R.anim.sing_up_fade_in_from_left_to_right,
+            R.anim.my_profile_fade_out_from_left_to_right
+        )
+
+        startActivity(intent, options.toBundle())
+        finish()
+
+    }
+
+    private fun moveToMyContactsScreen() {
+        val intent = Intent(this, ContactsActivity::class.java)
+
+        val options = ActivityOptions.makeCustomAnimation(
+            this,
+            R.anim.contacts_fade_in_from_right_to_left,
+            R.anim.my_profile_fade_out_from_right_to_left
+        )
+        startActivity(intent, options.toBundle())
+        finish()
+    }
+
+}
+
