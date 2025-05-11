@@ -1,3 +1,3 @@
 package com.example.androidcourseshpp.data.contactlistdata
 
-class ContactItem( val name : String,  val career : String,  val avatarURL : String )
+class ContactItem(var id: Int, val name: String, val career: String, val avatarURL: String)

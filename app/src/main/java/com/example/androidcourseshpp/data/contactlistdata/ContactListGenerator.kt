@@ -8,38 +8,40 @@ class ContactListGenerator(
     private val isAccessToContactsAllowed: Boolean
 ) {
 
-    private companion object {
-        val URLImageList = listOf(
-            "https://gcs.tripi.vn/public-tripi/tripi-feed/img/474187SoY/anh-avatar-chu-meo-dang-yeu_051724941.jpg",
-            "https://i.pinimg.com/736x/d4/15/95/d415956c03d9ca8783bfb3c5cc984dde.jpg",
-            "https://i.pinimg.com/236x/8a/c6/de/8ac6def5cba863e6e187906a7ef04b39.jpg",
-            "https://img.tripi.vn/cdn-cgi/image/width=700,height=700/https://gcs.tripi.vn/public-tripi/tripi-feed/img/474492fob/avatar-cho-cute_042635954.jpg",
-            "https://static.wixstatic.com/media/9d8ed5_4725657bd5b448478d19d54669ea0883~mv2.jpg/v1/fill/w_1000,h_563,al_c,q_85,usm_0.66_1.00_0.01/9d8ed5_4725657bd5b448478d19d54669ea0883~mv2.jpg"
-        )
 
-        var nameList: MutableList<String> = mutableListOf(
-            "Ava Smith",
-            "Jessie Brown",
-            "Jackie Taylor",
-            "Jenny Walker",
-            "Freddy Harris",
-            "Annie King"
-        )
+    private val URLImageList = listOf(
+        "https://gcs.tripi.vn/public-tripi/tripi-feed/img/474187SoY/anh-avatar-chu-meo-dang-yeu_051724941.jpg",
+        "https://i.pinimg.com/736x/d4/15/95/d415956c03d9ca8783bfb3c5cc984dde.jpg",
+        "https://i.pinimg.com/236x/8a/c6/de/8ac6def5cba863e6e187906a7ef04b39.jpg",
+        "https://img.tripi.vn/cdn-cgi/image/width=700,height=700/https://gcs.tripi.vn/public-tripi/tripi-feed/img/474492fob/avatar-cho-cute_042635954.jpg",
+        "https://static.wixstatic.com/media/9d8ed5_4725657bd5b448478d19d54669ea0883~mv2.jpg/v1/fill/w_1000,h_563,al_c,q_85,usm_0.66_1.00_0.01/9d8ed5_4725657bd5b448478d19d54669ea0883~mv2.jpg"
+    )
 
-        val careerList =
-            listOf("Photograph", "Actress", "Financier", "Make-up artist", "Secretary", "Nurse")
-    }
+    private var nameList: MutableList<String> = mutableListOf(
+        "Ava Smith",
+        "Jessie Brown",
+        "Jackie Taylor",
+        "Jenny Walker",
+        "Freddy Harris",
+        "Annie King"
+    )
 
-    fun getContactItems(): List<ContactItem> {
+
+    private val careerList =
+        listOf("Photograph", "Actress", "Financier", "Make-up artist", "Secretary", "Nurse")
+
+
+    fun getContactItems(): MutableList<ContactItem> {
         val items: MutableList<ContactItem> = mutableListOf()
 
         if (isAccessToContactsAllowed) {
-            nameList.addAll(getUserNames())
+            nameList.addAll(getUserNamesFromPhoneContacts())
         }
 
         repeat(nameList.size) { contactId ->
             items.add(
                 ContactItem(
+                    contactId,
                     nameList[contactId],
                     careerList[contactId % URLImageList.size],
                     URLImageList[contactId % URLImageList.size]
@@ -51,7 +53,7 @@ class ContactListGenerator(
         return items
     }
 
-    private fun getUserNames(): MutableList<String> {
+    private fun getUserNamesFromPhoneContacts(): MutableList<String> {
         val userNames: MutableList<String> = mutableListOf()
         val cursor = contentResolver.query(
             ContactsContract.Contacts.CONTENT_URI,

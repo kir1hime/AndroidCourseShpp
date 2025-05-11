@@ -12,11 +12,30 @@ class ContactListViewModel(
     private val contentResolver: ContentResolver,
     private val isAccessToContactsAllowed: Boolean
 ) : ViewModel() {
-    val contactList: LiveData<List<ContactItem>> get() = mutableContactList
-    private val mutableContactList = MutableLiveData<List<ContactItem>>()
+    val contactList: LiveData<MutableList<ContactItem>> get() = mutableContactList
+    private val mutableContactList = MutableLiveData<MutableList<ContactItem>>()
 
     init {
         mutableContactList.value =
             ContactListGenerator(contentResolver, isAccessToContactsAllowed).getContactItems()
+    }
+
+    fun deleteContactItem(contactItem: ContactItem) {
+        val indexToDelete = mutableContactList.value!!.indexOfFirst { it.name == contactItem.name }
+        if (indexToDelete != -1) {
+            mutableContactList.value!!.removeAt(indexToDelete)
+        }
+        updateContactIds()
+    }
+
+    private fun updateContactIds(){
+       for(i in mutableContactList.value!!.indices){
+           mutableContactList.value!![i].id = i
+       }
+    }
+
+    fun addContactItem(contactItem: ContactItem, position: Int) {
+        mutableContactList.value!!.add(position, contactItem)
+        updateContactIds()
     }
 }

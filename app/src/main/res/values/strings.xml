@@ -41,4 +41,8 @@
     <string name="search_imagebutton">search_imageButton</string>
     <string name="arrow_back_imagebutton">arrow_back_ImageButton</string>
 
+    <!--My contacts ContactsActivity-->
+    <string name="snackbar_text">Do you want to undo deletion of this contact?</string>
+    <string name="snackbar_action_text">Undo</string>
+
 </resources>
