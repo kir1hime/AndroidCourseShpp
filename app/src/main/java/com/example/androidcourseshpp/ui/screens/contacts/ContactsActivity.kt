@@ -52,7 +52,7 @@ class ContactsActivity : AppCompatActivity() {
 
         initContactList()
         initRecyclerView()
-        initSwipeToDelete()
+        initSwipeToDeleteOfContactItem()
 
         setObservers()
         setListeners()
@@ -117,7 +117,7 @@ class ContactsActivity : AppCompatActivity() {
         deletingSnackBar.show()
     }
 
-    private fun initSwipeToDelete() {
+    private fun initSwipeToDeleteOfContactItem() {
         val helper =
             ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
                 override fun onMove(
