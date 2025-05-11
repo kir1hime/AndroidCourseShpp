@@ -7,7 +7,9 @@ import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.ACCESS_TO_CONTACTS_KEY
 import com.example.androidcourseshpp.data.contactlistdata.ContactItem
@@ -33,7 +35,7 @@ class ContactsActivity : AppCompatActivity() {
             }
 
             override fun cancelDeletingContactItem(contactItem: ContactItem, position: Int) {
-                createCancelDeletingSnackBar(contactItem, position)
+                showUndoDeletingSnackBarItem(contactItem, position)
             }
         }
         )
@@ -50,6 +52,7 @@ class ContactsActivity : AppCompatActivity() {
 
         initContactList()
         initRecyclerView()
+        initSwipeToDelete()
 
         setObservers()
         setListeners()
@@ -99,7 +102,7 @@ class ContactsActivity : AppCompatActivity() {
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    private fun createCancelDeletingSnackBar(contactItem: ContactItem, position: Int) {
+    private fun showUndoDeletingSnackBarItem(contactItem: ContactItem, position: Int) {
         val deletingSnackBar = Snackbar.make(
             binding.root,
             R.string.snackbar_text,
@@ -113,4 +116,34 @@ class ContactsActivity : AppCompatActivity() {
 
         deletingSnackBar.show()
     }
+
+    private fun initSwipeToDelete() {
+        val helper =
+            ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+                override fun onMove(
+                    recyclerView: RecyclerView,
+                    viewHolder: RecyclerView.ViewHolder,
+                    target: RecyclerView.ViewHolder
+                ): Boolean {
+                    return false
+                }
+
+                @SuppressLint("NotifyDataSetChanged")
+                override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+
+                    with(viewHolder) {
+                        val deletedItem = adapter.contactList[adapterPosition]
+                        showUndoDeletingSnackBarItem(deletedItem, adapterPosition)
+                    }
+
+                    viewModel.deleteContactItem(viewHolder.adapterPosition)
+                    adapter.notifyDataSetChanged()
+                }
+
+            })
+        helper.attachToRecyclerView(binding.rvContacts)
+
+    }
+
+
 }

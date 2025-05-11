@@ -28,10 +28,15 @@ class ContactListViewModel(
         updateContactIds()
     }
 
-    private fun updateContactIds(){
-       for(i in mutableContactList.value!!.indices){
-           mutableContactList.value!![i].id = i
-       }
+    fun deleteContactItem(position: Int) {
+        mutableContactList.value!!.removeAt(position)
+
+    }
+
+    private fun updateContactIds() {
+        for (i in mutableContactList.value!!.indices) {
+            mutableContactList.value!![i].id = i
+        }
     }
 
     fun addContactItem(contactItem: ContactItem, position: Int) {
