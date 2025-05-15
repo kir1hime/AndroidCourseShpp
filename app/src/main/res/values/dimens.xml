@@ -99,4 +99,11 @@
     <dimen name="input_box_stroke_w_focused">1dp</dimen>
     <dimen name="profile_photo_size">113dp</dimen>
 
+    <!--border radii -->
+    <dimen name="radius_6">6dp</dimen>
+
+    <!--stroke with -->
+    <dimen name="stroke_1">1dp</dimen>
+    <dimen name="stroke_2">2dp</dimen>
+    <dimen name="stroke_3">3dp</dimen>
 </resources>

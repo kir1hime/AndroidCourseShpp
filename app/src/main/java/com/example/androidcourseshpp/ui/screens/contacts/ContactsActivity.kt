@@ -144,6 +144,4 @@ class ContactsActivity : AppCompatActivity() {
         helper.attachToRecyclerView(binding.rvContacts)
 
     }
-
-
 }

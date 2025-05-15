@@ -6,8 +6,8 @@
     <string name="edit_profile">Редагувати профіль</string>
     <string name="settings">Налаштування</string>
     <string name="log_out">Вийти</string>
-    <string name="name">Ім\'я</string>
-    <string name="career">Кар\'єра</string>
+    <string name="name">Ім\'я</string> <!-- also used in Dialog_add_contact.xml -->
+    <string name="career">Кар\'єра</string> <!-- also used in Dialog_add_contact.xml -->
     <string name="home_address">Домашня адреса</string>
     <string name="instagram_button">instagram_button</string>
     <string name="linkedin_button">linkedin_button</string>
@@ -37,7 +37,7 @@
 
     <!--My contacts (activity_contacts.xml)-->
     <string name="contacts">Контакти</string>
-    <string name="add_contacts">Додати контакти</string>
+    <string name="add_contact">Додати контакт</string>
     <string name="search_imagebutton">search_imagebutton</string>
     <string name="arrow_back_imagebutton">arrow_back_imagebutton</string>
 
