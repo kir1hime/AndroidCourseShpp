@@ -61,7 +61,7 @@
         android:layout_marginTop="@dimen/add_contacts_margin_top"
         android:layout_marginBottom="@dimen/add_contacts_margin_bottom"
         android:fontFamily="@font/open_sans"
-        android:text="@string/add_contacts"
+        android:text="@string/add_contact"
         android:textColor="@color/add_contact_color"
         android:textSize="@dimen/small_text_size"
         android:textStyle="bold"

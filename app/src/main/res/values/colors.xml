@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Common colors -->
     <color name="cursor_color">#FFFFFFFF</color>
+    <color name="input_line_color">@color/account_question_text_color</color>
+    <color name="error_text_color">#F93E3E</color>
 
     <!--My profile (activity_main.xml)-->
     <color name="bottom_view_color">#FFFFFFFF</color>
@@ -39,9 +42,6 @@
     <color name="e_mail_hint_text_color">@color/account_question_text_color</color>
     <color name="password_hint_text_color">@color/account_question_text_color</color>
     <color name="remember_me_text_color">@color/account_question_text_color</color>
-    <color name="input_line_color">@color/account_question_text_color</color>
-
-    <color name="error_text_color">#F93E3E</color>
 
     <color name="google_text_color">#000000</color>
 
@@ -60,6 +60,7 @@
     <color name="item_name_text_color">#18181F</color>
 
     <!-- Dialog (dialog_add_contacts.xml) -->
-    <color name="dialog_background_color">#FFFFFF</color>
-    <color name="dialog_input_text_color">#18181F</color>
+    <color name="dialog_add_contact_background_color">#FFFFFF</color>
+    <color name="dialog_add_contact_input_text_color">#18181F</color>
+    <color name="dialog_add_contact_hint_text_color">#B2B2B3</color>
 </resources>

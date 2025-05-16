@@ -41,6 +41,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.fragment.ktx)
     implementation (libs.picasso.transformations)
     implementation (libs.picasso)
     implementation (libs.circleimageview)
