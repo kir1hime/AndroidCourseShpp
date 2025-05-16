@@ -2,11 +2,13 @@ package com.example.androidcourseshpp.ui.screens.contacts
 
 import android.annotation.SuppressLint
 import android.app.ActivityOptions
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -56,6 +58,7 @@ class ContactsActivity : AppCompatActivity() {
 
         setObservers()
         setListeners()
+        setAddContactDialogListener()
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -87,6 +90,39 @@ class ContactsActivity : AppCompatActivity() {
     private fun setListeners() = with(binding) {
         ibtArrowBack.setOnClickListener {
             moveToMyProfileScreen()
+        }
+        tvAddContacts.setOnClickListener {
+            showAddContactDialog()
+        }
+    }
+
+    private fun showAddContactDialog() {
+        AddContactDialog().show(supportFragmentManager, AddContactDialog.TAG)
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun setAddContactDialogListener() {
+        supportFragmentManager.setFragmentResultListener(
+            AddContactDialog.REQUEST_KEY, this
+        ) { _, data ->
+
+            val which = data.getInt(AddContactDialog.RESPONSE_KEY)
+            val newContactName = data.getString(AddContactDialog.NAME_KEY)
+            val newContactCareer = data.getString(AddContactDialog.CAREER_KEY)
+
+            val newContact = ContactItem(
+                viewModel.contactList.value!!.size,
+                newContactName!!,
+                newContactCareer!!,
+                AddContactDialog.NEW_CONTACT_AVATAR
+            )
+
+            when (which) {
+                AlertDialog.BUTTON_POSITIVE -> {
+                    viewModel.addContactItem(newContact, viewModel.contactList.value!!.size)
+                    adapter.notifyDataSetChanged()
+                }
+            }
         }
     }
 

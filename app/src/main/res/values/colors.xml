@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Common colors -->
-    <color name="cursor_color">#FFFFFFFF</color>
+    <color name="light_cursor_color">#FFFFFFFF</color>
+    <color name="dark_cursor_color">#18181F</color>
     <color name="input_line_color">@color/account_question_text_color</color>
     <color name="error_text_color">#F93E3E</color>
+    <color name="custom_primary_color">#FB5E06</color>
 
     <!--My profile (activity_main.xml)-->
     <color name="bottom_view_color">#FFFFFFFF</color>
@@ -61,6 +63,6 @@
 
     <!-- Dialog (dialog_add_contacts.xml) -->
     <color name="dialog_add_contact_background_color">#FFFFFF</color>
-    <color name="dialog_add_contact_input_text_color">#18181F</color>
+    <color name="dialog_add_contact_input_text_color">#242235</color>
     <color name="dialog_add_contact_hint_text_color">#B2B2B3</color>
 </resources>
