@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="cursor_color_2">#FFFFFF</color>
     <!--My profile (activity_main.xml)-->
     <color name="bottom_view_color">#0F0E0E</color>
 
@@ -24,4 +25,9 @@
     <color name="contacts_screen_color">#0F0E0E</color>
 
     <color name="item_name_text_color">#FFFFFF</color>
+
+    <!-- Dialog (dialog_add_contacts.xml) -->
+    <color name="dialog_add_contact_background_color"> </color>
+    <color name="dialog_add_contact_input_text_color">#FFFFFF</color>
+
 </resources>
