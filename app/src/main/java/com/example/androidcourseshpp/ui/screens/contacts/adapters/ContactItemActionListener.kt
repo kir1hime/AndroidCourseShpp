@@ -6,5 +6,5 @@ interface ContactItemActionListener {
 
     fun deleteContactItem (contactItem: ContactItem)
 
-    fun cancelDeletingContactItem(contactItem: ContactItem, position: Int)
+    fun showUndoDeletingSnackBarContactItem(contactItem: ContactItem, position: Int)
 }

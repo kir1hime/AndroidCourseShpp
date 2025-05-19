@@ -45,4 +45,10 @@
     <string name="snackbar_text">Do you want to undo deletion of this contact?</string>
     <string name="snackbar_action_text">Undo</string>
 
+    <!-- Add contact dialog -->
+    <string name="add_contact_dialog_title">Add new contact</string>
+    <string name="add_contact_dialog_message">Enter the data of the new contact</string>
+    <string name="add_contact_dialog_positive_button_text">Save</string>
+    <string name="add_contact_dialog_negative_button_text">Cancel</string>
+
 </resources>

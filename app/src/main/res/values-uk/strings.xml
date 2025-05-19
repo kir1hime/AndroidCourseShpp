@@ -45,4 +45,10 @@
     <string name="snackbar_text">Скасувати видалення цього контакту?</string>
     <string name="snackbar_action_text">Скасувати</string>
 
+    <!-- Add contact dialog -->
+    <string name="add_contact_dialog_title">Додати новий контакт</string>
+    <string name="add_contact_dialog_message">Введіть дані нового користувача</string>
+    <string name="add_contact_dialog_positive_button_text">Зберігти</string>
+    <string name="add_contact_dialog_negative_button_text">Закрити</string>
+
 </resources>

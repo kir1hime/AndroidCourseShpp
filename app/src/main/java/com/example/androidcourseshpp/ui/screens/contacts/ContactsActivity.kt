@@ -5,15 +5,22 @@ import android.app.ActivityOptions
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
+import android.provider.SyncStateContract.Constants
+import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.ACCESS_TO_CONTACTS_KEY
+import com.example.androidcourseshpp.data.CAREER_KEY
+import com.example.androidcourseshpp.data.NAME_KEY
+import com.example.androidcourseshpp.data.NEW_CONTACT_AVATAR
+import com.example.androidcourseshpp.data.RESPONSE_KEY
 import com.example.androidcourseshpp.data.contactlistdata.ContactItem
 import com.example.androidcourseshpp.ui.screens.contacts.adapters.ContactItemDecoration
 import com.example.androidcourseshpp.ui.screens.contacts.adapters.ContactsAdapter
@@ -32,11 +39,15 @@ class ContactsActivity : AppCompatActivity() {
 
     private val adapter by lazy {
         ContactsAdapter(object : ContactItemActionListener {
+
             override fun deleteContactItem(contactItem: ContactItem) {
                 viewModel.deleteContactItem(contactItem)
             }
 
-            override fun cancelDeletingContactItem(contactItem: ContactItem, position: Int) {
+            override fun showUndoDeletingSnackBarContactItem(
+                contactItem: ContactItem,
+                position: Int
+            ) {
                 showUndoDeletingSnackBarItem(contactItem, position)
             }
         }
@@ -61,14 +72,13 @@ class ContactsActivity : AppCompatActivity() {
         setAddContactDialogListener()
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     private fun initContactList() {
-        adapter.contactList = viewModel.contactList.value!!
+        adapter.submitList(viewModel.contactList.value!!)
     }
 
     private fun setObservers() {
         viewModel.contactList.observe(this) {
-            adapter.contactList = it
+            adapter.submitList(it)
         }
     }
 
@@ -100,27 +110,25 @@ class ContactsActivity : AppCompatActivity() {
         AddContactDialog().show(supportFragmentManager, AddContactDialog.TAG)
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     private fun setAddContactDialogListener() {
         supportFragmentManager.setFragmentResultListener(
             AddContactDialog.REQUEST_KEY, this
         ) { _, data ->
 
-            val which = data.getInt(AddContactDialog.RESPONSE_KEY)
-            val newContactName = data.getString(AddContactDialog.NAME_KEY)
-            val newContactCareer = data.getString(AddContactDialog.CAREER_KEY)
+            val which = data.getInt(RESPONSE_KEY)
+            val newContactName = data.getString(NAME_KEY)
+            val newContactCareer = data.getString(CAREER_KEY)
 
             val newContact = ContactItem(
                 viewModel.contactList.value!!.size,
                 newContactName!!,
                 newContactCareer!!,
-                AddContactDialog.NEW_CONTACT_AVATAR
+                NEW_CONTACT_AVATAR
             )
 
             when (which) {
                 AlertDialog.BUTTON_POSITIVE -> {
-                    viewModel.addContactItem(newContact, viewModel.contactList.value!!.size)
-                    adapter.notifyDataSetChanged()
+                    viewModel.addContactItem(newContact, newContact.id)
                 }
             }
         }
@@ -137,7 +145,7 @@ class ContactsActivity : AppCompatActivity() {
         finish()
     }
 
-    @SuppressLint("NotifyDataSetChanged")
+
     private fun showUndoDeletingSnackBarItem(contactItem: ContactItem, position: Int) {
         val deletingSnackBar = Snackbar.make(
             binding.root,
@@ -147,8 +155,7 @@ class ContactsActivity : AppCompatActivity() {
 
         deletingSnackBar.setAction(R.string.snackbar_action_text) {
             viewModel.addContactItem(contactItem, position)
-            adapter.notifyDataSetChanged()
-        }
+        }.setActionTextColor(ContextCompat.getColor(this, R.color.custom_primary_color))
 
         deletingSnackBar.show()
     }
@@ -156,6 +163,7 @@ class ContactsActivity : AppCompatActivity() {
     private fun initSwipeToDeleteOfContactItem() {
         val helper =
             ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+
                 override fun onMove(
                     recyclerView: RecyclerView,
                     viewHolder: RecyclerView.ViewHolder,
@@ -164,20 +172,15 @@ class ContactsActivity : AppCompatActivity() {
                     return false
                 }
 
-                @SuppressLint("NotifyDataSetChanged")
                 override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
 
                     with(viewHolder) {
-                        val deletedItem = adapter.contactList[adapterPosition]
+                        val deletedItem = viewModel.contactList.value!![adapterPosition]
                         showUndoDeletingSnackBarItem(deletedItem, adapterPosition)
                     }
-
                     viewModel.deleteContactItem(viewHolder.adapterPosition)
-                    adapter.notifyDataSetChanged()
                 }
-
             })
         helper.attachToRecyclerView(binding.rvContacts)
-
     }
 }

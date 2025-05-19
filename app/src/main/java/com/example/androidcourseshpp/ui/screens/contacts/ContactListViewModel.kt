@@ -9,11 +9,12 @@ import com.example.androidcourseshpp.data.contactlistdata.ContactListGenerator
 import com.example.androidcourseshpp.data.contactlistdata.ContactItem
 
 class ContactListViewModel(
-    private val contentResolver: ContentResolver,
-    private val isAccessToContactsAllowed: Boolean
+    contentResolver: ContentResolver,
+    isAccessToContactsAllowed: Boolean
 ) : ViewModel() {
+
+    private var mutableContactList = MutableLiveData<MutableList<ContactItem>>()
     val contactList: LiveData<MutableList<ContactItem>> get() = mutableContactList
-    private val mutableContactList = MutableLiveData<MutableList<ContactItem>>()
 
     init {
         mutableContactList.value =
@@ -21,17 +22,23 @@ class ContactListViewModel(
     }
 
     fun deleteContactItem(contactItem: ContactItem) {
-        val indexToDelete = mutableContactList.value!!.indexOfFirst { it.name == contactItem.name }
+        val contactList = mutableContactList.value!!.toMutableList()
+
+        val indexToDelete = contactList.indexOfFirst { it.name == contactItem.name }
         if (indexToDelete != -1) {
-            mutableContactList.value!!.removeAt(indexToDelete)
+          contactList.removeAt(indexToDelete)
         }
+        mutableContactList.value = contactList
         updateContactIds()
     }
 
     fun deleteContactItem(position: Int) {
-        mutableContactList.value!!.removeAt(position)
-
+        val contactList = mutableContactList.value!!.toMutableList()
+       contactList.removeAt(position)
+        mutableContactList.value = contactList
+        updateContactIds()
     }
+
 
     private fun updateContactIds() {
         for (i in mutableContactList.value!!.indices) {
@@ -40,7 +47,9 @@ class ContactListViewModel(
     }
 
     fun addContactItem(contactItem: ContactItem, position: Int) {
-        mutableContactList.value!!.add(position, contactItem)
+        val contactList = mutableContactList.value!!.toMutableList()
+        contactList.add(position, contactItem)
+        mutableContactList.value = contactList
         updateContactIds()
     }
 }
