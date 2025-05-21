@@ -72,6 +72,7 @@
     <dimen name="input_text_padding">-8dp</dimen>
     <dimen name="input_text_edit_padding_top">26dp</dimen>
     <dimen name="input_text_edit_padding_bottom">8dp</dimen>
+    <dimen name="dialog_career_edit_text_padding_top">24dp</dimen>
 
     <!--button dimens-->
     <dimen name="view_my_contacts_bt_h">55dp</dimen>

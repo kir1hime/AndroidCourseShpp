@@ -1,26 +1,18 @@
 package com.example.androidcourseshpp.ui.screens.contacts
 
-import android.annotation.SuppressLint
 import android.app.ActivityOptions
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
-import android.provider.SyncStateContract.Constants
-import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidcourseshpp.R
-import com.example.androidcourseshpp.data.ACCESS_TO_CONTACTS_KEY
-import com.example.androidcourseshpp.data.CAREER_KEY
-import com.example.androidcourseshpp.data.NAME_KEY
-import com.example.androidcourseshpp.data.NEW_CONTACT_AVATAR
-import com.example.androidcourseshpp.data.RESPONSE_KEY
+import com.example.androidcourseshpp.data.*
 import com.example.androidcourseshpp.data.contactlistdata.ContactItem
 import com.example.androidcourseshpp.ui.screens.contacts.adapters.ContactItemDecoration
 import com.example.androidcourseshpp.ui.screens.contacts.adapters.ContactsAdapter
@@ -147,17 +139,17 @@ class ContactsActivity : AppCompatActivity() {
 
 
     private fun showUndoDeletingSnackBarItem(contactItem: ContactItem, position: Int) {
-        val deletingSnackBar = Snackbar.make(
+        val undoDeletingSnackBar = Snackbar.make(
             binding.root,
             R.string.snackbar_text,
             Snackbar.LENGTH_LONG
         )
 
-        deletingSnackBar.setAction(R.string.snackbar_action_text) {
+        undoDeletingSnackBar.setAction(R.string.snackbar_action_text) {
             viewModel.addContactItem(contactItem, position)
         }.setActionTextColor(ContextCompat.getColor(this, R.color.custom_primary_color))
 
-        deletingSnackBar.show()
+        undoDeletingSnackBar.show()
     }
 
     private fun initSwipeToDeleteOfContactItem() {
@@ -173,7 +165,6 @@ class ContactsActivity : AppCompatActivity() {
                 }
 
                 override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-
                     with(viewHolder) {
                         val deletedItem = viewModel.contactList.value!![adapterPosition]
                         showUndoDeletingSnackBarItem(deletedItem, adapterPosition)
@@ -181,6 +172,7 @@ class ContactsActivity : AppCompatActivity() {
                     viewModel.deleteContactItem(viewHolder.adapterPosition)
                 }
             })
+
         helper.attachToRecyclerView(binding.rvContacts)
     }
 }

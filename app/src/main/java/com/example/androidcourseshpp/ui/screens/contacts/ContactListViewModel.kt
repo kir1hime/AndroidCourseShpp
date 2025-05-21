@@ -23,22 +23,17 @@ class ContactListViewModel(
 
     fun deleteContactItem(contactItem: ContactItem) {
         val contactList = mutableContactList.value!!.toMutableList()
-
-        val indexToDelete = contactList.indexOfFirst { it.name == contactItem.name }
-        if (indexToDelete != -1) {
-          contactList.removeAt(indexToDelete)
-        }
+        contactList.remove(contactItem)
         mutableContactList.value = contactList
         updateContactIds()
     }
 
     fun deleteContactItem(position: Int) {
         val contactList = mutableContactList.value!!.toMutableList()
-       contactList.removeAt(position)
+        contactList.removeAt(position)
         mutableContactList.value = contactList
         updateContactIds()
     }
-
 
     private fun updateContactIds() {
         for (i in mutableContactList.value!!.indices) {
