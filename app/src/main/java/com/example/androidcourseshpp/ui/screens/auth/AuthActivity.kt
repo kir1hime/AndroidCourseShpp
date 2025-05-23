@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.*
 import com.example.androidcourseshpp.data.SignUpValidator
+import com.example.androidcourseshpp.data.dataProvider.DataProvider
 import com.example.androidcourseshpp.ui.screens.main.MainActivity
 import com.example.androidcourseshpp.databinding.ActivityAuthBinding
 import com.example.androidcourseshpp.ui.extensions.adaptUserInterface
@@ -44,9 +45,10 @@ class AuthActivity : AppCompatActivity() {
             val inputEMail = etEMail.text.toString()
             val inputPassword = etPassword.text.toString()
 
-            if (SignUpValidator.isEMailCorrect(inputEMail) &&
-                SignUpValidator.isPasswordCorrect(inputPassword)
-            ) {
+            val isInputEMailCorrect = SignUpValidator.isEMailCorrect(inputEMail)
+            val isInputPasswordCorrect = SignUpValidator.isPasswordCorrect(inputPassword)
+
+            if (isInputEMailCorrect && isInputPasswordCorrect) {
                 tilPassword.helperText = ""
                 tilEMail.helperText = ""
 
@@ -62,11 +64,13 @@ class AuthActivity : AppCompatActivity() {
 
             } else {
                 tilEMail.helperText =
-                    if (!SignUpValidator.isEMailCorrect(inputEMail)) getString(R.string.email_error) else ""
+                    if (!isInputEMailCorrect) {
+                        getString(R.string.email_error)
+                    } else ""
                 tilPassword.helperText =
-                    if (!SignUpValidator.isPasswordCorrect(inputPassword)) viewModel.definePasswordErrorMessage(
-                        inputPassword
-                    ) else ""
+                    if (!isInputPasswordCorrect) {
+                        viewModel.definePasswordErrorMessage(inputPassword)
+                    } else ""
             }
         }
     }
@@ -74,7 +78,7 @@ class AuthActivity : AppCompatActivity() {
     private fun moveToMyProfileScreen(userEMail: String) {
         val intent = Intent(this, MainActivity::class.java)
 
-        intent.putExtra(EMAIL_KEY, userEMail)
+        intent.putExtra(DataProvider.EMAIL_KEY, userEMail)
 
         val options = ActivityOptions.makeCustomAnimation(
             this,

@@ -1,10 +1,13 @@
 package com.example.androidcourseshpp.ui.screens.contacts
 
+import android.Manifest
 import android.app.ActivityOptions
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -12,13 +15,14 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidcourseshpp.R
-import com.example.androidcourseshpp.data.*
 import com.example.androidcourseshpp.data.contactlistdata.ContactItem
 import com.example.androidcourseshpp.ui.screens.contacts.adapters.ContactItemDecoration
 import com.example.androidcourseshpp.ui.screens.contacts.adapters.ContactsAdapter
 import com.example.androidcourseshpp.databinding.ActivityContactsBinding
 import com.example.androidcourseshpp.ui.extensions.adaptUserInterface
-import com.example.androidcourseshpp.ui.screens.contacts.adapters.ContactItemActionListener
+import com.example.androidcourseshpp.ui.screens.contacts.AddContactDialog.Companion.CAREER_KEY
+import com.example.androidcourseshpp.ui.screens.contacts.AddContactDialog.Companion.NAME_KEY
+import com.example.androidcourseshpp.ui.screens.contacts.AddContactDialog.Companion.RESPONSE_KEY
 import com.example.androidcourseshpp.ui.screens.main.MainActivity
 import com.example.androidcourseshpp.ui.utils.factory
 import com.google.android.material.snackbar.Snackbar
@@ -26,24 +30,20 @@ import com.google.android.material.snackbar.Snackbar
 class ContactsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityContactsBinding
+    private lateinit var requestPermissionsLauncher: ActivityResultLauncher<String>
 
     private val viewModel by viewModels<ContactListViewModel> { factory() }
 
     private val adapter by lazy {
-        ContactsAdapter(object : ContactItemActionListener {
-
-            override fun deleteContactItem(contactItem: ContactItem) {
-                viewModel.deleteContactItem(contactItem)
-            }
-
-            override fun showUndoDeletingSnackBarContactItem(
-                contactItem: ContactItem,
-                position: Int
-            ) {
-                showUndoDeletingSnackBarItem(contactItem, position)
-            }
+        ContactsAdapter { contactItem, position ->
+            viewModel.deleteContactItem(contactItem)
+            showUndoDeletingSnackBarItem(contactItem, position)
         }
-        )
+    }
+
+    private companion object {
+        const val NEW_CONTACT_AVATAR =
+            "https://kartinki.pics/uploads/posts/2022-02/1645235615_4-kartinkin-net-p-kroliki-kartinki-4.jpg"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,7 +55,9 @@ class ContactsActivity : AppCompatActivity() {
 
         adaptUserInterface(binding.root)
 
-        initContactList()
+        checkPermissions()
+        requestPermissionsLauncher.launch(Manifest.permission.READ_CONTACTS)
+
         initRecyclerView()
         initSwipeToDeleteOfContactItem()
 
@@ -64,18 +66,10 @@ class ContactsActivity : AppCompatActivity() {
         setAddContactDialogListener()
     }
 
-    private fun initContactList() {
-        adapter.submitList(viewModel.contactList.value!!)
-    }
-
     private fun setObservers() {
         viewModel.contactList.observe(this) {
             adapter.submitList(it)
         }
-    }
-
-    fun isAccessToContactsAllowed(): Boolean {
-        return intent.getBooleanExtra(ACCESS_TO_CONTACTS_KEY, false)
     }
 
     private fun initRecyclerView() = with(binding.rvContacts) {
@@ -111,16 +105,21 @@ class ContactsActivity : AppCompatActivity() {
             val newContactName = data.getString(NAME_KEY)
             val newContactCareer = data.getString(CAREER_KEY)
 
+            val contactList = viewModel.contactList.value
+            val lastId: Int = contactList?.get(contactList.size - 1)?.id ?: 0
+
             val newContact = ContactItem(
-                viewModel.contactList.value!!.size,
-                newContactName!!,
-                newContactCareer!!,
+                lastId + 1,
+                newContactName ?: "",
+                newContactCareer ?: "",
                 NEW_CONTACT_AVATAR
             )
 
             when (which) {
                 AlertDialog.BUTTON_POSITIVE -> {
-                    viewModel.addContactItem(newContact, newContact.id)
+                    if (!viewModel.isNewContactDataIsBlank(newContact)) {
+                        viewModel.addContactItem(newContact, viewModel.contactList.value?.size ?: 0)
+                    }
                 }
             }
         }
@@ -174,5 +173,15 @@ class ContactsActivity : AppCompatActivity() {
             })
 
         helper.attachToRecyclerView(binding.rvContacts)
+    }
+
+    private fun checkPermissions() {
+        requestPermissionsLauncher =
+            registerForActivityResult(ActivityResultContracts.RequestPermission()) { isPermissionsGranted ->
+                if (isPermissionsGranted){
+
+                    viewModel.updateContactList(true)
+                }
+            }
     }
 }

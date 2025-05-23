@@ -3,9 +3,6 @@ package com.example.androidcourseshpp.data.dataProvider
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
-import com.example.androidcourseshpp.data.EMAIL_KEY
-import com.example.androidcourseshpp.data.PASSWORD_KEY
-
 
 class DataProvider(val context: Context) {
 
@@ -15,8 +12,10 @@ class DataProvider(val context: Context) {
 
     private val editor = sharedPref.edit()
 
-    private companion object {
+    companion object {
         const val USER_INFO_STORE = "userInfo"
+        const val EMAIL_KEY = "userEMail"
+        const val PASSWORD_KEY = "userPassword"
     }
 
     private fun getStringData(key: String): String {

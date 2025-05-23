@@ -17,6 +17,9 @@ class SignUpViewModel(private val dataProvider: DataProvider) : ViewModel() {
         savedEMail.value = getUserEMail()
     }
 
+    private var passwordChecks: MutableList<(s: String) -> Boolean> = mutableListOf()
+    private var passwordErrorMessages: MutableList<String> = mutableListOf()
+
     /**
      * function checks all types of password checks and returns certain error text
      * */
@@ -25,7 +28,7 @@ class SignUpViewModel(private val dataProvider: DataProvider) : ViewModel() {
 
         with(dataProvider.context) {
 
-            val passwordChecks: MutableList<(s: String) -> Boolean> =
+            passwordChecks =
                 mutableListOf(
                     SignUpValidator::checkPasswordForNumOfLetters,
                     SignUpValidator::checkPasswordForUpperCase,
@@ -33,9 +36,9 @@ class SignUpViewModel(private val dataProvider: DataProvider) : ViewModel() {
                     SignUpValidator::checkPasswordForSpecialSymbols,
                     SignUpValidator::checkPasswordForNumbers,
                 )
-            val passwordErrorMessages: MutableList<String> =
+            passwordErrorMessages =
                 mutableListOf(
-                    getString(R.string.less_8_symbols_pswd_error, MIN_NUM_OF_CHARS_IN_PASSWORD),
+                    getString(R.string.less_8_symbols_pswd_error, SignUpValidator.MIN_NUM_OF_CHARS_IN_PASSWORD),
                     getString(R.string.capital_letter_error),
                     getString(R.string.lowercase_letter_error),
                     getString(R.string.special_symbol_error),

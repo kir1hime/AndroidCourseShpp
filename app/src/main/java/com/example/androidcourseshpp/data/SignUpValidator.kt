@@ -4,6 +4,9 @@ import android.util.Patterns
 
 object SignUpValidator {
 
+    const val MIN_NUM_OF_CHARS_IN_PASSWORD = 8
+    private const val SPECIAL_SYMBOLS = " !#$%&'()*+,-./:;<=>?@[\\]^_`{|}~\""
+
     fun isEMailCorrect(inputEMail: String): Boolean {
         return Patterns.EMAIL_ADDRESS.matcher(inputEMail).matches()
     }

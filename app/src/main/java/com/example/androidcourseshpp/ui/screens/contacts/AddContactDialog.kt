@@ -7,9 +7,6 @@ import android.os.Bundle
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import com.example.androidcourseshpp.R
-import com.example.androidcourseshpp.data.CAREER_KEY
-import com.example.androidcourseshpp.data.NAME_KEY
-import com.example.androidcourseshpp.data.RESPONSE_KEY
 import com.example.androidcourseshpp.databinding.DialogAddContactBinding
 
 class AddContactDialog : DialogFragment() {
@@ -43,6 +40,9 @@ class AddContactDialog : DialogFragment() {
     companion object {
         val TAG = AddContactDialog::class.java.simpleName
         val REQUEST_KEY = "requestKey - $TAG"
+        const val NAME_KEY = "contactName"
+        const val CAREER_KEY = "contactCareer"
+        const val RESPONSE_KEY = "pressedButton"
     }
 
 }
