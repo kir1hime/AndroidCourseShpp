@@ -6,8 +6,8 @@
     <string name="edit_profile">Редагувати профіль</string>
     <string name="settings">Налаштування</string>
     <string name="log_out">Вийти</string>
-    <string name="name">Ім\'я</string>
-    <string name="career">Кар\'єра</string>
+    <string name="name">Ім\'я</string> <!-- also used in Dialog_add_contact.xml -->
+    <string name="career">Кар\'єра</string> <!-- also used in Dialog_add_contact.xml -->
     <string name="home_address">Домашня адреса</string>
     <string name="instagram_button">instagram_button</string>
     <string name="linkedin_button">linkedin_button</string>
@@ -34,9 +34,21 @@
     <string name="lowercase_letter_error">Повинна бути щонайменше одна маленька літера</string>
     <string name="special_symbol_error">Повинен бути щонайменше один спеціальний символ</string>
     <string name="numbers_error">Повинно бути щонайменше одне число</string>
+
+    <!--My contacts (activity_contacts.xml)-->
     <string name="contacts">Контакти</string>
-    <string name="add_contacts">Додати контакти</string>
+    <string name="add_contact">Додати контакт</string>
     <string name="search_imagebutton">search_imagebutton</string>
     <string name="arrow_back_imagebutton">arrow_back_imagebutton</string>
+
+    <!--My contacts ContactsActivity-->
+    <string name="snackbar_text">Скасувати видалення цього контакту?</string>
+    <string name="snackbar_action_text">Скасувати</string>
+
+    <!-- Add contact dialog -->
+    <string name="add_contact_dialog_title">Додати новий контакт</string>
+    <string name="add_contact_dialog_message">Введіть дані нового користувача</string>
+    <string name="add_contact_dialog_positive_button_text">Зберігти</string>
+    <string name="add_contact_dialog_negative_button_text">Закрити</string>
 
 </resources>

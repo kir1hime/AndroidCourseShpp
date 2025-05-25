@@ -72,6 +72,7 @@
     <dimen name="input_text_padding">-8dp</dimen>
     <dimen name="input_text_edit_padding_top">26dp</dimen>
     <dimen name="input_text_edit_padding_bottom">8dp</dimen>
+    <dimen name="dialog_career_edit_text_padding_top">24dp</dimen>
 
     <!--button dimens-->
     <dimen name="view_my_contacts_bt_h">55dp</dimen>
@@ -99,4 +100,11 @@
     <dimen name="input_box_stroke_w_focused">1dp</dimen>
     <dimen name="profile_photo_size">113dp</dimen>
 
+    <!--border radii -->
+    <dimen name="radius_6">6dp</dimen>
+
+    <!--stroke with -->
+    <dimen name="stroke_1">1dp</dimen>
+    <dimen name="stroke_2">2dp</dimen>
+    <dimen name="stroke_3">3dp</dimen>
 </resources>

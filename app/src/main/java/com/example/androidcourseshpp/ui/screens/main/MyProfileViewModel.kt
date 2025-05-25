@@ -1,16 +1,23 @@
 package com.example.androidcourseshpp.ui.screens.main
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.androidcourseshpp.ui.dataStore.DataStore
+import com.example.androidcourseshpp.data.dataProvider.DataProvider
 
-class MyProfileViewModel(private val dataStore: DataStore) : ViewModel() {
+class MyProfileViewModel(private val dataProvider: DataProvider) : ViewModel() {
 
-    fun deleteUserInfo(eMailKey : String, passwordKey : String){
-        dataStore.deleteStringData(eMailKey)
-        dataStore.deleteStringData(passwordKey)
+    private val mutableSavedEMail = MutableLiveData<String>()
+    val savedEMail get() = mutableSavedEMail
+
+    init {
+        savedEMail.value = getUserEMail()
     }
 
-    fun getUserEMail(eMailKey: String): String {
-        return dataStore.getStringData(eMailKey)
+    fun deleteUserInfo() {
+        dataProvider.deleteUserInfo()
+    }
+
+    private fun getUserEMail(): String {
+        return dataProvider.getUserEMail()
     }
 }

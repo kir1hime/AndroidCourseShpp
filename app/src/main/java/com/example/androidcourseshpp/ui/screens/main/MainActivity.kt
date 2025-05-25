@@ -8,6 +8,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.EmailParser
+import com.example.androidcourseshpp.data.dataProvider.DataProvider
 import com.example.androidcourseshpp.ui.screens.contacts.ContactsActivity
 import com.example.androidcourseshpp.databinding.ActivityMainBinding
 import com.example.androidcourseshpp.ui.extensions.adaptUserInterface
@@ -17,12 +18,8 @@ import com.example.androidcourseshpp.ui.screens.auth.AuthActivity
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private val viewModel by viewModels<MyProfileViewModel> { factory() }
 
-    companion object {
-        const val EMAIL_KEY = "userEMail"
-        const val PASSWORD_KEY = "userPassword"
-    }
+    private val viewModel by viewModels<MyProfileViewModel> { factory() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,27 +31,22 @@ class MainActivity : AppCompatActivity() {
 
         adaptUserInterface(binding.root)
 
-
         defineUserName()
         setListeners()
     }
 
-    private fun defineUserName() {
-
-        var userEMail = viewModel.getUserEMail(EMAIL_KEY)
-
-        if (userEMail == "") {
-            userEMail = intent.getStringExtra(EMAIL_KEY).toString()
-        }
-
-        binding.tvName.text = EmailParser.parseEMail(userEMail)
-
+    private fun defineUserName() = with(viewModel.savedEMail) {
+        binding.tvName.text = if (value == "") EmailParser.parseEMail(
+            intent.getStringExtra(DataProvider.EMAIL_KEY).toString()
+        ) else
+            EmailParser.parseEMail(value!!)
     }
+
 
     private fun setListeners() = with(binding) {
         btLogOut.setOnClickListener {
             moveToSignUpScreen()
-            viewModel.deleteUserInfo(EMAIL_KEY, PASSWORD_KEY)
+            viewModel.deleteUserInfo()
 
         }
         btViewMyContacts.setOnClickListener {
@@ -87,6 +79,5 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent, options.toBundle())
         finish()
     }
-
 }
 

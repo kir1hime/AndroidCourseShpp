@@ -7,7 +7,9 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.androidcourseshpp.R
+import com.example.androidcourseshpp.data.MIN_NUM_OF_CHARS_IN_PASSWORD
 import com.example.androidcourseshpp.data.SignUpValidator
+import com.example.androidcourseshpp.data.dataProvider.EMAIL_KEY
 import com.example.androidcourseshpp.ui.screens.main.MainActivity
 import com.example.androidcourseshpp.databinding.ActivityAuthBinding
 import com.example.androidcourseshpp.ui.extensions.adaptUserInterface
@@ -16,11 +18,15 @@ import com.example.androidcourseshpp.ui.utils.factory
 class AuthActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAuthBinding
-    private val viewModel by viewModels<SignUpViewModel> {factory()}
+    private val viewModel by viewModels<SignUpViewModel> { factory() }
 
-    private companion object {
-        const val EMAIL_KEY = "userEMail"
-    }
+    private val passwordErrorMessages = listOf(
+        getString(R.string.less_8_symbols_pswd_error, MIN_NUM_OF_CHARS_IN_PASSWORD),
+        getString(R.string.capital_letter_error),
+        getString(R.string.lowercase_letter_error),
+        getString(R.string.special_symbol_error),
+        getString(R.string.numbers_error),)
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,10 +38,8 @@ class AuthActivity : AppCompatActivity() {
 
         adaptUserInterface(binding.root)
 
-        val userEMail = viewModel.getUserEMail(EMAIL_KEY)
-
-        if (viewModel.isExistingAccount(EMAIL_KEY)) {
-            moveToMyProfileScreen(userEMail)
+        if (viewModel.savedEMail.value != "") {
+            moveToMyProfileScreen(viewModel.savedEMail.value!!)
         }
 
         setListeners()
@@ -48,17 +52,12 @@ class AuthActivity : AppCompatActivity() {
             val inputEMail = etEMail.text.toString()
             val inputPassword = etPassword.text.toString()
 
-            if (SignUpValidator.isEMailCorrect(inputEMail).also {
-                    if (!it) tilEMail.helperText =
-                        getString(R.string.email_error) else tilEMail.helperText = ""
-                }
-                and
-                SignUpValidator.isPasswordCorrect(inputPassword).also {
-                    if (!it) tilPassword.helperText =
-                        viewModel.definePasswordErrorMessage(inputPassword)
-                    else tilPassword.helperText = ""
-                }
-            ) {
+            val isInputEMailCorrect = SignUpValidator.isEMailCorrect(inputEMail)
+            val isInputPasswordCorrect = SignUpValidator.isPasswordCorrect(inputPassword)
+
+            if (isInputEMailCorrect && isInputPasswordCorrect) {
+                tilPassword.helperText = ""
+                tilEMail.helperText = ""
 
                 if (cbRememberMe.isChecked) {
 
@@ -69,6 +68,16 @@ class AuthActivity : AppCompatActivity() {
                 }
 
                 moveToMyProfileScreen(etEMail.text.toString())
+
+            } else {
+                tilEMail.helperText =
+                    if (!isInputEMailCorrect) {
+                        getString(R.string.email_error)
+                    } else ""
+                tilPassword.helperText =
+                    if (!isInputPasswordCorrect) {
+                        viewModel.definePasswordErrorMessage(inputPassword, passwordErrorMessages)
+                    } else ""
             }
         }
     }

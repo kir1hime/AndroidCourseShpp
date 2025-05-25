@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="cursor_color">#FFFFFFFF</color>
+    <!-- Common colors -->
+    <color name="cursor_color_1">#FFFFFFFF</color>
+    <color name="cursor_color_2">#18181F</color>
+
+    <color name="input_line_color">@color/account_question_text_color</color>
+    <color name="error_text_color">#F93E3E</color>
+    <color name="custom_primary_color">#FB5E06</color>
 
     <!--My profile (activity_main.xml)-->
     <color name="bottom_view_color">#FFFFFFFF</color>
@@ -39,9 +45,6 @@
     <color name="e_mail_hint_text_color">@color/account_question_text_color</color>
     <color name="password_hint_text_color">@color/account_question_text_color</color>
     <color name="remember_me_text_color">@color/account_question_text_color</color>
-    <color name="input_line_color">@color/account_question_text_color</color>
-
-    <color name="error_text_color">#F93E3E</color>
 
     <color name="google_text_color">#000000</color>
 
@@ -51,11 +54,16 @@
     <color name="contacts_screen_color">#FFFFFF</color>
     <color name="contacts_color">#FFFFFF</color>
     <color name="add_contact_color">@color/contacts_color</color>
-    <color name ="contacts_recycleView_item_background_color">@color/contacts_screen_color</color>
+    <color name="contacts_recycleView_item_background_color">@color/contacts_screen_color</color>
 
     <color name="contacts_recycleView_border_color">#B2B2B3</color>
 
     <color name="item_career_text_color">#828282</color>
 
     <color name="item_name_text_color">#18181F</color>
+
+    <!-- Dialog (dialog_add_contacts.xml) -->
+    <color name="dialog_add_contact_background_color">#FFFFFF</color>
+    <color name="dialog_add_contact_input_text_color">#242235</color>
+    <color name="dialog_add_contact_hint_text_color">#B2B2B3</color>
 </resources>

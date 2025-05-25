@@ -2,6 +2,9 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
     <corners android:radius="@dimen/radius_6" />
-    <solid android:color="@color/view_my_contacts_color" />
+    <stroke
+        android:width="@dimen/stroke_2"
+        android:color="@color/top_view_color" />
+    <solid android:color="@color/dialog_add_contact_background_color" />
 
 </shape>
