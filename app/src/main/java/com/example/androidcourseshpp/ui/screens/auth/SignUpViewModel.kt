@@ -2,8 +2,6 @@ package com.example.androidcourseshpp.ui.screens.auth
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.androidcourseshpp.R
-import com.example.androidcourseshpp.data.*
 import com.example.androidcourseshpp.data.SignUpValidator
 import com.example.androidcourseshpp.data.dataProvider.DataProvider
 
