@@ -2,9 +2,11 @@ package com.example.androidcourseshpp.data
 
 import android.util.Patterns
 
+const val MIN_NUM_OF_CHARS_IN_PASSWORD = 8
+
 object SignUpValidator {
 
-    const val MIN_NUM_OF_CHARS_IN_PASSWORD = 8
+
     private const val SPECIAL_SYMBOLS = " !#$%&'()*+,-./:;<=>?@[\\]^_`{|}~\""
 
     fun isEMailCorrect(inputEMail: String): Boolean {

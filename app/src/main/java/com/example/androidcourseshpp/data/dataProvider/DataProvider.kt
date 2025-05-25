@@ -4,19 +4,17 @@ import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 
-class DataProvider(val context: Context) {
+const val USER_INFO_STORE = "userInfo"
+const val EMAIL_KEY = "userEMail"
+const val PASSWORD_KEY = "userPassword"
+
+class DataProvider(context: Context) {
 
     private val sharedPref: SharedPreferences by lazy {
         context.getSharedPreferences(USER_INFO_STORE, MODE_PRIVATE)
     }
 
     private val editor = sharedPref.edit()
-
-    companion object {
-        const val USER_INFO_STORE = "userInfo"
-        const val EMAIL_KEY = "userEMail"
-        const val PASSWORD_KEY = "userPassword"
-    }
 
     private fun getStringData(key: String): String {
         return sharedPref.getString(key, "").toString()

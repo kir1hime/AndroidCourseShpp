@@ -17,38 +17,29 @@ class SignUpViewModel(private val dataProvider: DataProvider) : ViewModel() {
         savedEMail.value = getUserEMail()
     }
 
-    private var passwordChecks: MutableList<(s: String) -> Boolean> = mutableListOf()
-    private var passwordErrorMessages: MutableList<String> = mutableListOf()
+    private var passwordChecks: List<(s: String) -> Boolean> = listOf()
 
     /**
      * function checks all types of password checks and returns certain error text
      * */
-    fun definePasswordErrorMessage(inputPassword: String): String {
+    fun definePasswordErrorMessage(
+        inputPassword: String,
+        passwordErrorMessages: List<String>
+    ): String {
         var errorMessage = ""
 
-        with(dataProvider.context) {
+        passwordChecks =
+            mutableListOf(
+                SignUpValidator::checkPasswordForNumOfLetters,
+                SignUpValidator::checkPasswordForUpperCase,
+                SignUpValidator::checkPasswordForLowerCase,
+                SignUpValidator::checkPasswordForSpecialSymbols,
+                SignUpValidator::checkPasswordForNumbers,
+            )
 
-            passwordChecks =
-                mutableListOf(
-                    SignUpValidator::checkPasswordForNumOfLetters,
-                    SignUpValidator::checkPasswordForUpperCase,
-                    SignUpValidator::checkPasswordForLowerCase,
-                    SignUpValidator::checkPasswordForSpecialSymbols,
-                    SignUpValidator::checkPasswordForNumbers,
-                )
-            passwordErrorMessages =
-                mutableListOf(
-                    getString(R.string.less_8_symbols_pswd_error, SignUpValidator.MIN_NUM_OF_CHARS_IN_PASSWORD),
-                    getString(R.string.capital_letter_error),
-                    getString(R.string.lowercase_letter_error),
-                    getString(R.string.special_symbol_error),
-                    getString(R.string.numbers_error),
-                )
-
-            for ((index, check) in passwordChecks.withIndex()) {
-                if (!check.invoke(inputPassword)) {
-                    errorMessage = passwordErrorMessages[index]
-                }
+        for ((index, check) in passwordChecks.withIndex()) {
+            if (!check.invoke(inputPassword)) {
+                errorMessage = passwordErrorMessages[index]
             }
         }
 
