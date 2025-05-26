@@ -225,5 +225,14 @@
         app:layout_constraintStart_toStartOf="@id/til_password"
         app:layout_constraintTop_toBottomOf="@id/til_password" />
 
+    <com.example.androidcourseshpp.ui.customviews.ButtonWithIcon
+        android:layout_width="400dp"
+        android:layout_height="100dp"
+        android:text="adflasfjlds"
+        android:background="@color/view_my_contacts_color"
+        app:icon="@drawable/ic_google"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
