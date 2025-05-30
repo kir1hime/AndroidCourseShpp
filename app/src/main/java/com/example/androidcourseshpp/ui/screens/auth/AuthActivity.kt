@@ -20,12 +20,15 @@ class AuthActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAuthBinding
     private val viewModel by viewModels<SignUpViewModel> { factory() }
 
-    private val passwordErrorMessages = listOf(
-        getString(R.string.less_8_symbols_pswd_error, MIN_NUM_OF_CHARS_IN_PASSWORD),
-        getString(R.string.capital_letter_error),
-        getString(R.string.lowercase_letter_error),
-        getString(R.string.special_symbol_error),
-        getString(R.string.numbers_error),)
+    private val passwordErrorMessages  by lazy {
+        listOf(
+            getString(R.string.less_8_symbols_pswd_error, MIN_NUM_OF_CHARS_IN_PASSWORD),
+            getString(R.string.capital_letter_error),
+            getString(R.string.lowercase_letter_error),
+            getString(R.string.special_symbol_error),
+            getString(R.string.numbers_error),
+        )
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

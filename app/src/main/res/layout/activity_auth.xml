@@ -13,14 +13,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/main_margin_side"
-        android:layout_marginTop="@dimen/acquaintance_and_filling_out_margin_top_ver"
+        android:layout_marginTop="144dp"
         android:fontFamily="@font/open_sans"
         android:gravity="center"
         android:text="@string/acquaintance"
         android:textColor="@android:color/white"
         android:textSize="@dimen/large_text_size"
         android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="16dp" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_fillOutTheProfile"
@@ -112,7 +113,6 @@
         app:backgroundTint="@null"
         app:icon="@drawable/ic_google"
         app:iconGravity="textStart"
-        app:iconPadding="@dimen/google_icon_padding"
         app:iconTint="@null"
         app:layout_constraintBottom_toBottomOf="parent" />
 
@@ -226,13 +226,22 @@
         app:layout_constraintTop_toBottomOf="@id/til_password" />
 
     <com.example.androidcourseshpp.ui.customviews.ButtonWithIcon
-        android:layout_width="400dp"
-        android:layout_height="100dp"
-        android:text="adflasfjlds"
-        android:background="@color/view_my_contacts_color"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/google_bt_h"
+        android:layout_marginHorizontal="@dimen/main_margin_side"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/google_background"
+        android:fontFamily="@font/open_sans"
+        android:letterSpacing="0.15"
+        android:text="@string/google"
+        android:textColor="@color/google_text_color"
+        android:textSize="@dimen/middle_text_size"
+        app:textPaddingStart="145dp"
+        app:textPaddingEnd="110dp"
+        android:textStyle="bold"
         app:icon="@drawable/ic_google"
-        app:layout_constraintTop_toTopOf="parent"
+        app:backgroundTint="@null"
+        app:layout_constraintBottom_toTopOf="@id/bt_google"
         app:layout_constraintStart_toStartOf="parent"/>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
