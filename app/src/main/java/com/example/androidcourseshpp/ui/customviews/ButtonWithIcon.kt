@@ -8,8 +8,10 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Paint.FontMetrics
 import android.graphics.Rect
+import android.graphics.RectF
 
 import android.util.AttributeSet
+import android.util.Log
 
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.graphics.drawable.toBitmap
@@ -42,11 +44,19 @@ class ButtonWithIcon(
     private lateinit var textPaint: Paint
     private lateinit var textMetrics: FontMetrics
 
-
     private var textOriginX by Delegates.notNull<Float>()
-
-
     private var textOriginY by Delegates.notNull<Float>()
+
+    private var iconOriginX by Delegates.notNull<Float>()
+    private var iconOriginY by Delegates.notNull<Float>()
+
+    private val textWidth by lazy {
+        textPaint.measureText(text.toString())
+    }
+    private val textHeight by lazy {
+        (abs(textMetrics.ascent) + textMetrics.descent)
+    }
+
 
     constructor(context: Context, attributesSet: AttributeSet?) : this(context, attributesSet, 0)
     constructor(context: Context) : this(context, null)
@@ -63,38 +73,67 @@ class ButtonWithIcon(
 
     }
 
+
     private fun defineTextOriginX() {
         if (textPaddingStart == 0f && textPaddingEnd == 0f) {
-            textOriginX = width / 2f - textPaint.measureText(text.toString()) / 2f
-        } else if (textPaddingStart != 0f && textPaddingEnd == 0f){
+            textOriginX = width / 2f - textWidth / 2f
+
+        } else if (textPaddingStart != 0f && textPaddingEnd == 0f) {
             textOriginX = textPaddingStart
-        } else if (textPaddingStart == 0f && textPaddingEnd != 0f){
-            textOriginX = width - textPaint.measureText(text.toString()) - textPaddingEnd
+
+        } else if (textPaddingStart == 0f) {
+            textOriginX = width - textWidth - textPaddingEnd
+
         } else {
-            val contentLeft = textPaddingStart
-            val contentRight = width - textPaddingEnd
-            val contentWidth = contentRight - contentLeft
-            textOriginX = contentLeft + contentWidth / 2f - textPaint.measureText(text.toString()) / 2f
+            val contentSpaceByX = width - textPaddingEnd - textPaddingStart
+            textOriginX = textPaddingStart + contentSpaceByX / 2f - textWidth / 2f
         }
     }
+
 
     private fun defineTextOriginY() {
         if (textPaddingTop == 0f && textPaddingBottom == 0f) {
-            textOriginY =
-                height / 2f + ((textMetrics.descent - textMetrics.ascent) / 2 - textMetrics.descent)
-        } else if (textPaddingTop != 0f && textPaddingBottom == 0f){
-            textOriginY = textPaddingTop + abs(textMetrics.ascent)
-        } else if (textPaddingTop == 0f && textPaddingBottom != 0f){
-            textOriginY = height - (textMetrics.descent - textMetrics.ascent) - textPaddingBottom
-        } else {
-            val contentTop = textPaddingTop
-            val contentBottom = height - textPaddingBottom
-            val contentHeight = contentBottom - contentTop
-            textOriginY = contentTop + contentHeight / 2f + ((textMetrics.descent - textMetrics.ascent) / 2 - textMetrics.descent)
-        }
+            textOriginY = height / 2f + textHeight / 4f
 
+        } else if (textPaddingTop != 0f && textPaddingBottom == 0f) {
+            textOriginY = textPaddingTop + textMetrics.ascent
+
+        } else if (textPaddingTop == 0f) {
+            textOriginY = height - textHeight - textPaddingBottom
+
+        } else {
+            val contentSpaceByY = height - textPaddingBottom - textPaddingTop
+            textOriginY = textPaddingTop + contentSpaceByY / 2f + textHeight / 4f
+        }
     }
 
+    private fun defineIconOriginX() {
+        if (iconPaddingStart == 0f && iconPaddingEnd == 0f) {
+            iconOriginX = width / 3f
+        } else if (textPaddingStart != 0f && iconPaddingEnd == 0f) {
+            iconOriginX = iconPaddingStart
+        } else if (iconPaddingStart == 0f) {
+            iconOriginX = width - iconWidth - iconPaddingEnd
+        } else {
+            val contentSpaceByX = width - iconPaddingStart - iconPaddingEnd
+            iconOriginX = iconPaddingStart + contentSpaceByX / 2f - iconWidth / 2f
+        }
+    }
+    private fun defineIconOriginY(){
+        if (iconPaddingTop == 0f && iconPaddingBottom == 0f) {
+            iconOriginY = height / 2f - iconHeight/2f
+
+        } else if (iconPaddingTop != 0f && iconPaddingBottom == 0f) {
+            iconOriginY = iconPaddingTop
+
+        } else if (iconPaddingTop == 0f) {
+            iconOriginY = height - iconHeight - iconPaddingTop
+
+        } else {
+            val contentSpaceByY = height - iconPaddingBottom - iconPaddingTop
+            iconOriginY = iconPaddingTop + contentSpaceByY / 2f + iconHeight / 2f
+        }
+    }
 
 
     private fun initPaints() {
@@ -113,7 +152,13 @@ class ButtonWithIcon(
 
         canvas.drawText(text.toString(), textOriginX, textOriginY, textPaint)
 
-        val rect = icon?.let { Rect(0, 0, it.width, it.height) } ?: Rect(0, 0, 0, 0)
+        val rect = icon?.let {
+            val iconWidth = if (iconWidth != 0f) iconWidth else it.width.toFloat()
+            val iconHeight = if (iconHeight != 0f) iconHeight else it.width.toFloat()
+
+            RectF(iconOriginX, iconOriginY, iconOriginX + iconWidth, iconOriginY + iconHeight)
+        }
+            ?: RectF(0f, 0f, 0f, 0f)
 
         icon?.let {
             canvas.drawBitmap(it, null, rect, null)
@@ -123,8 +168,13 @@ class ButtonWithIcon(
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
+
         defineTextOriginX()
         defineTextOriginY()
+
+        defineIconOriginX()
+        defineIconOriginY()
+
     }
 
     private fun initAttributes(attributesSet: AttributeSet?, defStyleAttr: Int) {
@@ -137,8 +187,12 @@ class ButtonWithIcon(
 
         icon = typedArray.getDrawable(R.styleable.ButtonWithIcon_icon)?.toBitmap()
 
-        iconWidth = typedArray.getDimension(R.styleable.ButtonWithIcon_iconWidth, 0f)
-        iconHeight = typedArray.getDimension(R.styleable.ButtonWithIcon_iconHeight, 0f)
+        icon?.let {
+            iconWidth =
+                typedArray.getDimension(R.styleable.ButtonWithIcon_iconWidth, it.width.toFloat())
+            iconHeight =
+                typedArray.getDimension(R.styleable.ButtonWithIcon_iconHeight, it.width.toFloat())
+        }
 
         iconPaddingStart = typedArray.getDimension(R.styleable.ButtonWithIcon_iconPaddingStart, 0f)
         iconPaddingEnd = typedArray.getDimension(R.styleable.ButtonWithIcon_iconPaddingEnd, 0f)
