@@ -8,15 +8,13 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Paint.FontMetrics
 import android.graphics.Rect
-import android.os.Build
 
 import android.util.AttributeSet
-import android.util.Log
-import androidx.annotation.RequiresApi
 
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.graphics.drawable.toBitmap
 import com.example.androidcourseshpp.R
+import kotlin.math.abs
 import kotlin.properties.Delegates
 
 class ButtonWithIcon(
@@ -84,10 +82,19 @@ class ButtonWithIcon(
         if (textPaddingTop == 0f && textPaddingBottom == 0f) {
             textOriginY =
                 height / 2f + ((textMetrics.descent - textMetrics.ascent) / 2 - textMetrics.descent)
+        } else if (textPaddingTop != 0f && textPaddingBottom == 0f){
+            textOriginY = textPaddingTop + abs(textMetrics.ascent)
+        } else if (textPaddingTop == 0f && textPaddingBottom != 0f){
+            textOriginY = height - (textMetrics.descent - textMetrics.ascent) - textPaddingBottom
         } else {
-            textOriginY = textPaddingTop - textPaddingBottom
+            val contentTop = textPaddingTop
+            val contentBottom = height - textPaddingBottom
+            val contentHeight = contentBottom - contentTop
+            textOriginY = contentTop + contentHeight / 2f + ((textMetrics.descent - textMetrics.ascent) / 2 - textMetrics.descent)
         }
+
     }
+
 
 
     private fun initPaints() {
@@ -104,9 +111,6 @@ class ButtonWithIcon(
     @SuppressLint("DrawAllocation")
     override fun onDraw(canvas: Canvas) {
 
-        defineTextOriginX()
-        defineTextOriginY()
-
         canvas.drawText(text.toString(), textOriginX, textOriginY, textPaint)
 
         val rect = icon?.let { Rect(0, 0, it.width, it.height) } ?: Rect(0, 0, 0, 0)
@@ -115,7 +119,12 @@ class ButtonWithIcon(
             canvas.drawBitmap(it, null, rect, null)
         }
 
+    }
 
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+        super.onSizeChanged(w, h, oldw, oldh)
+        defineTextOriginX()
+        defineTextOriginY()
     }
 
     private fun initAttributes(attributesSet: AttributeSet?, defStyleAttr: Int) {

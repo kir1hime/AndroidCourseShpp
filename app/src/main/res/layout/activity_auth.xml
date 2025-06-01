@@ -238,6 +238,7 @@
         android:textSize="@dimen/middle_text_size"
         app:textPaddingStart="145dp"
         app:textPaddingEnd="110dp"
+        app:textPaddingTop="-1dp"
         android:textStyle="bold"
         app:icon="@drawable/ic_google"
         app:backgroundTint="@null"
