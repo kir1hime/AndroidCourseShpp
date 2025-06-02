@@ -84,6 +84,15 @@
     <dimen name="google_bt_h">@dimen/edit_profile_bt_h</dimen>
     <dimen name="remember_me_size">18dp</dimen>
 
+    <!-- button content dimens -->
+    <dimen name="google_bt_icon_h">20dp</dimen>
+    <dimen name="google_bt_icon_w">20dp</dimen>
+    <dimen name="google_bt_icon_padding_end">200dp</dimen>
+    <dimen name="google_bt_icon_padding_start">110dp</dimen>
+    <dimen name="google_bt_text_padding_start">145dp</dimen>
+    <dimen name="google_bt_text_padding_end">110dp</dimen>
+
+
     <!--view/textView dimens-->
     <dimen name="contacts_bar_h">149dp</dimen>
     <dimen name="contacts_recycle_view_item_h">66dp</dimen>

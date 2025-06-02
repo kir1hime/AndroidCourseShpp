@@ -5,7 +5,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
 import android.util.AttributeSet
@@ -20,6 +19,9 @@ class ButtonWithIcon(
     attributesSet: AttributeSet?,
     defStyleAttr: Int,
 ) : AppCompatButton(context, attributesSet, defStyleAttr) {
+
+    constructor(context: Context, attributesSet: AttributeSet?) : this(context, attributesSet, 0)
+    constructor(context: Context) : this(context, null)
 
     private var icon: Bitmap? = null
 
@@ -36,14 +38,6 @@ class ButtonWithIcon(
     private var textPaddingTop by Delegates.notNull<Float>()
     private var textPaddingBottom by Delegates.notNull<Float>()
 
-
-    private lateinit var textPaint: Paint
-    private lateinit var iconPaint: Paint
-
-    private val textMetrics by lazy {
-        textPaint.fontMetrics
-    }
-
     private var textOriginX by Delegates.notNull<Float>()
     private var textOriginY by Delegates.notNull<Float>()
 
@@ -51,22 +45,20 @@ class ButtonWithIcon(
     private var iconOriginY by Delegates.notNull<Float>()
 
     private val textWidth by lazy {
-        textPaint.measureText(text.toString())
+        paint.measureText(text.toString())
     }
     private val textHeight by lazy {
         (abs(textMetrics.ascent) + textMetrics.descent)
     }
 
-
-    constructor(context: Context, attributesSet: AttributeSet?) : this(context, attributesSet, 0)
-    constructor(context: Context) : this(context, null)
-
+    private val textMetrics by lazy {
+        paint.fontMetrics
+    }
 
     init {
         if (attributesSet != null) {
             initAttributes(attributesSet, defStyleAttr)
         }
-        initPaints()
     }
 
     private fun getOriginCoordinate(
@@ -89,26 +81,15 @@ class ButtonWithIcon(
     }
 
 
-    private fun initPaints() {
-        textPaint = Paint(Paint.ANTI_ALIAS_FLAG)
-        textPaint.typeface = typeface
-        textPaint.textSize = textSize
-        textPaint.color = currentTextColor
-        textPaint.letterSpacing = letterSpacing
-
-        iconPaint = Paint(Paint.ANTI_ALIAS_FLAG)
-    }
-
     @SuppressLint("DrawAllocation")
     override fun onDraw(canvas: Canvas) {
-        canvas.drawText(text.toString(), textOriginX, textOriginY, textPaint)
+        canvas.drawText(text.toString(), textOriginX, textOriginY, paint)
 
         icon?.let {
             val rect =
                 RectF(iconOriginX, iconOriginY, iconOriginX + iconWidth, iconOriginY + iconHeight)
-            canvas.drawBitmap(it, null, rect, iconPaint)
+            canvas.drawBitmap(it, null, rect, Paint(Paint.ANTI_ALIAS_FLAG))
         }
-
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
