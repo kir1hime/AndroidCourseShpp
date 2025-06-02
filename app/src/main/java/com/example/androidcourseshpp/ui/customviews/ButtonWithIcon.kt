@@ -5,14 +5,10 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.Paint
-import android.graphics.Paint.FontMetrics
-import android.graphics.Rect
 import android.graphics.RectF
-
 import android.util.AttributeSet
-import android.util.Log
-
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.graphics.drawable.toBitmap
 import com.example.androidcourseshpp.R
@@ -42,7 +38,11 @@ class ButtonWithIcon(
 
 
     private lateinit var textPaint: Paint
-    private lateinit var textMetrics: FontMetrics
+    private lateinit var iconPaint: Paint
+
+    private val textMetrics by lazy {
+        textPaint.fontMetrics
+    }
 
     private var textOriginX by Delegates.notNull<Float>()
     private var textOriginY by Delegates.notNull<Float>()
@@ -63,75 +63,28 @@ class ButtonWithIcon(
 
 
     init {
-
         if (attributesSet != null) {
             initAttributes(attributesSet, defStyleAttr)
         }
-
         initPaints()
-
-
     }
 
-
-    private fun defineTextOriginX() {
-        if (textPaddingStart == 0f && textPaddingEnd == 0f) {
-            textOriginX = width / 2f - textWidth / 2f
-
-        } else if (textPaddingStart != 0f && textPaddingEnd == 0f) {
-            textOriginX = textPaddingStart
-
-        } else if (textPaddingStart == 0f) {
-            textOriginX = width - textWidth - textPaddingEnd
-
+    private fun getOriginCoordinate(
+        priorityPadding: Float,
+        oppositePadding: Float,
+        originWithoutUserPaddings: Float,
+        originWithPriorityPadding: Float,
+        originWithOppositePadding: Float,
+        originWithAllPaddings: Float
+    ): Float {
+        if (priorityPadding == 0f && oppositePadding == 0f) {
+            return originWithoutUserPaddings
+        } else if (priorityPadding != 0f && oppositePadding == 0f) {
+            return originWithPriorityPadding
+        } else if (priorityPadding == 0f) {
+            return originWithOppositePadding
         } else {
-            val contentSpaceByX = width - textPaddingEnd - textPaddingStart
-            textOriginX = textPaddingStart + contentSpaceByX / 2f - textWidth / 2f
-        }
-    }
-
-
-    private fun defineTextOriginY() {
-        if (textPaddingTop == 0f && textPaddingBottom == 0f) {
-            textOriginY = height / 2f + textHeight / 4f
-
-        } else if (textPaddingTop != 0f && textPaddingBottom == 0f) {
-            textOriginY = textPaddingTop + textMetrics.ascent
-
-        } else if (textPaddingTop == 0f) {
-            textOriginY = height - textHeight - textPaddingBottom
-
-        } else {
-            val contentSpaceByY = height - textPaddingBottom - textPaddingTop
-            textOriginY = textPaddingTop + contentSpaceByY / 2f + textHeight / 4f
-        }
-    }
-
-    private fun defineIconOriginX() {
-        if (iconPaddingStart == 0f && iconPaddingEnd == 0f) {
-            iconOriginX = width / 3f
-        } else if (textPaddingStart != 0f && iconPaddingEnd == 0f) {
-            iconOriginX = iconPaddingStart
-        } else if (iconPaddingStart == 0f) {
-            iconOriginX = width - iconWidth - iconPaddingEnd
-        } else {
-            val contentSpaceByX = width - iconPaddingStart - iconPaddingEnd
-            iconOriginX = iconPaddingStart + contentSpaceByX / 2f - iconWidth / 2f
-        }
-    }
-    private fun defineIconOriginY(){
-        if (iconPaddingTop == 0f && iconPaddingBottom == 0f) {
-            iconOriginY = height / 2f - iconHeight/2f
-
-        } else if (iconPaddingTop != 0f && iconPaddingBottom == 0f) {
-            iconOriginY = iconPaddingTop
-
-        } else if (iconPaddingTop == 0f) {
-            iconOriginY = height - iconHeight - iconPaddingTop
-
-        } else {
-            val contentSpaceByY = height - iconPaddingBottom - iconPaddingTop
-            iconOriginY = iconPaddingTop + contentSpaceByY / 2f + iconHeight / 2f
+            return originWithAllPaddings
         }
     }
 
@@ -143,38 +96,97 @@ class ButtonWithIcon(
         textPaint.color = currentTextColor
         textPaint.letterSpacing = letterSpacing
 
-        textMetrics = textPaint.fontMetrics
-
+        iconPaint = Paint(Paint.ANTI_ALIAS_FLAG)
     }
 
     @SuppressLint("DrawAllocation")
     override fun onDraw(canvas: Canvas) {
-
         canvas.drawText(text.toString(), textOriginX, textOriginY, textPaint)
 
-        val rect = icon?.let {
-            val iconWidth = if (iconWidth != 0f) iconWidth else it.width.toFloat()
-            val iconHeight = if (iconHeight != 0f) iconHeight else it.width.toFloat()
-
-            RectF(iconOriginX, iconOriginY, iconOriginX + iconWidth, iconOriginY + iconHeight)
-        }
-            ?: RectF(0f, 0f, 0f, 0f)
-
         icon?.let {
-            canvas.drawBitmap(it, null, rect, null)
+            val rect =
+                RectF(iconOriginX, iconOriginY, iconOriginX + iconWidth, iconOriginY + iconHeight)
+            canvas.drawBitmap(it, null, rect, iconPaint)
         }
 
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
+        defineTextXOrigin()
+        defineTextYOrigin()
 
-        defineTextOriginX()
-        defineTextOriginY()
+        defineIconXOrigin()
+        defineIconYOrigin()
+    }
 
-        defineIconOriginX()
-        defineIconOriginY()
+    private fun defineTextXOrigin() {
+        val textXOriginWithoutUserPaddings = width / 2f - textWidth / 2f
+        val textXOriginWithEndPadding = width - textWidth - textPaddingEnd
+        val textXSpace = width - textPaddingEnd - textPaddingStart
+        val textXOriginWithBothUserPaddings =
+            textPaddingStart + textXSpace / 2f - textWidth / 2f
 
+        textOriginX = getOriginCoordinate(
+            textPaddingStart,
+            textPaddingEnd,
+            textXOriginWithoutUserPaddings,
+            textPaddingStart,
+            textXOriginWithEndPadding,
+            textXOriginWithBothUserPaddings
+        )
+    }
+
+    private fun defineTextYOrigin() {
+        val textYOriginWithoutUserPaddings = height / 2f + textHeight / 4f
+        val textYOriginWithTopPadding = textPaddingTop + textMetrics.ascent
+        val textYOriginWithBottomPadding = height - textHeight - textPaddingBottom
+        val textYSpace = height - textPaddingBottom - textPaddingTop
+        val textYOriginWithBothUserPaddings =
+            textPaddingTop + textYSpace / 2f + textHeight / 4f
+
+        textOriginY = getOriginCoordinate(
+            textPaddingTop,
+            textPaddingBottom,
+            textYOriginWithoutUserPaddings,
+            textYOriginWithTopPadding,
+            textYOriginWithBottomPadding,
+            textYOriginWithBothUserPaddings
+        )
+    }
+
+    private fun defineIconXOrigin() {
+        val iconXOriginWithoutUserPaddings = width / 3f
+        val iconXOriginWithEndPadding = width - iconWidth - iconPaddingEnd
+        val iconXSpace = width - iconPaddingStart - iconPaddingEnd
+        val iconXOriginWithBothUserPaddings =
+            iconPaddingStart + iconXSpace / 2f - iconWidth / 2f
+
+        iconOriginX = getOriginCoordinate(
+            iconPaddingStart,
+            iconPaddingEnd,
+            iconXOriginWithoutUserPaddings,
+            iconPaddingStart,
+            iconXOriginWithEndPadding,
+            iconXOriginWithBothUserPaddings
+        )
+    }
+
+    private fun defineIconYOrigin() {
+        val iconYOriginWithoutUserPaddings = height / 2f - iconHeight / 2f
+        val iconYOriginWithBottomPadding = height - iconHeight - iconPaddingTop
+        val iconYSpace = height - iconPaddingBottom - iconPaddingTop
+        val iconYOriginWithBothUserPaddings =
+            iconPaddingTop + iconYSpace / 2f + iconHeight / 2f
+
+        iconOriginY = getOriginCoordinate(
+            iconPaddingTop,
+            iconPaddingBottom,
+            iconYOriginWithoutUserPaddings,
+            iconPaddingTop,
+            iconYOriginWithBottomPadding,
+            iconYOriginWithBothUserPaddings
+        )
     }
 
     private fun initAttributes(attributesSet: AttributeSet?, defStyleAttr: Int) {

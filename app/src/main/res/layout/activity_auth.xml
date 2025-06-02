@@ -237,8 +237,6 @@
         android:textColor="@color/google_text_color"
         android:textSize="@dimen/middle_text_size"
         app:textPaddingStart="145dp"
-        app:iconHeight="20dp"
-        app:iconWidth="20dp"
         app:iconPaddingStart="110dp"
         app:iconPaddingEnd="200dp"
         app:textPaddingEnd="110dp"
