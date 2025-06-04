@@ -3,6 +3,7 @@ agp = "8.8.2"
 circleimageview = "3.1.0"
 fragmentKtx = "1.8.7"
 # logical parts
+fragmentKtxVersion = "1.8.8"
 glide = "4.12.0" # image loader
 javafaker = "1.0.2" # test data
 # ________________
@@ -22,6 +23,7 @@ roomCompilerProcessingTesting = "2.7.1"
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-fragment-ktx = { module = "androidx.fragment:fragment-ktx", version.ref = "fragmentKtx" }
+androidx-fragment-ktx-v188 = { module = "androidx.fragment:fragment-ktx", version.ref = "fragmentKtxVersion" }
 circleimageview = { module = "de.hdodenhof:circleimageview", version.ref = "circleimageview" }
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
 javafaker = { module = "com.github.javafaker:javafaker", version.ref = "javafaker" }

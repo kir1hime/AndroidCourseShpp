@@ -41,6 +41,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.fragment.ktx.v188)
     implementation(libs.javafaker)
     implementation(libs.androidx.fragment.ktx)
     implementation (libs.picasso.transformations)
