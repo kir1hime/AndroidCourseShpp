@@ -46,10 +46,10 @@
 
     <dimen name="contacts_margin_top">10dp</dimen>
 
-    <dimen name="arrow_back_margin_start">20dp</dimen>
-    <dimen name="arrow_back_margin_top">17.5dp</dimen>
+    <dimen name="contacts_arrow_back_margin_start">20dp</dimen>
+    <dimen name="contacts_arrow_back_margin_top">17.5dp</dimen>
 
-    <dimen name="search_margin_top">@dimen/arrow_back_margin_top</dimen>
+    <dimen name="search_margin_top">@dimen/contacts_arrow_back_margin_top</dimen>
 
     <dimen name="add_contacts_margin_top">73dp</dimen>
     <dimen name="add_contacts_margin_bottom">26dp</dimen>
@@ -65,6 +65,9 @@
     <dimen name="item_trash_can_margin_end">13.5dp</dimen>
 
     <dimen name="profile_label_margin_top">20dp</dimen>
+
+    <dimen name="detail_view_arrow_back_margin_top">24dp</dimen>
+    <dimen name="detail_view_arrow_back_margin_start">21dp</dimen>
 
 
     <!--paddings-->

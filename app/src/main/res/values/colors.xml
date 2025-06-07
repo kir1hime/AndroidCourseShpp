@@ -68,10 +68,11 @@
     <color name="dialog_add_contact_hint_text_color">#B2B2B3</color>
 
     <!-- Detail view (fragment_detailview.xml) -->
-    <color name="detail_view_bottom_view_color">#FFFFFFFF</color>
+    <color name="detail_view_bottom_view_color">@color/bottom_view_color</color>
     <color name="profile_label_text_color" >@color/detail_view_bottom_view_color</color>
+    <color name="message_button_text_color">@color/view_my_contacts_text_color</color>
 
-    <color name="detail_view_top_view_color">#242235</color>
+    <color name="detail_view_top_view_color">@color/top_view_color</color>
 
 
 </resources>
