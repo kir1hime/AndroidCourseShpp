@@ -8,7 +8,6 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.EmailParser
-import com.example.androidcourseshpp.data.dataProvider.DataProvider
 import com.example.androidcourseshpp.data.dataProvider.EMAIL_KEY
 import com.example.androidcourseshpp.ui.screens.contacts.ContactsActivity
 import com.example.androidcourseshpp.databinding.ActivityMainBinding

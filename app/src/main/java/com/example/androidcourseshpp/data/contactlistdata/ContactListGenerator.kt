@@ -2,6 +2,7 @@ package com.example.androidcourseshpp.data.contactlistdata
 
 import android.content.ContentResolver
 import android.provider.ContactsContract
+import android.util.Log
 import com.github.javafaker.Faker
 
 private val javaFaker = Faker.instance()
@@ -21,14 +22,15 @@ class ContactListGenerator(
         "https://static.wixstatic.com/media/9d8ed5_4725657bd5b448478d19d54669ea0883~mv2.jpg/v1/fill/w_1000,h_563,al_c,q_85,usm_0.66_1.00_0.01/9d8ed5_4725657bd5b448478d19d54669ea0883~mv2.jpg"
     )
 
-    private val nameList = generateNames()
+    private val nameList : MutableList<String> = generateNames()
 
     private val careerList = generateCareers()
 
     fun getContactItems(): List<ContactItem> {
 
+        Log.d("Mytag", isAccessToContactsAllowed.toString())
         if (isAccessToContactsAllowed) {
-            nameList.toMutableList().addAll(getUserNamesFromPhoneContacts())
+            nameList.addAll(getUserNamesFromPhoneContacts())
         }
 
         val items = List(nameList.size) { contactId ->
@@ -64,18 +66,18 @@ class ContactListGenerator(
         return userNames
     }
 
-    private fun generateNames() : List<String> {
-        val names : MutableList<String> = mutableListOf()
-       repeat(NUM_OF_DEFAULT_CONTACT_ITEMS){
-           names.add(javaFaker.name().name())
-       }
+    private fun generateNames(): MutableList<String> {
+        val names: MutableList<String> = mutableListOf()
+        repeat(NUM_OF_DEFAULT_CONTACT_ITEMS) {
+            names.add(javaFaker.name().name())
+        }
 
         return names
     }
 
-    private fun generateCareers() : List<String>{
+    private fun generateCareers(): List<String> {
         val careers: MutableList<String> = mutableListOf()
-        repeat(NUM_OF_CAREERS){
+        repeat(NUM_OF_CAREERS) {
             careers.add(javaFaker.job().title())
         }
 
