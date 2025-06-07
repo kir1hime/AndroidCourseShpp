@@ -50,5 +50,6 @@
     <string name="add_contact_dialog_message">Enter the data of the new contact</string>
     <string name="add_contact_dialog_positive_button_text">Save</string>
     <string name="add_contact_dialog_negative_button_text">Cancel</string>
+    <string name="profile_label">Profile</string>
 
 </resources>
