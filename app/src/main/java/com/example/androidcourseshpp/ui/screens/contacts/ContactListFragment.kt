@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
@@ -22,6 +23,7 @@ import com.example.androidcourseshpp.ui.screens.contacts.AddContactDialog.Compan
 import com.example.androidcourseshpp.ui.screens.contacts.AddContactDialog.Companion.RESPONSE_KEY
 import com.example.androidcourseshpp.ui.screens.contacts.adapters.ContactItemDecoration
 import com.example.androidcourseshpp.ui.screens.contacts.adapters.ContactsAdapter
+import com.example.androidcourseshpp.ui.screens.contacts.adapters.ItemActions
 import com.example.androidcourseshpp.ui.screens.contacts.contract.navigator
 import com.example.androidcourseshpp.ui.utils.factory
 import com.google.android.material.snackbar.Snackbar
@@ -33,10 +35,16 @@ class ContactListFragment : Fragment() {
     private lateinit var requestPermissionsLauncher: ActivityResultLauncher<String>
 
     private val adapter by lazy {
-        ContactsAdapter { contactItem, position ->
-            viewModel.deleteContactItem(contactItem)
-            showUndoDeletingSnackBarItem(contactItem, position)
+        ContactsAdapter(object : ItemActions {
+            override fun deleteContactItem(contactItem: ContactItem, position: Int) {
+                viewModel.deleteContactItem(contactItem)
+                showUndoDeletingSnackBarItem(contactItem, position)
+            }
+            override fun showContactItemDetails() {
+                navigator().moveToDetailsScreen()
+            }
         }
+        )
     }
 
     private companion object {

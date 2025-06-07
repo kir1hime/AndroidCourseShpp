@@ -12,12 +12,12 @@ import com.example.androidcourseshpp.databinding.ContactsRecyclerviewItemBinding
 import com.example.androidcourseshpp.ui.extensions.loadImageFromURL
 
 
-class ContactsAdapter(private val deleteActionListener: (contactItem: ContactItem, position: Int) -> Unit) :
-    ListAdapter<ContactItem, ContactsAdapter.ViewHolder>(ContactItemDiffUtilCallback){
+class ContactsAdapter(private val actions: ItemActions) :
+    ListAdapter<ContactItem, ContactsAdapter.ViewHolder>(ContactItemDiffUtilCallback) {
 
     class ViewHolder(
         private val binding: ContactsRecyclerviewItemBinding,
-        private val deleteActionListener: (contactItem: ContactItem, position: Int) -> Unit
+        private val actions: ItemActions
     ) :
         RecyclerView.ViewHolder(binding.root), View.OnClickListener {
 
@@ -27,14 +27,15 @@ class ContactsAdapter(private val deleteActionListener: (contactItem: ContactIte
             ivAvatar.loadImageFromURL(root.context, item.avatarURL, ImageLoader.PICASSO)
             ImbDelete.tag = item
             ImbDelete.setOnClickListener(this@ViewHolder)
-
+            binding.item.setOnClickListener(this@ViewHolder)
         }
 
         override fun onClick(v: View) {
-            val contactItem = v.tag as ContactItem
-
-            if (v.id == R.id.Imb_delete) {
-                deleteActionListener.invoke(contactItem, adapterPosition)
+            when (v.id) {
+                R.id.Imb_delete -> {
+                    val contactItem = v.tag as ContactItem
+                    actions.deleteContactItem(contactItem, adapterPosition)}
+                R.id.item -> actions.showContactItemDetails()
             }
         }
     }
@@ -46,7 +47,7 @@ class ContactsAdapter(private val deleteActionListener: (contactItem: ContactIte
             false
         )
 
-        return ViewHolder(binding, deleteActionListener)
+        return ViewHolder(binding, actions)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

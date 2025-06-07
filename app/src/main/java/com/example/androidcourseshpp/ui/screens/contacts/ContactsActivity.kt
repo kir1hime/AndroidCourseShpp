@@ -45,5 +45,17 @@ class ContactsActivity: AppCompatActivity(), Navigator {
         finish()
     }
 
+    override fun moveToDetailsScreen() {
+        supportFragmentManager
+            .beginTransaction()
+            .addToBackStack(null)
+            .replace(R.id.fragmentContainer, DetailViewFragment())
+            .commit()
+    }
+
+    override fun moveBack() {
+        supportFragmentManager.popBackStack()
+    }
+
 
 }

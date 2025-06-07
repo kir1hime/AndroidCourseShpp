@@ -10,4 +10,8 @@ interface  Navigator {
 
     fun moveToMyProfileScreen()
 
+    fun moveToDetailsScreen()
+
+    fun moveBack()
+
 }
