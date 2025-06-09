@@ -35,16 +35,7 @@ class ContactListFragment : Fragment() {
     private lateinit var requestPermissionsLauncher: ActivityResultLauncher<String>
 
     private val adapter by lazy {
-        ContactsAdapter(object : ItemActions {
-            override fun deleteContactItem(contactItem: ContactItem, position: Int) {
-                viewModel.deleteContactItem(contactItem)
-                showUndoDeletingSnackBarItem(contactItem, position)
-            }
-            override fun showContactItemDetails() {
-                navigator().moveToDetailsScreen()
-            }
-        }
-        )
+        ContactsAdapter(getItemActions())
     }
 
     private companion object {
@@ -71,6 +62,18 @@ class ContactListFragment : Fragment() {
         setAddContactDialogListener()
 
         return binding.root
+    }
+
+    private fun getItemActions() : ItemActions{
+        return object : ItemActions {
+            override fun deleteContactItem(contactItem: ContactItem, position: Int) {
+                viewModel.deleteContactItem(contactItem)
+                showUndoDeletingSnackBarItem(contactItem, position)
+            }
+            override fun showContactItemDetails() {
+                navigator().moveToDetailsScreen()
+            }
+        }
     }
 
     private fun initRecyclerView() = with(binding.rvContacts) {

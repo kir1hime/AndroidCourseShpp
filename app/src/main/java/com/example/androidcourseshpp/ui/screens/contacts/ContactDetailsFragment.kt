@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import com.example.androidcourseshpp.databinding.FragmentDetailviewBinding
 import com.example.androidcourseshpp.ui.screens.contacts.contract.navigator
 
-class DetailViewFragment : Fragment() {
+class ContactDetailsFragment : Fragment() {
 
     private lateinit var binding : FragmentDetailviewBinding
 

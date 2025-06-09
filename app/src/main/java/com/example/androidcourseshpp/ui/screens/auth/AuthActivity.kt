@@ -92,8 +92,8 @@ class AuthActivity : AppCompatActivity() {
 
         val options = ActivityOptions.makeCustomAnimation(
             this,
-            R.anim.my_profile_fade_in_from_right_to_left,
-            R.anim.sing_up_fade_out_from_right_to_left
+            R.anim.slide_in_from_right_to_left,
+            R.anim.slide_out_from_right_to_left
         )
 
         startActivity(intent, options.toBundle())

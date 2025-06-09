@@ -59,8 +59,8 @@ class MainActivity : AppCompatActivity() {
 
         val options = ActivityOptions.makeCustomAnimation(
             this,
-            R.anim.sing_up_fade_in_from_left_to_right,
-            R.anim.my_profile_fade_out_from_left_to_right
+            R.anim.slide_in_from_left_to_right,
+            R.anim.slide_out_from_left_to_right
         )
 
         startActivity(intent, options.toBundle())
@@ -73,8 +73,8 @@ class MainActivity : AppCompatActivity() {
 
         val options = ActivityOptions.makeCustomAnimation(
             this,
-            R.anim.contacts_fade_in_from_right_to_left,
-            R.anim.my_profile_fade_out_from_right_to_left
+            R.anim.slide_in_from_right_to_left,
+            R.anim.slide_out_from_right_to_left
         )
         startActivity(intent, options.toBundle())
         finish()

@@ -6,15 +6,17 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentTransaction
+import androidx.fragment.app.commit
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.databinding.ActivityContactsBinding
 import com.example.androidcourseshpp.ui.extensions.adaptUserInterface
 import com.example.androidcourseshpp.ui.screens.contacts.contract.Navigator
 import com.example.androidcourseshpp.ui.screens.main.MainActivity
 
-class ContactsActivity: AppCompatActivity(), Navigator {
+class ContactsActivity : AppCompatActivity(), Navigator {
 
-    private lateinit var  binding : ActivityContactsBinding
+    private lateinit var binding: ActivityContactsBinding
 
     @SuppressLint("ResourceType")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,32 +28,42 @@ class ContactsActivity: AppCompatActivity(), Navigator {
         setContentView(binding.root)
         adaptUserInterface(binding.root)
 
-        if (savedInstanceState == null){
-            supportFragmentManager
-                .beginTransaction()
-                .add(R.id.fragmentContainer, ContactListFragment())
-                .commit()
+        if (savedInstanceState == null) {
+            attachStartingFragment()
         }
+    }
+
+    private fun attachStartingFragment() {
+        supportFragmentManager
+            .beginTransaction()
+            .add(R.id.fragmentContainer, ContactListFragment())
+            .commit()
     }
 
     override fun moveToMyProfileScreen() {
         val intent = Intent(this, MainActivity::class.java)
         val options = ActivityOptions.makeCustomAnimation(
             this,
-            R.anim.my_profile_fade_in_from_left_to_right,
-            R.anim.contacts_fade_out_from_left_to_right
+            R.anim.slide_in_from_left_to_right,
+            R.anim.slide_out_from_left_to_right
         )
         startActivity(intent, options.toBundle())
         finish()
     }
 
     override fun moveToDetailsScreen() {
-        supportFragmentManager
-            .beginTransaction()
-            .addToBackStack(null)
-            .replace(R.id.fragmentContainer, DetailViewFragment())
-            .commit()
+        supportFragmentManager.commit {
+            setCustomAnimations(
+                R.anim.slide_in_from_right_to_left,
+                R.anim.slide_out_from_right_to_left,
+                R.anim.slide_in_from_left_to_right,
+                R.anim.slide_out_from_left_to_right
+            )
+            addToBackStack(null)
+            replace(R.id.fragmentContainer, ContactDetailsFragment())
+        }
     }
+
 
     override fun moveBack() {
         supportFragmentManager.popBackStack()
