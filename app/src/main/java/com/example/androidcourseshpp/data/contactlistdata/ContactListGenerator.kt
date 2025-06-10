@@ -2,7 +2,6 @@ package com.example.androidcourseshpp.data.contactlistdata
 
 import android.content.ContentResolver
 import android.provider.ContactsContract
-import android.util.Log
 import com.github.javafaker.Faker
 
 private val javaFaker = Faker.instance()
@@ -10,8 +9,7 @@ private const val NUM_OF_DEFAULT_CONTACT_ITEMS = 5
 private const val NUM_OF_CAREERS = 10
 
 class ContactListGenerator(
-    private val contentResolver: ContentResolver,
-    private val isAccessToContactsAllowed: Boolean
+    private val contentResolver: ContentResolver
 ) {
 
     private val URLImageList = listOf(
@@ -28,15 +26,29 @@ class ContactListGenerator(
 
     fun getContactItems(): List<ContactItem> {
 
-        Log.d("Mytag", isAccessToContactsAllowed.toString())
-        if (isAccessToContactsAllowed) {
+        /*if (isAccessToContactsAllowed) {
             nameList.addAll(getUserNamesFromPhoneContacts())
-        }
+        }*/
 
         val items = List(nameList.size) { contactId ->
             ContactItem(
                 contactId,
                 nameList[contactId],
+                careerList[contactId % careerList.size],
+                URLImageList[contactId % URLImageList.size]
+            )
+        }
+
+        return items
+    }
+
+     fun getContactItemsFromPhoneContacts(lastContactItemId : Int) : List<ContactItem>{
+
+        val items = List(getUserNamesFromPhoneContacts().size) {
+            val contactId = it + lastContactItemId + 1
+            ContactItem(
+                contactId,
+                getUserNamesFromPhoneContacts()[it],
                 careerList[contactId % careerList.size],
                 URLImageList[contactId % URLImageList.size]
             )

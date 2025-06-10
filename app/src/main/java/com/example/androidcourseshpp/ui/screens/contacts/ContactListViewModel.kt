@@ -10,7 +10,6 @@ import com.example.androidcourseshpp.data.contactlistdata.ContactItem
 
 class ContactListViewModel(
     private val contentResolver: ContentResolver,
-    isAccessToContactsAllowed: Boolean
 ) : ViewModel() {
 
     private var mutableContactList = MutableLiveData<List<ContactItem>>()
@@ -18,12 +17,24 @@ class ContactListViewModel(
 
     init {
         mutableContactList.value =
-            ContactListGenerator(contentResolver, isAccessToContactsAllowed).getContactItems()
+            ContactListGenerator(contentResolver).getContactItems()
     }
 
-    fun updateContactList(isAccessToContactsAllowed : Boolean) {
-        mutableContactList.value =
-            ContactListGenerator(contentResolver, isAccessToContactsAllowed).getContactItems()
+    fun updateContactList() {
+        mutableContactList.value?.let {
+
+            val currentContactList = it.toMutableList()
+            val lastContactItemId = currentContactList[currentContactList.lastIndex].id
+
+            val contactItemsFromPhoneContacts = ContactListGenerator(
+                contentResolver
+            ).getContactItemsFromPhoneContacts(lastContactItemId)
+
+            currentContactList.addAll(contactItemsFromPhoneContacts)
+
+            mutableContactList.value = currentContactList
+        }
+
     }
 
     fun deleteContactItem(contactItem: ContactItem) {

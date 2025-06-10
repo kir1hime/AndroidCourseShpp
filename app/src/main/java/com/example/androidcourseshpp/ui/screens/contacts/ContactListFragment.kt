@@ -188,7 +188,7 @@ class ContactListFragment : Fragment() {
         requestPermissionsLauncher =
             registerForActivityResult(ActivityResultContracts.RequestPermission()) { isPermissionsGranted ->
                 if (isPermissionsGranted) {
-                    viewModel.updateContactList(true)
+                    viewModel.updateContactList()
                 }
             }
     }

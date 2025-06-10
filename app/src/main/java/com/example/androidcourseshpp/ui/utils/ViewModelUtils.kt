@@ -14,7 +14,6 @@ import com.example.androidcourseshpp.ui.screens.main.MyProfileViewModel
 class ViewModelFactory(
     private val dataProvider: DataProvider?,
     private val contentResolver: ContentResolver?,
-    private val isAccessToContactsAllowed: Boolean = false
 ) : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")
@@ -29,7 +28,7 @@ class ViewModelFactory(
             }
 
             ContactListViewModel::class.java -> {
-                ContactListViewModel(contentResolver!!, isAccessToContactsAllowed)
+                ContactListViewModel(contentResolver!!)
             }
 
             else -> {
