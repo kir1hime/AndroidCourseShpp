@@ -5,11 +5,15 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
 import android.graphics.RectF
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.graphics.drawable.toBitmap
+import androidx.core.graphics.toColor
 import com.example.androidcourseshpp.R
 import kotlin.math.abs
 import kotlin.properties.Delegates
@@ -27,6 +31,7 @@ class ButtonWithIcon(
 
     private var iconWidth by Delegates.notNull<Float>()
     private var iconHeight by Delegates.notNull<Float>()
+    private var iconColor by Delegates.notNull<Int>()
 
     private var iconPaddingStart by Delegates.notNull<Float>()
     private var iconPaddingEnd by Delegates.notNull<Float>()
@@ -55,9 +60,20 @@ class ButtonWithIcon(
         paint.fontMetrics
     }
 
+    private lateinit var iconPaint : Paint
+
     init {
         if (attributesSet != null) {
             initAttributes(attributesSet, defStyleAttr)
+        }
+        initPaints()
+    }
+
+    private fun initPaints(){
+        iconPaint = Paint(Paint.ANTI_ALIAS_FLAG)
+
+        if (iconColor != -1){
+           iconPaint.colorFilter = PorterDuffColorFilter(iconColor, PorterDuff.Mode.SRC_IN)
         }
     }
 
@@ -88,7 +104,7 @@ class ButtonWithIcon(
         icon?.let {
             val rect =
                 RectF(iconOriginX, iconOriginY, iconOriginX + iconWidth, iconOriginY + iconHeight)
-            canvas.drawBitmap(it, null, rect, Paint(Paint.ANTI_ALIAS_FLAG))
+            canvas.drawBitmap(it, null, rect, iconPaint)
         }
     }
 
@@ -185,6 +201,7 @@ class ButtonWithIcon(
                 typedArray.getDimension(R.styleable.ButtonWithIcon_iconWidth, it.width.toFloat())
             iconHeight =
                 typedArray.getDimension(R.styleable.ButtonWithIcon_iconHeight, it.width.toFloat())
+            iconColor = typedArray.getColor(R.styleable.ButtonWithIcon_iconColor, -1)
         }
 
         iconPaddingStart = typedArray.getDimension(R.styleable.ButtonWithIcon_iconPaddingStart, 0f)

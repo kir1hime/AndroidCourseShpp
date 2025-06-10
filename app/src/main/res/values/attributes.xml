@@ -5,6 +5,7 @@
 
         <attr name="iconWidth" format="dimension" />
         <attr name="iconHeight" format="dimension" />
+        <attr name="iconColor" format="color"/>
 
         <attr name="iconPaddingStart" format="dimension" />
         <attr name="iconPaddingEnd" format="dimension" />
