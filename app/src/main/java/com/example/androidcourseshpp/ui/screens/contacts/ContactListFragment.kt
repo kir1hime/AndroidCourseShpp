@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
@@ -34,6 +34,12 @@ class ContactListFragment : Fragment() {
     private val viewModel by viewModels<ContactListViewModel> { factory() }
     private lateinit var requestPermissionsLauncher: ActivityResultLauncher<String>
 
+    private val onBackPressedCallback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            navigator().moveToMyProfileScreen()
+        }
+    }
+
     private val adapter by lazy {
         ContactsAdapter(getItemActions())
     }
@@ -60,6 +66,7 @@ class ContactListFragment : Fragment() {
         setListeners()
         setObservers()
         setAddContactDialogListener()
+        setOnBackPressedListener()
 
         return binding.root
     }
@@ -74,6 +81,10 @@ class ContactListFragment : Fragment() {
                 navigator().moveToDetailsScreen()
             }
         }
+    }
+
+    private fun setOnBackPressedListener(){
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, onBackPressedCallback)
     }
 
     private fun initRecyclerView() = with(binding.rvContacts) {
@@ -181,4 +192,5 @@ class ContactListFragment : Fragment() {
                 }
             }
     }
+
 }

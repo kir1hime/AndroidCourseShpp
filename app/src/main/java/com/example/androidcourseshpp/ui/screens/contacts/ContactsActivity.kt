@@ -6,7 +6,6 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.commit
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.databinding.ActivityContactsBinding
@@ -68,6 +67,5 @@ class ContactsActivity : AppCompatActivity(), Navigator {
     override fun moveBack() {
         supportFragmentManager.popBackStack()
     }
-
 
 }
