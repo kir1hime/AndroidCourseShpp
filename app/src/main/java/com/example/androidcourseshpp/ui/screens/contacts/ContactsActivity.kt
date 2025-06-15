@@ -7,6 +7,8 @@ import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
+import androidx.navigation.findNavController
+import androidx.navigation.navOptions
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.databinding.ActivityContactsBinding
 import com.example.androidcourseshpp.ui.extensions.adaptUserInterface
@@ -27,17 +29,8 @@ class ContactsActivity : AppCompatActivity(), Navigator {
         setContentView(binding.root)
         adaptUserInterface(binding.root)
 
-        if (savedInstanceState == null) {
-            attachStartingFragment()
-        }
     }
 
-    private fun attachStartingFragment() {
-        supportFragmentManager
-            .beginTransaction()
-            .add(R.id.fragmentContainer, ContactListFragment())
-            .commit()
-    }
 
     override fun moveToMyProfileScreen() {
         val intent = Intent(this, MainActivity::class.java)
@@ -51,21 +44,21 @@ class ContactsActivity : AppCompatActivity(), Navigator {
     }
 
     override fun moveToDetailsScreen() {
-        supportFragmentManager.commit {
-            setCustomAnimations(
-                R.anim.slide_in_from_right_to_left,
-                R.anim.slide_out_from_right_to_left,
-                R.anim.slide_in_from_left_to_right,
-                R.anim.slide_out_from_left_to_right
-            )
-            addToBackStack(null)
-            replace(R.id.fragmentContainer, ContactDetailsFragment())
-        }
+        findNavController(R.id.fragmentContainer).navigate(
+            R.id.action_contactListFragment_to_contactDetailsFragment, null,
+            navOptions {
+                anim {
+                    enter = R.anim.slide_in_from_right_to_left
+                    exit = R.anim.slide_out_from_right_to_left
+                    popEnter = R.anim.slide_in_from_left_to_right
+                    popExit = R.anim.slide_out_from_left_to_right
+                }
+            })
     }
 
 
     override fun moveBack() {
-        supportFragmentManager.popBackStack()
+        findNavController(R.id.fragmentContainer).navigateUp()
     }
 
 }
