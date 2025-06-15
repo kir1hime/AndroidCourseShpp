@@ -1,4 +1,3 @@
-
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -35,18 +34,20 @@ android {
         jvmTarget = "11"
     }
 
-   buildFeatures {
-       viewBinding = true
-   }
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.androidx.fragment.ktx.v188)
     implementation(libs.javafaker)
     implementation(libs.androidx.fragment.ktx)
-    implementation (libs.picasso.transformations)
-    implementation (libs.picasso)
-    implementation (libs.circleimageview)
+    implementation(libs.picasso.transformations)
+    implementation(libs.picasso)
+    implementation(libs.circleimageview)
     implementation(libs.glide)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
