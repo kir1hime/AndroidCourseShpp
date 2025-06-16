@@ -10,6 +10,7 @@ import androidx.fragment.app.commit
 import androidx.navigation.findNavController
 import androidx.navigation.navOptions
 import com.example.androidcourseshpp.R
+import com.example.androidcourseshpp.data.contactlistdata.ContactItem
 import com.example.androidcourseshpp.databinding.ActivityContactsBinding
 import com.example.androidcourseshpp.ui.extensions.adaptUserInterface
 import com.example.androidcourseshpp.ui.screens.contacts.contract.Navigator
@@ -43,10 +44,15 @@ class ContactsActivity : AppCompatActivity(), Navigator {
         finish()
     }
 
-    override fun moveToDetailsScreen() {
-        findNavController(R.id.fragmentContainer).navigate(
-            R.id.action_contactListFragment_to_contactDetailsFragment, null,
-            navOptions {
+    override fun moveToDetailsScreen(contact: ContactItem) {
+        val direction =
+            ContactListFragmentDirections.actionContactListFragmentToContactDetailsFragment(
+                contact.name,
+                contact.career,
+                contact.avatarURL
+            )
+
+        findNavController(R.id.fragmentContainer).navigate( direction, navOptions {
                 anim {
                     enter = R.anim.slide_in_from_right_to_left
                     exit = R.anim.slide_out_from_right_to_left

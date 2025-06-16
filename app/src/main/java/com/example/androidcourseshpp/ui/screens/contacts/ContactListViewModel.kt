@@ -14,6 +14,7 @@ class ContactListViewModel(
 
     private var mutableContactList = MutableLiveData<List<ContactItem>>()
     val contactList: LiveData<List<ContactItem>> get() = mutableContactList
+    private var isPhoneContactsAdded = false
 
     init {
         mutableContactList.value =
@@ -21,18 +22,20 @@ class ContactListViewModel(
     }
 
     fun updateContactList() {
-        mutableContactList.value?.let {
+        if (!isPhoneContactsAdded) {
+            mutableContactList.value?.let {
 
-            val currentContactList = it.toMutableList()
-            val lastContactItemId = currentContactList[currentContactList.lastIndex].id
+                val currentContactList = it.toMutableList()
+                val lastContactItemId = currentContactList[currentContactList.lastIndex].id
 
-            val contactItemsFromPhoneContacts = ContactListGenerator(
-                contentResolver
-            ).getContactItemsFromPhoneContacts(lastContactItemId)
+                val phoneContacts = ContactListGenerator(contentResolver)
+                    .getContactItemsFromPhoneContacts(lastContactItemId)
 
-            currentContactList.addAll(contactItemsFromPhoneContacts)
+                currentContactList.addAll(phoneContacts)
 
-            mutableContactList.value = currentContactList
+                mutableContactList.value = currentContactList
+                isPhoneContactsAdded = true
+            }
         }
 
     }

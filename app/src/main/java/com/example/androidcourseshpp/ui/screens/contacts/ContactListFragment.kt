@@ -77,8 +77,8 @@ class ContactListFragment : Fragment() {
                 viewModel.deleteContactItem(contactItem)
                 showUndoDeletingSnackBarItem(contactItem, position)
             }
-            override fun showContactItemDetails() {
-                navigator().moveToDetailsScreen()
+            override fun showContactItemDetails(contactItem: ContactItem) {
+                navigator().moveToDetailsScreen(contactItem)
             }
         }
     }

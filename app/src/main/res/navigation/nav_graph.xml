@@ -20,6 +20,15 @@
         android:name="com.example.androidcourseshpp.ui.screens.contacts.ContactDetailsFragment"
         android:label="fragment_detailview"
         tools:layout="@layout/fragment_detailview">
+        <argument
+            android:name="name"
+            app:argType="string" />
+        <argument
+            android:name="career"
+            app:argType="string"/>
+        <argument
+            android:name="avatar"
+            app:argType="string"/>
 
     </fragment>
 </navigation>

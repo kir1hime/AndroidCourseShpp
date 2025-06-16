@@ -94,15 +94,13 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/home_address_margin_horizontal"
         android:layout_marginTop="@dimen/home_address_margin_top"
-        android:layout_marginBottom="@dimen/home_address_margin_bottom"
         android:fontFamily="@font/open_sans"
         android:gravity="center_horizontal"
         android:text="@string/home_address"
         android:textColor="@color/home_address_text_color"
         android:textSize="@dimen/small_text_size"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@id/tv_topPartOfScreen"
-        app:layout_constraintTop_toTopOf="@id/tv_topPartOfScreen" />
+        app:layout_constraintTop_toBottomOf="@id/tv_career" />
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/ibt_facebook"

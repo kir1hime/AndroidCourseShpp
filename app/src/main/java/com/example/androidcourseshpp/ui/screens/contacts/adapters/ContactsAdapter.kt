@@ -25,17 +25,19 @@ class ContactsAdapter(private val actions: ItemActions) :
             tvName.text = item.name
             tvCareer.text = item.career
             ivAvatar.loadImageFromURL(root.context, item.avatarURL, ImageLoader.PICASSO)
-            ImbDelete.tag = item
+
             ImbDelete.setOnClickListener(this@ViewHolder)
             binding.item.setOnClickListener(this@ViewHolder)
+
+            ImbDelete.tag = item
+            binding.item.tag = item
         }
 
         override fun onClick(v: View) {
+            val contactItem = v.tag as ContactItem
             when (v.id) {
-                R.id.Imb_delete -> {
-                    val contactItem = v.tag as ContactItem
-                    actions.deleteContactItem(contactItem, adapterPosition)}
-                R.id.item -> actions.showContactItemDetails()
+                R.id.Imb_delete -> actions.deleteContactItem(contactItem, adapterPosition)
+                R.id.item -> actions.showContactItemDetails(contactItem)
             }
         }
     }

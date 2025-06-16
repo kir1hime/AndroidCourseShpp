@@ -6,5 +6,5 @@ interface ItemActions {
 
     fun deleteContactItem(contactItem: ContactItem, position: Int)
 
-    fun showContactItemDetails()
+    fun showContactItemDetails(contactItem: ContactItem)
 }
