@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
+import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.ImageLoader
 import com.example.androidcourseshpp.databinding.FragmentDetailviewBinding
 import com.example.androidcourseshpp.ui.extensions.loadImageFromURL
@@ -30,7 +31,7 @@ class ContactDetailsFragment : Fragment() {
     }
 
     private fun setContactDetailsInfo() = with(binding){
-        IvProfPhoto.loadImageFromURL(requireContext(), args.avatar, ImageLoader.GLIDE)
+        IvProfPhoto.loadImageFromURL(requireContext(), args.avatar, ImageLoader.GLIDE, R.drawable.ic_defaultavatar2)
         tvName.text = args.name
         tvCareer.text = args.career
     }

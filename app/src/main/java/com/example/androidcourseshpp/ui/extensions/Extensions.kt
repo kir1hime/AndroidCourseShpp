@@ -20,25 +20,30 @@ fun adaptUserInterface(view: View) {
     }
 }
 
-fun ImageView.loadImageFromURL(context: Context, url: String, imageLoader: ImageLoader) {
+fun ImageView.loadImageFromURL(
+    context: Context,
+    url: String,
+    imageLoader: ImageLoader,
+    placeholder: Int = R.drawable.ic_defaultavatar1
+) {
     when (imageLoader) {
-        ImageLoader.GLIDE -> useGlideForLoading(context, url, this)
-        ImageLoader.PICASSO -> usePicassoForLoading(url, this)
+        ImageLoader.GLIDE -> useGlideForLoading(context, url, this, placeholder)
+        ImageLoader.PICASSO -> usePicassoForLoading(url, this, placeholder)
     }
 }
 
-private fun useGlideForLoading(context: Context, url: String, view: ImageView) {
+private fun useGlideForLoading(context: Context, url: String, view: ImageView, placeholder: Int) {
     Glide.with(context)
         .load(url)
-        .placeholder(R.drawable.ic_defaultavatar)
+        .placeholder(placeholder)
         .circleCrop()
         .into(view)
 }
 
-private fun usePicassoForLoading(url: String, view: ImageView) {
+private fun usePicassoForLoading(url: String, view: ImageView, placeholder: Int) {
     Picasso.get()
         .load(url)
-        .placeholder(R.drawable.ic_defaultavatar)
+        .placeholder(placeholder)
         .transform(CropCircleTransformation())
         .into(view)
 }
