@@ -12,7 +12,11 @@
         tools:layout="@layout/fragment_contactlist">
         <action
             android:id="@+id/action_contactListFragment_to_contactDetailsFragment"
-            app:destination="@id/contactDetailsFragment" />
+            app:destination="@id/contactDetailsFragment"
+            app:enterAnim="@anim/slide_in_from_right_to_left"
+            app:exitAnim="@anim/slide_out_from_right_to_left"
+            app:popEnterAnim="@anim/slide_in_from_left_to_right"
+            app:popExitAnim="@anim/slide_out_from_left_to_right" />
 
     </fragment>
     <fragment
@@ -25,10 +29,10 @@
             app:argType="string" />
         <argument
             android:name="career"
-            app:argType="string"/>
+            app:argType="string" />
         <argument
             android:name="avatar"
-            app:argType="string"/>
+            app:argType="string" />
 
     </fragment>
 </navigation>

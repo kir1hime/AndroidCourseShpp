@@ -52,14 +52,7 @@ class ContactsActivity : AppCompatActivity(), Navigator {
                 contact.avatarURL
             )
 
-        findNavController(R.id.fragmentContainer).navigate( direction, navOptions {
-                anim {
-                    enter = R.anim.slide_in_from_right_to_left
-                    exit = R.anim.slide_out_from_right_to_left
-                    popEnter = R.anim.slide_in_from_left_to_right
-                    popExit = R.anim.slide_out_from_left_to_right
-                }
-            })
+        findNavController(R.id.fragmentContainer).navigate(direction)
     }
 
 
