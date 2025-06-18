@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -77,8 +78,8 @@ class ContactListFragment : Fragment() {
                 viewModel.deleteContactItem(contactItem)
                 showUndoDeletingSnackBarItem(contactItem, position)
             }
-            override fun showContactItemDetails(contactItem: ContactItem) {
-                navigator().moveToDetailsScreen(contactItem)
+            override fun showContactItemDetails(contactItem: ContactItem, avatar: ImageView) {
+                navigator().moveToDetailsScreen(contactItem,avatar)
             }
         }
     }

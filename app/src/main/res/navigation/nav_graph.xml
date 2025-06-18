@@ -25,6 +25,9 @@
         android:label="fragment_detailview"
         tools:layout="@layout/fragment_detailview">
         <argument
+            android:name="id"
+            app:argType="integer" />
+        <argument
             android:name="name"
             app:argType="string" />
         <argument

@@ -4,10 +4,11 @@ import android.annotation.SuppressLint
 import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
+import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.commit
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.navOptions
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.contactlistdata.ContactItem
@@ -44,15 +45,18 @@ class ContactsActivity : AppCompatActivity(), Navigator {
         finish()
     }
 
-    override fun moveToDetailsScreen(contact: ContactItem) {
+    override fun moveToDetailsScreen(contact: ContactItem, avatar: ImageView) {
+        val extras = FragmentNavigatorExtras(avatar to contact.id.toString())
+
         val direction =
             ContactListFragmentDirections.actionContactListFragmentToContactDetailsFragment(
+                contact.id,
                 contact.name,
                 contact.career,
                 contact.avatarURL
             )
 
-        findNavController(R.id.fragmentContainer).navigate(direction)
+        findNavController(R.id.fragmentContainer).navigate(direction, extras)
     }
 
 

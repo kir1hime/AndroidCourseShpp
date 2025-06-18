@@ -1,11 +1,13 @@
 package com.example.androidcourseshpp.ui.screens.contacts
 
 import android.os.Bundle
+import android.transition.ChangeBounds
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
+import androidx.transition.TransitionInflater
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.ImageLoader
 import com.example.androidcourseshpp.databinding.FragmentDetailviewBinding
@@ -24,10 +26,18 @@ class ContactDetailsFragment : Fragment() {
     ): View {
         binding = FragmentDetailviewBinding.inflate(inflater, container, false)
 
+        profilePhotoTransition()
+
         setContactDetailsInfo()
         setListeners()
 
         return binding.root
+    }
+
+    private fun profilePhotoTransition(){
+        sharedElementEnterTransition = TransitionInflater.from(requireContext()).inflateTransition(android.R.transition.move)
+        binding.IvProfPhoto.transitionName = args.id.toString()
+
     }
 
     private fun setContactDetailsInfo() = with(binding){
