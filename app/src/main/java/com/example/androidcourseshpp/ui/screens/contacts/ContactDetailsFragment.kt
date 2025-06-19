@@ -35,7 +35,7 @@ class ContactDetailsFragment : Fragment() {
     }
 
     private fun profilePhotoTransition(){
-        sharedElementEnterTransition = TransitionInflater.from(requireContext()).inflateTransition(android.R.transition.move)
+        sharedElementEnterTransition = TransitionInflater.from(requireContext()).inflateTransition(R.transition.shared_element_transition)
         binding.IvProfPhoto.transitionName = args.id.toString()
 
     }

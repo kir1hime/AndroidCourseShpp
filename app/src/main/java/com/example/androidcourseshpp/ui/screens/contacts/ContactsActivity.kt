@@ -7,8 +7,10 @@ import android.os.Bundle
 import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.FragmentNavigatorExtras
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.navOptions
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.contactlistdata.ContactItem
@@ -20,6 +22,7 @@ import com.example.androidcourseshpp.ui.screens.main.MainActivity
 class ContactsActivity : AppCompatActivity(), Navigator {
 
     private lateinit var binding: ActivityContactsBinding
+    private lateinit var navController: NavController
 
     @SuppressLint("ResourceType")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,11 +31,18 @@ class ContactsActivity : AppCompatActivity(), Navigator {
         enableEdgeToEdge()
 
         binding = ActivityContactsBinding.inflate(layoutInflater)
+
         setContentView(binding.root)
+
         adaptUserInterface(binding.root)
 
+        receiveNavController()
     }
 
+    private fun receiveNavController(){
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainer) as NavHostFragment
+        navController = navHostFragment.navController
+    }
 
     override fun moveToMyProfileScreen() {
         val intent = Intent(this, MainActivity::class.java)
@@ -56,12 +66,12 @@ class ContactsActivity : AppCompatActivity(), Navigator {
                 contact.avatarURL
             )
 
-        findNavController(R.id.fragmentContainer).navigate(direction, extras)
+        navController.navigate(direction, extras)
     }
 
 
     override fun moveBack() {
-        findNavController(R.id.fragmentContainer).navigateUp()
+        navController.navigateUp()
     }
 
 }
