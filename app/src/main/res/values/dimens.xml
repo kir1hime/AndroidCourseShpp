@@ -105,11 +105,13 @@
     <dimen name="contacts_recycle_view_space_size_between_items">16dp</dimen>
 
     <!--text sizes-->
-    <dimen name="middle_text_size">16sp</dimen>
-    <dimen name="small_text_size">14sp</dimen>
-    <dimen name="large_text_size">24sp</dimen>
-    <dimen name="big_text_size">18sp</dimen>
     <dimen name="tiny_text_size">12sp</dimen>
+    <dimen name="small_text_size">14sp</dimen>
+    <dimen name="middle_text_size">16sp</dimen>
+    <dimen name="big_text_size">18sp</dimen>
+    <dimen name="large_text_size">24sp</dimen>
+
+
 
     <dimen name="input_box_stroke_w_focused">1dp</dimen>
     <dimen name="profile_photo_size">113dp</dimen>

@@ -2,9 +2,9 @@
 <resources>
     <color name="cursor_color_2">#FFFFFF</color>
     <!--My profile (activity_main.xml)-->
-    <color name="bottom_view_color">#0F0E0E</color>
+    <color name="white_view_color">#0F0E0E</color>
 
-    <color name="top_view_color">#242235</color>
+    <color name="blue_view_color">#242235</color>
 
     <color name="view_my_contacts_text_color">#FFFFFF</color>
     <color name="settings_text_color">@color/view_my_contacts_text_color</color>

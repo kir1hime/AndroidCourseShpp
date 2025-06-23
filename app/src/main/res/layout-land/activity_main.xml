@@ -11,7 +11,7 @@
         android:id="@+id/tv_bluePartOfScreen"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:background="@color/top_view_color"
+        android:background="@color/blue_view_color"
         app:layout_constraintEnd_toStartOf="@id/gl_middle_hor"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -20,7 +20,7 @@
         android:id="@+id/tv_whitePartOfScreen"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:background="@color/bottom_view_color"
+        android:background="@color/white_view_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/gl_middle_hor" />

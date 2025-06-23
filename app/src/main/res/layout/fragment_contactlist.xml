@@ -12,7 +12,7 @@
         android:id="@+id/vw_contactsBar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/contacts_bar_h"
-        android:background="@color/top_view_color"
+        android:background="@color/blue_view_color"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
