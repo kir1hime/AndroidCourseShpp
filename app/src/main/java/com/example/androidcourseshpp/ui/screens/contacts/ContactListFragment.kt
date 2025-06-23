@@ -58,6 +58,12 @@ class ContactListFragment : Fragment() {
 
         binding = FragmentContactlistBinding.inflate(inflater, container, false)
 
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         checkPermissions()
         requestPermissionsLauncher.launch(Manifest.permission.READ_CONTACTS)
 
@@ -68,8 +74,6 @@ class ContactListFragment : Fragment() {
         setObservers()
         setAddContactDialogListener()
         setOnBackPressedListener()
-
-        return binding.root
     }
 
     private fun getItemActions() : ItemActions{

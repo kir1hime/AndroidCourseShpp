@@ -26,12 +26,16 @@ class ContactDetailsFragment : Fragment() {
     ): View {
         binding = FragmentDetailviewBinding.inflate(inflater, container, false)
 
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         profilePhotoTransition()
 
         setContactDetailsInfo()
         setListeners()
-
-        return binding.root
     }
 
     private fun profilePhotoTransition(){
