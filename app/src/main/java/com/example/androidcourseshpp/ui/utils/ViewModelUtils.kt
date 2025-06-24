@@ -9,6 +9,7 @@ import com.example.androidcourseshpp.ui.screens.auth.SignUpViewModel
 import com.example.androidcourseshpp.ui.screens.contacts.ContactListFragment
 import com.example.androidcourseshpp.ui.screens.contacts.ContactListViewModel
 import com.example.androidcourseshpp.ui.screens.main.MainActivity
+import com.example.androidcourseshpp.ui.screens.main.MyProfileFragment
 import com.example.androidcourseshpp.ui.screens.main.MyProfileViewModel
 
 class ViewModelFactory(
@@ -43,4 +44,5 @@ class ViewModelFactory(
 fun AuthActivity.factory() = ViewModelFactory(DataProvider(applicationContext), null )
 fun MainActivity.factory() = ViewModelFactory(DataProvider(applicationContext), null)
 fun ContactListFragment.factory() = ViewModelFactory(null, requireActivity().contentResolver)
+fun MyProfileFragment.factory() = ViewModelFactory(null, requireActivity().contentResolver)
 
