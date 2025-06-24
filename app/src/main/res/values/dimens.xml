@@ -111,8 +111,6 @@
     <dimen name="big_text_size">18sp</dimen>
     <dimen name="large_text_size">24sp</dimen>
 
-
-
     <dimen name="input_box_stroke_w_focused">1dp</dimen>
     <dimen name="profile_photo_size">113dp</dimen>
 
@@ -123,4 +121,6 @@
     <dimen name="stroke_1">1dp</dimen>
     <dimen name="stroke_2">2dp</dimen>
     <dimen name="stroke_3">3dp</dimen>
+
+    <dimen name="tabLayout_h">40dp</dimen>
 </resources>

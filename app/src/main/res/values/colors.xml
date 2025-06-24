@@ -74,5 +74,10 @@
 
     <color name="detail_view_blue_view_color">@color/blue_view_color</color>
 
+    <!-- fragment_main.xml-->
+    <color name="tabLayout_background_color">#242235</color>
+    <color name="tabSelected_text_color">#FB5E06</color>
+    <color name="tabUnselected_text_color">#B2B2B3</color>
+
 
 </resources>
