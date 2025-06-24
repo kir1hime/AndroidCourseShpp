@@ -52,5 +52,7 @@
     <string name="add_contact_dialog_negative_button_text">Закрити</string>
     <string name="profile_label">Профіль</string>
     <string name="message">Повідомлення</string>
+    <string name="my_profile_label">Мій профіль</string>
+    <string name="contacts_label">Контакти</string>
 
 </resources>

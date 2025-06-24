@@ -122,5 +122,5 @@
     <dimen name="stroke_2">2dp</dimen>
     <dimen name="stroke_3">3dp</dimen>
 
-    <dimen name="tabLayout_h">40dp</dimen>
+    <dimen name="tabLayout_h">30dp</dimen>
 </resources>

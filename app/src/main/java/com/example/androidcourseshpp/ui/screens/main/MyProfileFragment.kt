@@ -1,4 +1,6 @@
 package com.example.androidcourseshpp.ui.screens.main
 
-class MyProfileFragment {
+import androidx.fragment.app.Fragment
+
+class MyProfileFragment : Fragment() {
 }

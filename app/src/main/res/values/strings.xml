@@ -55,4 +55,8 @@
     <string name="profile_label">Profile</string>
     <string name="message">MESSAGE</string>
 
+    <!--MainFragment -->
+    <string name="my_profile_label">My Profile</string>
+    <string name="contacts_label">Contacts</string>
+
 </resources>

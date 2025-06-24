@@ -1,13 +1,12 @@
 package com.example.androidcourseshpp.ui.screens.main
 
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 
 class ViewPagerUserInfoAdapter(
-    fa: FragmentActivity,
+    fragment: Fragment,
     private val fragments: List<Fragment>
-) : FragmentStateAdapter(fa) {
+) : FragmentStateAdapter(fragment) {
 
     override fun getItemCount() = fragments.size
 
