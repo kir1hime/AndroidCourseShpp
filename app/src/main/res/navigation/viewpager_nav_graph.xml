@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/viewpager_nav_graph"
+    app:startDestination="@id/myProfileFragment">
+
+    <fragment
+        android:id="@+id/myProfileFragment"
+        android:name="com.example.androidcourseshpp.ui.screens.userinfo.myprofile.MyProfileFragment"
+        android:label="fragment_myprofile"
+        tools:layout="@layout/fragment_myprofile" >
+
+    </fragment>
+    <fragment
+        android:id="@+id/contactListFragment"
+        android:name="com.example.androidcourseshpp.ui.screens.userinfo.contacts.ContactListFragment"
+        android:label="fragment_contactlist"
+        tools:layout="@layout/fragment_contactlist" />
+</navigation>

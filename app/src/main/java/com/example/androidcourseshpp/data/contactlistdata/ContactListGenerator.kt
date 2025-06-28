@@ -26,10 +26,6 @@ class ContactListGenerator(
 
     fun getContactItems(): List<ContactItem> {
 
-        /*if (isAccessToContactsAllowed) {
-            nameList.addAll(getUserNamesFromPhoneContacts())
-        }*/
-
         val items = List(nameList.size) { contactId ->
             ContactItem(
                 contactId,

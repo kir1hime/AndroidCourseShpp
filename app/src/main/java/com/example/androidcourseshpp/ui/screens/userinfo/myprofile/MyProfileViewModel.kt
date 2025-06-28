@@ -1,4 +1,4 @@
-package com.example.androidcourseshpp.ui.screens.main
+package com.example.androidcourseshpp.ui.screens.userinfo.myprofile
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

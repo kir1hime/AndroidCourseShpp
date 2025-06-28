@@ -1,7 +1,6 @@
-package com.example.androidcourseshpp.ui.screens.contacts
+package com.example.androidcourseshpp.ui.screens.contactdetails
 
 import android.os.Bundle
-import android.transition.ChangeBounds
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +11,7 @@ import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.ImageLoader
 import com.example.androidcourseshpp.databinding.FragmentDetailviewBinding
 import com.example.androidcourseshpp.ui.extensions.loadImageFromURL
-import com.example.androidcourseshpp.ui.screens.contacts.contract.navigator
+import com.example.androidcourseshpp.ui.screens.navigator
 
 class ContactDetailsFragment : Fragment() {
 
@@ -52,7 +51,7 @@ class ContactDetailsFragment : Fragment() {
 
     private fun setListeners(){
         binding.ibtArrowBack.setOnClickListener{
-            navigator().moveBack()
+           navigator().moveBack()
         }
     }
 }

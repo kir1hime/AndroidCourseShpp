@@ -1,6 +1,5 @@
-package com.example.androidcourseshpp.ui.screens.contacts
+package com.example.androidcourseshpp.ui.screens
 
-import android.annotation.SuppressLint
 import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
@@ -8,49 +7,48 @@ import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.navOptions
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.contactlistdata.ContactItem
-import com.example.androidcourseshpp.databinding.ActivityContactsBinding
+import com.example.androidcourseshpp.databinding.ActivityMainBinding
 import com.example.androidcourseshpp.ui.extensions.adaptUserInterface
-import com.example.androidcourseshpp.ui.screens.contacts.contract.Navigator
-import com.example.androidcourseshpp.ui.screens.main.MainActivity
+import com.example.androidcourseshpp.ui.screens.auth.AuthActivity
+import com.example.androidcourseshpp.ui.screens.userinfo.MainFragmentDirections
 
-class ContactsActivity : AppCompatActivity(), Navigator {
 
-    private lateinit var binding: ActivityContactsBinding
-    private lateinit var navController: NavController
+class MainActivity : AppCompatActivity(), Navigator {
 
-    @SuppressLint("ResourceType")
+    private lateinit var binding: ActivityMainBinding
+
+    private  val navController: NavController by lazy {
+        navHostFragment.navController
+    }
+    private val navHostFragment by lazy {
+        supportFragmentManager.findFragmentById(R.id.fragmentContainer1) as NavHostFragment
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         enableEdgeToEdge()
 
-        binding = ActivityContactsBinding.inflate(layoutInflater)
-
+        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         adaptUserInterface(binding.root)
 
-        receiveNavController()
     }
 
-    private fun receiveNavController(){
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainer) as NavHostFragment
-        navController = navHostFragment.navController
-    }
 
-    override fun moveToMyProfileScreen() {
-        val intent = Intent(this, MainActivity::class.java)
+    override fun moveToAuthScreen() {
+        val intent = Intent(this, AuthActivity::class.java)
         val options = ActivityOptions.makeCustomAnimation(
             this,
             R.anim.slide_in_from_left_to_right,
             R.anim.slide_out_from_left_to_right
         )
+
         startActivity(intent, options.toBundle())
         finish()
     }
@@ -58,8 +56,8 @@ class ContactsActivity : AppCompatActivity(), Navigator {
     override fun moveToDetailsScreen(contact: ContactItem, avatar: ImageView) {
         val extras = FragmentNavigatorExtras(avatar to contact.id.toString())
 
-        val direction =
-            ContactListFragmentDirections.actionContactListFragmentToContactDetailsFragment(
+        val direction = MainFragmentDirections
+            .actionMainFragmentToContactDetailsFragment(
                 contact.id,
                 contact.name,
                 contact.career,
@@ -69,9 +67,10 @@ class ContactsActivity : AppCompatActivity(), Navigator {
         navController.navigate(direction, extras)
     }
 
-
     override fun moveBack() {
         navController.navigateUp()
     }
 
+
 }
+

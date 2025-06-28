@@ -1,4 +1,4 @@
-package com.example.androidcourseshpp.ui.screens.contacts
+package com.example.androidcourseshpp.ui.screens.userinfo.contacts
 
 
 import android.content.ContentResolver

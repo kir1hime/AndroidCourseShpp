@@ -1,4 +1,4 @@
-package com.example.androidcourseshpp.ui.screens.main
+package com.example.androidcourseshpp.ui.screens.userinfo.myprofile
 
 
 import android.os.Bundle
@@ -10,6 +10,9 @@ import androidx.fragment.app.viewModels
 import com.example.androidcourseshpp.data.EmailParser
 import com.example.androidcourseshpp.data.dataProvider.EMAIL_KEY
 import com.example.androidcourseshpp.databinding.FragmentMyprofileBinding
+import com.example.androidcourseshpp.ui.screens.navigator
+import com.example.androidcourseshpp.ui.screens.userinfo.MainFragment
+import com.example.androidcourseshpp.data.Tab
 
 import com.example.androidcourseshpp.ui.utils.factory
 
@@ -17,7 +20,7 @@ class MyProfileFragment : Fragment() {
 
     private lateinit var binding: FragmentMyprofileBinding
 
-    private val viewModel by viewModels<MyProfileViewModel> {factory()}
+    private val viewModel by viewModels<MyProfileViewModel> { factory() }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,10 +58,11 @@ class MyProfileFragment : Fragment() {
     }
 
     private fun moveToSignUpScreen() {
-
+        navigator().moveToAuthScreen()
     }
 
     private fun moveToMyContactsScreen() {
-
+        val parentFragment = parentFragment as? MainFragment
+        parentFragment?.goToTub(Tab.CONTACTS)
     }
 }

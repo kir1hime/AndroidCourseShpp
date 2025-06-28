@@ -10,7 +10,7 @@ import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.MIN_NUM_OF_CHARS_IN_PASSWORD
 import com.example.androidcourseshpp.data.SignUpValidator
 import com.example.androidcourseshpp.data.dataProvider.EMAIL_KEY
-import com.example.androidcourseshpp.ui.screens.main.MainActivity
+import com.example.androidcourseshpp.ui.screens.MainActivity
 import com.example.androidcourseshpp.databinding.ActivityAuthBinding
 import com.example.androidcourseshpp.ui.extensions.adaptUserInterface
 import com.example.androidcourseshpp.ui.utils.factory

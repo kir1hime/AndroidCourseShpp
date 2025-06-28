@@ -6,11 +6,11 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.androidcourseshpp.data.dataProvider.DataProvider
 import com.example.androidcourseshpp.ui.screens.auth.AuthActivity
 import com.example.androidcourseshpp.ui.screens.auth.SignUpViewModel
-import com.example.androidcourseshpp.ui.screens.contacts.ContactListFragment
-import com.example.androidcourseshpp.ui.screens.contacts.ContactListViewModel
-import com.example.androidcourseshpp.ui.screens.main.MainActivity
-import com.example.androidcourseshpp.ui.screens.main.MyProfileFragment
-import com.example.androidcourseshpp.ui.screens.main.MyProfileViewModel
+import com.example.androidcourseshpp.ui.screens.userinfo.contacts.ContactListFragment
+import com.example.androidcourseshpp.ui.screens.userinfo.contacts.ContactListViewModel
+import com.example.androidcourseshpp.ui.screens.MainActivity
+import com.example.androidcourseshpp.ui.screens.userinfo.myprofile.MyProfileFragment
+import com.example.androidcourseshpp.ui.screens.userinfo.myprofile.MyProfileViewModel
 
 class ViewModelFactory(
     private val dataProvider: DataProvider?,
@@ -44,5 +44,5 @@ class ViewModelFactory(
 fun AuthActivity.factory() = ViewModelFactory(DataProvider(applicationContext), null )
 fun MainActivity.factory() = ViewModelFactory(DataProvider(applicationContext), null)
 fun ContactListFragment.factory() = ViewModelFactory(null, requireActivity().contentResolver)
-fun MyProfileFragment.factory() = ViewModelFactory(null, requireActivity().contentResolver)
+fun MyProfileFragment.factory() = ViewModelFactory(DataProvider(requireActivity().applicationContext), null)
 

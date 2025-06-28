@@ -2,22 +2,17 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_graph"
-    app:startDestination="@id/contactListFragment">
+    android:id="@+id/test_nav_graph"
+    app:startDestination="@id/mainFragment">
 
     <fragment
-        android:id="@+id/contactListFragment"
-        android:name="com.example.androidcourseshpp.ui.screens.userinfo.contacts.ContactListFragment"
-        android:label="fragment_contactlist"
-        tools:layout="@layout/fragment_contactlist">
+        android:id="@+id/mainFragment"
+        android:name="com.example.androidcourseshpp.ui.screens.userinfo.MainFragment"
+        android:label="fragment_main"
+        tools:layout="@layout/fragment_myprofile" >
         <action
-            android:id="@+id/action_contactListFragment_to_contactDetailsFragment"
-            app:destination="@id/contactDetailsFragment"
-            app:enterAnim="@anim/slide_in_from_right_to_left"
-            app:exitAnim="@anim/slide_out_from_right_to_left"
-            app:popEnterAnim="@anim/slide_in_from_left_to_right"
-            app:popExitAnim="@anim/slide_out_from_left_to_right" />
-
+            android:id="@+id/action_mainFragment_to_contactDetailsFragment"
+            app:destination="@id/contactDetailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/contactDetailsFragment"

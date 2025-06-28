@@ -5,7 +5,7 @@
     android:id="@+id/detailView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.androidcourseshpp.ui.screens.contacts.ContactDetailsFragment">
+    tools:context="com.example.androidcourseshpp.ui.screens.contactdetails.ContactDetailsFragment">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_bluePartOfScreen"

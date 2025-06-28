@@ -1,4 +1,4 @@
-package com.example.androidcourseshpp.ui.screens.contacts
+package com.example.androidcourseshpp.ui.screens.userinfo.contacts
 
 import android.Manifest
 import android.app.AlertDialog
@@ -19,13 +19,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.contactlistdata.ContactItem
 import com.example.androidcourseshpp.databinding.FragmentContactlistBinding
-import com.example.androidcourseshpp.ui.screens.contacts.AddContactDialog.Companion.CAREER_KEY
-import com.example.androidcourseshpp.ui.screens.contacts.AddContactDialog.Companion.NAME_KEY
-import com.example.androidcourseshpp.ui.screens.contacts.AddContactDialog.Companion.RESPONSE_KEY
-import com.example.androidcourseshpp.ui.screens.contacts.adapters.ContactItemDecoration
-import com.example.androidcourseshpp.ui.screens.contacts.adapters.ContactsAdapter
-import com.example.androidcourseshpp.ui.screens.contacts.adapters.ItemActions
-import com.example.androidcourseshpp.ui.screens.contacts.contract.navigator
+import com.example.androidcourseshpp.ui.screens.navigator
+import com.example.androidcourseshpp.ui.screens.userinfo.contacts.AddContactDialog.Companion.CAREER_KEY
+import com.example.androidcourseshpp.ui.screens.userinfo.contacts.AddContactDialog.Companion.NAME_KEY
+import com.example.androidcourseshpp.ui.screens.userinfo.contacts.AddContactDialog.Companion.RESPONSE_KEY
+import com.example.androidcourseshpp.ui.screens.userinfo.contacts.adapters.ContactItemDecoration
+import com.example.androidcourseshpp.ui.screens.userinfo.contacts.adapters.ContactsAdapter
+import com.example.androidcourseshpp.ui.screens.userinfo.contacts.adapters.ItemActions
+import com.example.androidcourseshpp.ui.screens.userinfo.MainFragment
+import com.example.androidcourseshpp.data.Tab
 import com.example.androidcourseshpp.ui.utils.factory
 import com.google.android.material.snackbar.Snackbar
 
@@ -35,11 +37,12 @@ class ContactListFragment : Fragment() {
     private val viewModel by viewModels<ContactListViewModel> { factory() }
     private lateinit var requestPermissionsLauncher: ActivityResultLauncher<String>
 
-    private val onBackPressedCallback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
-        override fun handleOnBackPressed() {
-            navigator().moveToMyProfileScreen()
+    private val onBackPressedCallback: OnBackPressedCallback =
+        object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+              moveToMyProfileScreen()
+            }
         }
-    }
 
     private val adapter by lazy {
         ContactsAdapter(getItemActions())
@@ -76,20 +79,24 @@ class ContactListFragment : Fragment() {
         setOnBackPressedListener()
     }
 
-    private fun getItemActions() : ItemActions{
+    private fun getItemActions(): ItemActions {
         return object : ItemActions {
             override fun deleteContactItem(contactItem: ContactItem, position: Int) {
                 viewModel.deleteContactItem(contactItem)
                 showUndoDeletingSnackBarItem(contactItem, position)
             }
+
             override fun showContactItemDetails(contactItem: ContactItem, avatar: ImageView) {
-                navigator().moveToDetailsScreen(contactItem,avatar)
+                navigator().moveToDetailsScreen(contactItem, avatar)
             }
         }
     }
 
-    private fun setOnBackPressedListener(){
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, onBackPressedCallback)
+    private fun setOnBackPressedListener() {
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            onBackPressedCallback
+        )
     }
 
     private fun initRecyclerView() = with(binding.rvContacts) {
@@ -111,7 +118,7 @@ class ContactListFragment : Fragment() {
 
     private fun setListeners() = with(binding) {
         ibtArrowBack.setOnClickListener {
-            navigator().moveToMyProfileScreen()
+            moveToMyProfileScreen()
         }
         tvAddContacts.setOnClickListener {
             showAddContactDialog()
@@ -142,27 +149,33 @@ class ContactListFragment : Fragment() {
         ) { _, data ->
 
             val which = data.getInt(RESPONSE_KEY)
-            val newContactName = data.getString(NAME_KEY)
-            val newContactCareer = data.getString(CAREER_KEY)
-
-            val contactList = viewModel.contactList.value
-            val lastId: Int = contactList?.get(contactList.size - 1)?.id ?: 0
-
-            val newContact = ContactItem(
-                lastId + 1,
-                newContactName ?: "",
-                newContactCareer ?: "",
-                NEW_CONTACT_AVATAR
-            )
 
             when (which) {
                 AlertDialog.BUTTON_POSITIVE -> {
+                    val newContact = createNewContact(data)
                     if (!viewModel.isNewContactDataIsBlank(newContact)) {
                         viewModel.addContactItem(newContact, viewModel.contactList.value?.size ?: 0)
                     }
                 }
             }
         }
+    }
+
+    private fun createNewContact(data: Bundle): ContactItem {
+        val newContactName = data.getString(NAME_KEY)
+        val newContactCareer = data.getString(CAREER_KEY)
+
+        val contactList = viewModel.contactList.value
+        val lastId: Int = contactList?.get(contactList.size - 1)?.id ?: 0
+
+        val newContact = ContactItem(
+            lastId + 1,
+            newContactName ?: "",
+            newContactCareer ?: "",
+            NEW_CONTACT_AVATAR
+        )
+
+        return newContact
     }
 
     private fun initSwipeToDeleteOfContactItem() {
@@ -196,6 +209,11 @@ class ContactListFragment : Fragment() {
                     viewModel.updateContactList()
                 }
             }
+    }
+
+    private fun  moveToMyProfileScreen(){
+        val parentFragment = parentFragment as? MainFragment
+        parentFragment?.goToTub(Tab.MYPROFILE)
     }
 
 }
