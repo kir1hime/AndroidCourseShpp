@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity(), Navigator {
         navHostFragment.navController
     }
     private val navHostFragment by lazy {
-        supportFragmentManager.findFragmentById(R.id.fragmentContainer1) as NavHostFragment
+        supportFragmentManager.findFragmentById(R.id.fragmentContainer) as NavHostFragment
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

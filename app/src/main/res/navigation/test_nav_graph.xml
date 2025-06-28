@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.example.androidcourseshpp.ui.screens.userinfo.MainFragment"
+        android:name="com.example.androidcourseshpp.ui.screens.userinfo.UserInfoFragment"
         android:label="fragment_main"
         tools:layout="@layout/fragment_myprofile" >
         <action

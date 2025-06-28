@@ -26,7 +26,7 @@ import com.example.androidcourseshpp.ui.screens.userinfo.contacts.AddContactDial
 import com.example.androidcourseshpp.ui.screens.userinfo.contacts.adapters.ContactItemDecoration
 import com.example.androidcourseshpp.ui.screens.userinfo.contacts.adapters.ContactsAdapter
 import com.example.androidcourseshpp.ui.screens.userinfo.contacts.adapters.ItemActions
-import com.example.androidcourseshpp.ui.screens.userinfo.MainFragment
+import com.example.androidcourseshpp.ui.screens.userinfo.UserInfoFragment
 import com.example.androidcourseshpp.data.Tab
 import com.example.androidcourseshpp.ui.utils.factory
 import com.google.android.material.snackbar.Snackbar
@@ -212,7 +212,7 @@ class ContactListFragment : Fragment() {
     }
 
     private fun  moveToMyProfileScreen(){
-        val parentFragment = parentFragment as? MainFragment
+        val parentFragment = parentFragment as? UserInfoFragment
         parentFragment?.goToTub(Tab.MYPROFILE)
     }
 

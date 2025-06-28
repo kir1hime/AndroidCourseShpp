@@ -7,14 +7,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.Tab
-import com.example.androidcourseshpp.databinding.FragmentMainBinding
+import com.example.androidcourseshpp.databinding.FragmentUserinfoBinding
 import com.example.androidcourseshpp.ui.screens.userinfo.contacts.ContactListFragment
 import com.example.androidcourseshpp.ui.screens.userinfo.myprofile.MyProfileFragment
 import com.google.android.material.tabs.TabLayoutMediator
 
 
-class MainFragment : Fragment() {
-    private lateinit var binding: FragmentMainBinding
+class UserInfoFragment : Fragment() {
+    private lateinit var binding: FragmentUserinfoBinding
 
     private val fragments = listOf(MyProfileFragment(), ContactListFragment())
 
@@ -23,7 +23,7 @@ class MainFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentMainBinding.inflate(inflater, container, false)
+        binding = FragmentUserinfoBinding.inflate(inflater, container, false)
 
         return binding.root
     }
@@ -34,7 +34,7 @@ class MainFragment : Fragment() {
     }
 
     private fun initViewPager() = with(binding) {
-        val adapter = ViewPagerUserInfoAdapter(this@MainFragment, fragments)
+        val adapter = ViewPagerUserInfoAdapter(this@UserInfoFragment, fragments)
         vpUserInfo.adapter = adapter
 
         TabLayoutMediator(tlMyProfileContacts, vpUserInfo) { tabItem, position ->

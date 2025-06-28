@@ -11,7 +11,7 @@ import com.example.androidcourseshpp.data.EmailParser
 import com.example.androidcourseshpp.data.dataProvider.EMAIL_KEY
 import com.example.androidcourseshpp.databinding.FragmentMyprofileBinding
 import com.example.androidcourseshpp.ui.screens.navigator
-import com.example.androidcourseshpp.ui.screens.userinfo.MainFragment
+import com.example.androidcourseshpp.ui.screens.userinfo.UserInfoFragment
 import com.example.androidcourseshpp.data.Tab
 
 import com.example.androidcourseshpp.ui.utils.factory
@@ -62,7 +62,7 @@ class MyProfileFragment : Fragment() {
     }
 
     private fun moveToMyContactsScreen() {
-        val parentFragment = parentFragment as? MainFragment
+        val parentFragment = parentFragment as? UserInfoFragment
         parentFragment?.goToTub(Tab.CONTACTS)
     }
 }
