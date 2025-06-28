@@ -37,7 +37,7 @@ class UserInfoFragment : Fragment() {
         val adapter = ViewPagerUserInfoAdapter(this@UserInfoFragment, fragments)
         vpUserInfo.adapter = adapter
 
-        TabLayoutMediator(tlMyProfileContacts, vpUserInfo) { tabItem, position ->
+        TabLayoutMediator(tlUserInfo, vpUserInfo) { tabItem, position ->
 
             tabItem.text = when (Tab.entries[position]) {
                 Tab.MYPROFILE -> getString(R.string.my_profile_label)

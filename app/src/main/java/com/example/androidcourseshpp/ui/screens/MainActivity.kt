@@ -9,19 +9,21 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.navOptions
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.contactlistdata.ContactItem
 import com.example.androidcourseshpp.databinding.ActivityMainBinding
 import com.example.androidcourseshpp.ui.extensions.adaptUserInterface
 import com.example.androidcourseshpp.ui.screens.auth.AuthActivity
-import com.example.androidcourseshpp.ui.screens.userinfo.MainFragmentDirections
+
+import com.example.androidcourseshpp.ui.screens.userinfo.UserInfoFragmentDirections
 
 
 class MainActivity : AppCompatActivity(), Navigator {
 
     private lateinit var binding: ActivityMainBinding
 
-    private  val navController: NavController by lazy {
+    private val navController: NavController by lazy {
         navHostFragment.navController
     }
     private val navHostFragment by lazy {
@@ -56,7 +58,7 @@ class MainActivity : AppCompatActivity(), Navigator {
     override fun moveToDetailsScreen(contact: ContactItem, avatar: ImageView) {
         val extras = FragmentNavigatorExtras(avatar to contact.id.toString())
 
-        val direction = MainFragmentDirections
+        val direction = UserInfoFragmentDirections
             .actionMainFragmentToContactDetailsFragment(
                 contact.id,
                 contact.name,
