@@ -8,12 +8,13 @@ import androidx.fragment.app.Fragment
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.Tab
 import com.example.androidcourseshpp.databinding.FragmentUserinfoBinding
+import com.example.androidcourseshpp.ui.screens.TabSwitchable
 import com.example.androidcourseshpp.ui.screens.userinfo.contacts.ContactListFragment
 import com.example.androidcourseshpp.ui.screens.userinfo.myprofile.MyProfileFragment
 import com.google.android.material.tabs.TabLayoutMediator
 
 
-class UserInfoFragment : Fragment() {
+class UserInfoFragment : Fragment(), TabSwitchable {
     private lateinit var binding: FragmentUserinfoBinding
 
     private val fragments = listOf(MyProfileFragment(), ContactListFragment())
@@ -47,8 +48,9 @@ class UserInfoFragment : Fragment() {
         }.attach()
     }
 
-     fun goToTub(tab : Tab){
-        binding.vpUserInfo.currentItem = tab.ordinal
+
+    override fun moveToTub(tabPos: Int) {
+        binding.vpUserInfo.currentItem = tabPos
     }
 
 }

@@ -13,6 +13,7 @@ import com.example.androidcourseshpp.databinding.FragmentMyprofileBinding
 import com.example.androidcourseshpp.ui.screens.navigator
 import com.example.androidcourseshpp.ui.screens.userinfo.UserInfoFragment
 import com.example.androidcourseshpp.data.Tab
+import com.example.androidcourseshpp.ui.screens.TabSwitchable
 
 import com.example.androidcourseshpp.ui.utils.factory
 
@@ -62,7 +63,7 @@ class MyProfileFragment : Fragment() {
     }
 
     private fun moveToMyContactsScreen() {
-        val parentFragment = parentFragment as? UserInfoFragment
-        parentFragment?.goToTub(Tab.CONTACTS)
+        val parentFragment = parentFragment as? TabSwitchable
+        parentFragment?.moveToTub(Tab.CONTACTS.ordinal)
     }
 }
