@@ -5,7 +5,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
@@ -13,19 +12,15 @@ import android.graphics.RectF
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.graphics.drawable.toBitmap
-import androidx.core.graphics.toColor
 import com.example.androidcourseshpp.R
 import kotlin.math.abs
 import kotlin.properties.Delegates
 
-class ButtonWithIcon(
+class ButtonWithIcon @JvmOverloads constructor(
     context: Context,
-    attributesSet: AttributeSet?,
-    defStyleAttr: Int,
+    attributesSet: AttributeSet? = null,
+    defStyleAttr: Int = 0,
 ) : AppCompatButton(context, attributesSet, defStyleAttr) {
-
-    constructor(context: Context, attributesSet: AttributeSet?) : this(context, attributesSet, 0)
-    constructor(context: Context) : this(context, null)
 
     private var icon: Bitmap? = null
 
@@ -62,9 +57,13 @@ class ButtonWithIcon(
 
     private lateinit var iconPaint : Paint
 
+    private lateinit var iconSpace : RectF
+
     init {
         if (attributesSet != null) {
             initAttributes(attributesSet, defStyleAttr)
+        } else {
+            initAttributesByDefault()
         }
         initPaints()
     }
@@ -85,14 +84,14 @@ class ButtonWithIcon(
         originWithOppositePadding: Float,
         originWithAllPaddings: Float
     ): Float {
-        if (priorityPadding == 0f && oppositePadding == 0f) {
-            return originWithoutUserPaddings
+        return if (priorityPadding == 0f && oppositePadding == 0f) {
+            originWithoutUserPaddings
         } else if (priorityPadding != 0f && oppositePadding == 0f) {
-            return originWithPriorityPadding
+            originWithPriorityPadding
         } else if (priorityPadding == 0f) {
-            return originWithOppositePadding
+            originWithOppositePadding
         } else {
-            return originWithAllPaddings
+            originWithAllPaddings
         }
     }
 
@@ -101,11 +100,7 @@ class ButtonWithIcon(
     override fun onDraw(canvas: Canvas) {
         canvas.drawText(text.toString(), textOriginX, textOriginY, paint)
 
-        icon?.let {
-            val rect =
-                RectF(iconOriginX, iconOriginY, iconOriginX + iconWidth, iconOriginY + iconHeight)
-            canvas.drawBitmap(it, null, rect, iconPaint)
-        }
+        icon?.let { canvas.drawBitmap(it, null, iconSpace, iconPaint) }
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
@@ -115,6 +110,14 @@ class ButtonWithIcon(
 
         defineIconXOrigin()
         defineIconYOrigin()
+
+        createIconSpace()
+    }
+
+    private fun createIconSpace(){
+        icon?.let {
+           iconSpace = RectF(iconOriginX, iconOriginY, iconOriginX + iconWidth, iconOriginY + iconHeight)
+        }
     }
 
     private fun defineTextXOrigin() {
@@ -186,7 +189,9 @@ class ButtonWithIcon(
         )
     }
 
-    private fun initAttributes(attributesSet: AttributeSet?, defStyleAttr: Int) {
+
+
+    private fun initAttributes(attributesSet: AttributeSet, defStyleAttr: Int) {
         val typedArray = context.obtainStyledAttributes(
             attributesSet,
             R.styleable.ButtonWithIcon,
@@ -201,21 +206,43 @@ class ButtonWithIcon(
                 typedArray.getDimension(R.styleable.ButtonWithIcon_iconWidth, it.width.toFloat())
             iconHeight =
                 typedArray.getDimension(R.styleable.ButtonWithIcon_iconHeight, it.width.toFloat())
-            iconColor = typedArray.getColor(R.styleable.ButtonWithIcon_iconColor, -1)
+            iconColor = typedArray.getColor(R.styleable.ButtonWithIcon_iconColor, DEFAULT_COLOR_VALUE)
         }
 
-        iconPaddingStart = typedArray.getDimension(R.styleable.ButtonWithIcon_iconPaddingStart, 0f)
-        iconPaddingEnd = typedArray.getDimension(R.styleable.ButtonWithIcon_iconPaddingEnd, 0f)
-        iconPaddingTop = typedArray.getDimension(R.styleable.ButtonWithIcon_iconPaddingTop, 0f)
+        iconPaddingStart = typedArray.getDimension(R.styleable.ButtonWithIcon_iconPaddingStart, DEFAULT_MEASURE_VALUE)
+        iconPaddingEnd = typedArray.getDimension(R.styleable.ButtonWithIcon_iconPaddingEnd, DEFAULT_MEASURE_VALUE)
+        iconPaddingTop = typedArray.getDimension(R.styleable.ButtonWithIcon_iconPaddingTop, DEFAULT_MEASURE_VALUE)
         iconPaddingBottom =
-            typedArray.getDimension(R.styleable.ButtonWithIcon_iconPaddingBottom, 0f)
+            typedArray.getDimension(R.styleable.ButtonWithIcon_iconPaddingBottom, DEFAULT_MEASURE_VALUE)
 
-        textPaddingStart = typedArray.getDimension(R.styleable.ButtonWithIcon_textPaddingStart, 0f)
-        textPaddingEnd = typedArray.getDimension(R.styleable.ButtonWithIcon_textPaddingEnd, 0f)
-        textPaddingTop = typedArray.getDimension(R.styleable.ButtonWithIcon_textPaddingTop, 0f)
+        textPaddingStart = typedArray.getDimension(R.styleable.ButtonWithIcon_textPaddingStart, DEFAULT_MEASURE_VALUE)
+        textPaddingEnd = typedArray.getDimension(R.styleable.ButtonWithIcon_textPaddingEnd, DEFAULT_MEASURE_VALUE)
+        textPaddingTop = typedArray.getDimension(R.styleable.ButtonWithIcon_textPaddingTop, DEFAULT_MEASURE_VALUE)
         textPaddingBottom =
-            typedArray.getDimension(R.styleable.ButtonWithIcon_textPaddingBottom, 0f)
+            typedArray.getDimension(R.styleable.ButtonWithIcon_textPaddingBottom, DEFAULT_MEASURE_VALUE)
 
         typedArray.recycle()
+    }
+
+    private fun initAttributesByDefault(){
+        iconWidth = DEFAULT_MEASURE_VALUE
+        iconHeight = DEFAULT_MEASURE_VALUE
+
+        iconColor = DEFAULT_COLOR_VALUE
+
+        iconPaddingStart = DEFAULT_MEASURE_VALUE
+        iconPaddingEnd = DEFAULT_MEASURE_VALUE
+        iconPaddingTop = DEFAULT_MEASURE_VALUE
+        iconPaddingBottom = DEFAULT_MEASURE_VALUE
+
+        textPaddingStart = DEFAULT_MEASURE_VALUE
+        textPaddingEnd = DEFAULT_MEASURE_VALUE
+        textPaddingTop = DEFAULT_MEASURE_VALUE
+        textPaddingBottom = DEFAULT_MEASURE_VALUE
+    }
+
+    companion object {
+        const val DEFAULT_MEASURE_VALUE = 0f
+        const val DEFAULT_COLOR_VALUE = -1
     }
 }
