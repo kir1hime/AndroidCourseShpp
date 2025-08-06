@@ -108,10 +108,11 @@ class ButtonWithIcon @JvmOverloads constructor(
         defineTextXOrigin()
         defineTextYOrigin()
 
-        defineIconXOrigin()
-        defineIconYOrigin()
-
-        createIconSpace()
+        icon?.let {
+            defineIconXOrigin()
+            defineIconYOrigin()
+            createIconSpace()
+        }
     }
 
     private fun createIconSpace(){
@@ -206,8 +207,8 @@ class ButtonWithIcon @JvmOverloads constructor(
                 typedArray.getDimension(R.styleable.ButtonWithIcon_iconWidth, it.width.toFloat())
             iconHeight =
                 typedArray.getDimension(R.styleable.ButtonWithIcon_iconHeight, it.width.toFloat())
-            iconColor = typedArray.getColor(R.styleable.ButtonWithIcon_iconColor, DEFAULT_COLOR_VALUE)
         }
+        iconColor = typedArray.getColor(R.styleable.ButtonWithIcon_iconColor, DEFAULT_COLOR_VALUE)
 
         iconPaddingStart = typedArray.getDimension(R.styleable.ButtonWithIcon_iconPaddingStart, DEFAULT_MEASURE_VALUE)
         iconPaddingEnd = typedArray.getDimension(R.styleable.ButtonWithIcon_iconPaddingEnd, DEFAULT_MEASURE_VALUE)
