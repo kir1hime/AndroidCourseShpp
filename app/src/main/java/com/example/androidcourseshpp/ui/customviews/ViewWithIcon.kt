@@ -50,6 +50,7 @@ class ViewWithIcon @JvmOverloads constructor(
     private var iconOriginY by Delegates.notNull<Float>()
 
     private var text by Delegates.notNull<String>()
+
     private var textSize by Delegates.notNull<Float>()
     private var textStyle by Delegates.notNull<Int>()
     private lateinit var textFontFamily: Any
@@ -87,7 +88,7 @@ class ViewWithIcon @JvmOverloads constructor(
         initTextPaint()
     }
 
-    private fun initIconPaint(){
+    private fun initIconPaint() {
         iconPaint = Paint(Paint.ANTI_ALIAS_FLAG)
 
         if (iconColor != DEFAULT_INT_VALUE) {
@@ -95,7 +96,7 @@ class ViewWithIcon @JvmOverloads constructor(
         }
     }
 
-    private fun initTextPaint(){
+    private fun initTextPaint() {
         textPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
             textSize = this@ViewWithIcon.textSize
             color = this@ViewWithIcon.textColor
@@ -120,7 +121,6 @@ class ViewWithIcon @JvmOverloads constructor(
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
-        super.onSizeChanged(w, h, oldw, oldh)
         defineTextXOrigin()
         defineTextYOrigin()
 
