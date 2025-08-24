@@ -25,17 +25,8 @@
         android:label="fragment_detailview"
         tools:layout="@layout/fragment_detailview">
         <argument
-            android:name="id"
-            app:argType="integer" />
-        <argument
-            android:name="name"
-            app:argType="string" />
-        <argument
-            android:name="career"
-            app:argType="string" />
-        <argument
-            android:name="avatar"
-            app:argType="string" />
+            android:name="contactDetails"
+            app:argType="com.example.androidcourseshpp.data.contactlistdata.ContactItem" />
 
     </fragment>
 </navigation>

@@ -1,7 +1,6 @@
 package com.example.androidcourseshpp.ui.screens.contacts
 
 import android.os.Bundle
-import android.transition.ChangeBounds
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,14 +39,14 @@ class ContactDetailsFragment : Fragment() {
 
     private fun profilePhotoTransition(){
         sharedElementEnterTransition = TransitionInflater.from(requireContext()).inflateTransition(R.transition.shared_element_transition)
-        binding.IvProfPhoto.transitionName = args.id.toString()
+        binding.IvProfPhoto.transitionName = args.contactDetails.id.toString()
 
     }
 
     private fun setContactDetailsInfo() = with(binding){
-        IvProfPhoto.loadImageFromURL(requireContext(), args.avatar, ImageLoader.GLIDE, R.drawable.ic_defaultavatar2)
-        tvName.text = args.name
-        tvCareer.text = args.career
+        IvProfPhoto.loadImageFromURL(requireContext(), args.contactDetails.avatarURL, ImageLoader.GLIDE, R.drawable.ic_defaultavatar2)
+        tvName.text = args.contactDetails.name
+        tvCareer.text = args.contactDetails.career
     }
 
     private fun setListeners(){

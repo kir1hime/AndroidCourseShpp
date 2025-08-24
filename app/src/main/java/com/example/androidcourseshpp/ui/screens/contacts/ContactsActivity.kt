@@ -59,12 +59,7 @@ class ContactsActivity : AppCompatActivity(), Navigator {
         val extras = FragmentNavigatorExtras(avatar to contact.id.toString())
 
         val direction =
-            ContactListFragmentDirections.actionContactListFragmentToContactDetailsFragment(
-                contact.id,
-                contact.name,
-                contact.career,
-                contact.avatarURL
-            )
+            ContactListFragmentDirections.actionContactListFragmentToContactDetailsFragment(contact)
 
         navController.navigate(direction, extras)
     }
