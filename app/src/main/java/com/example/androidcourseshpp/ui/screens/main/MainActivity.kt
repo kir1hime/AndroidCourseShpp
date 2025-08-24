@@ -5,21 +5,21 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.EmailParser
 import com.example.androidcourseshpp.data.dataProvider.EMAIL_KEY
 import com.example.androidcourseshpp.ui.screens.contacts.ContactsActivity
 import com.example.androidcourseshpp.databinding.ActivityMainBinding
-import com.example.androidcourseshpp.ui.extensions.adaptUserInterface
-import com.example.androidcourseshpp.ui.utils.factory
+import com.example.androidcourseshpp.ui.BaseActivity
 import com.example.androidcourseshpp.ui.screens.auth.AuthActivity
+import dagger.hilt.android.AndroidEntryPoint
 
-class MainActivity : AppCompatActivity() {
+@AndroidEntryPoint
+class MainActivity : BaseActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
-    private val viewModel by viewModels<MyProfileViewModel> { factory() }
+    private val viewModel by viewModels<MyProfileViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
         binding.tvName.text = if (value == "") EmailParser.parseEMail(
             intent.getStringExtra(EMAIL_KEY).toString()
         ) else
-            EmailParser.parseEMail(value!!)
+            EmailParser.parseEMail(value)
     }
 
 

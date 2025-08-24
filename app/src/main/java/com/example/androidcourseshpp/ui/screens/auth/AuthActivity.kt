@@ -6,21 +6,25 @@ import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.MIN_NUM_OF_CHARS_IN_PASSWORD
 import com.example.androidcourseshpp.data.SignUpValidator
 import com.example.androidcourseshpp.data.dataProvider.EMAIL_KEY
 import com.example.androidcourseshpp.ui.screens.main.MainActivity
 import com.example.androidcourseshpp.databinding.ActivityAuthBinding
-import com.example.androidcourseshpp.ui.extensions.adaptUserInterface
-import com.example.androidcourseshpp.ui.utils.factory
+import com.example.androidcourseshpp.ui.BaseActivity
+import dagger.hilt.android.AndroidEntryPoint
 
-class AuthActivity : AppCompatActivity() {
+@AndroidEntryPoint
+class AuthActivity : BaseActivity() {
 
     private lateinit var binding: ActivityAuthBinding
-    private val viewModel by viewModels<SignUpViewModel> { factory() }
+    private val viewModel by viewModels<SignUpViewModel>()
 
-    private val passwordErrorMessages  by lazy {
+    private val passwordErrorMessages by lazy {
         listOf(
             getString(R.string.less_8_symbols_pswd_error, MIN_NUM_OF_CHARS_IN_PASSWORD),
             getString(R.string.capital_letter_error),
@@ -41,8 +45,9 @@ class AuthActivity : AppCompatActivity() {
 
         adaptUserInterface(binding.root)
 
-        if (viewModel.savedEMail.value != "") {
-            moveToMyProfileScreen(viewModel.savedEMail.value!!)
+        val savedEmail = viewModel.savedEMail.value
+        if (savedEmail != "") {
+            moveToMyProfileScreen(savedEmail)
         }
 
         setListeners()

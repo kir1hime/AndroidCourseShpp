@@ -10,7 +10,6 @@ import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.contactlistdata.ContactItem
 import com.example.androidcourseshpp.databinding.FragmentContactlistBinding
+import com.example.androidcourseshpp.ui.BaseFragment
 import com.example.androidcourseshpp.ui.screens.contacts.AddContactDialog.Companion.CAREER_KEY
 import com.example.androidcourseshpp.ui.screens.contacts.AddContactDialog.Companion.NAME_KEY
 import com.example.androidcourseshpp.ui.screens.contacts.AddContactDialog.Companion.RESPONSE_KEY
@@ -25,28 +25,28 @@ import com.example.androidcourseshpp.ui.screens.contacts.adapters.ContactItemDec
 import com.example.androidcourseshpp.ui.screens.contacts.adapters.ContactsAdapter
 import com.example.androidcourseshpp.ui.screens.contacts.adapters.ItemActions
 import com.example.androidcourseshpp.ui.screens.contacts.contract.navigator
-import com.example.androidcourseshpp.ui.utils.factory
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 
-class ContactListFragment : Fragment() {
+const val NEW_CONTACT_AVATAR =
+    "https://kartinki.pics/uploads/posts/2022-02/1645235615_4-kartinkin-net-p-kroliki-kartinki-4.jpg"
+
+@AndroidEntryPoint
+class ContactListFragment : BaseFragment() {
 
     private lateinit var binding: FragmentContactlistBinding
-    private val viewModel by viewModels<ContactListViewModel> { factory() }
+    private val viewModel by viewModels<ContactListViewModel>()
     private lateinit var requestPermissionsLauncher: ActivityResultLauncher<String>
 
-    private val onBackPressedCallback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
-        override fun handleOnBackPressed() {
-            navigator().moveToMyProfileScreen()
+    private val onBackPressedCallback: OnBackPressedCallback =
+        object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                navigator().moveToMyProfileScreen()
+            }
         }
-    }
 
     private val adapter by lazy {
         ContactsAdapter(getItemActions())
-    }
-
-    private companion object {
-        const val NEW_CONTACT_AVATAR =
-            "https://kartinki.pics/uploads/posts/2022-02/1645235615_4-kartinkin-net-p-kroliki-kartinki-4.jpg"
     }
 
     override fun onCreateView(
@@ -71,20 +71,24 @@ class ContactListFragment : Fragment() {
         return binding.root
     }
 
-    private fun getItemActions() : ItemActions{
+    private fun getItemActions(): ItemActions {
         return object : ItemActions {
             override fun deleteContactItem(contactItem: ContactItem, position: Int) {
-                viewModel.deleteContactItem(contactItem)
+                viewModel.deleteContactItem(contactItem, position)
                 showUndoDeletingSnackBarItem(contactItem, position)
             }
+
             override fun showContactItemDetails() {
                 navigator().moveToDetailsScreen()
             }
         }
     }
 
-    private fun setOnBackPressedListener(){
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, onBackPressedCallback)
+    private fun setOnBackPressedListener() {
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            onBackPressedCallback
+        )
     }
 
     private fun initRecyclerView() = with(binding.rvContacts) {
@@ -99,9 +103,7 @@ class ContactListFragment : Fragment() {
     }
 
     private fun setObservers() {
-        viewModel.contactList.observe(viewLifecycleOwner) {
-            adapter.submitList(it)
-        }
+        collectFlow(viewModel.contactList) { adapter.submitList(it) }
     }
 
     private fun setListeners() = with(binding) {
@@ -126,6 +128,13 @@ class ContactListFragment : Fragment() {
 
         undoDeletingSnackBar.setAction(R.string.snackbar_action_text) {
             viewModel.addContactItem(contactItem, position)
+            viewModel.deletedItems.pop()
+
+            if (!viewModel.deletedItems.isEmpty()) {
+                val deletedItem = viewModel.deletedItems.peek()
+                showUndoDeletingSnackBarItem(deletedItem.first, deletedItem.second)
+            }
+
         }.setActionTextColor(ContextCompat.getColor(requireContext(), R.color.custom_primary_color))
 
         undoDeletingSnackBar.show()
@@ -136,26 +145,14 @@ class ContactListFragment : Fragment() {
             AddContactDialog.REQUEST_KEY, this
         ) { _, data ->
 
-            val which = data.getInt(RESPONSE_KEY)
+            val event = data.getInt(RESPONSE_KEY)
             val newContactName = data.getString(NAME_KEY)
             val newContactCareer = data.getString(CAREER_KEY)
 
-            val contactList = viewModel.contactList.value
-            val lastId: Int = contactList?.get(contactList.size - 1)?.id ?: 0
+            val newContact = viewModel.createNewContact(newContactName, newContactCareer)
 
-            val newContact = ContactItem(
-                lastId + 1,
-                newContactName ?: "",
-                newContactCareer ?: "",
-                NEW_CONTACT_AVATAR
-            )
-
-            when (which) {
-                AlertDialog.BUTTON_POSITIVE -> {
-                    if (!viewModel.isNewContactDataIsBlank(newContact)) {
-                        viewModel.addContactItem(newContact, viewModel.contactList.value?.size ?: 0)
-                    }
-                }
+            when (event) {
+                AlertDialog.BUTTON_POSITIVE -> viewModel.processAddContactDialogEvent(newContact)
             }
         }
     }
@@ -173,11 +170,11 @@ class ContactListFragment : Fragment() {
                 }
 
                 override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                    with(viewHolder) {
-                        val deletedItem = viewModel.contactList.value!![adapterPosition]
-                        showUndoDeletingSnackBarItem(deletedItem, adapterPosition)
-                    }
-                    viewModel.deleteContactItem(viewHolder.adapterPosition)
+                    val adapterPosition = viewHolder.adapterPosition
+
+                    val deletedItem = viewModel.contactList.value[adapterPosition]
+                    showUndoDeletingSnackBarItem(deletedItem, adapterPosition)
+                    viewModel.deleteContactItem(deletedItem, adapterPosition)
                 }
             })
 
@@ -188,7 +185,7 @@ class ContactListFragment : Fragment() {
         requestPermissionsLauncher =
             registerForActivityResult(ActivityResultContracts.RequestPermission()) { isPermissionsGranted ->
                 if (isPermissionsGranted) {
-                    viewModel.updateContactList()
+                    viewModel.addPhoneContacts()
                 }
             }
     }

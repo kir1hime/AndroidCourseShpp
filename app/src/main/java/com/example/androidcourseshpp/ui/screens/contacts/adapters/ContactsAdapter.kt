@@ -19,23 +19,19 @@ class ContactsAdapter(private val actions: ItemActions) :
         private val binding: ContactsRecyclerviewItemBinding,
         private val actions: ItemActions
     ) :
-        RecyclerView.ViewHolder(binding.root), View.OnClickListener {
+        RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: ContactItem) = with(binding) {
             tvName.text = item.name
             tvCareer.text = item.career
             ivAvatar.loadImageFromURL(root.context, item.avatarURL, ImageLoader.PICASSO)
             ImbDelete.tag = item
-            ImbDelete.setOnClickListener(this@ViewHolder)
-            binding.item.setOnClickListener(this@ViewHolder)
-        }
 
-        override fun onClick(v: View) {
-            when (v.id) {
-                R.id.Imb_delete -> {
-                    val contactItem = v.tag as ContactItem
-                    actions.deleteContactItem(contactItem, adapterPosition)}
-                R.id.item -> actions.showContactItemDetails()
+            ImbDelete.setOnClickListener {
+                actions.deleteContactItem(item, adapterPosition)
+            }
+            binding.item.setOnClickListener{
+                actions.showContactItemDetails()
             }
         }
     }
@@ -53,7 +49,6 @@ class ContactsAdapter(private val actions: ItemActions) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
-
 }
 
 
