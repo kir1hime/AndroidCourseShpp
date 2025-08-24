@@ -4,11 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import com.example.androidcourseshpp.databinding.FragmentDetailviewBinding
-import com.example.androidcourseshpp.ui.screens.contacts.contract.navigator
+import com.example.androidcourseshpp.ui.NavigatedFragment
 
-class ContactDetailsFragment : Fragment() {
+class ContactDetailsFragment : NavigatedFragment() {
 
     private lateinit var binding : FragmentDetailviewBinding
 

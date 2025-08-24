@@ -24,8 +24,8 @@
     <dimen name="home_address_margin_top">273dp</dimen>
     <dimen name="home_address_margin_bottom">53dp</dimen>
 
-    <dimen name="acquaintance_and_filling_out_margin_top_ver">146dp</dimen>
-    <dimen name="acquaintance_and_filling_out_margin_top_hor">35dp</dimen>
+    <dimen name="greeting_margin_top_ver">146dp</dimen>
+    <dimen name="greeting_margin_top_hor">35dp</dimen>
 
     <dimen name="register_margin_bottom">90dp</dimen>
 

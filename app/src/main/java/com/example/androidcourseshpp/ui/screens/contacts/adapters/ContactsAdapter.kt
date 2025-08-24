@@ -33,8 +33,12 @@ class ContactsAdapter(private val actions: ItemActions) :
         override fun onClick(v: View) {
             when (v.id) {
                 R.id.Imb_delete -> {
-                    val contactItem = v.tag as ContactItem
-                    actions.deleteContactItem(contactItem, adapterPosition)}
+                    val contactItem = v.tag
+                    if (contactItem is ContactItem) {
+                        actions.deleteContactItem(contactItem, adapterPosition)
+                    }
+                }
+
                 R.id.item -> actions.showContactItemDetails()
             }
         }
