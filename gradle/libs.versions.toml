@@ -45,4 +45,6 @@ picasso-transformations = { module = "jp.wasabeef:picasso-transformations", vers
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+android-navigation-safeargs = {id = "androidx.navigation.safeargs.kotlin", version.ref = "navigationUiKtx"}
+kotlin-parcelize = {id = "kotlin-parcelize"}
 
