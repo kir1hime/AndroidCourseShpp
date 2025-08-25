@@ -10,8 +10,7 @@ import androidx.fragment.app.viewModels
 import com.example.androidcourseshpp.data.EmailParser
 import com.example.androidcourseshpp.data.dataProvider.EMAIL_KEY
 import com.example.androidcourseshpp.databinding.FragmentMyprofileBinding
-import com.example.androidcourseshpp.ui.screens.navigator
-import com.example.androidcourseshpp.ui.screens.userinfo.UserInfoFragment
+import com.example.androidcourseshpp.ui.utils.navigator
 import com.example.androidcourseshpp.data.Tab
 import com.example.androidcourseshpp.ui.screens.TabSwitchable
 
@@ -40,11 +39,10 @@ class MyProfileFragment : Fragment() {
         setListeners()
     }
 
-    private fun defineUserName() = with(viewModel.savedEMail) {
-        binding.tvName.text = if (value == "") EmailParser.parseEMail(
-            requireActivity().intent.getStringExtra(EMAIL_KEY).toString()
-        ) else
-            EmailParser.parseEMail(value!!)
+    private fun defineUserName() {
+        viewModel.savedEMail.value?.let {
+            binding.tvName.text = EmailParser.parseEMail(it)
+        }
     }
 
     private fun setListeners() = with(binding) {
@@ -64,6 +62,6 @@ class MyProfileFragment : Fragment() {
 
     private fun moveToMyContactsScreen() {
         val parentFragment = parentFragment as? TabSwitchable
-        parentFragment?.moveToTub(Tab.CONTACTS.ordinal)
+        parentFragment?.moveToContactsTab()
     }
 }

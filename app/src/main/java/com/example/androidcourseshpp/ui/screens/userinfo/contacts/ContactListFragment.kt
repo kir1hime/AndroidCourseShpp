@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.contactlistdata.ContactItem
 import com.example.androidcourseshpp.databinding.FragmentContactlistBinding
-import com.example.androidcourseshpp.ui.screens.navigator
+import com.example.androidcourseshpp.ui.utils.navigator
 import com.example.androidcourseshpp.ui.screens.userinfo.contacts.AddContactDialog.Companion.CAREER_KEY
 import com.example.androidcourseshpp.ui.screens.userinfo.contacts.AddContactDialog.Companion.NAME_KEY
 import com.example.androidcourseshpp.ui.screens.userinfo.contacts.AddContactDialog.Companion.RESPONSE_KEY
@@ -213,7 +213,7 @@ class ContactListFragment : Fragment() {
 
     private fun  moveToMyProfileScreen(){
         val parentFragment = parentFragment as? TabSwitchable
-        parentFragment?.moveToTub(Tab.MYPROFILE.ordinal)
+        parentFragment?.moveToMyProfileTab()
     }
 
 }

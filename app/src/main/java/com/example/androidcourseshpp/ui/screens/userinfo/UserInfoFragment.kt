@@ -48,9 +48,13 @@ class UserInfoFragment : Fragment(), TabSwitchable {
         }.attach()
     }
 
-
-    override fun moveToTub(tabPos: Int) {
-        binding.vpUserInfo.currentItem = tabPos
+    override fun moveToMyProfileTab() {
+        binding.vpUserInfo.currentItem = Tab.MYPROFILE.ordinal
     }
+
+    override fun moveToContactsTab() {
+        binding.vpUserInfo.currentItem = Tab.CONTACTS.ordinal
+    }
+
 
 }

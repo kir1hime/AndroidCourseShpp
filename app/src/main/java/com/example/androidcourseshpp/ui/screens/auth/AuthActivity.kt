@@ -9,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.MIN_NUM_OF_CHARS_IN_PASSWORD
 import com.example.androidcourseshpp.data.SignUpValidator
-import com.example.androidcourseshpp.data.dataProvider.EMAIL_KEY
 import com.example.androidcourseshpp.ui.screens.MainActivity
 import com.example.androidcourseshpp.databinding.ActivityAuthBinding
 import com.example.androidcourseshpp.ui.extensions.adaptUserInterface
@@ -42,7 +41,7 @@ class AuthActivity : AppCompatActivity() {
         adaptUserInterface(binding.root)
 
         if (viewModel.savedEMail.value != "") {
-            moveToMyProfileScreen(viewModel.savedEMail.value!!)
+            moveToMyProfileScreen()
         }
 
         setListeners()
@@ -70,7 +69,7 @@ class AuthActivity : AppCompatActivity() {
                     )
                 }
 
-                moveToMyProfileScreen(etEMail.text.toString())
+                moveToMyProfileScreen()
 
             } else {
                 tilEMail.helperText =
@@ -85,10 +84,8 @@ class AuthActivity : AppCompatActivity() {
         }
     }
 
-    private fun moveToMyProfileScreen(userEMail: String) {
+    private fun moveToMyProfileScreen() {
         val intent = Intent(this, MainActivity::class.java)
-
-        intent.putExtra(EMAIL_KEY, userEMail)
 
         val options = ActivityOptions.makeCustomAnimation(
             this,

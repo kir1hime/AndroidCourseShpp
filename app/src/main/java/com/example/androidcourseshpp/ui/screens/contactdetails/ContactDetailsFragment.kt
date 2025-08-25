@@ -11,7 +11,7 @@ import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.ImageLoader
 import com.example.androidcourseshpp.databinding.FragmentDetailviewBinding
 import com.example.androidcourseshpp.ui.extensions.loadImageFromURL
-import com.example.androidcourseshpp.ui.screens.navigator
+import com.example.androidcourseshpp.ui.utils.navigator
 
 class ContactDetailsFragment : Fragment() {
 

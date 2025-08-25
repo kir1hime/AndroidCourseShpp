@@ -9,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.navOptions
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.contactlistdata.ContactItem
 import com.example.androidcourseshpp.databinding.ActivityMainBinding
@@ -17,6 +16,7 @@ import com.example.androidcourseshpp.ui.extensions.adaptUserInterface
 import com.example.androidcourseshpp.ui.screens.auth.AuthActivity
 
 import com.example.androidcourseshpp.ui.screens.userinfo.UserInfoFragmentDirections
+import com.example.androidcourseshpp.ui.utils.Navigator
 
 
 class MainActivity : AppCompatActivity(), Navigator {
