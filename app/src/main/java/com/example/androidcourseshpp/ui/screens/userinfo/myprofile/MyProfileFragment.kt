@@ -41,17 +41,17 @@ class MyProfileFragment : Fragment() {
 
     private fun defineUserName() {
         viewModel.savedEMail.value?.let {
-            binding.tvName.text = EmailParser.parseEMail(it)
+            binding.textViewName.text = EmailParser.parseEMail(it)
         }
     }
 
     private fun setListeners() = with(binding) {
-        btLogOut.setOnClickListener {
+        buttonLogOut.setOnClickListener {
             moveToSignUpScreen()
             viewModel.deleteUserInfo()
 
         }
-        btViewMyContacts.setOnClickListener {
+        buttonViewMyContacts.setOnClickListener {
             moveToMyContactsScreen()
         }
     }

@@ -117,7 +117,7 @@ class ContactListFragment : Fragment() {
     }
 
     private fun setListeners() = with(binding) {
-        ibtArrowBack.setOnClickListener {
+        imageButtonArrowBack.setOnClickListener {
             moveToMyProfileScreen()
         }
         tvAddContacts.setOnClickListener {

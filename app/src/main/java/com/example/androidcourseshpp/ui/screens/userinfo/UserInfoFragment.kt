@@ -36,9 +36,9 @@ class UserInfoFragment : Fragment(), TabSwitchable {
 
     private fun initViewPager() = with(binding) {
         val adapter = ViewPagerUserInfoAdapter(this@UserInfoFragment, fragments)
-        vpUserInfo.adapter = adapter
+        viewPagerUserInfo.adapter = adapter
 
-        TabLayoutMediator(tlUserInfo, vpUserInfo) { tabItem, position ->
+        TabLayoutMediator(tabLayoutUserInfo, viewPagerUserInfo) { tabItem, position ->
 
             tabItem.text = when (Tab.entries[position]) {
                 Tab.MYPROFILE -> getString(R.string.my_profile_label)
@@ -49,11 +49,11 @@ class UserInfoFragment : Fragment(), TabSwitchable {
     }
 
     override fun moveToMyProfileTab() {
-        binding.vpUserInfo.currentItem = Tab.MYPROFILE.ordinal
+        binding.viewPagerUserInfo.currentItem = Tab.MYPROFILE.ordinal
     }
 
     override fun moveToContactsTab() {
-        binding.vpUserInfo.currentItem = Tab.CONTACTS.ordinal
+        binding.viewPagerUserInfo.currentItem = Tab.CONTACTS.ordinal
     }
 
 

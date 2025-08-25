@@ -22,28 +22,28 @@ class ContactsAdapter(private val actions: ItemActions) :
         RecyclerView.ViewHolder(binding.root), View.OnClickListener {
 
         fun bind(item: ContactItem) = with(binding) {
-            tvName.text = item.name
-            tvCareer.text = item.career
-            ivAvatar.loadImageFromURL(root.context, item.avatarURL, ImageLoader.PICASSO)
+            textViewName.text = item.name
+            textViewCareer.text = item.career
+            imageViewAvatar.loadImageFromURL(root.context, item.avatarURL, ImageLoader.PICASSO)
 
-            ivAvatar.transitionName = item.id.toString()
+            imageViewAvatar.transitionName = item.id.toString()
 
-            ImbDelete.tag = item
+            imageButtonDelete.tag = item
             binding.item.tag = item
 
             setListeners()
         }
 
         private fun setListeners() = with(binding){
-            ImbDelete.setOnClickListener(this@ViewHolder)
+            imageButtonDelete.setOnClickListener(this@ViewHolder)
             item.setOnClickListener(this@ViewHolder)
         }
 
         override fun onClick(v: View) {
             val contactItem = v.tag as ContactItem
             when (v.id) {
-                R.id.Imb_delete -> actions.deleteContactItem(contactItem, adapterPosition)
-                R.id.item -> actions.showContactItemDetails(contactItem, binding.ivAvatar)
+                R.id.imageButtonDelete -> actions.deleteContactItem(contactItem, adapterPosition)
+                R.id.item -> actions.showContactItemDetails(contactItem, binding.imageViewAvatar)
             }
         }
     }

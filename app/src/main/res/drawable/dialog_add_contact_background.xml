@@ -4,7 +4,7 @@
     <corners android:radius="@dimen/radius_6" />
     <stroke
         android:width="@dimen/stroke_2"
-        android:color="@color/blue_view_color" />
+        android:color="@color/top_view_color" />
     <solid android:color="@color/dialog_add_contact_background_color" />
 
 </shape>

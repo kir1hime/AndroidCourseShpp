@@ -8,25 +8,25 @@
     tools:context="com.example.androidcourseshpp.ui.screens.contactdetails.ContactDetailsFragment">
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_bluePartOfScreen"
+        android:id="@+id/textViewTopPartOfScreen"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@color/detail_view_blue_view_color"
-        app:layout_constraintBottom_toBottomOf="@id/gl_middle_hor"
+        android:background="@color/detail_view_top_view_color"
+        app:layout_constraintBottom_toBottomOf="@id/guideLineMiddleHor"
         app:layout_constraintTop_toTopOf="parent">
 
     </androidx.appcompat.widget.AppCompatTextView>
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_whitePartOfScreen"
+        android:id="@+id/textViewBottomPartOfScreen"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@color/detail_view_white_view_color"
+        android:background="@color/detail_view_bottom_view_color"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/gl_middle_hor" />
+        app:layout_constraintTop_toBottomOf="@id/guideLineMiddleHor" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/gl_middle_hor"
+        android:id="@+id/guideLineMiddleHor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -45,20 +45,20 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/Iv_profPhoto"
+        android:id="@+id/circleImageViewProfPhoto"
         android:layout_width="@dimen/profile_photo_size"
         android:layout_height="@dimen/profile_photo_size"
         android:layout_marginTop="@dimen/profile_photo_margin_top"
         android:layout_marginBottom="@dimen/profile_photo_margin_bottom"
         android:contentDescription="@string/profile_photo"
         android:src="@drawable/profile_photo"
-        app:layout_constraintBottom_toBottomOf="@id/gl_middle_hor"
+        app:layout_constraintBottom_toBottomOf="@id/guideLineMiddleHor"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@id/tv_whitePartOfScreen"
-        app:layout_constraintTop_toTopOf="@id/tv_bluePartOfScreen" />
+        app:layout_constraintStart_toStartOf="@id/textViewBottomPartOfScreen"
+        app:layout_constraintTop_toTopOf="@id/textViewTopPartOfScreen" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_name"
+        android:id="@+id/textViewName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/name_margin_horizontal"
@@ -70,11 +70,11 @@
         android:textColor="@color/name_text_color"
         android:textSize="@dimen/big_text_size"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@id/tv_bluePartOfScreen"
+        app:layout_constraintBottom_toBottomOf="@id/textViewTopPartOfScreen"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_career"
+        android:id="@+id/textViewCareer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/career_margin_horizontal"
@@ -85,11 +85,11 @@
         android:textColor="@color/career_text_color"
         android:textSize="@dimen/small_text_size"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/tv_name" />
+        app:layout_constraintTop_toBottomOf="@id/textViewName" />
 
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_homeAddress"
+        android:id="@+id/textViewHomeAddress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/home_address_margin_horizontal"
@@ -100,40 +100,40 @@
         android:textColor="@color/home_address_text_color"
         android:textSize="@dimen/small_text_size"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/tv_career" />
+        app:layout_constraintTop_toBottomOf="@id/textViewCareer" />
 
     <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/ibt_facebook"
+        android:id="@+id/imageButtonFacebook"
         style="@style/social_network_style"
         android:layout_marginStart="@dimen/social_network_side_margin"
         android:contentDescription="@string/facebook_button"
         android:src="@drawable/ic_facebook"
-        app:layout_constraintBottom_toBottomOf="@id/tv_whitePartOfScreen"
-        app:layout_constraintStart_toStartOf="@id/tv_whitePartOfScreen"
-        app:layout_constraintTop_toTopOf="@id/tv_whitePartOfScreen" />
+        app:layout_constraintBottom_toBottomOf="@id/textViewBottomPartOfScreen"
+        app:layout_constraintStart_toStartOf="@id/textViewBottomPartOfScreen"
+        app:layout_constraintTop_toTopOf="@id/textViewBottomPartOfScreen" />
 
     <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/ibt_linkedin"
+        android:id="@+id/imageButtonLinkedin"
         style="@style/social_network_style"
         android:contentDescription="@string/linkedin_button"
         android:src="@drawable/ic_linkedin"
-        app:layout_constraintBottom_toBottomOf="@id/tv_whitePartOfScreen"
+        app:layout_constraintBottom_toBottomOf="@id/textViewBottomPartOfScreen"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/tv_whitePartOfScreen" />
+        app:layout_constraintTop_toTopOf="@id/textViewBottomPartOfScreen" />
 
     <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/ibt_instagram"
+        android:id="@+id/imageButtonInstagram"
         style="@style/social_network_style"
         android:layout_marginEnd="@dimen/social_network_side_margin"
         android:contentDescription="@string/instagram_button"
         android:src="@drawable/ic_inst"
-        app:layout_constraintBottom_toBottomOf="@id/tv_whitePartOfScreen"
-        app:layout_constraintEnd_toEndOf="@id/tv_whitePartOfScreen"
-        app:layout_constraintTop_toTopOf="@id/tv_whitePartOfScreen" />
+        app:layout_constraintBottom_toBottomOf="@id/textViewBottomPartOfScreen"
+        app:layout_constraintEnd_toEndOf="@id/textViewBottomPartOfScreen"
+        app:layout_constraintTop_toTopOf="@id/textViewBottomPartOfScreen" />
 
     <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/ibt_arrowBack"
+        android:id="@+id/imageButtonArrowBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/detail_view_arrow_back_margin_start"
@@ -145,7 +145,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/bt_viewMyContacts"
+        android:id="@+id/buttonViewMyContacts"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_my_contacts_bt_h"
         android:layout_marginHorizontal="@dimen/main_margin_side"

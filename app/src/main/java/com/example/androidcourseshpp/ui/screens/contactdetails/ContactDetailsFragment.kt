@@ -39,18 +39,18 @@ class ContactDetailsFragment : Fragment() {
 
     private fun profilePhotoTransition(){
         sharedElementEnterTransition = TransitionInflater.from(requireContext()).inflateTransition(R.transition.shared_element_transition)
-        binding.IvProfPhoto.transitionName = args.id.toString()
+        binding.circleImageViewProfPhoto.transitionName = args.id.toString()
 
     }
 
     private fun setContactDetailsInfo() = with(binding){
-        IvProfPhoto.loadImageFromURL(requireContext(), args.avatar, ImageLoader.GLIDE, R.drawable.ic_defaultavatar2)
-        tvName.text = args.name
-        tvCareer.text = args.career
+        circleImageViewProfPhoto.loadImageFromURL(requireContext(), args.avatar, ImageLoader.GLIDE, R.drawable.ic_defaultavatar2)
+        textViewName.text = args.name
+        textViewCareer.text = args.career
     }
 
     private fun setListeners(){
-        binding.ibtArrowBack.setOnClickListener{
+        binding.imageButtonArrowBack.setOnClickListener{
            navigator().moveBack()
         }
     }

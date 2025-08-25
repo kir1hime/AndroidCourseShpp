@@ -49,34 +49,34 @@ class AuthActivity : AppCompatActivity() {
 
 
     private fun setListeners() = with(binding) {
-        btRegister.setOnClickListener {
+        buttonRegister.setOnClickListener {
 
-            val inputEMail = etEMail.text.toString()
-            val inputPassword = etPassword.text.toString()
+            val inputEMail = editTextEMail.text.toString()
+            val inputPassword = editTextPassword.text.toString()
 
             val isInputEMailCorrect = SignUpValidator.isEMailCorrect(inputEMail)
             val isInputPasswordCorrect = SignUpValidator.isPasswordCorrect(inputPassword)
 
             if (isInputEMailCorrect && isInputPasswordCorrect) {
-                tilPassword.helperText = ""
-                tilEMail.helperText = ""
+                textInputLayoutPassword.helperText = ""
+                textInputLayoutEMail.helperText = ""
 
-                if (cbRememberMe.isChecked) {
+                if (checkBoxRememberMe.isChecked) {
 
                     viewModel.saveUserInfo(
-                        etEMail.text.toString(),
-                        etPassword.text.toString()
+                        editTextEMail.text.toString(),
+                        editTextPassword.text.toString()
                     )
                 }
 
                 moveToMyProfileScreen()
 
             } else {
-                tilEMail.helperText =
+                textInputLayoutEMail.helperText =
                     if (!isInputEMailCorrect) {
                         getString(R.string.email_error)
                     } else ""
-                tilPassword.helperText =
+                textInputLayoutPassword.helperText =
                     if (!isInputPasswordCorrect) {
                         viewModel.definePasswordErrorMessage(inputPassword, passwordErrorMessages)
                     } else ""
