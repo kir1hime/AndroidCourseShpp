@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import androidx.transition.TransitionInflater
 import com.example.androidcourseshpp.R
-import com.example.androidcourseshpp.data.ImageLoader
 import com.example.androidcourseshpp.databinding.FragmentDetailviewBinding
 import com.example.androidcourseshpp.ui.extensions.loadImageFromURL
 import com.example.androidcourseshpp.ui.screens.contacts.contract.navigator
@@ -44,7 +43,7 @@ class ContactDetailsFragment : Fragment() {
     }
 
     private fun setContactDetailsInfo() = with(binding){
-        IvProfPhoto.loadImageFromURL(requireContext(), args.contactDetails.avatarURL, ImageLoader.GLIDE, R.drawable.ic_defaultavatar2)
+        IvProfPhoto.loadImageFromURL(requireContext(), args.contactDetails.avatarURL)
         tvName.text = args.contactDetails.name
         tvCareer.text = args.contactDetails.career
     }

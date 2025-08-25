@@ -7,9 +7,6 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
 import com.example.androidcourseshpp.R
-import com.example.androidcourseshpp.data.ImageLoader
-import com.squareup.picasso.Picasso
-import jp.wasabeef.picasso.transformations.CropCircleTransformation
 
 
 fun adaptUserInterface(view: View) {
@@ -23,13 +20,9 @@ fun adaptUserInterface(view: View) {
 fun ImageView.loadImageFromURL(
     context: Context,
     url: String,
-    imageLoader: ImageLoader,
     placeholder: Int = R.drawable.ic_defaultavatar1
 ) {
-    when (imageLoader) {
-        ImageLoader.GLIDE -> useGlideForLoading(context, url, this, placeholder)
-        ImageLoader.PICASSO -> usePicassoForLoading(url, this, placeholder)
-    }
+    useGlideForLoading(context, url, this, placeholder)
 }
 
 private fun useGlideForLoading(context: Context, url: String, view: ImageView, placeholder: Int) {
@@ -40,12 +33,5 @@ private fun useGlideForLoading(context: Context, url: String, view: ImageView, p
         .into(view)
 }
 
-private fun usePicassoForLoading(url: String, view: ImageView, placeholder: Int) {
-    Picasso.get()
-        .load(url)
-        .placeholder(placeholder)
-        .transform(CropCircleTransformation())
-        .into(view)
-}
 
 
