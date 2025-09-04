@@ -11,8 +11,10 @@ import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.databinding.FragmentDetailviewBinding
 import com.example.androidcourseshpp.ui.extensions.loadImageFromURL
 import com.example.androidcourseshpp.ui.screens.contacts.contract.navigator
+import com.example.androidcourseshpp.ui.NavigatedFragment
 
-class ContactDetailsFragment : Fragment() {
+
+class ContactDetailsFragment : NavigatedFragment() {
 
     private lateinit var binding : FragmentDetailviewBinding
     private val args : ContactDetailsFragmentArgs by navArgs()

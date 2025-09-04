@@ -19,17 +19,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.contactlistdata.ContactItem
 import com.example.androidcourseshpp.databinding.FragmentContactlistBinding
+import com.example.androidcourseshpp.ui.NavigatedFragment
 import com.example.androidcourseshpp.ui.screens.contacts.AddContactDialog.Companion.CAREER_KEY
 import com.example.androidcourseshpp.ui.screens.contacts.AddContactDialog.Companion.NAME_KEY
 import com.example.androidcourseshpp.ui.screens.contacts.AddContactDialog.Companion.RESPONSE_KEY
 import com.example.androidcourseshpp.ui.screens.contacts.adapters.ContactItemDecoration
 import com.example.androidcourseshpp.ui.screens.contacts.adapters.ContactsAdapter
 import com.example.androidcourseshpp.ui.screens.contacts.adapters.ItemActions
-import com.example.androidcourseshpp.ui.screens.contacts.contract.navigator
 import com.example.androidcourseshpp.ui.utils.factory
 import com.google.android.material.snackbar.Snackbar
 
-class ContactListFragment : Fragment() {
+class ContactListFragment : NavigatedFragment() {
 
     private lateinit var binding: FragmentContactlistBinding
     private val viewModel by viewModels<ContactListViewModel> { factory() }
