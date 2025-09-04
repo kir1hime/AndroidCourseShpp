@@ -12,14 +12,17 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.navOptions
+import androidx.fragment.app.commit
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.contactlistdata.ContactItem
 import com.example.androidcourseshpp.databinding.ActivityContactsBinding
-import com.example.androidcourseshpp.ui.extensions.adaptUserInterface
+import com.example.androidcourseshpp.ui.BaseActivity
 import com.example.androidcourseshpp.ui.screens.contacts.contract.Navigator
 import com.example.androidcourseshpp.ui.screens.main.MainActivity
+import dagger.hilt.android.AndroidEntryPoint
 
-class ContactsActivity : AppCompatActivity(), Navigator {
+@AndroidEntryPoint
+class ContactsActivity : BaseActivity(), Navigator {
 
     private lateinit var binding: ActivityContactsBinding
     private lateinit var navController: NavController

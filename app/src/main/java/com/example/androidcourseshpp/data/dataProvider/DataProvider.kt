@@ -3,12 +3,16 @@ package com.example.androidcourseshpp.data.dataProvider
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
+import javax.inject.Singleton
 
 const val USER_INFO_STORE = "userInfo"
 const val EMAIL_KEY = "userEMail"
 const val PASSWORD_KEY = "userPassword"
 
-class DataProvider(context: Context) {
+@Singleton
+class DataProvider @Inject constructor(@ApplicationContext context: Context) {
 
     private val sharedPref: SharedPreferences by lazy {
         context.getSharedPreferences(USER_INFO_STORE, MODE_PRIVATE)
@@ -30,17 +34,17 @@ class DataProvider(context: Context) {
         editor.apply()
     }
 
-    fun deleteUserInfo(){
+    fun deleteUserInfo() {
         deleteStringData(EMAIL_KEY)
         deleteStringData(PASSWORD_KEY)
     }
 
-    fun saveUserInfo(eMail: String, password: String){
+    fun saveUserInfo(eMail: String, password: String) {
         putStringData(EMAIL_KEY, eMail)
         putStringData(PASSWORD_KEY, password)
     }
 
-    fun getUserEMail(): String{
+    fun getUserEMail(): String {
         return getStringData(EMAIL_KEY)
     }
 

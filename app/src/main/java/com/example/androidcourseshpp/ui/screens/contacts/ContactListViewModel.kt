@@ -1,66 +1,85 @@
 package com.example.androidcourseshpp.ui.screens.contacts
 
 
+import android.app.AlertDialog
 import android.content.ContentResolver
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.androidcourseshpp.data.contactlistdata.ContactListGenerator
 import com.example.androidcourseshpp.data.contactlistdata.ContactItem
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import java.util.Stack
+import javax.inject.Inject
 
-class ContactListViewModel(
-    private val contentResolver: ContentResolver,
+
+@HiltViewModel
+class ContactListViewModel @Inject constructor(
+    private val contentResolver: ContentResolver
 ) : ViewModel() {
 
-    private var mutableContactList = MutableLiveData<List<ContactItem>>()
-    val contactList: LiveData<List<ContactItem>> get() = mutableContactList
+    private var mutableContactList =
+        MutableStateFlow(ContactListGenerator(contentResolver).getContactItems())
+    val contactList: StateFlow<List<ContactItem>> get() = mutableContactList
     private var isPhoneContactsAdded = false
 
-    init {
-        mutableContactList.value =
-            ContactListGenerator(contentResolver).getContactItems()
-    }
+    var deletedItems = Stack<Pair<ContactItem, Int>>()
+        private set
 
-    fun updateContactList() {
+    fun addPhoneContacts() {
         if (!isPhoneContactsAdded) {
-            mutableContactList.value?.let {
+          val currentContactList = mutableContactList.value.toMutableList()
+          val lastContactItemId = currentContactList[currentContactList.lastIndex].id
 
-                val currentContactList = it.toMutableList()
-                val lastContactItemId = currentContactList[currentContactList.lastIndex].id
+          val contactItemsFromPhoneContacts = ContactListGenerator(
+            contentResolver
+          ).getContactItemsFromPhoneContacts(lastContactItemId)
 
-                val phoneContacts = ContactListGenerator(contentResolver)
-                    .getContactItemsFromPhoneContacts(lastContactItemId)
+          currentContactList.addAll(contactItemsFromPhoneContacts)
 
-                currentContactList.addAll(phoneContacts)
-
-                mutableContactList.value = currentContactList
-                isPhoneContactsAdded = true
-            }
+          mutableContactList.value = currentContactList
+          isPhoneContactsAdded = true
         }
-
     }
 
-    fun deleteContactItem(contactItem: ContactItem) {
+    fun createNewContact(contactName: String?, contactCareer: String?): ContactItem {
+        val contactList = mutableContactList.value
+        val lastId = contactList[contactList.size - 1].id
+
+        val newContact = ContactItem(
+            lastId + 1,
+            contactName ?: "",
+            contactCareer ?: "",
+            NEW_CONTACT_AVATAR
+        )
+
+        return newContact
+    }
+
+    fun processAddContactDialogEvent(newContact: ContactItem) {
+        if (!isNewContactDataIsBlank(newContact)) {
+            addContactItem(newContact, mutableContactList.value.size)
+        }
+    }
+
+    fun deleteContactItem(contactItem: ContactItem, position: Int) {
         updateContactList { it.remove(contactItem) }
-    }
-
-    fun deleteContactItem(position: Int) {
-        updateContactList { it.removeAt(position) }
+        deletedItems.push(Pair(contactItem, position))
     }
 
     fun addContactItem(contactItem: ContactItem, position: Int) {
         updateContactList { it.add(position, contactItem) }
     }
 
-    fun isNewContactDataIsBlank(contactItem: ContactItem): Boolean {
+    private fun isNewContactDataIsBlank(contactItem: ContactItem): Boolean {
         return contactItem.career.isBlank() || contactItem.name.isBlank()
     }
 
     private fun updateContactList(operation: (MutableList<ContactItem>) -> Unit) {
-        mutableContactList.value?.toMutableList()?.let {
-            operation.invoke(it)
-            mutableContactList.value = it
-        }
-    }
+        val contactList = mutableContactList.value.toMutableList()
 
+        operation.invoke(contactList)
+        mutableContactList.value = contactList
+    }
 }
+
