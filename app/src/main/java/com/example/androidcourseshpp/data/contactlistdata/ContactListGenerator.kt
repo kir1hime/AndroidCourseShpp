@@ -3,14 +3,15 @@ package com.example.androidcourseshpp.data.contactlistdata
 import android.content.ContentResolver
 import android.provider.ContactsContract
 import com.github.javafaker.Faker
+import javax.inject.Inject
 
 private val javaFaker = Faker.instance()
 private const val NUM_OF_DEFAULT_CONTACT_ITEMS = 5
 private const val NUM_OF_CAREERS = 10
 
-class ContactListGenerator(
-    private val contentResolver: ContentResolver,
-    private val isAccessToContactsAllowed: Boolean
+
+class ContactListGenerator @Inject constructor(
+      private val contentResolver: ContentResolver
 ) {
 
     private val URLImageList = listOf(
@@ -21,20 +22,32 @@ class ContactListGenerator(
         "https://static.wixstatic.com/media/9d8ed5_4725657bd5b448478d19d54669ea0883~mv2.jpg/v1/fill/w_1000,h_563,al_c,q_85,usm_0.66_1.00_0.01/9d8ed5_4725657bd5b448478d19d54669ea0883~mv2.jpg"
     )
 
-    private val nameList = generateNames()
+    private val nameList: MutableList<String> = generateNames()
 
     private val careerList = generateCareers()
 
     fun getContactItems(): List<ContactItem> {
 
-        if (isAccessToContactsAllowed) {
-            nameList.toMutableList().addAll(getUserNamesFromPhoneContacts())
-        }
-
         val items = List(nameList.size) { contactId ->
             ContactItem(
                 contactId,
                 nameList[contactId],
+                careerList[contactId % careerList.size],
+                URLImageList[contactId % URLImageList.size]
+            )
+        }
+
+        return items
+    }
+
+    fun getContactItemsFromPhoneContacts(lastContactItemId: Int): List<ContactItem> {
+        val usersFromPhoneContacts = getUserNamesFromPhoneContacts()
+
+        val items = List(getUserNamesFromPhoneContacts().size) {
+            val contactId = it + lastContactItemId + 1
+            ContactItem(
+                contactId,
+                usersFromPhoneContacts[it],
                 careerList[contactId % careerList.size],
                 URLImageList[contactId % URLImageList.size]
             )
@@ -64,18 +77,18 @@ class ContactListGenerator(
         return userNames
     }
 
-    private fun generateNames() : List<String> {
-        val names : MutableList<String> = mutableListOf()
-       repeat(NUM_OF_DEFAULT_CONTACT_ITEMS){
-           names.add(javaFaker.name().name())
-       }
+    private fun generateNames(): MutableList<String> {
+        val names: MutableList<String> = mutableListOf()
+        repeat(NUM_OF_DEFAULT_CONTACT_ITEMS) {
+            names.add(javaFaker.name().name())
+        }
 
         return names
     }
 
-    private fun generateCareers() : List<String>{
+    private fun generateCareers(): List<String> {
         val careers: MutableList<String> = mutableListOf()
-        repeat(NUM_OF_CAREERS){
+        repeat(NUM_OF_CAREERS) {
             careers.add(javaFaker.job().title())
         }
 

@@ -1,81 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/contacts"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/contacts_screen_color"
-    tools:context=".ui.screens.contacts.ContactsActivity">
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/vw_contactsBar"
+    android:layout_height="match_parent">
+    
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentContainer"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/contacts_bar_h"
-        android:background="@color/top_view_color"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="match_parent" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_contacts"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/contacts_margin_top"
-        android:fontFamily="@font/open_sans"
-        android:text="@string/contacts"
-        android:textColor="@color/contacts_color"
-        android:textSize="@dimen/large_text_size"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/ibt_arrowBack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/arrow_back_margin_start"
-        android:layout_marginTop="@dimen/arrow_back_margin_top"
-        android:background="@color/contacts_bar_color"
-        android:contentDescription="@string/arrow_back_imagebutton"
-        android:src="@drawable/ic_arrow_back"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/ibt_search"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/search_margin_top"
-        android:layout_marginEnd="@dimen/main_margin_side"
-        android:background="@color/contacts_bar_color"
-        android:contentDescription="@string/search_imagebutton"
-        android:src="@drawable/ic_search"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_addContacts"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/main_margin_side"
-        android:layout_marginTop="@dimen/add_contacts_margin_top"
-        android:layout_marginBottom="@dimen/add_contacts_margin_bottom"
-        android:fontFamily="@font/open_sans"
-        android:text="@string/add_contact"
-        android:textColor="@color/add_contact_color"
-        android:textSize="@dimen/small_text_size"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@id/vw_contactsBar"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_contacts"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_margin="@dimen/main_margin_side"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/vw_contactsBar"
-        tools:listitem="@layout/contacts_recyclerview_item" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

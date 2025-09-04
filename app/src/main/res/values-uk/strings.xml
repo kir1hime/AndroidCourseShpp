@@ -50,5 +50,7 @@
     <string name="add_contact_dialog_message">Введіть дані нового користувача</string>
     <string name="add_contact_dialog_positive_button_text">Зберігти</string>
     <string name="add_contact_dialog_negative_button_text">Закрити</string>
+    <string name="profile_label">Профіль</string>
+    <string name="message">Повідомлення</string>
 
 </resources>

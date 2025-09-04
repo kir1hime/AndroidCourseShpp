@@ -1,187 +1,72 @@
 package com.example.androidcourseshpp.ui.screens.contacts
 
-import android.Manifest
+import android.annotation.SuppressLint
 import android.app.ActivityOptions
-import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.fragment.app.commit
 import com.example.androidcourseshpp.R
-import com.example.androidcourseshpp.data.contactlistdata.ContactItem
-import com.example.androidcourseshpp.ui.screens.contacts.adapters.ContactItemDecoration
-import com.example.androidcourseshpp.ui.screens.contacts.adapters.ContactsAdapter
 import com.example.androidcourseshpp.databinding.ActivityContactsBinding
-import com.example.androidcourseshpp.ui.extensions.adaptUserInterface
-import com.example.androidcourseshpp.ui.screens.contacts.AddContactDialog.Companion.CAREER_KEY
-import com.example.androidcourseshpp.ui.screens.contacts.AddContactDialog.Companion.NAME_KEY
-import com.example.androidcourseshpp.ui.screens.contacts.AddContactDialog.Companion.RESPONSE_KEY
+import com.example.androidcourseshpp.ui.BaseActivity
+import com.example.androidcourseshpp.ui.screens.contacts.contract.Navigator
 import com.example.androidcourseshpp.ui.screens.main.MainActivity
-import com.example.androidcourseshpp.ui.utils.factory
-import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 
-class ContactsActivity : AppCompatActivity() {
+@AndroidEntryPoint
+class ContactsActivity : BaseActivity(), Navigator {
 
     private lateinit var binding: ActivityContactsBinding
-    private lateinit var requestPermissionsLauncher: ActivityResultLauncher<String>
 
-    private val viewModel by viewModels<ContactListViewModel> { factory() }
-
-    private val adapter by lazy {
-        ContactsAdapter { contactItem, position ->
-            viewModel.deleteContactItem(contactItem)
-            showUndoDeletingSnackBarItem(contactItem, position)
-        }
-    }
-
-    private companion object {
-        const val NEW_CONTACT_AVATAR =
-            "https://kartinki.pics/uploads/posts/2022-02/1645235615_4-kartinkin-net-p-kroliki-kartinki-4.jpg"
-    }
-
+    @SuppressLint("ResourceType")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         enableEdgeToEdge()
+
         binding = ActivityContactsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         adaptUserInterface(binding.root)
 
-        checkPermissions()
-        requestPermissionsLauncher.launch(Manifest.permission.READ_CONTACTS)
-
-        initRecyclerView()
-        initSwipeToDeleteOfContactItem()
-
-        setObservers()
-        setListeners()
-        setAddContactDialogListener()
-    }
-
-    private fun setObservers() {
-        viewModel.contactList.observe(this) {
-            adapter.submitList(it)
+        if (savedInstanceState == null) {
+            attachStartingFragment()
         }
     }
 
-    private fun initRecyclerView() = with(binding.rvContacts) {
-        layoutManager = LinearLayoutManager(this@ContactsActivity)
-        adapter = this@ContactsActivity.adapter
-
-        addItemDecoration(
-            ContactItemDecoration(
-                resources.getDimensionPixelSize(R.dimen.contacts_recycle_view_space_size_between_items)
-            )
-        )
+    private fun attachStartingFragment() {
+        supportFragmentManager
+            .beginTransaction()
+            .add(R.id.fragmentContainer, ContactListFragment())
+            .commit()
     }
 
-    private fun setListeners() = with(binding) {
-        ibtArrowBack.setOnClickListener {
-            moveToMyProfileScreen()
-        }
-        tvAddContacts.setOnClickListener {
-            showAddContactDialog()
-        }
-    }
-
-    private fun showAddContactDialog() {
-        AddContactDialog().show(supportFragmentManager, AddContactDialog.TAG)
-    }
-
-    private fun setAddContactDialogListener() {
-        supportFragmentManager.setFragmentResultListener(
-            AddContactDialog.REQUEST_KEY, this
-        ) { _, data ->
-
-            val which = data.getInt(RESPONSE_KEY)
-            val newContactName = data.getString(NAME_KEY)
-            val newContactCareer = data.getString(CAREER_KEY)
-
-            val contactList = viewModel.contactList.value
-            val lastId: Int = contactList?.get(contactList.size - 1)?.id ?: 0
-
-            val newContact = ContactItem(
-                lastId + 1,
-                newContactName ?: "",
-                newContactCareer ?: "",
-                NEW_CONTACT_AVATAR
-            )
-
-            when (which) {
-                AlertDialog.BUTTON_POSITIVE -> {
-                    if (!viewModel.isNewContactDataIsBlank(newContact)) {
-                        viewModel.addContactItem(newContact, viewModel.contactList.value?.size ?: 0)
-                    }
-                }
-            }
-        }
-    }
-
-    private fun moveToMyProfileScreen() {
+    override fun moveToMyProfileScreen() {
         val intent = Intent(this, MainActivity::class.java)
         val options = ActivityOptions.makeCustomAnimation(
             this,
-            R.anim.my_profile_fade_in_from_left_to_right,
-            R.anim.contacts_fade_out_from_left_to_right
+            R.anim.slide_in_from_left_to_right,
+            R.anim.slide_out_from_left_to_right
         )
         startActivity(intent, options.toBundle())
         finish()
     }
 
-
-    private fun showUndoDeletingSnackBarItem(contactItem: ContactItem, position: Int) {
-        val undoDeletingSnackBar = Snackbar.make(
-            binding.root,
-            R.string.snackbar_text,
-            Snackbar.LENGTH_LONG
-        )
-
-        undoDeletingSnackBar.setAction(R.string.snackbar_action_text) {
-            viewModel.addContactItem(contactItem, position)
-        }.setActionTextColor(ContextCompat.getColor(this, R.color.custom_primary_color))
-
-        undoDeletingSnackBar.show()
+    override fun moveToDetailsScreen() {
+        supportFragmentManager.commit {
+            setCustomAnimations(
+                R.anim.slide_in_from_right_to_left,
+                R.anim.slide_out_from_right_to_left,
+                R.anim.slide_in_from_left_to_right,
+                R.anim.slide_out_from_left_to_right
+            )
+            addToBackStack(null)
+            replace(R.id.fragmentContainer, ContactDetailsFragment())
+        }
     }
 
-    private fun initSwipeToDeleteOfContactItem() {
-        val helper =
-            ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
 
-                override fun onMove(
-                    recyclerView: RecyclerView,
-                    viewHolder: RecyclerView.ViewHolder,
-                    target: RecyclerView.ViewHolder
-                ): Boolean {
-                    return false
-                }
-
-                override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                    with(viewHolder) {
-                        val deletedItem = viewModel.contactList.value!![adapterPosition]
-                        showUndoDeletingSnackBarItem(deletedItem, adapterPosition)
-                    }
-                    viewModel.deleteContactItem(viewHolder.adapterPosition)
-                }
-            })
-
-        helper.attachToRecyclerView(binding.rvContacts)
+    override fun moveBack() {
+        supportFragmentManager.popBackStack()
     }
 
-    private fun checkPermissions() {
-        requestPermissionsLauncher =
-            registerForActivityResult(ActivityResultContracts.RequestPermission()) { isPermissionsGranted ->
-                if (isPermissionsGranted){
-
-                    viewModel.updateContactList(true)
-                }
-            }
-    }
 }

@@ -1,0 +1,44 @@
+package com.example.androidcourseshpp.ui.screens.contacts
+
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
+import androidx.fragment.app.Fragment
+import com.example.androidcourseshpp.databinding.FragmentDetailviewBinding
+import com.example.androidcourseshpp.ui.screens.contacts.contract.navigator
+
+class ContactDetailsFragment : Fragment() {
+
+    private lateinit var binding : FragmentDetailviewBinding
+
+    private val onBackPressedCallback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            navigator().moveBack()
+        }
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentDetailviewBinding.inflate(inflater, container, false)
+
+        setListeners()
+        setOnBackPressedListener()
+
+        return binding.root
+    }
+
+    private fun setOnBackPressedListener(){
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, onBackPressedCallback)
+    }
+
+    private fun setListeners(){
+        binding.ibtArrowBack.setOnClickListener{
+            navigator().moveBack()
+        }
+    }
+}

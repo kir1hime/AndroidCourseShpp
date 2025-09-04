@@ -8,7 +8,7 @@
     <color name="error_text_color">#F93E3E</color>
     <color name="custom_primary_color">#FB5E06</color>
 
-    <!--My profile (activity_main.xml)-->
+    <!--My profile (activity_main.xml) -->
     <color name="bottom_view_color">#FFFFFFFF</color>
     <color name="view_my_contacts_text_color">@color/bottom_view_color</color>
     <color name="name_text_color">@color/bottom_view_color</color>
@@ -48,12 +48,12 @@
 
     <color name="google_text_color">#000000</color>
 
-    <!--Contacts (activity_contacts.xml)-->
+    <!-- Contact list (fragment_contactlist.xml)-->
     <color name="contacts_bar_color">#242235</color>
 
     <color name="contacts_screen_color">#FFFFFF</color>
-    <color name="contacts_color">#FFFFFF</color>
-    <color name="add_contact_color">@color/contacts_color</color>
+    <color name="contacts_label_color">#FFFFFF</color>
+    <color name="add_contact_color">@color/contacts_label_color</color>
     <color name="contacts_recycleView_item_background_color">@color/contacts_screen_color</color>
 
     <color name="contacts_recycleView_border_color">#B2B2B3</color>
@@ -66,4 +66,13 @@
     <color name="dialog_add_contact_background_color">#FFFFFF</color>
     <color name="dialog_add_contact_input_text_color">#242235</color>
     <color name="dialog_add_contact_hint_text_color">#B2B2B3</color>
+
+    <!-- Detail view (fragment_detailview.xml) -->
+    <color name="detail_view_bottom_view_color">@color/bottom_view_color</color>
+    <color name="profile_label_text_color" >@color/detail_view_bottom_view_color</color>
+    <color name="message_button_text_color">@color/view_my_contacts_text_color</color>
+
+    <color name="detail_view_top_view_color">@color/top_view_color</color>
+
+
 </resources>
