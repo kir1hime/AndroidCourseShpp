@@ -4,7 +4,7 @@ interface  Navigator {
 
     fun moveToMyProfileScreen()
 
-    fun moveToDetailsScreen()
+    fun moveToDetailsScreen(contact : ContactItem, avatar:ImageView)
 
     fun moveBack()
 

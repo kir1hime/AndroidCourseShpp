@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -57,6 +58,12 @@ class ContactListFragment : NavigatedFragment() {
 
         binding = FragmentContactlistBinding.inflate(inflater, container, false)
 
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         checkPermissions()
         requestPermissionsLauncher.launch(Manifest.permission.READ_CONTACTS)
 
@@ -67,8 +74,6 @@ class ContactListFragment : NavigatedFragment() {
         setObservers()
         setAddContactDialogListener()
         setOnBackPressedListener()
-
-        return binding.root
     }
 
     private fun getItemActions() : ItemActions{
@@ -77,8 +82,8 @@ class ContactListFragment : NavigatedFragment() {
                 viewModel.deleteContactItem(contactItem)
                 showUndoDeletingSnackBarItem(contactItem, position)
             }
-            override fun showContactItemDetails() {
-                navigator().moveToDetailsScreen()
+            override fun showContactItemDetails(contactItem: ContactItem, avatar: ImageView) {
+                navigator().moveToDetailsScreen(contactItem,avatar)
             }
         }
     }

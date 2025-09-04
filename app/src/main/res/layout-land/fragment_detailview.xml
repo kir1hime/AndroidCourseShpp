@@ -1,39 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/detailView"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.example.androidcourseshpp.ui.screens.contacts.ContactDetailsFragment">
+    android:layout_height="match_parent">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_bluePartOfScreen"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
         android:background="@color/detail_view_top_view_color"
-        app:layout_constraintBottom_toBottomOf="@id/gl_middle_hor"
-        app:layout_constraintTop_toTopOf="parent">
-
-    </androidx.appcompat.widget.AppCompatTextView>
+        app:layout_constraintEnd_toStartOf="@id/gl_middle_hor"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_whitePartOfScreen"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
         android:background="@color/detail_view_bottom_view_color"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/gl_middle_hor" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/gl_middle_hor" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/gl_middle_hor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         app:layout_constraintGuide_percent="0.5" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/profile_label_margin_top"
         android:fontFamily="@font/open_sans"
@@ -42,6 +40,8 @@
         android:textColor="@color/profile_label_text_color"
         android:textSize="@dimen/big_text_size"
         android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@id/gl_middle_hor"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <de.hdodenhof.circleimageview.CircleImageView
@@ -53,13 +53,13 @@
         android:contentDescription="@string/profile_photo"
         android:src="@drawable/profile_photo"
         app:layout_constraintBottom_toBottomOf="@id/gl_middle_hor"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@id/tv_whitePartOfScreen"
+        app:layout_constraintEnd_toEndOf="@id/tv_bluePartOfScreen"
+        app:layout_constraintStart_toStartOf="@id/tv_bluePartOfScreen"
         app:layout_constraintTop_toTopOf="@id/tv_bluePartOfScreen" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_name"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/name_margin_horizontal"
         android:layout_marginTop="@dimen/name_margin_top"
@@ -70,12 +70,14 @@
         android:textColor="@color/name_text_color"
         android:textSize="@dimen/big_text_size"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@id/tv_bluePartOfScreen"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/gl_middle_hor"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_career"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/career_margin_horizontal"
         android:layout_marginTop="@dimen/career_margin_top"
@@ -85,21 +87,25 @@
         android:textColor="@color/career_text_color"
         android:textSize="@dimen/small_text_size"
         android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@id/gl_middle_hor"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_name" />
 
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_homeAddress"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/home_address_margin_horizontal"
         android:layout_marginTop="@dimen/home_address_margin_top"
         android:fontFamily="@font/open_sans"
-        android:gravity="center_horizontal"
         android:text="@string/home_address"
+        android:textAlignment="center"
         android:textColor="@color/home_address_text_color"
         android:textSize="@dimen/small_text_size"
         android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@id/tv_whitePartOfScreen"
+        app:layout_constraintStart_toStartOf="@id/tv_bluePartOfScreen"
         app:layout_constraintTop_toBottomOf="@id/tv_career" />
 
     <androidx.appcompat.widget.AppCompatImageButton
@@ -119,7 +125,7 @@
         android:src="@drawable/ic_linkedin"
         app:layout_constraintBottom_toBottomOf="@id/tv_whitePartOfScreen"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@id/tv_whitePartOfScreen"
         app:layout_constraintTop_toTopOf="@id/tv_whitePartOfScreen" />
 
     <androidx.appcompat.widget.AppCompatImageButton
@@ -132,21 +138,9 @@
         app:layout_constraintEnd_toEndOf="@id/tv_whitePartOfScreen"
         app:layout_constraintTop_toTopOf="@id/tv_whitePartOfScreen" />
 
-    <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/ibt_arrowBack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/detail_view_arrow_back_margin_start"
-        android:layout_marginTop="@dimen/detail_view_arrow_back_margin_top"
-        android:background="@color/contacts_bar_color"
-        android:contentDescription="@string/arrow_back_imagebutton"
-        android:src="@drawable/ic_arrow_back"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/bt_viewMyContacts"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="@dimen/view_my_contacts_bt_h"
         android:layout_marginHorizontal="@dimen/main_margin_side"
         android:layout_marginBottom="@dimen/bt_margin_bottom"
@@ -158,6 +152,20 @@
         android:textSize="@dimen/middle_text_size"
         android:textStyle="bold"
         app:backgroundTint="@null"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/tv_whitePartOfScreen"
+        app:layout_constraintStart_toStartOf="@id/tv_whitePartOfScreen" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/ibt_arrowBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/detail_view_arrow_back_margin_start"
+        android:layout_marginTop="@dimen/detail_view_arrow_back_margin_top"
+        android:background="@color/contacts_bar_color"
+        android:contentDescription="@string/arrow_back_imagebutton"
+        android:src="@drawable/ic_arrow_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -12,7 +12,11 @@
         tools:layout="@layout/fragment_contactlist">
         <action
             android:id="@+id/action_contactListFragment_to_contactDetailsFragment"
-            app:destination="@id/contactDetailsFragment" />
+            app:destination="@id/contactDetailsFragment"
+            app:enterAnim="@anim/slide_in_from_right_to_left"
+            app:exitAnim="@anim/slide_out_from_right_to_left"
+            app:popEnterAnim="@anim/slide_in_from_left_to_right"
+            app:popExitAnim="@anim/slide_out_from_left_to_right" />
 
     </fragment>
     <fragment
@@ -20,6 +24,9 @@
         android:name="com.example.androidcourseshpp.ui.screens.contacts.ContactDetailsFragment"
         android:label="fragment_detailview"
         tools:layout="@layout/fragment_detailview">
+        <argument
+            android:name="contactDetails"
+            app:argType="com.example.androidcourseshpp.data.contactlistdata.ContactItem" />
 
     </fragment>
 </navigation>
