@@ -1,7 +1,8 @@
-
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.android.navigation.safeargs)
+    alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
 }
@@ -37,20 +38,22 @@ android {
         jvmTarget = "11"
     }
 
-   buildFeatures {
-       viewBinding = true
-   }
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
     implementation(libs.androidx.fragment.ktx.v188)
     implementation(libs.javafaker)
     implementation(libs.androidx.fragment.ktx)
-    implementation (libs.picasso.transformations)
-    implementation (libs.picasso)
-    implementation (libs.circleimageview)
+    implementation(libs.picasso.transformations)
+    implementation(libs.picasso)
+    implementation(libs.circleimageview)
     implementation(libs.glide)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

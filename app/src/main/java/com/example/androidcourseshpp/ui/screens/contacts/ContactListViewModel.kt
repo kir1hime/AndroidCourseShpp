@@ -21,23 +21,25 @@ class ContactListViewModel @Inject constructor(
     private var mutableContactList =
         MutableStateFlow(ContactListGenerator(contentResolver).getContactItems())
     val contactList: StateFlow<List<ContactItem>> get() = mutableContactList
+    private var isPhoneContactsAdded = false
 
     var deletedItems = Stack<Pair<ContactItem, Int>>()
         private set
 
     fun addPhoneContacts() {
+        if (!isPhoneContactsAdded) {
+          val currentContactList = mutableContactList.value.toMutableList()
+          val lastContactItemId = currentContactList[currentContactList.lastIndex].id
 
-        val currentContactList = mutableContactList.value.toMutableList()
-        val lastContactItemId = currentContactList[currentContactList.lastIndex].id
-
-        val contactItemsFromPhoneContacts = ContactListGenerator(
+          val contactItemsFromPhoneContacts = ContactListGenerator(
             contentResolver
-        ).getContactItemsFromPhoneContacts(lastContactItemId)
+          ).getContactItemsFromPhoneContacts(lastContactItemId)
 
-        currentContactList.addAll(contactItemsFromPhoneContacts)
+          currentContactList.addAll(contactItemsFromPhoneContacts)
 
-        mutableContactList.value = currentContactList
-
+          mutableContactList.value = currentContactList
+          isPhoneContactsAdded = true
+        }
     }
 
     fun createNewContact(contactName: String?, contactCareer: String?): ContactItem {

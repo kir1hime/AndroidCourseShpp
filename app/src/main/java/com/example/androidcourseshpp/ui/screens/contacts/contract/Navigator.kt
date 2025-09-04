@@ -1,16 +1,10 @@
 package com.example.androidcourseshpp.ui.screens.contacts.contract
 
-import androidx.fragment.app.Fragment
-
-fun Fragment.navigator() : Navigator {
-    return requireActivity() as Navigator
-}
-
 interface  Navigator {
 
     fun moveToMyProfileScreen()
 
-    fun moveToDetailsScreen()
+    fun moveToDetailsScreen(contact : ContactItem, avatar:ImageView)
 
     fun moveBack()
 

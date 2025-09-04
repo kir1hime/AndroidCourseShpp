@@ -5,7 +5,8 @@
     android:id="@+id/contacts"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/contacts_screen_color">
+    android:background="@color/contacts_screen_color"
+    tools:context="com.example.androidcourseshpp.ui.screens.contacts.ContactListFragment">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/vw_contactsBar"

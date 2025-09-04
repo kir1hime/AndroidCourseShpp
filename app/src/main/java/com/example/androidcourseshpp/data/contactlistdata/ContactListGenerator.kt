@@ -22,7 +22,7 @@ class ContactListGenerator @Inject constructor(
         "https://static.wixstatic.com/media/9d8ed5_4725657bd5b448478d19d54669ea0883~mv2.jpg/v1/fill/w_1000,h_563,al_c,q_85,usm_0.66_1.00_0.01/9d8ed5_4725657bd5b448478d19d54669ea0883~mv2.jpg"
     )
 
-    private val nameList: MutableList<String> = generateNames()
+    private val nameList : List<String> = generateNames()
 
     private val careerList = generateCareers()
 
