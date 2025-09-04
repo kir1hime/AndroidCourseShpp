@@ -71,7 +71,7 @@ class ButtonWithIcon @JvmOverloads constructor(
     private fun initPaints(){
         iconPaint = Paint(Paint.ANTI_ALIAS_FLAG)
 
-        if (iconColor != -1){
+        if (iconColor != DEFAULT_COLOR_VALUE){
            iconPaint.colorFilter = PorterDuffColorFilter(iconColor, PorterDuff.Mode.SRC_IN)
         }
     }
