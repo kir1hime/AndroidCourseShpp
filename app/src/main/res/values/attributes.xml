@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ButtonWithIcon">
+        <attr name="icon" format="reference" />
+
+        <attr name="iconWidth" format="dimension" />
+        <attr name="iconHeight" format="dimension" />
+        <attr name="iconColor" format="color"/>
+
+        <attr name="iconPaddingStart" format="dimension" />
+        <attr name="iconPaddingEnd" format="dimension" />
+        <attr name="iconPaddingTop" format="dimension" />
+        <attr name="iconPaddingBottom" format="dimension" />
+
+        <attr name="textPaddingStart" format="dimension" />
+        <attr name="textPaddingEnd" format="dimension" />
+        <attr name="textPaddingTop" format="dimension" />
+        <attr name="textPaddingBottom" format="dimension" />
+
+    </declare-styleable>
+
+
+</resources>
+

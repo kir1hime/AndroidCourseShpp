@@ -13,14 +13,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/main_margin_side"
-        android:layout_marginTop="@dimen/acquaintance_and_filling_out_margin_top_ver"
+        android:layout_marginTop="144dp"
         android:fontFamily="@font/open_sans"
         android:gravity="center"
         android:text="@string/acquaintance"
         android:textColor="@android:color/white"
         android:textSize="@dimen/large_text_size"
         android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="16dp" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_fillOutTheProfile"
@@ -95,26 +96,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/tv_accountQuestion" />
 
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/bt_google"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/google_bt_h"
-        android:layout_marginHorizontal="@dimen/main_margin_side"
-        android:layout_marginBottom="@dimen/google_margin_bottom"
-        android:background="@drawable/google_background"
-        android:fontFamily="@font/open_sans"
-        android:letterSpacing="0.15"
-        android:text="@string/google"
-        android:textColor="@color/google_text_color"
-        android:textSize="@dimen/middle_text_size"
-        android:textStyle="bold"
-        app:backgroundTint="@null"
-        app:icon="@drawable/ic_google"
-        app:iconGravity="textStart"
-        app:iconPadding="@dimen/google_icon_padding"
-        app:iconTint="@null"
-        app:layout_constraintBottom_toBottomOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:layout_width="wrap_content"
@@ -225,5 +206,29 @@
         app:layout_constraintStart_toStartOf="@id/til_password"
         app:layout_constraintTop_toBottomOf="@id/til_password" />
 
+    <com.example.androidcourseshpp.ui.customviews.ViewWithIcon
+        android:id="@+id/bt_google"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/google_bt_h"
+        android:layout_marginHorizontal="@dimen/main_margin_side"
+        android:layout_marginBottom="@dimen/google_margin_bottom"
+        android:background="@drawable/google_background"
+        android:fontFamily="@font/open_sans"
+        android:letterSpacing="0.15"
+        android:text="@string/google"
+        android:textColor="@color/google_text_color"
+        android:textSize="@dimen/middle_text_size"
+        android:textStyle="bold"
+        app:backgroundTint="@null"
+        app:icon="@drawable/ic_google"
+        app:iconHeight="@dimen/google_bt_icon_h"
+        app:iconPaddingEnd="@dimen/google_bt_icon_padding_end"
+        app:iconPaddingStart="@dimen/google_bt_icon_padding_start"
+        app:iconWidth="@dimen/google_bt_icon_w"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:textPaddingEnd="@dimen/google_bt_text_padding_end"
+        app:textPaddingStart="@dimen/google_bt_text_padding_start" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

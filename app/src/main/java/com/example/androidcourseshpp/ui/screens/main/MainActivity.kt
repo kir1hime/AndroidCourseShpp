@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.EmailParser
 import com.example.androidcourseshpp.data.dataProvider.DataProvider
+import com.example.androidcourseshpp.data.dataProvider.EMAIL_KEY
 import com.example.androidcourseshpp.ui.screens.contacts.ContactsActivity
 import com.example.androidcourseshpp.databinding.ActivityMainBinding
 import com.example.androidcourseshpp.ui.extensions.adaptUserInterface
@@ -37,7 +38,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun defineUserName() = with(viewModel.savedEMail) {
         binding.tvName.text = if (value == "") EmailParser.parseEMail(
-            intent.getStringExtra(DataProvider.EMAIL_KEY).toString()
+            intent.getStringExtra(EMAIL_KEY).toString()
         ) else
             EmailParser.parseEMail(value!!)
     }
