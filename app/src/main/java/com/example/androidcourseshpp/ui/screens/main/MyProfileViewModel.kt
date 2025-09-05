@@ -1,6 +1,5 @@
 package com.example.androidcourseshpp.ui.screens.main
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.androidcourseshpp.data.dataProvider.DataProvider
 import dagger.hilt.android.lifecycle.HiltViewModel

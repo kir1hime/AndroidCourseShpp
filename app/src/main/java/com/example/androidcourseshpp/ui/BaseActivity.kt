@@ -14,6 +14,4 @@ open class BaseActivity : AppCompatActivity() {
             insets
         }
     }
-
-
 }

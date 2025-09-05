@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -17,22 +18,19 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.contactlistdata.ContactItem
 import com.example.androidcourseshpp.databinding.FragmentContactlistBinding
-import com.example.androidcourseshpp.ui.BaseFragment
+import com.example.androidcourseshpp.ui.NavigatedFragment
 import com.example.androidcourseshpp.ui.screens.contacts.AddContactDialog.Companion.CAREER_KEY
 import com.example.androidcourseshpp.ui.screens.contacts.AddContactDialog.Companion.NAME_KEY
 import com.example.androidcourseshpp.ui.screens.contacts.AddContactDialog.Companion.RESPONSE_KEY
 import com.example.androidcourseshpp.ui.screens.contacts.adapters.ContactItemDecoration
 import com.example.androidcourseshpp.ui.screens.contacts.adapters.ContactsAdapter
 import com.example.androidcourseshpp.ui.screens.contacts.adapters.ItemActions
-import com.example.androidcourseshpp.ui.screens.contacts.contract.navigator
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
-const val NEW_CONTACT_AVATAR =
-    "https://kartinki.pics/uploads/posts/2022-02/1645235615_4-kartinkin-net-p-kroliki-kartinki-4.jpg"
 
 @AndroidEntryPoint
-class ContactListFragment : BaseFragment() {
+class ContactListFragment : NavigatedFragment() {
 
     private lateinit var binding: FragmentContactlistBinding
     private val viewModel by viewModels<ContactListViewModel>()
@@ -57,6 +55,12 @@ class ContactListFragment : BaseFragment() {
 
         binding = FragmentContactlistBinding.inflate(inflater, container, false)
 
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         checkPermissions()
         requestPermissionsLauncher.launch(Manifest.permission.READ_CONTACTS)
 
@@ -67,8 +71,6 @@ class ContactListFragment : BaseFragment() {
         setObservers()
         setAddContactDialogListener()
         setOnBackPressedListener()
-
-        return binding.root
     }
 
     private fun getItemActions(): ItemActions {
@@ -78,8 +80,8 @@ class ContactListFragment : BaseFragment() {
                 showUndoDeletingSnackBarItem(contactItem, position)
             }
 
-            override fun showContactItemDetails() {
-                navigator().moveToDetailsScreen()
+            override fun showContactItemDetails(contactItem: ContactItem, avatar: ImageView) {
+                navigator().moveToDetailsScreen(contactItem, avatar)
             }
         }
     }

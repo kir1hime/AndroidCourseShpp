@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<transitionSet xmlns:android="http://schemas.android.com/apk/res/android"
+    android:transitionOrdering="together">
+
+    <changeBounds
+        android:duration="600"
+        android:interpolator="@android:interpolator/overshoot"/>
+
+    <changeTransform
+        android:duration="600"
+        android:interpolator="@android:interpolator/overshoot" />
+
+    <arcMotion
+        android:minimumHorizontalAngle="90"
+        android:minimumVerticalAngle="90"
+        android:interpolator="@android:interpolator/overshoot"/>
+
+</transitionSet>
