@@ -5,10 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.PasswordErrorMessagesContainer
 import com.example.androidcourseshpp.data.SignUpValidator

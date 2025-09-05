@@ -25,7 +25,6 @@ import com.example.androidcourseshpp.ui.screens.contacts.AddContactDialog.Compan
 import com.example.androidcourseshpp.ui.screens.contacts.adapters.ContactItemDecoration
 import com.example.androidcourseshpp.ui.screens.contacts.adapters.ContactsAdapter
 import com.example.androidcourseshpp.ui.screens.contacts.adapters.ItemActions
-import com.example.androidcourseshpp.ui.utils.factory
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -82,7 +81,7 @@ class ContactListFragment : NavigatedFragment() {
             }
 
             override fun showContactItemDetails(contactItem: ContactItem, avatar: ImageView) {
-                navigator().moveToDetailsScreen(contactItem,avatar)
+                navigator().moveToDetailsScreen(contactItem, avatar)
             }
         }
     }

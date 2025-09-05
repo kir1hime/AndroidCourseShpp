@@ -1,7 +1,5 @@
 package com.example.androidcourseshpp.ui.screens.contacts
 
-
-import android.app.AlertDialog
 import android.content.ContentResolver
 import androidx.lifecycle.ViewModel
 import com.example.androidcourseshpp.data.contactlistdata.ContactListGenerator
@@ -12,6 +10,8 @@ import kotlinx.coroutines.flow.StateFlow
 import java.util.Stack
 import javax.inject.Inject
 
+private const val NEW_CONTACT_AVATAR =
+    "https://kartinki.pics/uploads/posts/2022-02/1645235615_4-kartinkin-net-p-kroliki-kartinki-4.jpg"
 
 @HiltViewModel
 class ContactListViewModel @Inject constructor(
@@ -28,17 +28,17 @@ class ContactListViewModel @Inject constructor(
 
     fun addPhoneContacts() {
         if (!isPhoneContactsAdded) {
-          val currentContactList = mutableContactList.value.toMutableList()
-          val lastContactItemId = currentContactList[currentContactList.lastIndex].id
+            val currentContactList = mutableContactList.value.toMutableList()
+            val lastContactItemId = currentContactList[currentContactList.lastIndex].id
 
-          val contactItemsFromPhoneContacts = ContactListGenerator(
-            contentResolver
-          ).getContactItemsFromPhoneContacts(lastContactItemId)
+            val contactItemsFromPhoneContacts = ContactListGenerator(
+                contentResolver
+            ).getContactItemsFromPhoneContacts(lastContactItemId)
 
-          currentContactList.addAll(contactItemsFromPhoneContacts)
+            currentContactList.addAll(contactItemsFromPhoneContacts)
 
-          mutableContactList.value = currentContactList
-          isPhoneContactsAdded = true
+            mutableContactList.value = currentContactList
+            isPhoneContactsAdded = true
         }
     }
 
