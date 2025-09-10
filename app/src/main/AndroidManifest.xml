@@ -6,6 +6,10 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
 
+    <queries>
+        <provider android:authorities="com.android.contacts" />
+    </queries>
+
     <application
         android:name=".ui.App"
         android:allowBackup="true"
@@ -17,11 +21,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidCourseShpp"
         tools:targetApi="31">
-
+        <activity
+            android:name=".ui.screens.test"
+            android:exported="false" />
         <activity
             android:name=".ui.screens.main.MainActivity"
             android:exported="false" />
-
         <activity
             android:name=".ui.screens.auth.AuthActivity"
             android:exported="true">
@@ -31,15 +36,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".ui.screens.contacts.ContactsActivity"
             android:exported="true" />
-
     </application>
-
-    <queries>
-        <provider android:authorities="com.android.contacts" />
-    </queries>
 
 </manifest>

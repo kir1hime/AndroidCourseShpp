@@ -1,7 +1,9 @@
 package com.example.androidcourseshpp.ui.screens.contacts
 
 import android.Manifest
+import android.app.ActivityOptions
 import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,25 +14,28 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.FragmentNavigatorExtras
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.contactlistdata.ContactItem
 import com.example.androidcourseshpp.databinding.FragmentContactlistBinding
-import com.example.androidcourseshpp.ui.NavigatedFragment
+import com.example.androidcourseshpp.ui.BaseFragment
 import com.example.androidcourseshpp.ui.screens.contacts.AddContactDialog.Companion.CAREER_KEY
 import com.example.androidcourseshpp.ui.screens.contacts.AddContactDialog.Companion.NAME_KEY
 import com.example.androidcourseshpp.ui.screens.contacts.AddContactDialog.Companion.RESPONSE_KEY
 import com.example.androidcourseshpp.ui.screens.contacts.adapters.ContactItemDecoration
 import com.example.androidcourseshpp.ui.screens.contacts.adapters.ContactsAdapter
 import com.example.androidcourseshpp.ui.screens.contacts.adapters.ItemActions
+import com.example.androidcourseshpp.ui.screens.main.MainActivity
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
-class ContactListFragment : NavigatedFragment() {
+class ContactListFragment : BaseFragment() {
 
     private lateinit var binding: FragmentContactlistBinding
     private val viewModel by viewModels<ContactListViewModel>()
@@ -39,7 +44,7 @@ class ContactListFragment : NavigatedFragment() {
     private val onBackPressedCallback: OnBackPressedCallback =
         object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                navigator().moveToMyProfileScreen()
+              moveToMyProfileScreen()
             }
         }
 
@@ -81,7 +86,7 @@ class ContactListFragment : NavigatedFragment() {
             }
 
             override fun showContactItemDetails(contactItem: ContactItem, avatar: ImageView) {
-                navigator().moveToDetailsScreen(contactItem, avatar)
+                moveToDetailsScreen(contactItem, avatar)
             }
         }
     }
@@ -110,7 +115,7 @@ class ContactListFragment : NavigatedFragment() {
 
     private fun setListeners() = with(binding) {
         ibtArrowBack.setOnClickListener {
-            navigator().moveToMyProfileScreen()
+          moveToMyProfileScreen()
         }
         tvAddContacts.setOnClickListener {
             showAddContactDialog()
@@ -190,6 +195,26 @@ class ContactListFragment : NavigatedFragment() {
                     viewModel.addPhoneContacts()
                 }
             }
+    }
+
+     private fun moveToMyProfileScreen() {
+        val intent = Intent(requireContext(), MainActivity::class.java)
+        val options = ActivityOptions.makeCustomAnimation(
+            requireContext(),
+            R.anim.slide_in_from_left_to_right,
+            R.anim.slide_out_from_left_to_right
+        )
+        startActivity(intent, options.toBundle())
+        requireActivity().finish()
+    }
+
+     private fun moveToDetailsScreen(contact: ContactItem, avatar: ImageView) {
+        val extras = FragmentNavigatorExtras(avatar to contact.id.toString())
+
+        val direction =
+            ContactListFragmentDirections.actionContactListFragmentToContactDetailsFragment(contact)
+
+        findNavController().navigate(direction, extras)
     }
 
 }

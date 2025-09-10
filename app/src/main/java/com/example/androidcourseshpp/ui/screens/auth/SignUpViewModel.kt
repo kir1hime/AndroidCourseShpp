@@ -37,6 +37,7 @@ class SignUpViewModel @Inject constructor(private val dataProvider: DataProvider
         for ((index, check) in passwordChecks.withIndex()) {
             if (!check.invoke(inputPassword)) {
                 errorMessage = passwordErrorMessages[index]
+                break
             }
         }
 

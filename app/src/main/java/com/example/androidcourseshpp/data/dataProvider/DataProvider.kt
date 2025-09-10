@@ -1,22 +1,13 @@
 package com.example.androidcourseshpp.data.dataProvider
 
-import android.content.Context
-import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
-import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
-import javax.inject.Singleton
 
 const val USER_INFO_STORE = "userInfo"
 const val EMAIL_KEY = "userEMail"
 const val PASSWORD_KEY = "userPassword"
 
-@Singleton
-class DataProvider @Inject constructor(@ApplicationContext context: Context) {
-
-    private val sharedPref: SharedPreferences by lazy {
-        context.getSharedPreferences(USER_INFO_STORE, MODE_PRIVATE)
-    }
+class DataProvider @Inject constructor(private val sharedPref : SharedPreferences) {
 
     private val editor = sharedPref.edit()
 

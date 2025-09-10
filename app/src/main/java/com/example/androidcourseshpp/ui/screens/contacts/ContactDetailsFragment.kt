@@ -4,15 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.transition.TransitionInflater
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.databinding.FragmentDetailviewBinding
+import com.example.androidcourseshpp.ui.BaseFragment
 import com.example.androidcourseshpp.ui.extensions.loadImageFromURL
-import com.example.androidcourseshpp.ui.NavigatedFragment
 
-
-class ContactDetailsFragment : NavigatedFragment() {
+class ContactDetailsFragment : BaseFragment() {
 
     private lateinit var binding : FragmentDetailviewBinding
     private val args : ContactDetailsFragmentArgs by navArgs()
@@ -50,7 +50,7 @@ class ContactDetailsFragment : NavigatedFragment() {
 
     private fun setListeners(){
         binding.ibtArrowBack.setOnClickListener{
-            navigator().moveBack()
+            findNavController().navigateUp()
         }
     }
 }

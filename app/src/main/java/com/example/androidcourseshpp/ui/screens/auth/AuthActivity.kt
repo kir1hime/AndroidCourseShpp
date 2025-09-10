@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import com.example.androidcourseshpp.R
+import com.example.androidcourseshpp.data.MIN_NUM_OF_CHARS_IN_PASSWORD
 import com.example.androidcourseshpp.data.PasswordErrorMessagesContainer
 import com.example.androidcourseshpp.data.SignUpValidator
 import com.example.androidcourseshpp.data.dataProvider.EMAIL_KEY
@@ -39,40 +40,56 @@ class AuthActivity : BaseActivity() {
     }
 
 
-    private fun setListeners() = with(binding) {
-        btRegister.setOnClickListener {
-
-            val inputEMail = etEMail.text.toString()
-            val inputPassword = etPassword.text.toString()
-
-            val isInputEMailCorrect = SignUpValidator.isEMailCorrect(inputEMail)
-            val isInputPasswordCorrect = SignUpValidator.isPasswordCorrect(inputPassword)
-
-            if (isInputEMailCorrect && isInputPasswordCorrect) {
-                tilPassword.helperText = ""
-                tilEMail.helperText = ""
-
-                if (cbRememberMe.isChecked) {
-
-                    viewModel.saveUserInfo(
-                        etEMail.text.toString(),
-                        etPassword.text.toString()
-                    )
-                }
-
-                moveToMyProfileScreen(etEMail.text.toString())
-
-            } else {
-                tilEMail.helperText =
-                    if (!isInputEMailCorrect) {
-                        getString(R.string.email_error)
-                    } else ""
-                tilPassword.helperText =
-                    if (!isInputPasswordCorrect) {
-                        viewModel.definePasswordErrorMessage(inputPassword, PasswordErrorMessagesContainer(this@AuthActivity).getMessages())
-                    } else ""
-            }
+    private fun setListeners() {
+        binding.btRegister.setOnClickListener {
+            onRegisterButtonClickListener()
         }
+    }
+
+    private fun onRegisterButtonClickListener()= with(binding)  {
+        val inputEMail = etEMail.text.toString()
+        val inputPassword = etPassword.text.toString()
+
+        val isInputEMailCorrect = SignUpValidator.isEMailCorrect(inputEMail)
+        val isInputPasswordCorrect = SignUpValidator.isPasswordCorrect(inputPassword)
+
+        if (isInputEMailCorrect && isInputPasswordCorrect) {
+            tilPassword.helperText = ""
+            tilEMail.helperText = ""
+
+            if (cbRememberMe.isChecked) {
+                saveUserInfo()
+            }
+            moveToMyProfileScreen(etEMail.text.toString())
+
+        } else {
+            setPasswordErrorMessage(isInputPasswordCorrect, inputPassword)
+            setEMailErrorMessage(isInputEMailCorrect)
+        }
+    }
+
+    private fun saveUserInfo() = with(binding){
+        viewModel.saveUserInfo(
+            etEMail.text.toString(),
+            etPassword.text.toString()
+        )
+    }
+
+    private fun setPasswordErrorMessage(isInputPasswordCorrect: Boolean, inputPassword: String){
+        binding.tilPassword.helperText =
+            if (!isInputPasswordCorrect) {
+                viewModel.definePasswordErrorMessage(
+                    inputPassword,
+                    PasswordErrorMessagesContainer.getMessageResourceIds()
+                        .map {  getString(it, MIN_NUM_OF_CHARS_IN_PASSWORD) })
+            } else ""
+    }
+
+    private fun setEMailErrorMessage(isInputEMailCorrect: Boolean){
+        binding.tilEMail.helperText =
+            if (!isInputEMailCorrect) {
+                getString(R.string.email_error)
+            } else ""
     }
 
     private fun moveToMyProfileScreen(userEMail: String) {
