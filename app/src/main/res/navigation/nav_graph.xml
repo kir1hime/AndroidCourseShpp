@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/contactListFragment"
-        android:name="com.example.androidcourseshpp.ui.screens.contactlist.ContactListFragment"
+        android:name="com.example.androidcourseshpp.ui.screens.userinfo.contactlist.ContactListFragment"
         android:label="fragment_contactlist"
         tools:layout="@layout/fragment_contactlist">
         <action

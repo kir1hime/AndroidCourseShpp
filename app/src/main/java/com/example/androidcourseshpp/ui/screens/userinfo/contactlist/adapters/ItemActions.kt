@@ -1,4 +1,4 @@
-package com.example.androidcourseshpp.ui.screens.contactlist.adapters
+package com.example.androidcourseshpp.ui.screens.userinfo.contactlist.adapters
 
 import android.widget.ImageView
 import com.example.androidcourseshpp.data.contactlistdata.ContactItem

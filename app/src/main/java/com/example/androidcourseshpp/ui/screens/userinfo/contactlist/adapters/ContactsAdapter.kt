@@ -1,4 +1,4 @@
-package com.example.androidcourseshpp.ui.screens.contactlist.adapters
+package com.example.androidcourseshpp.ui.screens.userinfo.contactlist.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

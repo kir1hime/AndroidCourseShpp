@@ -1,4 +1,4 @@
-package com.example.androidcourseshpp.ui.screens.contactlist
+package com.example.androidcourseshpp.ui.screens.userinfo.contactlist
 
 import android.app.AlertDialog
 import android.app.Dialog

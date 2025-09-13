@@ -1,41 +1,40 @@
-package com.example.androidcourseshpp.ui.screens.myprofile
+package com.example.androidcourseshpp.ui.screens.userinfo.myprofile
 
 import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.EmailParser
 import com.example.androidcourseshpp.data.dataProvider.EMAIL_KEY
-import com.example.androidcourseshpp.ui.screens.contactlist.ContactsActivity
-import com.example.androidcourseshpp.databinding.ActivityMainBinding
-import com.example.androidcourseshpp.ui.BaseActivity
+import com.example.androidcourseshpp.databinding.FragmentMyProfileBinding
+import com.example.androidcourseshpp.ui.BaseFragment
 import com.example.androidcourseshpp.ui.screens.auth.AuthActivity
-import dagger.hilt.android.AndroidEntryPoint
+import com.example.androidcourseshpp.ui.screens.userinfo.contactlist.ContactsActivity
 
-@AndroidEntryPoint
-class MainActivity : BaseActivity() {
+class MyProfileFragment : BaseFragment() {
 
-    private lateinit var binding: ActivityMainBinding
-
+    private lateinit var binding: FragmentMyProfileBinding
     private val viewModel by viewModels<MyProfileViewModel>()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentMyProfileBinding.inflate(inflater, container, false)
 
-        enableEdgeToEdge()
-
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        adaptUserInterface(binding.root)
-
-        defineUserName()
-        setListeners()
+        return binding.root
     }
 
-    private fun defineUserName() = with(viewModel.savedEMail) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+    }
+
+   /* private fun defineUserName() = with(viewModel.savedEMail) {
         binding.tvName.text = if (value == "") EmailParser.parseEMail(
             intent.getStringExtra(EMAIL_KEY).toString()
         ) else
@@ -78,6 +77,5 @@ class MainActivity : BaseActivity() {
         )
         startActivity(intent, options.toBundle())
         finish()
-    }
+    }*/
 }
-

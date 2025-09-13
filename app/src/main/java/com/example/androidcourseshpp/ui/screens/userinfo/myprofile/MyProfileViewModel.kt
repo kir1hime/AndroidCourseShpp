@@ -1,4 +1,4 @@
-package com.example.androidcourseshpp.ui.screens.myprofile
+package com.example.androidcourseshpp.ui.screens.userinfo.myprofile
 
 import androidx.lifecycle.ViewModel
 import com.example.androidcourseshpp.data.dataProvider.DataProvider

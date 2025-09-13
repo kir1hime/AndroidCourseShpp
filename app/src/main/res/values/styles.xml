@@ -26,4 +26,11 @@
     <style name="AppTheme" parent="Theme.MaterialComponents.DayNight">
         <item name="android:windowActivityTransitions">true</item>
     </style>
+
+    <style name="tabItemsTextStyle">
+        <item name="android:fontFamily">@font/open_sans</item>
+        <item name="android:textSize">@dimen/middle_text_size</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">0.015</item>
+    </style>
 </resources>

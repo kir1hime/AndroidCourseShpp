@@ -9,6 +9,6 @@
     android:layout_height="match_parent"
     app:defaultNavHost="true"
     app:navGraph="@navigation/nav_graph"
-    tools:context=".ui.screens.contactlist.ContactsActivity">
+    tools:context=".ui.screens.userinfo.contactlist.ContactsActivity">
 
 </androidx.fragment.app.FragmentContainerView>

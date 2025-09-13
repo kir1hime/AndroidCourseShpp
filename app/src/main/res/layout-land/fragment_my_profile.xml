@@ -5,7 +5,7 @@
     android:id="@+id/myProfile"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.screens.myprofile.MainActivity">
+    tools:context=".ui.screens.MainActivity">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_bluePartOfScreen"
