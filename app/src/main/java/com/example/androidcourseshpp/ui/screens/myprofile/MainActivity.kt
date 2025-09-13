@@ -1,4 +1,4 @@
-package com.example.androidcourseshpp.ui.screens.main
+package com.example.androidcourseshpp.ui.screens.myprofile
 
 import android.app.ActivityOptions
 import android.content.Intent
@@ -8,7 +8,7 @@ import androidx.activity.viewModels
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.EmailParser
 import com.example.androidcourseshpp.data.dataProvider.EMAIL_KEY
-import com.example.androidcourseshpp.ui.screens.contacts.ContactsActivity
+import com.example.androidcourseshpp.ui.screens.contactlist.ContactsActivity
 import com.example.androidcourseshpp.databinding.ActivityMainBinding
 import com.example.androidcourseshpp.ui.BaseActivity
 import com.example.androidcourseshpp.ui.screens.auth.AuthActivity

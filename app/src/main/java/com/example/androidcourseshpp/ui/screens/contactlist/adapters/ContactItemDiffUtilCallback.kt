@@ -1,4 +1,4 @@
-package com.example.androidcourseshpp.ui.screens.contacts.adapters
+package com.example.androidcourseshpp.ui.screens.contactlist.adapters
 
 import android.annotation.SuppressLint
 import androidx.recyclerview.widget.DiffUtil

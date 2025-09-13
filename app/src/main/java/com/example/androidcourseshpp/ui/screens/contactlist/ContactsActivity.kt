@@ -1,4 +1,4 @@
-package com.example.androidcourseshpp.ui.screens.contacts
+package com.example.androidcourseshpp.ui.screens.contactlist
 
 import android.annotation.SuppressLint
 import android.os.Bundle

@@ -1,4 +1,4 @@
-package com.example.androidcourseshpp.ui.screens.contacts
+package com.example.androidcourseshpp.ui.screens.contactdetails
 
 import android.os.Bundle
 import android.view.LayoutInflater

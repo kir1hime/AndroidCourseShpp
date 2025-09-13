@@ -1,4 +1,4 @@
-package com.example.androidcourseshpp.ui.screens.contacts
+package com.example.androidcourseshpp.ui.screens.contactlist
 
 import android.Manifest
 import android.app.ActivityOptions
@@ -23,13 +23,13 @@ import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.contactlistdata.ContactItem
 import com.example.androidcourseshpp.databinding.FragmentContactlistBinding
 import com.example.androidcourseshpp.ui.BaseFragment
-import com.example.androidcourseshpp.ui.screens.contacts.AddContactDialog.Companion.CAREER_KEY
-import com.example.androidcourseshpp.ui.screens.contacts.AddContactDialog.Companion.NAME_KEY
-import com.example.androidcourseshpp.ui.screens.contacts.AddContactDialog.Companion.RESPONSE_KEY
-import com.example.androidcourseshpp.ui.screens.contacts.adapters.ContactItemDecoration
-import com.example.androidcourseshpp.ui.screens.contacts.adapters.ContactsAdapter
-import com.example.androidcourseshpp.ui.screens.contacts.adapters.ItemActions
-import com.example.androidcourseshpp.ui.screens.main.MainActivity
+import com.example.androidcourseshpp.ui.screens.contactlist.AddContactDialog.Companion.CAREER_KEY
+import com.example.androidcourseshpp.ui.screens.contactlist.AddContactDialog.Companion.NAME_KEY
+import com.example.androidcourseshpp.ui.screens.contactlist.AddContactDialog.Companion.RESPONSE_KEY
+import com.example.androidcourseshpp.ui.screens.contactlist.adapters.ContactItemDecoration
+import com.example.androidcourseshpp.ui.screens.contactlist.adapters.ContactsAdapter
+import com.example.androidcourseshpp.ui.screens.contactlist.adapters.ItemActions
+import com.example.androidcourseshpp.ui.screens.myprofile.MainActivity
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 

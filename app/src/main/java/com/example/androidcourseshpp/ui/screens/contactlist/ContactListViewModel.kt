@@ -1,4 +1,4 @@
-package com.example.androidcourseshpp.ui.screens.contacts
+package com.example.androidcourseshpp.ui.screens.contactlist
 
 import android.content.ContentResolver
 import androidx.lifecycle.ViewModel
