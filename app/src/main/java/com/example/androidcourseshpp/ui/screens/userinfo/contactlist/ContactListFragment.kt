@@ -100,7 +100,7 @@ class ContactListFragment : BaseFragment() {
         )
     }
 
-    private fun initRecyclerView() = with(binding.rvContacts) {
+    private fun initRecyclerView() = with(binding.recyclerViewContacts) {
         layoutManager = LinearLayoutManager(requireContext())
         adapter = this@ContactListFragment.adapter
 
@@ -116,10 +116,10 @@ class ContactListFragment : BaseFragment() {
     }
 
     private fun setListeners() = with(binding) {
-        ibtArrowBack.setOnClickListener {
+        imageButtonArrowBack.setOnClickListener {
             moveToMyProfileScreen()
         }
-        tvAddContacts.setOnClickListener {
+        textViewAddContacts.setOnClickListener {
             showAddContactDialog()
         }
     }
@@ -187,7 +187,7 @@ class ContactListFragment : BaseFragment() {
                 }
             })
 
-        helper.attachToRecyclerView(binding.rvContacts)
+        helper.attachToRecyclerView(binding.recyclerViewContacts)
     }
 
     private fun checkPermissions() {

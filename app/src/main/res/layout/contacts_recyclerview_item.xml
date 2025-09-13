@@ -7,7 +7,7 @@
     android:background="@drawable/contacts_recycle_view_item_background">
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/iv_avatar"
+        android:id="@+id/imageViewAvatar"
         android:layout_width="@dimen/contacts_recycle_view_item_ava_size"
         android:layout_height="@dimen/contacts_recycle_view_item_ava_size"
         android:layout_marginStart="@dimen/contacts_recycle_view_margin_start"
@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="@id/item" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@id/tv_name"
+        android:id="@id/textViewName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/item_info_margin_start"
@@ -29,11 +29,11 @@
         android:textSize="@dimen/big_text_size"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@id/item"
-        app:layout_constraintStart_toEndOf="@id/iv_avatar"
+        app:layout_constraintStart_toEndOf="@id/imageViewAvatar"
         app:layout_constraintTop_toTopOf="@id/item" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_career"
+        android:id="@+id/textViewCareer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/item_career_margin_top"
@@ -43,11 +43,11 @@
         android:textColor="@color/item_career_text_color"
         android:textSize="@dimen/tiny_text_size"
         app:layout_constraintBottom_toBottomOf="@id/item"
-        app:layout_constraintStart_toStartOf="@id/tv_name"
+        app:layout_constraintStart_toStartOf="@id/textViewName"
         app:layout_constraintTop_toTopOf="@id/item" />
 
     <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/Imb_delete"
+        android:id="@+id/imageButtonDelete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/item_trash_can_margin_end"

@@ -40,18 +40,18 @@ class MyProfileFragment : BaseFragment() {
 
     private fun defineUserName() {
         val savedName = viewModel.savedEMail.value
-            binding.tvName.text = EmailParser.parseEMail(savedName)
+            binding.textViewName.text = EmailParser.parseEMail(savedName)
 
     }
 
 
     private fun setListeners() = with(binding) {
-        btLogOut.setOnClickListener {
+        buttonLogOut.setOnClickListener {
             moveToSignUpScreen()
             viewModel.deleteUserInfo()
 
         }
-        btViewMyContacts.setOnClickListener {
+        buttonViewMyContacts.setOnClickListener {
             moveToMyContactsScreen()
         }
     }

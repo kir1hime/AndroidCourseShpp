@@ -41,26 +41,26 @@ class AuthActivity : BaseActivity() {
 
 
     private fun setListeners() {
-        binding.btRegister.setOnClickListener {
+        binding.buttonRegister.setOnClickListener {
             onRegisterButtonClickListener()
         }
     }
 
     private fun onRegisterButtonClickListener()= with(binding)  {
-        val inputEMail = etEMail.text.toString()
-        val inputPassword = etPassword.text.toString()
+        val inputEMail = editTextEMail.text.toString()
+        val inputPassword = editTextPassword.text.toString()
 
         val isInputEMailCorrect = SignUpValidator.isEMailCorrect(inputEMail)
         val isInputPasswordCorrect = SignUpValidator.isPasswordCorrect(inputPassword)
 
         if (isInputEMailCorrect && isInputPasswordCorrect) {
-            tilPassword.helperText = ""
-            tilEMail.helperText = ""
+            textInputLayoutPassword.helperText = ""
+            textInputLayoutEMail.helperText = ""
 
-            if (cbRememberMe.isChecked) {
+            if (comboBoxRememberMe.isChecked) {
                 saveUserInfo()
             }
-            moveToMyProfileScreen(etEMail.text.toString())
+            moveToMyProfileScreen(editTextEMail.text.toString())
 
         } else {
             setPasswordErrorMessage(isInputPasswordCorrect, inputPassword)
@@ -70,13 +70,13 @@ class AuthActivity : BaseActivity() {
 
     private fun saveUserInfo() = with(binding){
         viewModel.saveUserInfo(
-            etEMail.text.toString(),
-            etPassword.text.toString()
+            editTextEMail.text.toString(),
+            editTextPassword.text.toString()
         )
     }
 
     private fun setPasswordErrorMessage(isInputPasswordCorrect: Boolean, inputPassword: String){
-        binding.tilPassword.helperText =
+        binding.textInputLayoutPassword.helperText =
             if (!isInputPasswordCorrect) {
                 viewModel.definePasswordErrorMessage(
                     inputPassword,
@@ -86,7 +86,7 @@ class AuthActivity : BaseActivity() {
     }
 
     private fun setEMailErrorMessage(isInputEMailCorrect: Boolean){
-        binding.tilEMail.helperText =
+        binding.textInputLayoutEMail.helperText =
             if (!isInputEMailCorrect) {
                 getString(R.string.email_error)
             } else ""

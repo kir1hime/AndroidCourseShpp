@@ -9,7 +9,7 @@
     tools:context=".ui.screens.auth.AuthActivity">
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_acquainted"
+        android:id="@+id/textViewAcquainted"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/main_margin_side"
@@ -24,7 +24,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_fillOutTheProfile"
+        android:id="@+id/textViewFillOutTheProfile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/fill_out_the_profile_padding_top"
@@ -36,11 +36,11 @@
         android:textSize="@dimen/tiny_text_size"
         app:layout_constraintEnd_toEndOf="@id/gl_middle_ver"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_acquainted" />
+        app:layout_constraintTop_toBottomOf="@id/textViewAcquainted" />
 
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/bt_register"
+        android:id="@+id/buttonRegister"
         android:layout_width="0dp"
         android:layout_height="@dimen/register_bt_h"
         android:layout_marginHorizontal="@dimen/main_margin_side"
@@ -73,7 +73,7 @@
 
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_accountQuestion"
+        android:id="@+id/textViewAccountQuestion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/account_question_margin_start"
@@ -89,7 +89,7 @@
         app:layout_constraintStart_toStartOf="@id/gl_middle_ver" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_signIn"
+        android:id="@+id/textViewSignIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/sign_in_margin_start"
@@ -100,11 +100,11 @@
         android:textSize="@dimen/small_text_size"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/tv_accountQuestion" />
+        app:layout_constraintStart_toEndOf="@id/textViewAccountQuestion" />
 
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/bt_google"
+        android:id="@+id/buttonGoogle"
         android:layout_width="0dp"
         android:layout_height="@dimen/google_bt_h"
         android:layout_marginHorizontal="@dimen/main_margin_side"
@@ -138,7 +138,7 @@
         app:layout_constraintStart_toStartOf="@id/gl_middle_ver" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_eMail"
+        android:id="@+id/textInputLayoutEMail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/main_margin_side"
@@ -163,11 +163,11 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/gl_middle_ver"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_fillOutTheProfile"
+        app:layout_constraintTop_toBottomOf="@id/textViewFillOutTheProfile"
         tools:ignore="RtlSymmetry">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_eMail"
+            android:id="@+id/editTextEMail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/open_sans"
@@ -181,7 +181,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_password"
+        android:id="@+id/textInputLayoutPassword"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/main_margin_side"
@@ -204,11 +204,11 @@
         app:hintTextColor="@color/password_hint_text_color"
         app:layout_constraintEnd_toEndOf="@id/gl_middle_ver"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/til_eMail"
+        app:layout_constraintTop_toBottomOf="@id/textInputLayoutEMail"
         tools:ignore="RtlSymmetry">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_password"
+            android:id="@+id/editTextPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/open_sans"
@@ -223,7 +223,7 @@
 
 
     <com.google.android.material.checkbox.MaterialCheckBox
-        android:id="@+id/cb_rememberMe"
+        android:id="@+id/comboBoxRememberMe"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/main_margin_side"
@@ -235,7 +235,7 @@
         android:textSize="@dimen/small_text_size"
         android:textStyle="bold"
         app:buttonTint="@null"
-        app:layout_constraintStart_toStartOf="@id/bt_google"
+        app:layout_constraintStart_toStartOf="@id/buttonGoogle"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.Guideline
