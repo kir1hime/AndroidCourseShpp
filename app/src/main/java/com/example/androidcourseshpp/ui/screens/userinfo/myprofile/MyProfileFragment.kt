@@ -1,19 +1,13 @@
 package com.example.androidcourseshpp.ui.screens.userinfo.myprofile
 
-import android.app.ActivityOptions
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import com.example.androidcourseshpp.R
-import com.example.androidcourseshpp.data.EmailParser
-import com.example.androidcourseshpp.data.dataProvider.EMAIL_KEY
 import com.example.androidcourseshpp.databinding.FragmentMyProfileBinding
 import com.example.androidcourseshpp.ui.BaseFragment
-import com.example.androidcourseshpp.ui.screens.auth.AuthActivity
-import com.example.androidcourseshpp.ui.screens.userinfo.contactlist.ContactsActivity
+
 
 class MyProfileFragment : BaseFragment() {
 

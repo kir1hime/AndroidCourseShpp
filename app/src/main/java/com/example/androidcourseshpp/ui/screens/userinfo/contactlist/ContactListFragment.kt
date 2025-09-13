@@ -30,6 +30,7 @@ import com.example.androidcourseshpp.ui.screens.userinfo.contactlist.adapters.Co
 import com.example.androidcourseshpp.ui.screens.userinfo.contactlist.adapters.ContactsAdapter
 import com.example.androidcourseshpp.ui.screens.userinfo.contactlist.adapters.ItemActions
 import com.example.androidcourseshpp.ui.screens.MainActivity
+import com.example.androidcourseshpp.ui.screens.userinfo.UserInfoFragmentDirections
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -44,7 +45,7 @@ class ContactListFragment : BaseFragment() {
     private val onBackPressedCallback: OnBackPressedCallback =
         object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-              moveToMyProfileScreen()
+                moveToMyProfileScreen()
             }
         }
 
@@ -115,7 +116,7 @@ class ContactListFragment : BaseFragment() {
 
     private fun setListeners() = with(binding) {
         ibtArrowBack.setOnClickListener {
-          moveToMyProfileScreen()
+            moveToMyProfileScreen()
         }
         tvAddContacts.setOnClickListener {
             showAddContactDialog()
@@ -197,7 +198,7 @@ class ContactListFragment : BaseFragment() {
             }
     }
 
-     private fun moveToMyProfileScreen() {
+    private fun moveToMyProfileScreen() {
         val intent = Intent(requireContext(), MainActivity::class.java)
         val options = ActivityOptions.makeCustomAnimation(
             requireContext(),
@@ -208,11 +209,11 @@ class ContactListFragment : BaseFragment() {
         requireActivity().finish()
     }
 
-     private fun moveToDetailsScreen(contact: ContactItem, avatar: ImageView) {
+    private fun moveToDetailsScreen(contact: ContactItem, avatar: ImageView) {
         val extras = FragmentNavigatorExtras(avatar to contact.id.toString())
 
         val direction =
-            ContactListFragmentDirections.actionContactListFragmentToContactDetailsFragment(contact)
+            UserInfoFragmentDirections.actionUserInfoFragmentToContactDetailsFragment(contact)
 
         findNavController().navigate(direction, extras)
     }
