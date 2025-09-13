@@ -22,6 +22,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:tabGravity="fill"
         app:tabMode="fixed"
+        app:tabRippleColor="@null"
         app:tabSelectedTextColor="@color/tab_selected_text_color"
         app:tabTextAppearance="@style/tabItemsTextStyle"
         app:tabTextColor="@color/tab_unselected_text_color">

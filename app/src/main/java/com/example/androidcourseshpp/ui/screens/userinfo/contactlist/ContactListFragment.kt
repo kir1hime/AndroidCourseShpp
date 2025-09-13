@@ -30,6 +30,7 @@ import com.example.androidcourseshpp.ui.screens.userinfo.contactlist.adapters.Co
 import com.example.androidcourseshpp.ui.screens.userinfo.contactlist.adapters.ContactsAdapter
 import com.example.androidcourseshpp.ui.screens.userinfo.contactlist.adapters.ItemActions
 import com.example.androidcourseshpp.ui.screens.MainActivity
+import com.example.androidcourseshpp.ui.screens.userinfo.TabSwitchable
 import com.example.androidcourseshpp.ui.screens.userinfo.UserInfoFragmentDirections
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -199,14 +200,8 @@ class ContactListFragment : BaseFragment() {
     }
 
     private fun moveToMyProfileScreen() {
-        val intent = Intent(requireContext(), MainActivity::class.java)
-        val options = ActivityOptions.makeCustomAnimation(
-            requireContext(),
-            R.anim.slide_in_from_left_to_right,
-            R.anim.slide_out_from_left_to_right
-        )
-        startActivity(intent, options.toBundle())
-        requireActivity().finish()
+       val parentFragment = parentFragment as? TabSwitchable
+        parentFragment?.moveToMyProfileTab()
     }
 
     private fun moveToDetailsScreen(contact: ContactItem, avatar: ImageView) {

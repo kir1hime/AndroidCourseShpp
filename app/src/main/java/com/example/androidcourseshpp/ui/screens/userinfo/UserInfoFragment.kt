@@ -13,7 +13,7 @@ import com.example.androidcourseshpp.ui.screens.userinfo.contactlist.ContactList
 import com.example.androidcourseshpp.ui.screens.userinfo.myprofile.MyProfileFragment
 import com.google.android.material.tabs.TabLayoutMediator
 
-class UserInfoFragment : BaseFragment() {
+class UserInfoFragment : BaseFragment(), TabSwitchable {
 
     private lateinit var binding: FragmentUserinfoBinding
     private val tabFragments = listOf(MyProfileFragment(), ContactListFragment())
@@ -45,5 +45,13 @@ class UserInfoFragment : BaseFragment() {
             }
 
         }.attach()
+    }
+
+    override fun moveToMyProfileTab() {
+        binding.viewPagerUserInformation.currentItem = Tab.MYPROFILE.ordinal
+    }
+
+    override fun moveToContactsTab() {
+        binding.viewPagerUserInformation.currentItem = Tab.CONTACTS.ordinal
     }
 }
