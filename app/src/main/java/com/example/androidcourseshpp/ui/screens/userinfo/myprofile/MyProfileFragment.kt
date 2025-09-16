@@ -39,8 +39,8 @@ class MyProfileFragment : BaseFragment() {
     }
 
     private fun defineUserName() {
-        val savedName = viewModel.savedEMail.value
-            binding.textViewName.text = EmailParser.parseEMail(savedName)
+        val eMail = viewModel.savedEMail.value
+            binding.textViewName.text = EmailParser.parseEMail(eMail)
 
     }
 

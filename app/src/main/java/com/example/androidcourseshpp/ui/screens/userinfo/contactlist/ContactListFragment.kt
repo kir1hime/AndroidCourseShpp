@@ -1,9 +1,7 @@
 package com.example.androidcourseshpp.ui.screens.userinfo.contactlist
 
 import android.Manifest
-import android.app.ActivityOptions
 import android.app.AlertDialog
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -29,7 +27,6 @@ import com.example.androidcourseshpp.ui.screens.userinfo.contactlist.AddContactD
 import com.example.androidcourseshpp.ui.screens.userinfo.contactlist.adapters.ContactItemDecoration
 import com.example.androidcourseshpp.ui.screens.userinfo.contactlist.adapters.ContactsAdapter
 import com.example.androidcourseshpp.ui.screens.userinfo.contactlist.adapters.ItemActions
-import com.example.androidcourseshpp.ui.screens.MainActivity
 import com.example.androidcourseshpp.ui.screens.userinfo.TabSwitchable
 import com.example.androidcourseshpp.ui.screens.userinfo.UserInfoFragmentDirections
 import com.google.android.material.snackbar.Snackbar

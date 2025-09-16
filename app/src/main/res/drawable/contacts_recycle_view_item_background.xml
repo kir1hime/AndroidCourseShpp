@@ -2,8 +2,8 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
     <corners android:radius="@dimen/radius_6"/>
-    <stroke android:width="@dimen/stroke_1" android:color="@color/contacts_recycleView_border_color"/>
-    <solid android:color="@color/contacts_recycleView_item_background_color"/>
+    <stroke android:width="@dimen/stroke_1" android:color="@color/contacts_item_border_color"/>
+    <solid android:color="@color/item_background_color_in_unselected_mode"/>
 
 
 </shape>

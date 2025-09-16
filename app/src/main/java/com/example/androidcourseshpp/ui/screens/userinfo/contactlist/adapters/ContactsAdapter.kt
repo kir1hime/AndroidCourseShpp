@@ -25,6 +25,10 @@ class ContactsAdapter(private val actions: ItemActions) :
 
             imageViewAvatar.transitionName = item.id.toString()
 
+            setListeners(item)
+        }
+
+        private fun setListeners(item: ContactItem) = with(binding){
             imageButtonDelete.setOnClickListener {
                 actions.deleteContactItem(item, adapterPosition)
             }

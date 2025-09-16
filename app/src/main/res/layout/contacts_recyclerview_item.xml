@@ -13,7 +13,7 @@
         android:layout_marginStart="@dimen/contacts_recycle_view_margin_start"
         android:src="@drawable/profile_photo"
         app:layout_constraintBottom_toBottomOf="@id/item"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@id/checkBoxIsSelected"
         app:layout_constraintTop_toTopOf="@id/item" />
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -56,5 +56,16 @@
         app:layout_constraintBottom_toBottomOf="@id/item"
         app:layout_constraintEnd_toEndOf="@id/item"
         app:layout_constraintTop_toTopOf="@id/item" />
+
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:id="@+id/checkBoxIsSelected"
+        android:layout_width="@dimen/is_selected_check_box_w"
+        android:layout_height="@dimen/is_selected_check_box_h"
+        android:layout_marginStart="@dimen/is_selected_check_box_margin_start"
+        android:button="@drawable/contact_item_selection_mode"
+        app:buttonTint="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
