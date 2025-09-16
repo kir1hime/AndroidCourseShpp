@@ -60,6 +60,8 @@
     <color name="contacts_label_color">#FFFFFF</color>
     <color name="add_contact_color">@color/contacts_label_color</color>
 
+    <color name="floating_delete_button_color">#FB5E06</color>
+
 
     <!-- Contact list item (contact_recyclerview_item) -->
     <color name="item_background_color_in_unselected_mode">@color/contacts_screen_color</color>

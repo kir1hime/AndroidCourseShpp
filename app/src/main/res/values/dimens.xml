@@ -70,6 +70,8 @@
 
     <dimen name="is_selected_check_box_margin_start">8dp</dimen>
 
+    <dimen name="floating_delete_button_margin_bottom">45dp</dimen>
+
 
     <!--paddings-->
     <dimen name="settings_padding_vertical">4.5dp</dimen>
@@ -92,6 +94,7 @@
     <dimen name="remember_me_size">18dp</dimen>
     <dimen name="is_selected_check_box_w">24dp</dimen>
     <dimen name="is_selected_check_box_h">20dp</dimen>
+    <dimen name="floating_delete_button_size">60dp</dimen>
 
     <!-- button content dimens -->
     <dimen name="google_bt_icon_h">20dp</dimen>
@@ -118,8 +121,11 @@
     <dimen name="input_box_stroke_w_focused">1dp</dimen>
     <dimen name="profile_photo_size">113dp</dimen>
 
-    <!--border radii -->
+    <!--border radius -->
     <dimen name="radius_6">6dp</dimen>
+
+    <dimen name="floating_delete_button_elevation">0dp</dimen>
+    <dimen name="floating_delete_button_fab_custom_size">60dp</dimen>
 
     <!--stroke with -->
     <dimen name="stroke_1">1dp</dimen>
