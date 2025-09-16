@@ -8,6 +8,11 @@
     <color name="error_text_color">#F93E3E</color>
     <color name="custom_primary_color">#FB5E06</color>
 
+    <!-- User Info (fragment_userinfo.xml) -->
+    <color name="background_userinfo_tab_layout" >#242235</color>
+    <color name="tab_selected_text_color">#FB5E06</color>
+    <color name="tab_unselected_text_color">#B2B2B3</color>
+
     <!--My profile (activity_main.xml) -->
     <color name="bottom_view_color">#FFFFFFFF</color>
     <color name="view_my_contacts_text_color">@color/bottom_view_color</color>

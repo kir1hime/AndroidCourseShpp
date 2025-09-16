@@ -54,5 +54,6 @@
     <!-- Detail view -->
     <string name="profile_label">Profile</string>
     <string name="message">MESSAGE</string>
+    <string name="my_profile">My Profile</string>
 
 </resources>

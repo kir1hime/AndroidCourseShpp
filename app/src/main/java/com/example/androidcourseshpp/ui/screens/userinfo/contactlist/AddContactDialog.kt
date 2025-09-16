@@ -1,4 +1,4 @@
-package com.example.androidcourseshpp.ui.screens.contacts
+package com.example.androidcourseshpp.ui.screens.userinfo.contactlist
 
 import android.app.AlertDialog
 import android.app.Dialog
@@ -19,8 +19,8 @@ class AddContactDialog : DialogFragment() {
             parentFragmentManager.setFragmentResult(
                 REQUEST_KEY, bundleOf(
                     RESPONSE_KEY to which,
-                    NAME_KEY to binding.etContactName.text.toString(),
-                    CAREER_KEY to binding.etContactCareer.text.toString()
+                    NAME_KEY to binding.editTextContactName.text.toString(),
+                    CAREER_KEY to binding.editTextContactCareer.text.toString()
                 )
             )
         }

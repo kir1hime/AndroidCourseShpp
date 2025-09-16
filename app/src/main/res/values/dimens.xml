@@ -96,7 +96,7 @@
     <dimen name="google_bt_icon_padding_start">110dp</dimen>
     <dimen name="google_bt_text_padding_start">145dp</dimen>
     <dimen name="google_bt_text_padding_end">110dp</dimen>
-
+    <dimen name="userinfo_tabLayout_h">35dp</dimen>
 
     <!--view/textView dimens-->
     <dimen name="contacts_bar_h">149dp</dimen>

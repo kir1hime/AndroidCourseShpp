@@ -9,7 +9,7 @@
     tools:context=".ui.screens.auth.AuthActivity">
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_acquainted"
+        android:id="@+id/textViewAcquainted"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/main_margin_side"
@@ -24,7 +24,7 @@
         tools:layout_editor_absoluteX="16dp" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_fillOutTheProfile"
+        android:id="@+id/textViewFillOutTheProfile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/main_margin_side"
@@ -34,11 +34,11 @@
         android:text="@string/filling_out"
         android:textColor="@android:color/white"
         android:textSize="@dimen/tiny_text_size"
-        app:layout_constraintTop_toBottomOf="@id/tv_acquainted" />
+        app:layout_constraintTop_toBottomOf="@id/textViewAcquainted" />
 
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/bt_register"
+        android:id="@+id/buttonRegister"
         android:layout_width="match_parent"
         android:layout_height="@dimen/register_bt_h"
         android:layout_marginHorizontal="@dimen/main_margin_side"
@@ -54,7 +54,7 @@
         app:layout_constraintBottom_toBottomOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_byClicking"
+        android:id="@+id/textViewByClicking"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/main_margin_side"
@@ -67,7 +67,7 @@
         app:layout_constraintBottom_toBottomOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_accountQuestion"
+        android:id="@+id/textViewAccountQuestion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/account_question_margin_start"
@@ -83,7 +83,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_signIn"
+        android:id="@+id/textViewSignIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/sign_in_margin_start"
@@ -94,7 +94,7 @@
         android:textSize="@dimen/small_text_size"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/tv_accountQuestion" />
+        app:layout_constraintStart_toEndOf="@id/textViewAccountQuestion" />
 
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -111,7 +111,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_eMail"
+        android:id="@+id/textInputLayoutEMail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/main_margin_side"
@@ -133,12 +133,12 @@
         app:helperTextTextColor="@color/error_text_color"
         app:hintTextAppearance="@style/hint_style"
         app:hintTextColor="@color/e_mail_hint_text_color"
-        app:layout_constraintBottom_toTopOf="@id/bt_google"
-        app:layout_constraintTop_toBottomOf="@id/tv_fillOutTheProfile"
+        app:layout_constraintBottom_toTopOf="@id/buttonGoogle"
+        app:layout_constraintTop_toBottomOf="@id/textViewFillOutTheProfile"
         tools:ignore="RtlSymmetry">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_eMail"
+            android:id="@+id/editTextEMail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/open_sans"
@@ -152,7 +152,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_password"
+        android:id="@+id/textInputLayoutPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/main_margin_side"
@@ -173,11 +173,11 @@
         app:helperTextTextColor="@color/error_text_color"
         app:hintTextAppearance="@style/hint_style"
         app:hintTextColor="@color/password_hint_text_color"
-        app:layout_constraintTop_toBottomOf="@id/til_eMail"
+        app:layout_constraintTop_toBottomOf="@id/textInputLayoutEMail"
         tools:ignore="RtlSymmetry">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_password"
+            android:id="@+id/editTextPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/open_sans"
@@ -192,7 +192,7 @@
 
 
     <com.google.android.material.checkbox.MaterialCheckBox
-        android:id="@+id/cb_rememberMe"
+        android:id="@+id/comboBoxRememberMe"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:button="@drawable/remember_me_selector"
@@ -203,11 +203,11 @@
         android:textSize="@dimen/small_text_size"
         android:textStyle="bold"
         app:buttonTint="@null"
-        app:layout_constraintStart_toStartOf="@id/til_password"
-        app:layout_constraintTop_toBottomOf="@id/til_password" />
+        app:layout_constraintStart_toStartOf="@id/textInputLayoutPassword"
+        app:layout_constraintTop_toBottomOf="@id/textInputLayoutPassword" />
 
     <com.example.androidcourseshpp.ui.customviews.ViewWithIcon
-        android:id="@+id/bt_google"
+        android:id="@+id/buttonGoogle"
         android:layout_width="match_parent"
         android:layout_height="@dimen/google_bt_h"
         android:layout_marginHorizontal="@dimen/main_margin_side"

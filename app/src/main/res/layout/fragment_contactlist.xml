@@ -6,17 +6,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/contacts_screen_color"
-    tools:context="com.example.androidcourseshpp.ui.screens.contacts.ContactListFragment">
+    tools:context="com.example.androidcourseshpp.ui.screens.userinfo.contactlist.ContactListFragment">
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/vw_contactsBar"
+        android:id="@+id/textViewContactBar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/contacts_bar_h"
         android:background="@color/top_view_color"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_contacts"
+        android:id="@+id/textViewContacts"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/contacts_margin_top"
@@ -30,7 +30,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/ibt_arrowBack"
+        android:id="@+id/imageButtonArrowBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/contacts_arrow_back_margin_start"
@@ -42,7 +42,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/ibt_search"
+        android:id="@+id/imageButtonSearch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/search_margin_top"
@@ -54,7 +54,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_addContacts"
+        android:id="@+id/textViewAddContacts"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/main_margin_side"
@@ -65,17 +65,17 @@
         android:textColor="@color/add_contact_color"
         android:textSize="@dimen/small_text_size"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@id/vw_contactsBar"
+        app:layout_constraintBottom_toBottomOf="@id/textViewContactBar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_contacts"
+        android:id="@+id/recyclerViewContacts"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="@dimen/main_margin_side"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/vw_contactsBar"
+        app:layout_constraintTop_toBottomOf="@id/textViewContactBar"
         tools:listitem="@layout/contacts_recyclerview_item" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

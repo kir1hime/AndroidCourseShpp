@@ -1,22 +1,27 @@
-package com.example.androidcourseshpp.ui.screens.contacts
+package com.example.androidcourseshpp.ui.screens
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import com.example.androidcourseshpp.R
+import com.example.androidcourseshpp.databinding.ActivityMainBinding
 import com.example.androidcourseshpp.ui.BaseActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ContactsActivity : BaseActivity() {
+class MainActivity : BaseActivity() {
 
-    @SuppressLint("InflateParams")
+    private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        setContentView(R.layout.activity_contacts)
-        adaptUserInterface(findViewById(R.id.fragmentContainer))
-    }
+        binding = ActivityMainBinding.inflate(layoutInflater)
 
+        setContentView(binding.root)
+
+        adaptUserInterface(binding.root)
+
+    }
 }
+

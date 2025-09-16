@@ -22,7 +22,7 @@
         android:theme="@style/Theme.AndroidCourseShpp"
         tools:targetApi="31">
         <activity
-            android:name=".ui.screens.main.MainActivity"
+            android:name=".ui.screens.MainActivity"
             android:exported="false" />
         <activity
             android:name=".ui.screens.auth.AuthActivity"
@@ -34,7 +34,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.screens.contacts.ContactsActivity"
+            android:name=".ui.screens.userinfo.contactlist.ContactsActivity"
             android:exported="true" />
     </application>
 

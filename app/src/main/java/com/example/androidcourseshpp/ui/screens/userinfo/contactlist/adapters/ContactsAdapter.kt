@@ -1,4 +1,4 @@
-package com.example.androidcourseshpp.ui.screens.contacts.adapters
+package com.example.androidcourseshpp.ui.screens.userinfo.contactlist.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -19,17 +19,17 @@ class ContactsAdapter(private val actions: ItemActions) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: ContactItem) = with(binding) {
-            tvName.text = item.name
-            tvCareer.text = item.career
-            ivAvatar.loadImageFromURL(root.context, item.avatarURL)
+            textViewName.text = item.name
+            textViewCareer.text = item.career
+            imageViewAvatar.loadImageFromURL(root.context, item.avatarURL)
 
-            ivAvatar.transitionName = item.id.toString()
+            imageViewAvatar.transitionName = item.id.toString()
 
-            ImbDelete.setOnClickListener {
+            imageButtonDelete.setOnClickListener {
                 actions.deleteContactItem(item, adapterPosition)
             }
             binding.item.setOnClickListener{
-                actions.showContactItemDetails(item, ivAvatar)
+                actions.showContactItemDetails(item, imageViewAvatar)
             }
         }
     }

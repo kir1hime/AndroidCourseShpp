@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools"
+    android:id="@+id/userInfo"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tool:context="com.example.androidcourseshpp.ui.screens.userinfo.UserInfoFragment">
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPagerUserInformation"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tabLayoutUserInfo" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayoutUserInfo"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/userinfo_tabLayout_h"
+        android:backgroundTint="@color/background_userinfo_tab_layout"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tabGravity="fill"
+        app:tabMode="fixed"
+        app:tabRippleColor="@null"
+        app:tabSelectedTextColor="@color/tab_selected_text_color"
+        app:tabTextAppearance="@style/tabItemsTextStyle"
+        app:tabTextColor="@color/tab_unselected_text_color">
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tool:text="@string/my_profile" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tool:text="@string/contacts" />
+
+    </com.google.android.material.tabs.TabLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

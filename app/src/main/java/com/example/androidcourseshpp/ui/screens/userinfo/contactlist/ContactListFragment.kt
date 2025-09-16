@@ -1,4 +1,4 @@
-package com.example.androidcourseshpp.ui.screens.contacts
+package com.example.androidcourseshpp.ui.screens.userinfo.contactlist
 
 import android.Manifest
 import android.app.ActivityOptions
@@ -23,13 +23,15 @@ import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.contactlistdata.ContactItem
 import com.example.androidcourseshpp.databinding.FragmentContactlistBinding
 import com.example.androidcourseshpp.ui.BaseFragment
-import com.example.androidcourseshpp.ui.screens.contacts.AddContactDialog.Companion.CAREER_KEY
-import com.example.androidcourseshpp.ui.screens.contacts.AddContactDialog.Companion.NAME_KEY
-import com.example.androidcourseshpp.ui.screens.contacts.AddContactDialog.Companion.RESPONSE_KEY
-import com.example.androidcourseshpp.ui.screens.contacts.adapters.ContactItemDecoration
-import com.example.androidcourseshpp.ui.screens.contacts.adapters.ContactsAdapter
-import com.example.androidcourseshpp.ui.screens.contacts.adapters.ItemActions
-import com.example.androidcourseshpp.ui.screens.main.MainActivity
+import com.example.androidcourseshpp.ui.screens.userinfo.contactlist.AddContactDialog.Companion.CAREER_KEY
+import com.example.androidcourseshpp.ui.screens.userinfo.contactlist.AddContactDialog.Companion.NAME_KEY
+import com.example.androidcourseshpp.ui.screens.userinfo.contactlist.AddContactDialog.Companion.RESPONSE_KEY
+import com.example.androidcourseshpp.ui.screens.userinfo.contactlist.adapters.ContactItemDecoration
+import com.example.androidcourseshpp.ui.screens.userinfo.contactlist.adapters.ContactsAdapter
+import com.example.androidcourseshpp.ui.screens.userinfo.contactlist.adapters.ItemActions
+import com.example.androidcourseshpp.ui.screens.MainActivity
+import com.example.androidcourseshpp.ui.screens.userinfo.TabSwitchable
+import com.example.androidcourseshpp.ui.screens.userinfo.UserInfoFragmentDirections
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -44,7 +46,7 @@ class ContactListFragment : BaseFragment() {
     private val onBackPressedCallback: OnBackPressedCallback =
         object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-              moveToMyProfileScreen()
+                moveToMyProfileScreen()
             }
         }
 
@@ -98,7 +100,7 @@ class ContactListFragment : BaseFragment() {
         )
     }
 
-    private fun initRecyclerView() = with(binding.rvContacts) {
+    private fun initRecyclerView() = with(binding.recyclerViewContacts) {
         layoutManager = LinearLayoutManager(requireContext())
         adapter = this@ContactListFragment.adapter
 
@@ -114,10 +116,10 @@ class ContactListFragment : BaseFragment() {
     }
 
     private fun setListeners() = with(binding) {
-        ibtArrowBack.setOnClickListener {
-          moveToMyProfileScreen()
+        imageButtonArrowBack.setOnClickListener {
+            moveToMyProfileScreen()
         }
-        tvAddContacts.setOnClickListener {
+        textViewAddContacts.setOnClickListener {
             showAddContactDialog()
         }
     }
@@ -185,7 +187,7 @@ class ContactListFragment : BaseFragment() {
                 }
             })
 
-        helper.attachToRecyclerView(binding.rvContacts)
+        helper.attachToRecyclerView(binding.recyclerViewContacts)
     }
 
     private fun checkPermissions() {
@@ -197,22 +199,16 @@ class ContactListFragment : BaseFragment() {
             }
     }
 
-     private fun moveToMyProfileScreen() {
-        val intent = Intent(requireContext(), MainActivity::class.java)
-        val options = ActivityOptions.makeCustomAnimation(
-            requireContext(),
-            R.anim.slide_in_from_left_to_right,
-            R.anim.slide_out_from_left_to_right
-        )
-        startActivity(intent, options.toBundle())
-        requireActivity().finish()
+    private fun moveToMyProfileScreen() {
+       val parentFragment = parentFragment as? TabSwitchable
+        parentFragment?.moveToMyProfileTab()
     }
 
-     private fun moveToDetailsScreen(contact: ContactItem, avatar: ImageView) {
+    private fun moveToDetailsScreen(contact: ContactItem, avatar: ImageView) {
         val extras = FragmentNavigatorExtras(avatar to contact.id.toString())
 
         val direction =
-            ContactListFragmentDirections.actionContactListFragmentToContactDetailsFragment(contact)
+            UserInfoFragmentDirections.actionUserInfoFragmentToContactDetailsFragment(contact)
 
         findNavController().navigate(direction, extras)
     }
