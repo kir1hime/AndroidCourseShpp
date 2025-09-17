@@ -67,6 +67,10 @@ class ContactListViewModel @Inject constructor(
         deletedItems.push(Pair(contactItem, position))
     }
 
+    fun deleteListOfContactItems(contactItems: List<ContactItem>){
+        updateContactList { it.removeAll(contactItems) }
+    }
+
     fun addContactItem(contactItem: ContactItem, position: Int) {
         updateContactList { it.add(position, contactItem) }
     }

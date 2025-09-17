@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.contactlistdata.ContactItem
+import com.example.androidcourseshpp.data.contactlistdata.SelectableContactItem
 import com.example.androidcourseshpp.databinding.FragmentContactlistBinding
 import com.example.androidcourseshpp.ui.BaseFragment
 import com.example.androidcourseshpp.ui.screens.userinfo.contactlist.AddContactDialog.Companion.CAREER_KEY
@@ -47,16 +48,13 @@ class ContactListFragment : BaseFragment() {
             }
         }
 
-    private val adapter by lazy {
-        ContactsAdapter(getItemActions())
-    }
+    private lateinit var adapter: ContactsAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         binding = FragmentContactlistBinding.inflate(inflater, container, false)
 
         return binding.root
@@ -68,6 +66,7 @@ class ContactListFragment : BaseFragment() {
         checkPermissions()
         requestPermissionsLauncher.launch(Manifest.permission.READ_CONTACTS)
 
+        createContactListAdapter()
         initRecyclerView()
         initSwipeToDeleteOfContactItem()
 
@@ -77,7 +76,11 @@ class ContactListFragment : BaseFragment() {
         setOnBackPressedListener()
     }
 
-    private fun getItemActions(): ItemActions {
+    private fun createContactListAdapter() {
+        adapter = ContactsAdapter(getItemActions())
+    }
+
+    private fun getItemActions(): ItemActions = with(binding) {
         return object : ItemActions {
             override fun deleteContactItem(contactItem: ContactItem, position: Int) {
                 viewModel.deleteContactItem(contactItem, position)
@@ -86,6 +89,14 @@ class ContactListFragment : BaseFragment() {
 
             override fun showContactItemDetails(contactItem: ContactItem, avatar: ImageView) {
                 moveToDetailsScreen(contactItem, avatar)
+            }
+
+            override fun showFloatingDeleteButton() {
+                floatingButtonDeleteSelectedItems.visibility = View.VISIBLE
+            }
+
+            override fun hideFloatingDeleteButton() {
+                floatingButtonDeleteSelectedItems.visibility = View.GONE
             }
         }
     }
@@ -109,7 +120,14 @@ class ContactListFragment : BaseFragment() {
     }
 
     private fun setObservers() {
-        collectFlow(viewModel.contactList) { adapter.submitList(it) }
+        collectFlow(viewModel.contactList) { contactList ->
+            adapter.submitList(contactList.map { contactItem ->
+                SelectableContactItem(
+                    contactItem,
+                    false
+                )
+            })
+        }
     }
 
     private fun setListeners() = with(binding) {
@@ -118,6 +136,10 @@ class ContactListFragment : BaseFragment() {
         }
         textViewAddContacts.setOnClickListener {
             showAddContactDialog()
+        }
+        floatingButtonDeleteSelectedItems.setOnClickListener {
+            viewModel.deleteListOfContactItems(adapter.selectedItems)
+            floatingButtonDeleteSelectedItems.visibility = View.GONE
         }
     }
 
@@ -197,7 +219,7 @@ class ContactListFragment : BaseFragment() {
     }
 
     private fun moveToMyProfileScreen() {
-       val parentFragment = parentFragment as? TabSwitchable
+        val parentFragment = parentFragment as? TabSwitchable
         parentFragment?.moveToMyProfileTab()
     }
 

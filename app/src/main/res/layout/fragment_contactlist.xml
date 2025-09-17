@@ -79,15 +79,15 @@
         tools:listitem="@layout/contacts_recyclerview_item" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/FloatingButtonDeleteSelectedItems"
+        android:id="@+id/floatingButtonDeleteSelectedItems"
         android:layout_width="@dimen/floating_delete_button_size"
         android:layout_height="@dimen/floating_delete_button_size"
         android:layout_marginEnd="@dimen/main_margin_side"
         android:layout_marginBottom="@dimen/floating_delete_button_margin_bottom"
         android:backgroundTint="@color/floating_delete_button_color"
         android:contentDescription="@string/delete_button_description"
-        android:src="@drawable/ic_trash_can"
-        android:visibility="visible"
+        android:src="@drawable/ic_white_trash_can"
+        android:visibility="gone"
         app:fabCustomSize="@dimen/floating_delete_button_fab_custom_size"
         app:elevation="@dimen/floating_delete_button_elevation"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -8,4 +8,8 @@ interface ItemActions {
     fun deleteContactItem(contactItem: ContactItem, position: Int)
 
     fun showContactItemDetails(contactItem: ContactItem, avatar: ImageView)
+
+    fun showFloatingDeleteButton()
+
+    fun hideFloatingDeleteButton()
 }
