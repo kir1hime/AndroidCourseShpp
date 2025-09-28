@@ -9,7 +9,7 @@
     <color name="custom_primary_color">#FB5E06</color>
 
     <!-- User Info (fragment_userinfo.xml) -->
-    <color name="background_userinfo_tab_layout" >#242235</color>
+    <color name="background_userinfo_tab_layout">#242235</color>
     <color name="tab_selected_text_color">#FB5E06</color>
     <color name="tab_unselected_text_color">#B2B2B3</color>
 
@@ -33,7 +33,7 @@
 
     <!--Sign up (activity_auth.xml)-->
     <color name="auth_screen_color">#242235</color>
-    <color name="input_background_color">@color/auth_screen_color</color>
+    <color name="email_input_background_color">@color/auth_screen_color</color>
     <color name="register_background_color">@color/auth_screen_color</color>
 
     <color name="register_border_color">#FB5E06</color>
@@ -80,14 +80,16 @@
 
     <!-- Detail view (fragment_detailview.xml) -->
     <color name="detail_view_bottom_view_color">@color/bottom_view_color</color>
-    <color name="profile_label_text_color" >@color/detail_view_bottom_view_color</color>
+    <color name="profile_label_text_color">@color/detail_view_bottom_view_color</color>
     <color name="message_button_text_color">@color/view_my_contacts_text_color</color>
 
     <color name="detail_view_top_view_color">@color/top_view_color</color>
 
     <!-- Sign up extended (fragment_sign_up_extended.xml) -->
-<color name="your_profile_data_text_color">#FFFFFF</color>
-<color name="instruction_to_do_text_color">@color/your_profile_data_text_color</color>
+    <color name="your_profile_data_text_color">#FFFFFF</color>
+    <color name="instruction_to_do_text_color">@color/your_profile_data_text_color</color>
     <color name="sign_up_extended_background">#242235</color>
-
+    <color name="user_name_input_text_hint_color">#B2B2B3</color>
+    <color name="user_name_input_background_color">@color/sign_up_extended_background</color>
+    <color name="edit_text_user_name_text_color">#FFFFFF</color>
 </resources>

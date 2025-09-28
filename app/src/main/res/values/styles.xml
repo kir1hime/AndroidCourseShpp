@@ -11,6 +11,7 @@
 
     <style name="hint_style" >
         <item name="android:textSize">@dimen/small_text_size</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="input_style">
