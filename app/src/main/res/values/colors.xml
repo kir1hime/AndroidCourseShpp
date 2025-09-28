@@ -87,6 +87,7 @@
 
     <!-- Sign up extended (fragment_sign_up_extended.xml) -->
 <color name="your_profile_data_text_color">#FFFFFF</color>
+<color name="instruction_to_do_text_color">@color/your_profile_data_text_color</color>
     <color name="sign_up_extended_background">#242235</color>
 
 </resources>

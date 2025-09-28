@@ -57,5 +57,6 @@
     <string name="my_profile">My Profile</string>
     <string name="delete_button_description">to delete all selcted items</string>
     <string name="your_profile_data">Your profile data</string>
+    <string name="instruction_to_do">Fill out the profile and go to the application</string>
 
 </resources>

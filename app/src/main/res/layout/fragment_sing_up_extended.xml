@@ -31,6 +31,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/textViewYourProfileData"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/main_margin_side"
@@ -44,4 +45,16 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/textViewInstructionToDo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/open_sans"
+        android:layout_marginTop="@dimen/instruction_to_do_text_margin_top"
+        android:textAlignment="center"
+        android:textColor="@color/instruction_to_do_text_color"
+        android:text="@string/instruction_to_do"
+        android:layout_marginHorizontal="@dimen/main_margin_side"
+        app:layout_constraintTop_toBottomOf="@id/textViewYourProfileData"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
