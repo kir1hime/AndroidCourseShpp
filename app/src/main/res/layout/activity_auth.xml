@@ -119,7 +119,7 @@
         android:layout_marginBottom="@dimen/e_mail_input_margin_bottom"
         android:hint="@string/email"
         android:paddingStart="@dimen/input_text_padding"
-        android:textColorHint="@color/e_mail_hint_text_color"
+        android:textColorHint="@color/input_hint_color"
         android:theme="@style/input_style"
         app:boxBackgroundColor="@color/email_input_background_color"
         app:boxBackgroundMode="filled"
@@ -132,7 +132,7 @@
         app:helperTextTextAppearance="@style/helper_text_style"
         app:helperTextTextColor="@color/error_text_color"
         app:hintTextAppearance="@style/hint_style"
-        app:hintTextColor="@color/e_mail_hint_text_color"
+        app:hintTextColor="@color/input_hint_color"
         app:layout_constraintBottom_toTopOf="@id/buttonGoogle"
         app:layout_constraintTop_toBottomOf="@id/textViewFillOutTheProfile"
         tools:ignore="RtlSymmetry">
@@ -159,7 +159,7 @@
         android:layout_marginTop="@dimen/password_margin_top"
         android:hint="@string/password"
         android:paddingStart="@dimen/input_text_padding"
-        android:textColorHint="@color/password_hint_text_color"
+        android:textColorHint="@color/input_hint_color"
         android:theme="@style/input_style"
         app:boxBackgroundColor="@color/email_input_background_color"
         app:boxBackgroundMode="filled"
@@ -172,7 +172,7 @@
         app:helperTextTextAppearance="@style/helper_text_style"
         app:helperTextTextColor="@color/error_text_color"
         app:hintTextAppearance="@style/hint_style"
-        app:hintTextColor="@color/password_hint_text_color"
+        app:hintTextColor="@color/input_hint_color"
         app:layout_constraintTop_toBottomOf="@id/textInputLayoutEMail"
         tools:ignore="RtlSymmetry">
 

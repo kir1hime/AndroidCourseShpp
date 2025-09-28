@@ -8,6 +8,8 @@
     <color name="error_text_color">#F93E3E</color>
     <color name="custom_primary_color">#FB5E06</color>
 
+    <color name="input_hint_color">#B2B2B3</color>
+
     <!-- User Info (fragment_userinfo.xml) -->
     <color name="background_userinfo_tab_layout">#242235</color>
     <color name="tab_selected_text_color">#FB5E06</color>
@@ -47,8 +49,6 @@
     <color name="remember_me_check_box_color">@color/agreements_text_color</color>
 
     <color name="account_question_text_color">#B2B2B3</color>
-    <color name="e_mail_hint_text_color">@color/account_question_text_color</color>
-    <color name="password_hint_text_color">@color/account_question_text_color</color>
     <color name="remember_me_text_color">@color/account_question_text_color</color>
 
     <color name="google_text_color">#000000</color>
@@ -89,7 +89,7 @@
     <color name="your_profile_data_text_color">#FFFFFF</color>
     <color name="instruction_to_do_text_color">@color/your_profile_data_text_color</color>
     <color name="sign_up_extended_background">#242235</color>
-    <color name="user_name_input_text_hint_color">#B2B2B3</color>
-    <color name="user_name_input_background_color">@color/sign_up_extended_background</color>
+    <color name="user_data_input_background_color">@color/sign_up_extended_background</color>
     <color name="edit_text_user_name_text_color">#FFFFFF</color>
+    <color name="edit_text_mobile_phone_text_color">@color/edit_text_user_name_text_color</color>
 </resources>

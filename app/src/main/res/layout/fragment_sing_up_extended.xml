@@ -68,9 +68,9 @@
         android:layout_marginTop="@dimen/text_input_layout_user_name_margin_top"
         android:hint="@string/user_name"
         android:paddingStart="@dimen/input_text_padding"
-        android:textColorHint="@color/user_name_input_text_hint_color"
+        android:textColorHint="@color/input_hint_color"
         android:theme="@style/input_style"
-        app:boxBackgroundColor="@color/user_name_input_background_color"
+        app:boxBackgroundColor="@color/user_data_input_background_color"
         app:boxBackgroundMode="filled"
         app:boxStrokeErrorColor="@color/input_line_color"
         app:boxStrokeWidthFocused="@dimen/input_box_stroke_w_focused"
@@ -81,7 +81,7 @@
         app:helperTextTextAppearance="@style/helper_text_style"
         app:helperTextTextColor="@color/error_text_color"
         app:hintTextAppearance="@style/hint_style"
-        app:hintTextColor="@color/password_hint_text_color"
+        app:hintTextColor="@color/input_hint_color"
         app:layout_constraintTop_toBottomOf="@id/textViewInstructionToDo"
         tool:ignore="RtlSymmetry">
 
@@ -94,7 +94,44 @@
             android:paddingBottom="@dimen/input_text_edit_padding_bottom"
             android:textColor="@color/edit_text_user_name_text_color"
             android:textStyle="bold"
-            tool:text="User name User name User nameUser name" />
+            tool:text="User name " />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayoutMobilePhone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/main_margin_side"
+        android:layout_marginTop="@dimen/text_input_layout_user_name_margin_top"
+        android:hint="@string/mobile_phone"
+        android:paddingStart="@dimen/input_text_padding"
+        android:textColorHint="@color/input_hint_color"
+        android:theme="@style/input_style"
+        app:boxBackgroundColor="@color/user_data_input_background_color"
+        app:boxBackgroundMode="filled"
+        app:boxStrokeErrorColor="@color/input_line_color"
+        app:boxStrokeWidthFocused="@dimen/input_box_stroke_w_focused"
+        app:cursorColor="@color/cursor_color_1"
+        app:errorEnabled="true"
+        app:expandedHintEnabled="false"
+        app:helperTextEnabled="true"
+        app:helperTextTextAppearance="@style/helper_text_style"
+        app:helperTextTextColor="@color/error_text_color"
+        app:hintTextAppearance="@style/hint_style"
+        app:hintTextColor="@color/input_hint_color"
+        app:layout_constraintTop_toBottomOf="@id/textInputLayoutUserName"
+        tool:ignore="RtlSymmetry">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextMobilePhone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/open_sans"
+            android:paddingTop="@dimen/input_text_edit_padding_top"
+            android:paddingBottom="@dimen/input_text_edit_padding_bottom"
+            android:textColor="@color/edit_text_mobile_phone_text_color"
+            android:textStyle="bold"
+            tool:text="(264)-654-34-52" />
     </com.google.android.material.textfield.TextInputLayout>
 
 
