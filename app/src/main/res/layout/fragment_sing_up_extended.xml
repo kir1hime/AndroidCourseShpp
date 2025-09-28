@@ -72,9 +72,16 @@
         android:theme="@style/input_style"
         app:boxBackgroundColor="@color/user_name_input_background_color"
         app:boxBackgroundMode="filled"
+        app:boxStrokeErrorColor="@color/input_line_color"
+        app:boxStrokeWidthFocused="@dimen/input_box_stroke_w_focused"
         app:cursorColor="@color/cursor_color_1"
+        app:errorEnabled="true"
         app:expandedHintEnabled="false"
+        app:helperTextEnabled="true"
+        app:helperTextTextAppearance="@style/helper_text_style"
+        app:helperTextTextColor="@color/error_text_color"
         app:hintTextAppearance="@style/hint_style"
+        app:hintTextColor="@color/password_hint_text_color"
         app:layout_constraintTop_toBottomOf="@id/textViewInstructionToDo"
         tool:ignore="RtlSymmetry">
 
