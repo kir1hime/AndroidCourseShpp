@@ -134,5 +134,21 @@
             tool:text="(264)-654-34-52" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonForward"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/forward_bt_h"
+        android:layout_marginHorizontal="@dimen/main_margin_side"
+        android:layout_marginBottom="@dimen/main_margin_side"
+        android:background="@drawable/forward_button_background"
+        android:fontFamily="@font/open_sans"
+        android:letterSpacing="0.15"
+        android:text="@string/forward"
+        android:textAllCaps="true"
+        android:textColor="@color/forward_button_text_color"
+        android:textSize="@dimen/middle_text_size"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

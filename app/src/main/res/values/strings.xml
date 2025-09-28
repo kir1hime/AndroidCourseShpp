@@ -62,5 +62,6 @@
     <string name="instruction_to_do">Fill out the profile and go to the application</string>
     <string name="user_name">User name</string>
     <string name="mobile_phone">Mobile phone</string>
+    <string name="forward">forward</string>
 
 </resources>
