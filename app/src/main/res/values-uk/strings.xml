@@ -53,5 +53,14 @@
     <string name="profile_label">Профіль</string>
     <string name="message">Повідомлення</string>
     <string name="my_profile">Мій профіль</string>
+    <string name="delete_button_description">видалити всі вибрані елементи</string>
+    <string name="your_profile_data">Дані вашого профілю</string>
+    <string name="instruction_to_do">Заповніть дані профілю та переходьте до застосунку</string>
+    <string name="instruction_to_do">З</string>
+    <string name="user_name">Ім\'я користувача</string>
+    <string name="mobile_phone">Мобільний телефон</string>
+    <string name="forward">Далі</string>
+    <string name="cancel">Закрити</string>
+    <string name="cancel">З</string>
 
 </resources>
