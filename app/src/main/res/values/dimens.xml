@@ -75,16 +75,16 @@
     <dimen name="mockup_profile_photo_margin_top">71</dimen>
     <dimen name="mockup_profile_photo_margin_bottom">504</dimen>
     <dimen name="add_prof_photo_image_button_margin_start">16dp</dimen>
-    <dimen name="add_prof_photo_image_button_margin_top">100dp</dimen>
-    <dimen name="add_prof_photo_image_button_margin_bottom">533dp</dimen>
 
     <dimen name="your_profile_data_text_margin_top">208dp</dimen>
+    <dimen name="your_profile_data_text_margin_top_land">24dp</dimen>
     <dimen name="your_profile_data_text_margin_bottom">449dp</dimen>
     <dimen name="instruction_to_do_text_margin_top">8dp</dimen>
 
     <dimen name="text_input_layout_user_name_margin_top">24dp</dimen>
 
     <dimen name="cancel_button_margin_bottom">16dp</dimen>
+
 
 
     <!--paddings-->
