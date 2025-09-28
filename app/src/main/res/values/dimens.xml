@@ -78,6 +78,8 @@
     <dimen name="add_prof_photo_image_button_margin_top">100dp</dimen>
     <dimen name="add_prof_photo_image_button_margin_bottom">533dp</dimen>
 
+    <dimen name="your_profile_data_text_margin_top">208dp</dimen>
+    <dimen name="your_profile_data_text_margin_bottom">449dp</dimen>
 
     <!--paddings-->
     <dimen name="settings_padding_vertical">4.5dp</dimen>
