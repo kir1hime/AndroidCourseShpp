@@ -84,6 +84,8 @@
 
     <dimen name="text_input_layout_user_name_margin_top">24dp</dimen>
 
+    <dimen name="cancel_button_margin_bottom">16dp</dimen>
+
 
     <!--paddings-->
     <dimen name="settings_padding_vertical">4.5dp</dimen>
@@ -108,6 +110,7 @@
     <dimen name="is_selected_check_box_h">20dp</dimen>
     <dimen name="floating_delete_button_size">60dp</dimen>
     <dimen name="forward_bt_h">55dp</dimen>
+    <dimen name="cancel_bt_h">40dp</dimen>
 
     <!-- button content dimens -->
     <dimen name="google_bt_icon_h">20dp</dimen>

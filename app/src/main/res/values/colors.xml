@@ -94,4 +94,7 @@
     <color name="edit_text_mobile_phone_text_color">@color/edit_text_user_name_text_color</color>
     <color name="forward_button_background_color">#FB5E06</color>
     <color name="forward_button_text_color">#FFFFFF</color>
+    <color name="cancel_button_background_color">#242235</color>
+    <color name="cancel_button_border_color">#FFFFFF</color>
+    <color name="cancel_button_text_color">#FFFFFF</color>
 </resources>

@@ -67,6 +67,7 @@
         android:layout_marginHorizontal="@dimen/main_margin_side"
         android:layout_marginTop="@dimen/text_input_layout_user_name_margin_top"
         android:hint="@string/user_name"
+        android:layout_marginBottom="217dp"
         android:paddingStart="@dimen/input_text_padding"
         android:textColorHint="@color/input_hint_color"
         android:theme="@style/input_style"
@@ -82,6 +83,7 @@
         app:helperTextTextColor="@color/error_text_color"
         app:hintTextAppearance="@style/hint_style"
         app:hintTextColor="@color/input_hint_color"
+        app:layout_constraintBottom_toTopOf="@id/buttonCancel"
         app:layout_constraintTop_toBottomOf="@id/textViewInstructionToDo"
         tool:ignore="RtlSymmetry">
 
@@ -133,6 +135,21 @@
             android:textStyle="bold"
             tool:text="(264)-654-34-52" />
     </com.google.android.material.textfield.TextInputLayout>
+    
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonCancel"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/cancel_bt_h"
+        android:layout_marginBottom="@dimen/cancel_button_margin_bottom"
+        android:background="@drawable/cancel_button_background"
+        android:text="@string/cancel"
+        android:textAllCaps="false"
+        android:textStyle="bold"
+        android:textSize="@dimen/small_text_size"
+        android:textColor="@color/cancel_button_text_color"
+        android:fontFamily="@font/open_sans"
+        android:layout_marginHorizontal="@dimen/main_margin_side"
+        app:layout_constraintBottom_toTopOf="@id/buttonForward"/>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/buttonForward"
@@ -144,7 +161,6 @@
         android:fontFamily="@font/open_sans"
         android:letterSpacing="0.15"
         android:text="@string/forward"
-        android:textAllCaps="true"
         android:textColor="@color/forward_button_text_color"
         android:textSize="@dimen/middle_text_size"
         android:textStyle="bold"
