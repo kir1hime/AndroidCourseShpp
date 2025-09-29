@@ -1,4 +1,4 @@
-package com.example.androidcourseshpp.ui.screens.auth
+package com.example.androidcourseshpp.ui.screens.auth.signup
 
 import androidx.lifecycle.ViewModel
 import com.example.androidcourseshpp.data.SignUpValidator

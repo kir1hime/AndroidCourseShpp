@@ -9,14 +9,23 @@
         android:id="@+id/signUpFragment"
         android:name="com.example.androidcourseshpp.ui.screens.auth.signup.SignUpFragment"
         android:label="fragment_sign_up"
-        tools:layout="@layout/fragment_sign_up" >
+        tools:layout="@layout/fragment_sign_up">
         <action
             android:id="@+id/action_signUpFragment_to_signUpExtendedFragment"
-            app:destination="@id/signUpExtendedFragment" />
+            app:destination="@id/signUpExtendedFragment"
+            app:enterAnim="@anim/slide_in_from_right_to_left"
+            app:exitAnim="@anim/slide_out_from_right_to_left"
+            app:popEnterAnim="@anim/slide_in_from_left_to_right"
+            app:popExitAnim="@anim/slide_out_from_left_to_right"/>
     </fragment>
     <fragment
         android:id="@+id/signUpExtendedFragment"
         android:name="com.example.androidcourseshpp.ui.screens.auth.signupextended.SignUpExtendedFragment"
         android:label="fragment_sign_up_extended"
-        tools:layout="@layout/fragment_sign_up_extended" />
+        tools:layout="@layout/fragment_sign_up_extended">
+        <argument
+            android:name="userEmail"
+            app:argType="string" />
+    </fragment>
+
 </navigation>

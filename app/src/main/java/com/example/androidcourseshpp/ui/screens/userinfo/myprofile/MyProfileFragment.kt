@@ -12,6 +12,7 @@ import com.example.androidcourseshpp.data.EmailParser
 import com.example.androidcourseshpp.databinding.FragmentMyProfileBinding
 import com.example.androidcourseshpp.ui.BaseFragment
 import com.example.androidcourseshpp.ui.screens.auth.AuthActivity
+import com.example.androidcourseshpp.ui.screens.auth.USER_EMAIL
 import com.example.androidcourseshpp.ui.screens.userinfo.TabSwitchable
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -38,10 +39,12 @@ class MyProfileFragment : BaseFragment() {
         setListeners()
     }
 
-    private fun defineUserName() {
-        val eMail = viewModel.savedEMail.value
-            binding.textViewName.text = EmailParser.parseEMail(eMail)
-
+    private fun defineUserName() = with(binding) {
+        val savedEmail =
+            requireActivity().intent.getStringExtra(USER_EMAIL) ?: viewModel.savedEMail.value
+        if (savedEmail != "") {
+            textViewName.text = EmailParser.parseEMail(savedEmail)
+        }
     }
 
 
