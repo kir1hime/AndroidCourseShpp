@@ -5,27 +5,19 @@
     android:id="@+id/singUpExtended"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/sign_up_extended_background">
-
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/GuideLineMiddleVer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.5" />
-
+    android:background="@color/sign_up_extended_background"
+    tool:context="com.example.androidcourseshpp.ui.screens.auth.signupextended.SignUpExtendedFragment">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/circleImageViewProfilePhoto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/mockup_profile_photo_margin_top"
-        android:layout_marginBottom="160dp"
+        android:layout_marginBottom="@dimen/mockup_profile_photo_margin_bottom"
         android:src="@drawable/profile_mockup"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/GuideLineMiddleVer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatImageButton
@@ -41,23 +33,23 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/textViewYourProfileData"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/main_margin_side"
-        android:layout_marginTop="@dimen/your_profile_data_text_margin_top_land"
+        android:layout_marginTop="@dimen/your_profile_data_text_margin_top"
+        android:layout_marginBottom="@dimen/your_profile_data_text_margin_bottom"
         android:fontFamily="@font/open_sans"
         android:text="@string/your_profile_data"
         android:textAlignment="center"
         android:textColor="@color/your_profile_data_text_color"
         android:textSize="@dimen/large_text_size"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/GuideLineMiddleVer"
-      app:layout_constraintTop_toBottomOf="@id/circleImageViewProfilePhoto" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/textViewInstructionToDo"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/main_margin_side"
         android:layout_marginTop="@dimen/instruction_to_do_text_margin_top"
@@ -65,13 +57,12 @@
         android:text="@string/instruction_to_do"
         android:textAlignment="center"
         android:textColor="@color/instruction_to_do_text_color"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/GuideLineMiddleVer"
         app:layout_constraintTop_toBottomOf="@id/textViewYourProfileData" />
+
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayoutUserName"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/main_margin_side"
         android:layout_marginTop="@dimen/text_input_layout_user_name_margin_top"
@@ -92,9 +83,8 @@
         app:helperTextTextColor="@color/error_text_color"
         app:hintTextAppearance="@style/hint_style"
         app:hintTextColor="@color/input_hint_color"
-       app:layout_constraintStart_toStartOf="@id/GuideLineMiddleVer"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/buttonCancel"
+        app:layout_constraintTop_toBottomOf="@id/textViewInstructionToDo"
         tool:ignore="RtlSymmetry">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -111,7 +101,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayoutMobilePhone"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/main_margin_side"
         android:layout_marginTop="@dimen/text_input_layout_user_name_margin_top"
@@ -131,8 +121,6 @@
         app:helperTextTextColor="@color/error_text_color"
         app:hintTextAppearance="@style/hint_style"
         app:hintTextColor="@color/input_hint_color"
-        app:layout_constraintStart_toStartOf="@id/GuideLineMiddleVer"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textInputLayoutUserName"
         tool:ignore="RtlSymmetry">
 
@@ -150,7 +138,7 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/buttonCancel"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="@dimen/cancel_bt_h"
         android:layout_marginHorizontal="@dimen/main_margin_side"
         android:layout_marginBottom="@dimen/cancel_button_margin_bottom"
@@ -161,13 +149,11 @@
         android:textColor="@color/cancel_button_text_color"
         android:textSize="@dimen/small_text_size"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@id/GuideLineMiddleVer"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/buttonForward" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/buttonForward"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="@dimen/forward_bt_h"
         android:layout_marginHorizontal="@dimen/main_margin_side"
         android:layout_marginBottom="@dimen/main_margin_side"
@@ -178,9 +164,6 @@
         android:textColor="@color/forward_button_text_color"
         android:textSize="@dimen/middle_text_size"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@id/GuideLineMiddleVer"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
