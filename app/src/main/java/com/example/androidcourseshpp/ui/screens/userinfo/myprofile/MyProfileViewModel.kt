@@ -10,8 +10,8 @@ import javax.inject.Inject
 @HiltViewModel
 class MyProfileViewModel @Inject constructor(private val dataProvider: DataProvider) : ViewModel() {
 
-    private val mutableSavedEMail = MutableStateFlow(getUserEMail())
-    val savedEMail : StateFlow<String> get() = mutableSavedEMail
+    private val _savedEMail = MutableStateFlow(getUserEMail())
+    val savedEMail : StateFlow<String> get() = _savedEMail
 
     fun deleteUserInfo() {
         dataProvider.deleteUserInfo()

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.androidcourseshpp.databinding.FragmentSignUpExtendedBinding
 import com.example.androidcourseshpp.ui.screens.auth.AuthFragment
@@ -28,10 +29,14 @@ class SignUpExtendedFragment : AuthFragment() {
         setListeners()
     }
 
-    private fun setListeners(){
-        binding.buttonForward.setOnClickListener {
+    private fun setListeners() = with(binding){
+        buttonForward.setOnClickListener {
             moveToMyProfileScreen(args.userEmail)
         }
+        buttonCancel.setOnClickListener {
+            findNavController().navigateUp()
+        }
+
     }
 
 

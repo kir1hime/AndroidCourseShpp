@@ -18,9 +18,9 @@ class ContactListViewModel @Inject constructor(
     private val contentResolver: ContentResolver
 ) : ViewModel() {
 
-    private var mutableContactList =
+    private var _contactList =
         MutableStateFlow(ContactListGenerator(contentResolver).getContactItems())
-    val contactList: StateFlow<List<ContactItem>> get() = mutableContactList
+    val contactList: StateFlow<List<ContactItem>> get() = _contactList
     private var isPhoneContactsAdded = false
 
     var deletedItems = Stack<Pair<ContactItem, Int>>()
@@ -28,7 +28,7 @@ class ContactListViewModel @Inject constructor(
 
     fun addPhoneContacts() {
         if (!isPhoneContactsAdded) {
-            val currentContactList = mutableContactList.value.toMutableList()
+            val currentContactList = _contactList.value.toMutableList()
             val lastContactItemId = currentContactList[currentContactList.lastIndex].id
 
             val contactItemsFromPhoneContacts = ContactListGenerator(
@@ -37,13 +37,13 @@ class ContactListViewModel @Inject constructor(
 
             currentContactList.addAll(contactItemsFromPhoneContacts)
 
-            mutableContactList.value = currentContactList
+            _contactList.value = currentContactList
             isPhoneContactsAdded = true
         }
     }
 
     fun createNewContact(contactName: String?, contactCareer: String?): ContactItem {
-        val contactList = mutableContactList.value
+        val contactList = _contactList.value
         val lastId = contactList[contactList.size - 1].id
 
         val newContact = ContactItem(
@@ -58,7 +58,7 @@ class ContactListViewModel @Inject constructor(
 
     fun processAddContactDialogEvent(newContact: ContactItem) {
         if (!isNewContactDataIsBlank(newContact)) {
-            addContactItem(newContact, mutableContactList.value.size)
+            addContactItem(newContact, _contactList.value.size)
         }
     }
 
@@ -80,10 +80,10 @@ class ContactListViewModel @Inject constructor(
     }
 
     private fun updateContactList(operation: (MutableList<ContactItem>) -> Unit) {
-        val contactList = mutableContactList.value.toMutableList()
+        val contactList = _contactList.value.toMutableList()
 
         operation.invoke(contactList)
-        mutableContactList.value = contactList
+        _contactList.value = contactList
     }
 }
 

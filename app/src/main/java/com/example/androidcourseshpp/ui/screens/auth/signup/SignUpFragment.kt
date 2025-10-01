@@ -34,7 +34,7 @@ class SignUpFragment : AuthFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val savedEmail = viewModel.savedEMail.value
+        val savedEmail = viewModel.getUserEMail()
         if (savedEmail != "") {
             moveToMyProfileScreen("")
         }
@@ -44,59 +44,31 @@ class SignUpFragment : AuthFragment() {
 
     private fun setListeners() {
         binding.buttonRegister.setOnClickListener {
-            onRegisterButtonClickListener()
+            onRegisterButtonClick()
         }
     }
 
-    private fun onRegisterButtonClickListener() = with(binding) {
+    private fun onRegisterButtonClick() = with(binding) {
         val inputEMail = editTextEMail.text.toString()
         val inputPassword = editTextPassword.text.toString()
 
-        val isInputEMailCorrect = SignUpValidator.isEMailCorrect(inputEMail)
-        val isInputPasswordCorrect = SignUpValidator.isPasswordCorrect(inputPassword)
+        viewModel.processInputData(inputEMail, inputPassword, comboBoxRememberMe.isChecked)
 
-        if (isInputEMailCorrect && isInputPasswordCorrect) {
-            textInputLayoutPassword.helperText = ""
-            textInputLayoutEMail.helperText = ""
+        val state = viewModel.state
 
-            if (comboBoxRememberMe.isChecked) {
-                saveUserInfo()
-            }
+        textInputLayoutPassword.helperText =
+            getString(state.passwordHelperTextResId, MIN_NUM_OF_CHARS_IN_PASSWORD)
+
+        textInputLayoutEMail.helperText = getString(state.eMailHelperTextResId)
+
+        if (state.isPasswordCorrect && state.isEmailCorrect) {
             moveToSignUpExtended(editTextEMail.text.toString())
-
-        } else {
-            setPasswordErrorMessage(isInputPasswordCorrect, inputPassword)
-            setEMailErrorMessage(isInputEMailCorrect)
         }
+
     }
-
-    private fun saveUserInfo() = with(binding) {
-        viewModel.saveUserInfo(
-            editTextEMail.text.toString(),
-            editTextPassword.text.toString()
-        )
-    }
-
-    private fun setPasswordErrorMessage(isInputPasswordCorrect: Boolean, inputPassword: String) {
-        binding.textInputLayoutPassword.helperText =
-            if (!isInputPasswordCorrect) {
-                viewModel.definePasswordErrorMessage(
-                    inputPassword,
-                    PasswordErrorMessagesContainer.getMessageResourceIds()
-                        .map { getString(it, MIN_NUM_OF_CHARS_IN_PASSWORD) })
-            } else ""
-    }
-
-    private fun setEMailErrorMessage(isInputEMailCorrect: Boolean) {
-        binding.textInputLayoutEMail.helperText =
-            if (!isInputEMailCorrect) {
-                getString(R.string.email_error)
-            } else ""
-    }
-
-
     private fun moveToSignUpExtended(userEmail: String) {
-        val direction = SignUpFragmentDirections.actionSignUpFragmentToSignUpExtendedFragment(userEmail)
+        val direction =
+            SignUpFragmentDirections.actionSignUpFragmentToSignUpExtendedFragment(userEmail)
         findNavController().navigate(direction)
     }
 

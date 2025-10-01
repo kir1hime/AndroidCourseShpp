@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">AndroidCourseShpp</string>
 
     <!--My profile (activity_main.xml)-->
@@ -34,6 +34,7 @@
     <string name="lowercase_letter_error">There must be at least one lowercase letter</string>
     <string name="special_symbol_error">There must be at least one special symbol</string>
     <string name="numbers_error">There must be at least one number</string>
+    <string name="no_error" translatable="false"></string>
 
     <!--My contacts (activity_contacts.xml)-->
     <string name="contacts">Contacts</string>
