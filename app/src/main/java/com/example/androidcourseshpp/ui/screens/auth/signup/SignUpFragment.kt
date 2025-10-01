@@ -4,13 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.navOptions
-import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.MIN_NUM_OF_CHARS_IN_PASSWORD
-import com.example.androidcourseshpp.data.PasswordErrorMessagesContainer
-import com.example.androidcourseshpp.data.SignUpValidator
 import com.example.androidcourseshpp.databinding.FragmentSignUpBinding
 import com.example.androidcourseshpp.ui.screens.auth.AuthFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -34,12 +31,19 @@ class SignUpFragment : AuthFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val savedEmail = viewModel.getUserEMail()
+        val savedEmail = viewModel.savedEmail
         if (savedEmail != "") {
             moveToMyProfileScreen("")
         }
 
+        setObserves()
         setListeners()
+    }
+
+    private fun setObserves() {
+        collectFlow(viewModel.events) {
+            moveToSignUpExtended(binding.editTextEMail.text.toString())
+        }
     }
 
     private fun setListeners() {
@@ -61,11 +65,8 @@ class SignUpFragment : AuthFragment() {
 
         textInputLayoutEMail.helperText = getString(state.eMailHelperTextResId)
 
-        if (state.isPasswordCorrect && state.isEmailCorrect) {
-            moveToSignUpExtended(editTextEMail.text.toString())
-        }
-
     }
+
     private fun moveToSignUpExtended(userEmail: String) {
         val direction =
             SignUpFragmentDirections.actionSignUpFragmentToSignUpExtendedFragment(userEmail)
