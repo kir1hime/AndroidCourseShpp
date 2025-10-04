@@ -1,11 +1,9 @@
 package com.example.androidcourseshpp.ui.screens.userinfo.contactlist
 
-import android.content.ContentResolver
 import androidx.lifecycle.ViewModel
-import com.example.androidcourseshpp.data.contactlistdata.ContactListGenerator
+import com.example.androidcourseshpp.data.contactlistdata.ContactsRepository
 import com.example.androidcourseshpp.data.contactlistdata.ContactItem
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import java.util.Stack
 import javax.inject.Inject
@@ -15,12 +13,10 @@ private const val NEW_CONTACT_AVATAR =
 
 @HiltViewModel
 class ContactListViewModel @Inject constructor(
-    private val contentResolver: ContentResolver
+    private val contactsRepository: ContactsRepository
 ) : ViewModel() {
 
-    private var _contactList =
-        MutableStateFlow(ContactListGenerator(contentResolver).getContactItems())
-    val contactList: StateFlow<List<ContactItem>> get() = _contactList
+    val contactList: StateFlow<List<ContactItem>> = contactsRepository.contactList
     private var isPhoneContactsAdded = false
 
     var deletedItems = Stack<Pair<ContactItem, Int>>()
@@ -28,22 +24,19 @@ class ContactListViewModel @Inject constructor(
 
     fun addPhoneContacts() {
         if (!isPhoneContactsAdded) {
-            val currentContactList = _contactList.value.toMutableList()
+            val currentContactList = contactList.value.toMutableList()
             val lastContactItemId = currentContactList[currentContactList.lastIndex].id
 
-            val contactItemsFromPhoneContacts = ContactListGenerator(
-                contentResolver
-            ).getContactItemsFromPhoneContacts(lastContactItemId)
+            val contactItemsFromPhoneContacts =
+                contactsRepository.getContactItemsFromPhoneContacts(lastContactItemId)
 
-            currentContactList.addAll(contactItemsFromPhoneContacts)
-
-            _contactList.value = currentContactList
+            contactsRepository.addContactItems(contactItemsFromPhoneContacts)
             isPhoneContactsAdded = true
         }
     }
 
     fun createNewContact(contactName: String?, contactCareer: String?): ContactItem {
-        val contactList = _contactList.value
+        val contactList = contactList.value
         val lastId = contactList[contactList.size - 1].id
 
         val newContact = ContactItem(
@@ -58,32 +51,25 @@ class ContactListViewModel @Inject constructor(
 
     fun processAddContactDialogEvent(newContact: ContactItem) {
         if (!isNewContactDataIsBlank(newContact)) {
-            addContactItem(newContact, _contactList.value.size)
+            addContactItem(newContact, contactList.value.size)
         }
     }
 
     fun deleteContactItem(contactItem: ContactItem, position: Int) {
-        updateContactList { it.remove(contactItem) }
+        contactsRepository.deleteContactItem(contactItem)
         deletedItems.push(Pair(contactItem, position))
     }
 
-    fun deleteListOfContactItems(contactItems: List<ContactItem>){
-        updateContactList { it.removeAll(contactItems) }
+    fun deleteListOfContactItems(contactItems: List<ContactItem>) {
+        contactsRepository.deleteContactItems(contactItems)
     }
 
     fun addContactItem(contactItem: ContactItem, position: Int) {
-        updateContactList { it.add(position, contactItem) }
+        contactsRepository.addContactItem(contactItem, position)
     }
 
     private fun isNewContactDataIsBlank(contactItem: ContactItem): Boolean {
         return contactItem.career.isBlank() || contactItem.name.isBlank()
-    }
-
-    private fun updateContactList(operation: (MutableList<ContactItem>) -> Unit) {
-        val contactList = _contactList.value.toMutableList()
-
-        operation.invoke(contactList)
-        _contactList.value = contactList
     }
 }
 

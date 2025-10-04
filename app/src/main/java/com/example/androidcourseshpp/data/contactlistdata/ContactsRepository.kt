@@ -3,16 +3,22 @@ package com.example.androidcourseshpp.data.contactlistdata
 import android.content.ContentResolver
 import android.provider.ContactsContract
 import com.github.javafaker.Faker
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import java.util.Collections.emptyList
 import javax.inject.Inject
+import javax.inject.Singleton
 
 private val javaFaker = Faker.instance()
 private const val NUM_OF_DEFAULT_CONTACT_ITEMS = 5
 private const val NUM_OF_CAREERS = 10
 
-
-class ContactListGenerator @Inject constructor(
+@Singleton
+class ContactsRepository @Inject constructor(
       private val contentResolver: ContentResolver
 ) {
+
+    private val nameList : List<String> = generateNames()
 
     private val URLImageList = listOf(
         "https://gcs.tripi.vn/public-tripi/tripi-feed/img/474187SoY/anh-avatar-chu-meo-dang-yeu_051724941.jpg",
@@ -22,9 +28,29 @@ class ContactListGenerator @Inject constructor(
         "https://static.wixstatic.com/media/9d8ed5_4725657bd5b448478d19d54669ea0883~mv2.jpg/v1/fill/w_1000,h_563,al_c,q_85,usm_0.66_1.00_0.01/9d8ed5_4725657bd5b448478d19d54669ea0883~mv2.jpg"
     )
 
-    private val nameList : List<String> = generateNames()
-
     private val careerList = generateCareers()
+
+    private val _contactList = MutableStateFlow(getContactItems())
+    val contactList: StateFlow<List<ContactItem>> get() = _contactList
+
+    fun addContactItem(contactItem: ContactItem, position: Int){
+        val currentList = _contactList.value.toMutableList()
+        currentList.add(position, contactItem)
+        _contactList.value = currentList
+    }
+
+    fun addContactItems(contactItems : List<ContactItem>){
+        _contactList.value =_contactList.value + contactItems
+    }
+
+    fun deleteContactItem(contactItem: ContactItem){
+        _contactList.value = _contactList.value - contactItem
+    }
+
+    fun deleteContactItems(contactItems: List<ContactItem>){
+        _contactList.value = _contactList.value - contactItems
+    }
+
 
     fun getContactItems(): List<ContactItem> {
 
@@ -77,7 +103,7 @@ class ContactListGenerator @Inject constructor(
         return userNames
     }
 
-    private fun generateNames(): MutableList<String> {
+    private fun generateNames(): List<String> {
         val names: MutableList<String> = mutableListOf()
         repeat(NUM_OF_DEFAULT_CONTACT_ITEMS) {
             names.add(javaFaker.name().name())

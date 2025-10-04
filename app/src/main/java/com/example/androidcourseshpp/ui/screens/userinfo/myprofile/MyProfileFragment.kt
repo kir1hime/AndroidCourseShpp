@@ -41,7 +41,7 @@ class MyProfileFragment : BaseFragment() {
 
     private fun defineUserName() = with(binding) {
         val savedEmail =
-            requireActivity().intent.getStringExtra(USER_EMAIL) ?: viewModel.savedEMail.value
+            requireActivity().intent.getStringExtra(USER_EMAIL) ?: viewModel.getUserEMail()
         if (savedEmail != "") {
             textViewName.text = EmailParser.parseEMail(savedEmail)
         }
