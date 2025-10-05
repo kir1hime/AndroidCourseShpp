@@ -143,6 +143,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/open_sans"
             android:inputType="textEmailAddress"
+            android:maxLength="40"
             android:paddingTop="@dimen/input_text_edit_padding_top"
             android:paddingBottom="@dimen/input_text_edit_padding_bottom"
             android:textColor="@color/input_text_color"
@@ -184,6 +185,7 @@
             android:inputType="textPassword"
             android:paddingTop="@dimen/input_text_edit_padding_top"
             android:paddingBottom="@dimen/input_text_edit_padding_bottom"
+            android:maxLength="40"
             android:textColor="@color/input_text_color"
             android:textSize="@dimen/big_text_size"
             android:textStyle="bold" />

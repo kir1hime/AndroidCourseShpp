@@ -24,9 +24,9 @@
         android:layout_marginTop="@dimen/mockup_profile_photo_margin_top"
         android:layout_marginBottom="@dimen/mockup_profile_photo_margin_bottom_ver"
         android:src="@drawable/profile_mockup"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/GuideLineMiddleVer"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatImageButton
@@ -52,9 +52,9 @@
         android:textColor="@color/your_profile_data_text_color"
         android:textSize="@dimen/large_text_size"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/GuideLineMiddleVer"
-      app:layout_constraintTop_toBottomOf="@id/circleImageViewProfilePhoto" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/circleImageViewProfilePhoto" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/textViewInstructionToDo"
@@ -66,8 +66,8 @@
         android:text="@string/instruction_to_do"
         android:textAlignment="center"
         android:textColor="@color/instruction_to_do_text_color"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="@id/GuideLineMiddleVer"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textViewYourProfileData" />
 
     <com.google.android.material.textfield.TextInputLayout
@@ -93,8 +93,8 @@
         app:helperTextTextColor="@color/error_text_color"
         app:hintTextAppearance="@style/hint_style"
         app:hintTextColor="@color/input_hint_color"
-       app:layout_constraintStart_toStartOf="@id/GuideLineMiddleVer"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/GuideLineMiddleVer"
         app:layout_constraintTop_toTopOf="parent"
         tool:ignore="RtlSymmetry">
 
@@ -103,6 +103,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fontFamily="@font/open_sans"
+            android:maxLength="40"
             android:paddingTop="@dimen/input_text_edit_padding_top"
             android:paddingBottom="@dimen/input_text_edit_padding_bottom"
             android:textColor="@color/edit_text_user_name_text_color"
@@ -132,8 +133,8 @@
         app:helperTextTextColor="@color/error_text_color"
         app:hintTextAppearance="@style/hint_style"
         app:hintTextColor="@color/input_hint_color"
-        app:layout_constraintStart_toStartOf="@id/GuideLineMiddleVer"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/GuideLineMiddleVer"
         app:layout_constraintTop_toBottomOf="@id/textInputLayoutUserName"
         tool:ignore="RtlSymmetry">
 
@@ -142,6 +143,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fontFamily="@font/open_sans"
+            android:inputType="number"
+            android:maxLength="15"
             android:paddingTop="@dimen/input_text_edit_padding_top"
             android:paddingBottom="@dimen/input_text_edit_padding_bottom"
             android:textColor="@color/edit_text_mobile_phone_text_color"
@@ -162,9 +165,9 @@
         android:textColor="@color/cancel_button_text_color"
         android:textSize="@dimen/small_text_size"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@id/GuideLineMiddleVer"
+        app:layout_constraintBottom_toTopOf="@id/buttonForward"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/buttonForward" />
+        app:layout_constraintStart_toStartOf="@id/GuideLineMiddleVer" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/buttonForward"
@@ -179,9 +182,9 @@
         android:textColor="@color/forward_button_text_color"
         android:textSize="@dimen/middle_text_size"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@id/GuideLineMiddleVer"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintStart_toStartOf="@id/GuideLineMiddleVer" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
