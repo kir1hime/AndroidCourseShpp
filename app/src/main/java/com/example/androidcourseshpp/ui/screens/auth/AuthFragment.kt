@@ -25,3 +25,4 @@ open class AuthFragment : BaseFragment() {
         requireActivity().finish()
     }
 }
+

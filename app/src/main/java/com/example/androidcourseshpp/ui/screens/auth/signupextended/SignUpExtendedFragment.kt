@@ -3,7 +3,6 @@ package com.example.androidcourseshpp.ui.screens.auth.signupextended
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,6 +26,7 @@ class SignUpExtendedFragment : AuthFragment() {
         return binding.root
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setListeners()
@@ -35,10 +35,15 @@ class SignUpExtendedFragment : AuthFragment() {
 
     private fun setListeners() = with(binding) {
         buttonForward.setOnClickListener {
-            moveToMyProfileScreen(args.userEmail)
+           moveToMyProfileScreen(args.userEmail)
         }
         buttonCancel.setOnClickListener {
             findNavController().navigateUp()
+        }
+        circleImageViewProfilePhoto.setOnClickListener {
+            val direction = SignUpExtendedFragmentDirections.actionSignUpExtendedFragmentToChooseProfilePhotoDialog()
+
+            findNavController().navigate(direction)
         }
 
     }
@@ -50,17 +55,17 @@ class SignUpExtendedFragment : AuthFragment() {
             override fun afterTextChanged(s: Editable?) {}
 
             override fun onTextChanged(
-                s: CharSequence?,
+                inputText: CharSequence?,
                 start: Int,
                 before: Int,
                 count: Int
             ) {
-                s?.let {
+                inputText?.let {
 
-                    if (BRACKET_POSITIONS.keys.contains(s.length) && count > 0 && before == 0) {
-                        updateMobilePhoneInput(BRACKET_POSITIONS[s.length])
+                    if (BRACKET_POSITIONS.keys.contains(inputText.length) && count > 0 && before == 0) {
+                        updateMobilePhoneInput(BRACKET_POSITIONS[inputText.length])
                     }
-                    if (HYPHEN_POSITIONS.contains(s.length) && count > 0 && before == 0) {
+                    if (HYPHEN_POSITIONS.contains(inputText.length) && count > 0 && before == 0) {
                         updateMobilePhoneInput("-")
 
                     }

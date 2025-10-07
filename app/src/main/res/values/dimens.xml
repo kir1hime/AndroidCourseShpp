@@ -127,6 +127,7 @@
     <dimen name="contacts_recycle_view_item_h">66dp</dimen>
     <dimen name="contacts_recycle_view_item_ava_size">50dp</dimen>
     <dimen name="contacts_recycle_view_space_size_between_items">16dp</dimen>
+    <dimen name="choose_profile_photo_dialog_h">219dp</dimen>
 
     <!--text sizes-->
     <dimen name="middle_text_size">16sp</dimen>

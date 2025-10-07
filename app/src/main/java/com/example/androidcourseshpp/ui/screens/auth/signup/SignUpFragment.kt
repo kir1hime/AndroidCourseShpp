@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.androidcourseshpp.data.MIN_NUM_OF_CHARS_IN_PASSWORD
@@ -48,6 +47,7 @@ class SignUpFragment : AuthFragment() {
 
     private fun setListeners() {
         binding.buttonRegister.setOnClickListener {
+            moveToSignUpExtended(binding.editTextEMail.text.toString())
             onRegisterButtonClick()
         }
     }
