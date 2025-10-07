@@ -86,6 +86,8 @@
 
     <dimen name="cancel_button_margin_bottom">16dp</dimen>
 
+    <dimen name="open_gallery_text_margin_bottom">50dp</dimen>
+
 
 
     <!--paddings-->

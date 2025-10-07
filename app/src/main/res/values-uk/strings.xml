@@ -62,5 +62,6 @@
     <string name="mobile_phone">Мобільний телефон</string>
     <string name="forward">Далі</string>
     <string name="cancel">Закрити</string>
+    <string name="open_gallery">Відкрити галерею</string>
 
 </resources>
