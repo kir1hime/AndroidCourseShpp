@@ -88,6 +88,10 @@
 
     <dimen name="open_gallery_text_margin_bottom">50dp</dimen>
 
+    <dimen name="take_photo_margins">8dp</dimen>
+
+    <dimen name="gallery_item_margin_top">8dp</dimen>
+
 
 
     <!--paddings-->
@@ -131,6 +135,7 @@
     <dimen name="contacts_recycle_view_space_size_between_items">16dp</dimen>
     <dimen name="choose_profile_photo_dialog_h">219dp</dimen>
 
+
     <!--text sizes-->
     <dimen name="middle_text_size">16sp</dimen>
     <dimen name="small_text_size">14sp</dimen>
@@ -140,6 +145,7 @@
 
     <dimen name="input_box_stroke_w_focused">1dp</dimen>
     <dimen name="profile_photo_size">113dp</dimen>
+    <dimen name="gallery_item_size">85dp</dimen>
 
     <!--border radius -->
     <dimen name="radius_6">6dp</dimen>

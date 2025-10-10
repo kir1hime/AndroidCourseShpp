@@ -1,12 +1,12 @@
-package com.example.androidcourseshpp.ui.screens.auth
+package com.example.androidcourseshpp.ui.screens.auth.choosephotodialog
 
 import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
+import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.example.androidcourseshpp.databinding.DialogChooseProfilePhotoBinding
-
 
 class ChooseProfilePhotoDialog : DialogFragment(){
 
@@ -21,6 +21,15 @@ class ChooseProfilePhotoDialog : DialogFragment(){
             .create()
 
         return dialog
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+    }
+
+    private fun initRecycleView(){
+
     }
 
     override fun onStart() {
