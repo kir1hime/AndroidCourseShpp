@@ -6,10 +6,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidcourseshpp.R
-import com.example.androidcourseshpp.data.contactlistdata.ContactItem
-import com.example.androidcourseshpp.data.contactlistdata.SelectableContactItem
-import com.example.androidcourseshpp.databinding.ContactsRecyclerviewItemBinding
-import com.example.androidcourseshpp.ui.extensions.loadImageFromURL
+import com.example.androidcourseshpp.data.contactlist.ContactItem
+import com.example.androidcourseshpp.data.contactlist.SelectableContactItem
+import com.example.androidcourseshpp.databinding.ContactItemBinding
+import com.example.androidcourseshpp.ui.extensions.loadImageFromURLCircled
 
 
 class ContactsAdapter(private val actions: ItemActions) :
@@ -19,7 +19,7 @@ class ContactsAdapter(private val actions: ItemActions) :
         private set
 
     inner class ViewHolder(
-        private val binding: ContactsRecyclerviewItemBinding,
+        private val binding: ContactItemBinding,
         private val actions: ItemActions
     ) :
         RecyclerView.ViewHolder(binding.root) {
@@ -27,7 +27,7 @@ class ContactsAdapter(private val actions: ItemActions) :
         fun bind(contactItem: SelectableContactItem) = with(binding) {
             textViewName.text = contactItem.item.name
             textViewCareer.text = contactItem.item.career
-            imageViewAvatar.loadImageFromURL(root.context, contactItem.item.avatarURL)
+            imageViewAvatar.loadImageFromURLCircled(root.context, contactItem.item.avatarURL)
 
             imageViewAvatar.transitionName = contactItem.item.id.toString()
 
@@ -107,7 +107,7 @@ class ContactsAdapter(private val actions: ItemActions) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = ContactsRecyclerviewItemBinding.inflate(
+        val binding = ContactItemBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false

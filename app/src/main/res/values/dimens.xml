@@ -91,7 +91,10 @@
     <dimen name="take_photo_margins">8dp</dimen>
 
     <dimen name="gallery_item_margin_top">8dp</dimen>
+    <dimen name="gallery_item_margin_start">101dp</dimen>
 
+    <dimen name="contacts_recycle_view_space_size_between_items">16dp</dimen>
+    <dimen name="gallery_recycler_view_left_offset">8dp</dimen>
 
 
     <!--paddings-->
@@ -132,7 +135,6 @@
     <dimen name="contacts_bar_h">149dp</dimen>
     <dimen name="contacts_recycle_view_item_h">66dp</dimen>
     <dimen name="contacts_recycle_view_item_ava_size">50dp</dimen>
-    <dimen name="contacts_recycle_view_space_size_between_items">16dp</dimen>
     <dimen name="choose_profile_photo_dialog_h">219dp</dimen>
 
 

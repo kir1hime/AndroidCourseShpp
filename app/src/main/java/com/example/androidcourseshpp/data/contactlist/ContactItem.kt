@@ -1,4 +1,4 @@
-package com.example.androidcourseshpp.data.contactlistdata
+package com.example.androidcourseshpp.data.contactlist
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

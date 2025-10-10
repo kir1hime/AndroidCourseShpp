@@ -18,8 +18,8 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidcourseshpp.R
-import com.example.androidcourseshpp.data.contactlistdata.ContactItem
-import com.example.androidcourseshpp.data.contactlistdata.SelectableContactItem
+import com.example.androidcourseshpp.data.contactlist.ContactItem
+import com.example.androidcourseshpp.data.contactlist.SelectableContactItem
 import com.example.androidcourseshpp.databinding.FragmentContactlistBinding
 import com.example.androidcourseshpp.ui.BaseFragment
 import com.example.androidcourseshpp.ui.screens.userinfo.contactlist.AddContactDialog.Companion.CAREER_KEY
@@ -170,7 +170,7 @@ class ContactListFragment : BaseFragment() {
 
     private fun setAddContactDialogListener() {
         childFragmentManager.setFragmentResultListener(
-            AddContactDialog.REQUEST_KEY, this
+            AddContactDialog.REQUEST_KEY, viewLifecycleOwner
         ) { _, data ->
 
             val event = data.getInt(RESPONSE_KEY)

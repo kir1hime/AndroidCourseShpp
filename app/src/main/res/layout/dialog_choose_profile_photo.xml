@@ -54,13 +54,13 @@
     
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewGallery"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="@dimen/gallery_item_size"
         android:layout_marginTop="@dimen/gallery_item_margin_top"
         android:orientation="horizontal"
+        android:layout_marginStart="@dimen/gallery_item_margin_start"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toEndOf="@id/imageViewTakePhoto"
         tools:listitem="@layout/gallery_item"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

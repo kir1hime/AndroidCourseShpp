@@ -1,11 +1,10 @@
-package com.example.androidcourseshpp.data.contactlistdata
+package com.example.androidcourseshpp.data.contactlist
 
 import android.content.ContentResolver
 import android.provider.ContactsContract
 import com.github.javafaker.Faker
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import java.util.Collections.emptyList
 import javax.inject.Inject
 import javax.inject.Singleton
 

@@ -12,7 +12,7 @@
         tools:layout="@layout/fragment_detailview">
         <argument
             android:name="contactDetails"
-            app:argType="com.example.androidcourseshpp.data.contactlistdata.ContactItem" />
+            app:argType="com.example.androidcourseshpp.data.contactlist.ContactItem" />
 
     </fragment>
     <fragment

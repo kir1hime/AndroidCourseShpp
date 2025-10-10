@@ -1,8 +1,8 @@
 package com.example.androidcourseshpp.ui.screens.userinfo.contactlist
 
 import androidx.lifecycle.ViewModel
-import com.example.androidcourseshpp.data.contactlistdata.ContactsRepository
-import com.example.androidcourseshpp.data.contactlistdata.ContactItem
+import com.example.androidcourseshpp.data.contactlist.ContactsRepository
+import com.example.androidcourseshpp.data.contactlist.ContactItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
 import java.util.Stack
