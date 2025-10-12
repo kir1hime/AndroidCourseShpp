@@ -3,23 +3,23 @@ package com.example.androidcourseshpp.ui.screens.auth.signupextended
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.bumptech.glide.Glide
 import com.example.androidcourseshpp.databinding.FragmentSignUpExtendedBinding
 import com.example.androidcourseshpp.ui.extensions.loadImageFromURL
 import com.example.androidcourseshpp.ui.screens.auth.AuthFragment
-import com.example.androidcourseshpp.ui.screens.auth.choosephotodialog.ChooseProfileDialogViewModel
 import com.example.androidcourseshpp.ui.screens.auth.choosephotodialog.ChooseProfilePhotoDialog
 import com.example.androidcourseshpp.ui.screens.auth.choosephotodialog.ChooseProfilePhotoDialog.Companion.PHOTO
+import com.example.androidcourseshpp.ui.screens.auth.signup.SignUpViewModel
 
 class SignUpExtendedFragment : AuthFragment() {
 
     private lateinit var binding: FragmentSignUpExtendedBinding
+    private val viewModel by viewModels<SignUpExtendedViewModel>()
     private val args by navArgs<SignUpExtendedFragmentArgs>()
 
     override fun onCreateView(
@@ -36,13 +36,16 @@ class SignUpExtendedFragment : AuthFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setListeners()
+        setObservers()
         setChooseProfilePhotoDialogListener()
         formatMobilePhoneInput()
     }
 
     private fun setListeners() = with(binding) {
         buttonForward.setOnClickListener {
-            moveToMyProfileScreen(args.userEmail)
+            val inputUserName = editTextUserName.text.toString()
+            val inputMobilePhone = editTextMobilePhone.text.toString()
+            viewModel.processInputData(inputUserName, inputMobilePhone)
         }
         buttonCancel.setOnClickListener {
             findNavController().navigateUp()
@@ -56,12 +59,22 @@ class SignUpExtendedFragment : AuthFragment() {
 
     }
 
+    private fun setObservers() = with(binding) {
+        collectFlow(viewModel.effect) {
+            moveToMyProfileScreen(args.userEmail)
+        }
+
+        collectFlow(viewModel.state) { state ->
+            textInputLayoutUserName.helperText = getString(state.userNameHelperResId)
+            textInputLayoutMobilePhone.helperText = getString(state.mobilePhoneHelperResId)
+        }
+    }
+
     private fun setChooseProfilePhotoDialogListener() {
         parentFragmentManager.setFragmentResultListener(
             ChooseProfilePhotoDialog.REQUEST_KEY,
             viewLifecycleOwner
         ) { _, data ->
-            Log.d("myTag", data.getString(PHOTO).toString())
             val newProfilePhoto = data.getString(PHOTO) ?: ""
             binding.circleImageViewProfilePhoto.loadImageFromURL(requireContext(), newProfilePhoto)
         }

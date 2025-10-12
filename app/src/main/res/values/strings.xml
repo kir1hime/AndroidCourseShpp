@@ -27,7 +27,7 @@
     <string name="password">Password</string>
     <string name="remember_me">Remember me</string>
 
-    <!--Sing up AuthActivity.kt-->
+    <!--Sing up SignUpFragment-->
     <string name="email_error">Incorrect E-mail</string>
     <string name="less_8_symbols_pswd_error">There must be at least %d symbols</string>
     <string name="capital_letter_error">There must be at least one capital letter</string>
@@ -65,6 +65,8 @@
     <string name="mobile_phone">Mobile phone</string>
     <string name="forward">forward</string>
     <string name="cancel">Cancel</string>
+    <string name="empty_name_error">Empty name, there must be at least 1 letter</string>
+    <string name="incorrect_mobile_phone_error">Incorrect mobile phone number</string>
 
     <!--Choose profile photo -->
     <string name="open_gallery">Open gallery</string>

@@ -39,15 +39,23 @@ class SignUpFragment : AuthFragment() {
         setListeners()
     }
 
-    private fun setObserves() {
-        collectFlow(viewModel.events) {
-            moveToSignUpExtended(binding.editTextEMail.text.toString())
+    private fun setObserves() = with(binding) {
+        collectFlow(viewModel.effect) {
+            moveToSignUpExtended(editTextEMail.text.toString())
+        }
+        collectFlow(viewModel.state) { state ->
+
+            textInputLayoutPassword.helperText =
+                getString(state.passwordHelperTextResId, MIN_NUM_OF_CHARS_IN_PASSWORD)
+
+            textInputLayoutEMail.helperText = getString(state.eMailHelperTextResId)
+
         }
     }
 
     private fun setListeners() {
         binding.buttonRegister.setOnClickListener {
-            moveToSignUpExtended(binding.editTextEMail.text.toString())
+            //moveToSignUpExtended(binding.editTextEMail.text.toString())
             onRegisterButtonClick()
         }
     }
@@ -57,14 +65,6 @@ class SignUpFragment : AuthFragment() {
         val inputPassword = editTextPassword.text.toString()
 
         viewModel.processInputData(inputEMail, inputPassword, comboBoxRememberMe.isChecked)
-
-        val state = viewModel.state
-
-        textInputLayoutPassword.helperText =
-            getString(state.passwordHelperTextResId, MIN_NUM_OF_CHARS_IN_PASSWORD)
-
-        textInputLayoutEMail.helperText = getString(state.eMailHelperTextResId)
-
     }
 
     private fun moveToSignUpExtended(userEmail: String) {

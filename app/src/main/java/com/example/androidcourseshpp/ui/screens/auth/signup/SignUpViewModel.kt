@@ -9,19 +9,24 @@ import javax.inject.Inject
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.PasswordErrorMessagesContainer
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 @HiltViewModel
 class SignUpViewModel @Inject constructor(private val dataProvider: DataProvider) : ViewModel() {
-    var state = initDefaultState()
-        private set
+
+    private val _state: MutableStateFlow<SignUpState> = MutableStateFlow(initDefaultState())
+     val state: Flow<SignUpState> = _state.asStateFlow()
 
     var savedEmail = getUserEMail()
         private set
 
-    private val _events = Channel<SignUpEvent>(Channel.BUFFERED)
-    val events = _events.receiveAsFlow()
+    private val _effect = Channel<SignUpEffect>(Channel.BUFFERED)
+    val effect = _effect.receiveAsFlow()
 
     private var passwordChecks: List<(s: String) -> Boolean> = listOf()
 
@@ -51,7 +56,7 @@ class SignUpViewModel @Inject constructor(private val dataProvider: DataProvider
     }
 
     private fun initDefaultState() =
-        SignUpUiState(
+        SignUpState(
             eMailHelperTextResId = R.string.no_error,
             passwordHelperTextResId = R.string.no_error,
         )
@@ -72,23 +77,27 @@ class SignUpViewModel @Inject constructor(private val dataProvider: DataProvider
         var isPasswordCorrect = false
         var isEMailCorrect = false
 
-        state = if (!checkEmail(email)) state.copy(
-            eMailHelperTextResId = R.string.email_error,
-        ) else {
-            isEMailCorrect = true
-            state.copy(
-                eMailHelperTextResId = R.string.no_error,
-            )
+        _state.update {
+            if (!checkEmail(email)) _state.value.copy(
+                eMailHelperTextResId = R.string.email_error,
+            ) else {
+                isEMailCorrect = true
+                _state.value.copy(
+                    eMailHelperTextResId = R.string.no_error,
+                )
+            }
         }
 
-        state = if (!checkPassword(password))
-            state.copy(
-                passwordHelperTextResId = definePasswordErrorMessage(password),
-            ) else {
+        _state.update {
+            if (!checkPassword(password))
+                _state.value.copy(
+                    passwordHelperTextResId = definePasswordErrorMessage(password),
+                ) else {
                 isPasswordCorrect = true
-            state.copy(
-                passwordHelperTextResId = R.string.no_error,
-            )
+                _state.value.copy(
+                    passwordHelperTextResId = R.string.no_error,
+                )
+            }
         }
 
         if (rememberUserData) {
@@ -98,9 +107,9 @@ class SignUpViewModel @Inject constructor(private val dataProvider: DataProvider
         }
 
         if (isEMailCorrect && isPasswordCorrect) {
-          viewModelScope.launch {
-              _events.send(SignUpEvent.ToSignUpExtended)
-          }
+            viewModelScope.launch {
+                _effect.send(SignUpEffect.ToSignUpExtended)
+            }
         }
     }
 

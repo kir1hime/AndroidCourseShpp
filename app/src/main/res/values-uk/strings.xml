@@ -62,6 +62,8 @@
     <string name="mobile_phone">Мобільний телефон</string>
     <string name="forward">Далі</string>
     <string name="cancel">Закрити</string>
+    <string name="incorrect_mobile_phone_error">Неправильний номер мобільного телефона</string>
     <string name="open_gallery">Відкрити галерею</string>
+    <string name="empty_name_error">Не вкзано ім\'я, повинно бути щонайменше одна літера</string>
 
 </resources>
