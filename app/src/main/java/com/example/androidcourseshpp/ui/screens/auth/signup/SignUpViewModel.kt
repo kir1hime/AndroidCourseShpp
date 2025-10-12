@@ -26,7 +26,7 @@ class SignUpViewModel @Inject constructor(private val dataProvider: DataProvider
 
     override fun handleEvent(event: SignUpContract.Event) {
         when (event) {
-            is SignUpContract.Event.OnResisterButtonClicked -> onRegisterButtonClicked(
+            is SignUpContract.Event.OnResisterButtonClicked -> processInputData(
                 event.email,
                 event.password,
                 event.rememberUserData
@@ -34,7 +34,7 @@ class SignUpViewModel @Inject constructor(private val dataProvider: DataProvider
         }
     }
 
-    fun onRegisterButtonClicked(email: String, password: String, rememberUserData: Boolean) {
+    fun processInputData(email: String, password: String, rememberUserData: Boolean) {
         var isPasswordCorrect: Boolean
         var isEMailCorrect: Boolean
 

@@ -32,7 +32,7 @@ class SignUpFragment : AuthFragment() {
 
         val savedEmail = viewModel.savedEmail
         if (savedEmail != "") {
-            moveToMyProfileScreen("")
+            moveToMyProfileScreen(savedEmail)
         }
 
         setObserves()
@@ -40,22 +40,23 @@ class SignUpFragment : AuthFragment() {
     }
 
     private fun setObserves() = with(binding) {
-        collectFlow(viewModel.effect) {
-            moveToSignUpExtended(editTextEMail.text.toString())
+        collectFlow(viewModel.effect) { effect ->
+            when (effect) {
+                is SignUpContract.Effect.NavigateToSignUpExtended -> moveToSignUpExtended()
+            }
         }
-        collectFlow(viewModel.state) { state ->
 
+        collectFlow(viewModel.state) { state ->
             textInputLayoutPassword.helperText =
                 getString(state.passwordHelperTextResId, MIN_NUM_OF_CHARS_IN_PASSWORD)
 
             textInputLayoutEMail.helperText = getString(state.eMailHelperTextResId)
-
         }
     }
 
     private fun setListeners() = with(binding) {
         binding.buttonRegister.setOnClickListener {
-          onRegisterButtonClick()
+            onRegisterButtonClick()
         }
     }
 
@@ -72,11 +73,8 @@ class SignUpFragment : AuthFragment() {
         )
     }
 
-    private fun moveToSignUpExtended(userEmail: String) {
-        val direction =
-            SignUpFragmentDirections.actionSignUpFragmentToSignUpExtendedFragment(userEmail)
+    private fun moveToSignUpExtended() {
+        val direction = SignUpFragmentDirections.actionSignUpFragmentToSignUpExtendedFragment()
         findNavController().navigate(direction)
     }
-
-
 }

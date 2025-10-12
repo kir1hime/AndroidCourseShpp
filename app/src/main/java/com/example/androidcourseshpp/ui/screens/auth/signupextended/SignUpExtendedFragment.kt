@@ -19,7 +19,6 @@ class SignUpExtendedFragment : AuthFragment() {
 
     private lateinit var binding: FragmentSignUpExtendedBinding
     private val viewModel by viewModels<SignUpExtendedViewModel>()
-    private val args by navArgs<SignUpExtendedFragmentArgs>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,23 +43,37 @@ class SignUpExtendedFragment : AuthFragment() {
         buttonForward.setOnClickListener {
             val inputUserName = editTextUserName.text.toString()
             val inputMobilePhone = editTextMobilePhone.text.toString()
-            viewModel.processInputData(inputUserName, inputMobilePhone)
+            viewModel.setEvent(
+                SignUpExtendedContract.Event.OnForwardButtonClicked(
+                    inputUserName,
+                    inputMobilePhone
+                )
+            )
         }
         buttonCancel.setOnClickListener {
-            findNavController().navigateUp()
+            viewModel.setEvent(SignUpExtendedContract.Event.OnCancelButtonClicked)
         }
         imageButtonAddProfilePhoto.setOnClickListener {
-            val direction =
-                SignUpExtendedFragmentDirections.actionSignUpExtendedFragmentToChooseProfilePhotoDialog()
-
-            findNavController().navigate(direction)
+            viewModel.setEvent(SignUpExtendedContract.Event.OnAddProfilePhotoImageViewClicked)
         }
 
     }
 
     private fun setObservers() = with(binding) {
-        collectFlow(viewModel.effect) {
-            moveToMyProfileScreen(args.userEmail)
+        collectFlow(viewModel.effect) { effect ->
+            when (effect) {
+
+                is SignUpExtendedContract.Effect.NavigateToMyProfileScreen -> moveToMyProfileScreen(
+                    editTextUserName.text.toString()
+                )
+
+                is SignUpExtendedContract.Effect.NavigateToPreviousScreen -> findNavController().navigateUp()
+                is SignUpExtendedContract.Effect.NavigateToChooseProfilePhotoDialog -> {
+                    val direction =
+                        SignUpExtendedFragmentDirections.actionSignUpExtendedFragmentToChooseProfilePhotoDialog()
+                    findNavController().navigate(direction)
+                }
+            }
         }
 
         collectFlow(viewModel.state) { state ->
@@ -103,7 +116,6 @@ class SignUpExtendedFragment : AuthFragment() {
                 }
             }
         })
-
     }
 
     private fun updateMobilePhoneInput(sign: String?) = with(binding) {
