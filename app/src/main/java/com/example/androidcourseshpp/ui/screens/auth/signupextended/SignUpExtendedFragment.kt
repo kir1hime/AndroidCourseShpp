@@ -8,13 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.example.androidcourseshpp.databinding.FragmentSignUpExtendedBinding
 import com.example.androidcourseshpp.ui.extensions.loadImageFromURL
 import com.example.androidcourseshpp.ui.screens.auth.AuthFragment
-import com.example.androidcourseshpp.ui.screens.auth.chooseprofilephoto.ChooseProfilePhotoDialog
-import com.example.androidcourseshpp.ui.screens.auth.chooseprofilephoto.ChooseProfilePhotoDialog.Companion.PHOTO
+import com.example.androidcourseshpp.ui.screens.auth.signupextended.chooseprofilephotodialog.ChooseProfilePhotoDialog
+import com.example.androidcourseshpp.ui.screens.auth.signupextended.chooseprofilephotodialog.ChooseProfilePhotoDialog.Companion.PHOTO
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SignUpExtendedFragment : AuthFragment() {
 
     private lateinit var binding: FragmentSignUpExtendedBinding
@@ -62,12 +63,12 @@ class SignUpExtendedFragment : AuthFragment() {
     private fun setObservers() = with(binding) {
         collectFlow(viewModel.effect) { effect ->
             when (effect) {
-
                 is SignUpExtendedContract.Effect.NavigateToMyProfileScreen -> moveToMyProfileScreen(
-                    editTextUserName.text.toString()
+                    effect.email
                 )
 
                 is SignUpExtendedContract.Effect.NavigateToPreviousScreen -> findNavController().navigateUp()
+
                 is SignUpExtendedContract.Effect.NavigateToChooseProfilePhotoDialog -> {
                     val direction =
                         SignUpExtendedFragmentDirections.actionSignUpExtendedFragmentToChooseProfilePhotoDialog()

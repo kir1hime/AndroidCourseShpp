@@ -22,14 +22,15 @@ import com.example.androidcourseshpp.data.contactlist.ContactItem
 import com.example.androidcourseshpp.data.contactlist.SelectableContactItem
 import com.example.androidcourseshpp.databinding.FragmentContactlistBinding
 import com.example.androidcourseshpp.ui.BaseFragment
-import com.example.androidcourseshpp.ui.screens.userinfo.contactlist.AddContactDialog.Companion.CAREER_KEY
-import com.example.androidcourseshpp.ui.screens.userinfo.contactlist.AddContactDialog.Companion.NAME_KEY
-import com.example.androidcourseshpp.ui.screens.userinfo.contactlist.AddContactDialog.Companion.RESPONSE_KEY
+import com.example.androidcourseshpp.ui.screens.userinfo.contactlist.addcontactdialog.AddContactDialog.Companion.CAREER_KEY
+import com.example.androidcourseshpp.ui.screens.userinfo.contactlist.addcontactdialog.AddContactDialog.Companion.NAME_KEY
+import com.example.androidcourseshpp.ui.screens.userinfo.contactlist.addcontactdialog.AddContactDialog.Companion.RESPONSE_KEY
 import com.example.androidcourseshpp.ui.screens.userinfo.contactlist.adapter.ContactItemDecoration
 import com.example.androidcourseshpp.ui.screens.userinfo.contactlist.adapter.ContactsAdapter
 import com.example.androidcourseshpp.ui.screens.userinfo.contactlist.adapter.ItemActions
 import com.example.androidcourseshpp.ui.screens.userinfo.TabSwitchable
 import com.example.androidcourseshpp.ui.screens.userinfo.UserInfoFragmentDirections
+import com.example.androidcourseshpp.ui.screens.userinfo.contactlist.addcontactdialog.AddContactDialog
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 

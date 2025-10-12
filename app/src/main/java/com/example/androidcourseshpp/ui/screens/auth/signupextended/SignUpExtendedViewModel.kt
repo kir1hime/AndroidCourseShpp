@@ -2,12 +2,16 @@ package com.example.androidcourseshpp.ui.screens.auth.signupextended
 
 import androidx.lifecycle.viewModelScope
 import com.example.androidcourseshpp.R
+import com.example.androidcourseshpp.data.dataProvider.DataProvider
 import com.example.androidcourseshpp.ui.BaseViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 private const val PHONE_NUMBER_LENGTH = 15
 
-class SignUpExtendedViewModel() :
+@HiltViewModel
+class SignUpExtendedViewModel @Inject constructor(val dataProvider: DataProvider) :
     BaseViewModel<SignUpExtendedContract.Event, SignUpExtendedContract.Effect, SignUpExtendedContract.UIState>() {
 
     override fun initState(): SignUpExtendedContract.UIState = SignUpExtendedContract.UIState(
@@ -49,7 +53,7 @@ class SignUpExtendedViewModel() :
 
         viewModelScope.launch {
             if (isMobilePhoneCorrect && isUserNameCorrect) {
-                setEffect(SignUpExtendedContract.Effect.NavigateToMyProfileScreen)
+                setEffect(SignUpExtendedContract.Effect.NavigateToMyProfileScreen(dataProvider.getUserEMail()))
             }
         }
     }

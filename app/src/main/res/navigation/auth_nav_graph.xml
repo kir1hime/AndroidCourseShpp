@@ -29,7 +29,7 @@
     </fragment>
     <dialog
         android:id="@+id/chooseProfilePhotoDialog"
-        android:name="com.example.androidcourseshpp.ui.screens.auth.chooseprofilephoto.ChooseProfilePhotoDialog"
+        android:name="com.example.androidcourseshpp.ui.screens.auth.signupextended.chooseprofilephotodialog.ChooseProfilePhotoDialog"
         android:label="dialog_choose_profile_photo"
         tools:layout="@layout/dialog_choose_profile_photo" />
 

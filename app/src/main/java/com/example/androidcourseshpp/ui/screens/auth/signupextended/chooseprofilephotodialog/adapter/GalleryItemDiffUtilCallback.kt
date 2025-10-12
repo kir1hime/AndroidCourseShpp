@@ -1,4 +1,4 @@
-package com.example.androidcourseshpp.ui.screens.auth.chooseprofilephoto.adapter
+package com.example.androidcourseshpp.ui.screens.auth.signupextended.chooseprofilephotodialog.adapter
 
 import androidx.recyclerview.widget.DiffUtil
 import com.example.androidcourseshpp.data.gallery.GalleryItem

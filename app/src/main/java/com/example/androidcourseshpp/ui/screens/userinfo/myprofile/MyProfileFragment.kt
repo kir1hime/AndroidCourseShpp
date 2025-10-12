@@ -37,25 +37,32 @@ class MyProfileFragment : BaseFragment() {
 
         defineUserName()
         setListeners()
+        setObservers()
     }
 
     private fun defineUserName() = with(binding) {
-        val savedEmail =
-            requireActivity().intent.getStringExtra(USER_EMAIL) ?: viewModel.getUserEMail()
-        if (savedEmail != "") {
-            textViewName.text = EmailParser.parseEMail(savedEmail)
-        }
+        val transmittedEmail = requireActivity().intent.getStringExtra(USER_EMAIL) ?: ""
+        viewModel.setEvent(MyProfileContract.Event.UserNameUpdated(transmittedEmail))
     }
-
 
     private fun setListeners() = with(binding) {
         buttonLogOut.setOnClickListener {
-            moveToSignUpScreen()
-            viewModel.deleteUserInfo()
-
+            viewModel.setEvent(MyProfileContract.Event.OnLogOutButtonClicked)
         }
         buttonViewMyContacts.setOnClickListener {
-            moveToMyContactsScreen()
+            viewModel.setEvent(MyProfileContract.Event.OnViewMyContactsButtonClicked)
+        }
+    }
+
+    private fun setObservers() {
+        collectFlow(viewModel.effect) { effect ->
+            when (effect) {
+                is MyProfileContract.Effect.NavigateToContactList -> moveToMyContactsScreen()
+                is MyProfileContract.Effect.NavigateToSignUpScreen -> moveToSignUpScreen()
+            }
+        }
+        collectFlow(viewModel.state) { state ->
+            binding.textViewName.text = state.userName
         }
     }
 
