@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/top_view_color"
-    tools:context="com.example.androidcourseshpp.ui.screens.auth.choosephotodialog.ChooseProfilePhotoDialog">
+    tools:context="com.example.androidcourseshpp.ui.screens.auth.chooseprofilephoto.ChooseProfilePhotoDialog">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/textViewChooseProfilePhotoDialog"

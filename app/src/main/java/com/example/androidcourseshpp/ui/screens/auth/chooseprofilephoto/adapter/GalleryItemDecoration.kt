@@ -1,4 +1,4 @@
-package com.example.androidcourseshpp.ui.screens.auth.choosephotodialog.adapter
+package com.example.androidcourseshpp.ui.screens.auth.chooseprofilephoto.adapter
 
 import android.graphics.Rect
 import android.view.View

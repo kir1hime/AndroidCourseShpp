@@ -1,4 +1,4 @@
-package com.example.androidcourseshpp.ui.screens.auth.choosephotodialog.adapter
+package com.example.androidcourseshpp.ui.screens.auth.chooseprofilephoto.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,7 +8,6 @@ import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.gallery.GalleryItem
 import com.example.androidcourseshpp.databinding.GalleryItemBinding
 import com.example.androidcourseshpp.ui.extensions.loadImageFromURL
-import com.example.androidcourseshpp.ui.extensions.loadImageFromURLCircled
 
 class GalleryAdapter(private val actions: ItemActions) :
     ListAdapter<GalleryItem, GalleryAdapter.ViewHolder>(

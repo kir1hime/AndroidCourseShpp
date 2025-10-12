@@ -12,9 +12,8 @@ import androidx.navigation.fragment.navArgs
 import com.example.androidcourseshpp.databinding.FragmentSignUpExtendedBinding
 import com.example.androidcourseshpp.ui.extensions.loadImageFromURL
 import com.example.androidcourseshpp.ui.screens.auth.AuthFragment
-import com.example.androidcourseshpp.ui.screens.auth.choosephotodialog.ChooseProfilePhotoDialog
-import com.example.androidcourseshpp.ui.screens.auth.choosephotodialog.ChooseProfilePhotoDialog.Companion.PHOTO
-import com.example.androidcourseshpp.ui.screens.auth.signup.SignUpViewModel
+import com.example.androidcourseshpp.ui.screens.auth.chooseprofilephoto.ChooseProfilePhotoDialog
+import com.example.androidcourseshpp.ui.screens.auth.chooseprofilephoto.ChooseProfilePhotoDialog.Companion.PHOTO
 
 class SignUpExtendedFragment : AuthFragment() {
 

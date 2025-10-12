@@ -53,10 +53,9 @@ class SignUpFragment : AuthFragment() {
         }
     }
 
-    private fun setListeners() {
+    private fun setListeners() = with(binding) {
         binding.buttonRegister.setOnClickListener {
-            //moveToSignUpExtended(binding.editTextEMail.text.toString())
-            onRegisterButtonClick()
+          onRegisterButtonClick()
         }
     }
 
@@ -64,7 +63,13 @@ class SignUpFragment : AuthFragment() {
         val inputEMail = editTextEMail.text.toString()
         val inputPassword = editTextPassword.text.toString()
 
-        viewModel.processInputData(inputEMail, inputPassword, comboBoxRememberMe.isChecked)
+        viewModel.setEvent(
+            SignUpContract.Event.OnResisterButtonClicked(
+                inputEMail,
+                inputPassword,
+                comboBoxRememberMe.isChecked
+            )
+        )
     }
 
     private fun moveToSignUpExtended(userEmail: String) {

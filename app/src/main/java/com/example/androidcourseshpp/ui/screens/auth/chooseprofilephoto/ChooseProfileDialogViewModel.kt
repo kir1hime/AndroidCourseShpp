@@ -1,4 +1,4 @@
-package com.example.androidcourseshpp.ui.screens.auth.choosephotodialog
+package com.example.androidcourseshpp.ui.screens.auth.chooseprofilephoto
 
 import androidx.lifecycle.ViewModel
 import com.example.androidcourseshpp.data.gallery.GalleryRepository
