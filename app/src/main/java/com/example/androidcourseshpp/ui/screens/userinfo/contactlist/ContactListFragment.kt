@@ -84,7 +84,12 @@ class ContactListFragment : BaseFragment() {
     private fun getItemActions(): ItemActions = with(binding) {
         return object : ItemActions {
             override fun deleteContactItem(contactItem: ContactItem, position: Int) {
-                viewModel.deleteContactItem(contactItem, position)
+                viewModel.setEvent(
+                    ContactListContract.Event.ContactItemDeleted(
+                        contactItem,
+                        position
+                    )
+                )
                 showUndoDeletingSnackBarItem(contactItem, position)
             }
 
@@ -121,13 +126,25 @@ class ContactListFragment : BaseFragment() {
     }
 
     private fun setObservers() {
-        collectFlow(viewModel.contactList) { contactList ->
+        collectFlow(viewModel.state) { state ->
+            val contactList = state.contactList
             adapter.submitList(contactList.map { contactItem ->
                 SelectableContactItem(
                     contactItem,
                     false
                 )
             })
+        }
+
+        collectFlow(viewModel.effect) { effect ->
+            when (effect) {
+                is ContactListContract.Effect.NavigateToDetailsScreen -> moveToDetailsScreen(
+                    effect.contact,
+                    effect.avatar
+                )
+
+                is ContactListContract.Effect.NavigateToMyProfileScreen -> moveToMyProfileScreen()
+            }
         }
     }
 
@@ -139,7 +156,11 @@ class ContactListFragment : BaseFragment() {
             showAddContactDialog()
         }
         floatingButtonDeleteSelectedItems.setOnClickListener {
-            viewModel.deleteListOfContactItems(adapter.selectedItems)
+            viewModel.setEvent(
+                ContactListContract.Event.OnDeleteSelectedItemsFloatingButtonClicked(
+                    adapter.selectedItems
+                )
+            )
             floatingButtonDeleteSelectedItems.visibility = View.GONE
         }
     }
@@ -156,7 +177,7 @@ class ContactListFragment : BaseFragment() {
         )
 
         undoDeletingSnackBar.setAction(R.string.snackbar_action_text) {
-            viewModel.addContactItem(contactItem, position)
+            viewModel.setEvent(ContactListContract.Event.ContactItemAdded(contactItem, position))
             viewModel.deletedItems.pop()
 
             if (!viewModel.deletedItems.isEmpty()) {
@@ -175,13 +196,15 @@ class ContactListFragment : BaseFragment() {
         ) { _, data ->
 
             val event = data.getInt(RESPONSE_KEY)
-            val newContactName = data.getString(NAME_KEY)
-            val newContactCareer = data.getString(CAREER_KEY)
-
-            val newContact = viewModel.createNewContact(newContactName, newContactCareer)
+            val newContactName = data.getString(NAME_KEY) ?: ""
+            val newContactCareer = data.getString(CAREER_KEY) ?: ""
 
             when (event) {
-                AlertDialog.BUTTON_POSITIVE -> viewModel.processAddContactDialogEvent(newContact)
+                AlertDialog.BUTTON_POSITIVE -> viewModel.setEvent(
+                    ContactListContract.Event.AddContactDialogEventProcessed(
+                        newContactName, newContactCareer
+                    )
+                )
             }
         }
     }
@@ -201,9 +224,14 @@ class ContactListFragment : BaseFragment() {
                 override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                     val adapterPosition = viewHolder.adapterPosition
 
-                    val deletedItem = viewModel.contactList.value[adapterPosition]
+                    val deletedItem = viewModel.state.value.contactList[adapterPosition]
                     showUndoDeletingSnackBarItem(deletedItem, adapterPosition)
-                    viewModel.deleteContactItem(deletedItem, adapterPosition)
+                    viewModel.setEvent(
+                        ContactListContract.Event.ContactItemDeleted(
+                            deletedItem,
+                            adapterPosition
+                        )
+                    )
                 }
             })
 
@@ -214,7 +242,7 @@ class ContactListFragment : BaseFragment() {
         requestPermissionsLauncher =
             registerForActivityResult(ActivityResultContracts.RequestPermission()) { isPermissionsGranted ->
                 if (isPermissionsGranted) {
-                    viewModel.addPhoneContacts()
+                    viewModel.setEvent(ContactListContract.Event.PhoneContactsAdded)
                 }
             }
     }
