@@ -34,6 +34,13 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+
+    packaging {
+        resources {
+            excludes += "META-INF/versions/9/OSGI-INF/MANIFEST.MF"
+        }
+    }
+
     kotlinOptions {
         jvmTarget = "11"
     }
@@ -44,6 +51,11 @@ android {
 }
 
 dependencies {
+    implementation(libs.retrofit.gson)
+    implementation(libs.gson)
+    implementation(libs.okhttp)
+    implementation(libs.logging.interceptor )
+    implementation(libs.retrofit)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.hilt.android)

@@ -92,8 +92,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fontFamily="@font/open_sans"
-            android:paddingTop="@dimen/input_text_edit_padding_top"
             android:maxLength="40"
+            android:paddingTop="@dimen/input_text_edit_padding_top"
             android:paddingBottom="@dimen/input_text_edit_padding_bottom"
             android:textColor="@color/edit_text_user_name_text_color"
             android:textStyle="bold"
@@ -168,5 +168,16 @@
         android:textSize="@dimen/middle_text_size"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/progressBarRequest"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:indeterminateTint="@color/log_out_border_and_text_color"
+        app:layout_constraintStart_toStartOf="parent"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

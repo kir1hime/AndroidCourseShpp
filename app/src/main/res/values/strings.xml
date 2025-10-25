@@ -71,4 +71,6 @@
     <!--Choose profile photo -->
     <string name="open_gallery">Open gallery</string>
 
+    <string name="backend_error">Backend error</string>
+
 </resources>

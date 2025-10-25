@@ -6,6 +6,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.androidcourseshpp.databinding.FragmentSignUpExtendedBinding
@@ -80,6 +81,8 @@ class SignUpExtendedFragment : AuthFragment() {
         collectFlow(viewModel.state) { state ->
             textInputLayoutUserName.helperText = getString(state.userNameHelperResId)
             textInputLayoutMobilePhone.helperText = getString(state.mobilePhoneHelperResId)
+            progressBarRequest.isVisible = state.isProgressBarShowed
+            setLoadingState(state.isProgressBarShowed)
         }
     }
 
@@ -117,6 +120,14 @@ class SignUpExtendedFragment : AuthFragment() {
                 }
             }
         })
+    }
+
+    private fun setLoadingState(isLoaded: Boolean) = with(binding){
+        if (isLoaded) {
+            editTextUserName.isFocusable = false
+            editTextMobilePhone.isFocusable = false
+            imageButtonAddProfilePhoto.isClickable = false
+        }
     }
 
     private fun updateMobilePhoneInput(sign: String?) = with(binding) {

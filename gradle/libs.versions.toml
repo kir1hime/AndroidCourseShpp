@@ -9,6 +9,10 @@ javafaker = "1.0.2" # test data
 # DI
 hilt = "2.56.2"
 ksp = "2.1.20-1.0.31"
+# Network
+gson = "2.13.2"
+okhttp = "5.2.1"
+retrofit = "3.0.0"
 # ________________
 kotlin = "2.1.20"
 coreKtx = "1.16.0"
@@ -45,17 +49,22 @@ androidx-constraintlayout = { group = "androidx.constraintlayout", name = "const
 picasso = { module = "com.squareup.picasso:picasso", version.ref = "picasso" }
 androidx-room-compiler-processing-testing = { group = "androidx.room", name = "room-compiler-processing-testing", version.ref = "roomCompilerProcessingTesting" }
 picasso-transformations = { module = "jp.wasabeef:picasso-transformations", version.ref = "picassoTransformations" }
-hilt-android = {module = "com.google.dagger:hilt-android", version.ref="hilt"}
-hilt-android-compiler = {module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt"}
+hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
+hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
 androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "roomKtx" }
+okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
+retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
+logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
+retrofit-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
 
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-android-navigation-safeargs = {id = "androidx.navigation.safeargs.kotlin", version.ref = "navigationUiKtx"}
-kotlin-parcelize = {id = "kotlin-parcelize"}
-hilt = {id = "com.google.dagger.hilt.android", version.ref="hilt"}
-ksp = {id = "com.google.devtools.ksp", version.ref="ksp"}
+android-navigation-safeargs = { id = "androidx.navigation.safeargs.kotlin", version.ref = "navigationUiKtx" }
+kotlin-parcelize = { id = "kotlin-parcelize" }
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 
 

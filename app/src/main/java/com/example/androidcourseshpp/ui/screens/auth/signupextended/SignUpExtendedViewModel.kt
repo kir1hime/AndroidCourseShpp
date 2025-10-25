@@ -1,8 +1,11 @@
 package com.example.androidcourseshpp.ui.screens.auth.signupextended
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.dataProvider.DataProvider
+import com.example.androidcourseshpp.data.network.RepositoryProviderHolder
+import com.example.androidcourseshpp.data.network.repository.auth.entity.SignUpData
 import com.example.androidcourseshpp.ui.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -16,7 +19,8 @@ class SignUpExtendedViewModel @Inject constructor(val dataProvider: DataProvider
 
     override fun initState(): SignUpExtendedContract.UIState = SignUpExtendedContract.UIState(
         userNameHelperResId = R.string.no_error,
-        mobilePhoneHelperResId = R.string.no_error
+        mobilePhoneHelperResId = R.string.no_error,
+        isProgressBarShowed = false
     )
 
     override fun handleEvent(event: SignUpExtendedContract.Event) {
@@ -53,6 +57,19 @@ class SignUpExtendedViewModel @Inject constructor(val dataProvider: DataProvider
 
         viewModelScope.launch {
             if (isMobilePhoneCorrect && isUserNameCorrect) {
+                setState { copy(isProgressBarShowed = true) }
+               val job = launch {
+                    RepositoryProviderHolder.repositoryProvider.getAuthRepository().signUp(
+                        SignUpData(
+                            name = userName,
+                            phone = mobilePhone,
+                            email = "lfkhmc@gmail.com",
+                            password = "Jlm603^15"
+                        )
+                    )
+                }
+                job.join()
+                setState { copy(isProgressBarShowed = false) }
                 setEffect(SignUpExtendedContract.Effect.NavigateToMyProfileScreen(dataProvider.getUserEMail()))
             }
         }

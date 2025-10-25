@@ -19,6 +19,7 @@ class SignUpExtendedContract {
 
     data class UIState(
         val userNameHelperResId: Int,
-        val mobilePhoneHelperResId: Int
+        val mobilePhoneHelperResId: Int,
+        val isProgressBarShowed : Boolean
     ) : ViewState
 }
