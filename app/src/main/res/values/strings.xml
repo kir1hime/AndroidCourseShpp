@@ -28,7 +28,8 @@
     <string name="remember_me">Remember me</string>
 
     <!--Sing up SignUpFragment-->
-    <string name="email_error">Incorrect E-mail</string>
+    <string name="incorrect_email_error">Incorrect E-mail</string>
+    <string name="email_already_registered_error">E-mail already registered</string>
     <string name="less_8_symbols_pswd_error">There must be at least %d symbols</string>
     <string name="capital_letter_error">There must be at least one capital letter</string>
     <string name="lowercase_letter_error">There must be at least one lowercase letter</string>

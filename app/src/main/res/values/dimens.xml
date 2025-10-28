@@ -136,6 +136,7 @@
     <dimen name="contacts_recycle_view_item_h">66dp</dimen>
     <dimen name="contacts_recycle_view_item_ava_size">50dp</dimen>
     <dimen name="choose_profile_photo_dialog_h">219dp</dimen>
+    <dimen name="progress_bar_request_size">70dp</dimen>
 
 
     <!--text sizes-->

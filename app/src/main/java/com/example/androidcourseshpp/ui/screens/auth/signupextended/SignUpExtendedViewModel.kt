@@ -1,11 +1,7 @@
 package com.example.androidcourseshpp.ui.screens.auth.signupextended
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.example.androidcourseshpp.R
-import com.example.androidcourseshpp.data.dataProvider.DataProvider
-import com.example.androidcourseshpp.data.network.RepositoryProviderHolder
-import com.example.androidcourseshpp.data.network.repository.auth.entity.SignUpData
 import com.example.androidcourseshpp.ui.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -14,7 +10,7 @@ import javax.inject.Inject
 private const val PHONE_NUMBER_LENGTH = 15
 
 @HiltViewModel
-class SignUpExtendedViewModel @Inject constructor(val dataProvider: DataProvider) :
+class SignUpExtendedViewModel @Inject constructor() :
     BaseViewModel<SignUpExtendedContract.Event, SignUpExtendedContract.Effect, SignUpExtendedContract.UIState>() {
 
     override fun initState(): SignUpExtendedContract.UIState = SignUpExtendedContract.UIState(
@@ -27,7 +23,9 @@ class SignUpExtendedViewModel @Inject constructor(val dataProvider: DataProvider
         when (event) {
             is SignUpExtendedContract.Event.OnForwardButtonClicked -> processInputData(
                 event.userName,
-                event.mobilePhone
+                event.mobilePhone,
+                event.email,
+                event.password
             )
 
             is SignUpExtendedContract.Event.OnAddProfilePhotoImageViewClicked -> navigateToChooseProfilePhotoDialog()
@@ -35,7 +33,7 @@ class SignUpExtendedViewModel @Inject constructor(val dataProvider: DataProvider
         }
     }
 
-    fun processInputData(userName: String, mobilePhone: String) {
+    fun processInputData(userName: String, mobilePhone: String, email: String, password: String) {
         var isMobilePhoneCorrect: Boolean
         var isUserNameCorrect: Boolean
 
@@ -57,20 +55,7 @@ class SignUpExtendedViewModel @Inject constructor(val dataProvider: DataProvider
 
         viewModelScope.launch {
             if (isMobilePhoneCorrect && isUserNameCorrect) {
-                setState { copy(isProgressBarShowed = true) }
-               val job = launch {
-                    RepositoryProviderHolder.repositoryProvider.getAuthRepository().signUp(
-                        SignUpData(
-                            name = userName,
-                            phone = mobilePhone,
-                            email = "lfkhmc@gmail.com",
-                            password = "Jlm603^15"
-                        )
-                    )
-                }
-                job.join()
-                setState { copy(isProgressBarShowed = false) }
-                setEffect(SignUpExtendedContract.Effect.NavigateToMyProfileScreen(dataProvider.getUserEMail()))
+                setEffect(SignUpExtendedContract.Effect.NavigateToMyProfileScreen(email))
             }
         }
     }

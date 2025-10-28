@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.androidcourseshpp.databinding.FragmentSignUpExtendedBinding
 import com.example.androidcourseshpp.ui.extensions.loadImageFromURL
 import com.example.androidcourseshpp.ui.screens.auth.AuthFragment
@@ -21,6 +22,8 @@ class SignUpExtendedFragment : AuthFragment() {
 
     private lateinit var binding: FragmentSignUpExtendedBinding
     private val viewModel by viewModels<SignUpExtendedViewModel>()
+
+    private val args: SignUpExtendedFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,7 +51,9 @@ class SignUpExtendedFragment : AuthFragment() {
             viewModel.setEvent(
                 SignUpExtendedContract.Event.OnForwardButtonClicked(
                     inputUserName,
-                    inputMobilePhone
+                    inputMobilePhone,
+                    args.email,
+                    args.password
                 )
             )
         }
@@ -122,7 +127,7 @@ class SignUpExtendedFragment : AuthFragment() {
         })
     }
 
-    private fun setLoadingState(isLoaded: Boolean) = with(binding){
+    private fun setLoadingState(isLoaded: Boolean) = with(binding) {
         if (isLoaded) {
             editTextUserName.isFocusable = false
             editTextMobilePhone.isFocusable = false

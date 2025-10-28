@@ -1,13 +1,16 @@
 package com.example.androidcourseshpp.data.dataProvider
 
 import android.content.SharedPreferences
+import com.example.androidcourseshpp.di.DataProviderPref
 import javax.inject.Inject
+import javax.inject.Singleton
 
 const val USER_INFO_STORE = "userInfo"
 const val EMAIL_KEY = "userEMail"
 const val PASSWORD_KEY = "userPassword"
 
-class DataProvider @Inject constructor(private val sharedPref : SharedPreferences) {
+@Singleton
+class DataProvider @Inject constructor(@DataProviderPref private val sharedPref : SharedPreferences) {
 
     private val editor = sharedPref.edit()
 

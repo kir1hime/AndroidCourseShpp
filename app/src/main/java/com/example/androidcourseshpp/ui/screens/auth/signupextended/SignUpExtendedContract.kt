@@ -6,20 +6,26 @@ import com.example.androidcourseshpp.ui.ViewState
 
 class SignUpExtendedContract {
     sealed interface Event : ViewEvent {
-        data class OnForwardButtonClicked(val userName: String, val mobilePhone: String) : Event
+        data class OnForwardButtonClicked(
+            val userName: String,
+            val mobilePhone: String,
+            val email: String,
+            val password: String
+        ) : Event
+
         data object OnAddProfilePhotoImageViewClicked : Event
         data object OnCancelButtonClicked : Event
     }
 
     sealed interface Effect : ViewEffect {
-        data class NavigateToMyProfileScreen(val email : String) : Effect
+        data class NavigateToMyProfileScreen(val email: String) : Effect
         data object NavigateToPreviousScreen : Effect
-        data object NavigateToChooseProfilePhotoDialog: Effect
+        data object NavigateToChooseProfilePhotoDialog : Effect
     }
 
     data class UIState(
         val userNameHelperResId: Int,
         val mobilePhoneHelperResId: Int,
-        val isProgressBarShowed : Boolean
+        val isProgressBarShowed: Boolean
     ) : ViewState
 }

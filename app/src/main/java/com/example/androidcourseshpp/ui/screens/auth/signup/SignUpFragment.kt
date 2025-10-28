@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.androidcourseshpp.data.MIN_NUM_OF_CHARS_IN_PASSWORD
@@ -42,7 +43,10 @@ class SignUpFragment : AuthFragment() {
     private fun setObserves() = with(binding) {
         collectFlow(viewModel.effect) { effect ->
             when (effect) {
-                is SignUpContract.Effect.NavigateToSignUpExtended -> moveToSignUpExtended()
+                is SignUpContract.Effect.NavigateToSignUpExtended -> moveToSignUpExtended(
+                    effect.email,
+                    effect.password
+                )
             }
         }
 
@@ -51,6 +55,9 @@ class SignUpFragment : AuthFragment() {
                 getString(state.passwordHelperTextResId, MIN_NUM_OF_CHARS_IN_PASSWORD)
 
             textInputLayoutEMail.helperText = getString(state.eMailHelperTextResId)
+
+            progressBarRequest.isVisible = state.isProgressBarShowed
+            setLoadingState(state.isProgressBarShowed)
         }
     }
 
@@ -73,8 +80,24 @@ class SignUpFragment : AuthFragment() {
         )
     }
 
-    private fun moveToSignUpExtended() {
-        val direction = SignUpFragmentDirections.actionSignUpFragmentToSignUpExtendedFragment()
+    private fun moveToSignUpExtended(email: String, password: String) {
+        val direction =
+            SignUpFragmentDirections.actionSignUpFragmentToSignUpExtendedFragment(email, password)
         findNavController().navigate(direction)
+    }
+
+    private fun setLoadingState(isLoaded: Boolean) = with(binding) {
+        val isEnabled = !isLoaded
+
+        editTextEMail.apply {
+            isFocusable = isEnabled
+            isFocusableInTouchMode = isEnabled
+        }
+        editTextPassword.apply {
+            isFocusable = isEnabled
+            isFocusableInTouchMode = isEnabled
+        }
+        comboBoxRememberMe.isClickable = isEnabled
+
     }
 }

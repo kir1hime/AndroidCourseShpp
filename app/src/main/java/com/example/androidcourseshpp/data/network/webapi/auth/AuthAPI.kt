@@ -6,6 +6,7 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 interface AuthAPI {
+
     @POST("users")
     suspend fun signUp(@Body signUpRequestDTO: SignUpRequestDTO): SignUpResponseDTO
 }

@@ -1,0 +1,31 @@
+package com.example.androidcourseshpp.data.jwt
+
+import android.content.SharedPreferences
+import javax.inject.Inject
+import javax.inject.Singleton
+import com.example.androidcourseshpp.di.JWTManagerPref
+
+const val JWT_STORAGE = "jwtStorage"
+const val ACCESS_TOKEN = "accessToken"
+const val REFRESH_TOKEN = "refreshToken"
+
+@Singleton
+class JWTManagerImpl @Inject constructor(@JWTManagerPref private val sharedPref: SharedPreferences): JWTManager{
+
+    private val editor = sharedPref.edit()
+
+    override suspend fun getAccessToken() =
+        sharedPref.getString(ACCESS_TOKEN, null)
+
+
+    override suspend fun saveAccessToken(token: String) {
+        editor.putString(ACCESS_TOKEN, token).apply()
+    }
+
+    override suspend fun getRefreshToken() =
+        sharedPref.getString(REFRESH_TOKEN, null)
+
+    override suspend fun saveRefreshToken(token: String) {
+        editor.putString(REFRESH_TOKEN, token).apply()
+    }
+}

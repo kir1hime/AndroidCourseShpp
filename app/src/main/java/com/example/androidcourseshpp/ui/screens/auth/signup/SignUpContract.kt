@@ -15,12 +15,13 @@ class SignUpContract {
     }
 
     sealed interface Effect : ViewEffect {
-        data object NavigateToSignUpExtended : Effect
+        data class NavigateToSignUpExtended(val email: String, val password: String) : Effect
     }
 
     data class UIState(
         val eMailHelperTextResId: Int,
-        val passwordHelperTextResId: Int
+        val passwordHelperTextResId: Int,
+        val isProgressBarShowed: Boolean
     ) : ViewState
 
 }

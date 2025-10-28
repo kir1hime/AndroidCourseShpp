@@ -7,16 +7,25 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.PasswordErrorMessagesContainer
+import com.example.androidcourseshpp.data.jwt.JWTManager
+import com.example.androidcourseshpp.data.jwt.JWTManagerImpl
+import com.example.androidcourseshpp.data.network.RepositoryProviderHolder
+import com.example.androidcourseshpp.data.network.repository.BackendException
+import com.example.androidcourseshpp.data.network.repository.auth.entity.SignUpData
 import com.example.androidcourseshpp.ui.BaseViewModel
 import kotlinx.coroutines.launch
 
 @HiltViewModel
-class SignUpViewModel @Inject constructor(private val dataProvider: DataProvider) :
+class SignUpViewModel @Inject constructor(
+    private val dataProvider: DataProvider,
+    private val jwtManager: JWTManager
+) :
     BaseViewModel<SignUpContract.Event, SignUpContract.Effect, SignUpContract.UIState>() {
 
     override fun initState() = SignUpContract.UIState(
         eMailHelperTextResId = R.string.no_error,
-        passwordHelperTextResId = R.string.no_error
+        passwordHelperTextResId = R.string.no_error,
+        false
     )
 
     var savedEmail = getUserEMail()
@@ -41,7 +50,7 @@ class SignUpViewModel @Inject constructor(private val dataProvider: DataProvider
         if (!checkEmail(email)) {
             isEMailCorrect = false
             setState {
-                copy(eMailHelperTextResId = R.string.email_error)
+                copy(eMailHelperTextResId = R.string.incorrect_email_error)
             }
         } else {
             isEMailCorrect = true
@@ -75,7 +84,22 @@ class SignUpViewModel @Inject constructor(private val dataProvider: DataProvider
 
         if (isEMailCorrect && isPasswordCorrect) {
             viewModelScope.launch {
-                setEffect(SignUpContract.Effect.NavigateToSignUpExtended)
+                try {
+                    setState { copy(isProgressBarShowed = true) }
+
+                    val response = RepositoryProviderHolder.repositoryProvider.getAuthRepository()
+                        .signUp(SignUpData(email, password))
+
+                    jwtManager.saveAccessToken(response.accessToken)
+                    jwtManager.saveRefreshToken(response.refreshToken)
+
+                    setEffect(SignUpContract.Effect.NavigateToSignUpExtended(email, password))
+
+                } catch (e: BackendException) {
+                    setState { copy(eMailHelperTextResId = R.string.email_already_registered_error) }
+                } finally {
+                    setState { copy(isProgressBarShowed = false) }
+                }
             }
         }
     }

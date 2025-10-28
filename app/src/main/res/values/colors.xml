@@ -97,6 +97,7 @@
     <color name="cancel_button_background_color">#242235</color>
     <color name="cancel_button_border_color">#FFFFFF</color>
     <color name="cancel_button_text_color">#FFFFFF</color>
+    <color name="progress_bar_request_color">#FB5E06</color>
 
     <!--Choose profile photo (dialog_choose_profile_photo) -->
     <color name="cancel_text_color">#B2B2B3</color>
