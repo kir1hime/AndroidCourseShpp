@@ -73,7 +73,7 @@
     <string name="open_gallery">Open gallery</string>
 
     <string name="backend_error_text">Backend error</string>
-    <string name="backend_error">Server is not responding</string>
+    <string name="backend_error">Server error</string>
     <string name="server_response_error">Something went wrong. Please try again</string>
     <string name="connection_error">Check your internet connection</string>
 

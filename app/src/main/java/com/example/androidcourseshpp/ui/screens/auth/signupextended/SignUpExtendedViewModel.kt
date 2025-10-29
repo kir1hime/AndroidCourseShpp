@@ -2,12 +2,12 @@ package com.example.androidcourseshpp.ui.screens.auth.signupextended
 
 import androidx.lifecycle.viewModelScope
 import com.example.androidcourseshpp.R
-import com.example.androidcourseshpp.data.network.RepositoryProviderHolder
+import com.example.androidcourseshpp.data.network.RetrofitServiceProviderHolder
 import com.example.androidcourseshpp.data.network.jwt.JWTManager
-import com.example.androidcourseshpp.data.network.repository.BackendException
-import com.example.androidcourseshpp.data.network.repository.ConnectionException
-import com.example.androidcourseshpp.data.network.repository.ProcessResponseException
-import com.example.androidcourseshpp.data.network.repository.user.entity.UpdateUserData
+import com.example.androidcourseshpp.data.network.service.BackendException
+import com.example.androidcourseshpp.data.network.service.ConnectionException
+import com.example.androidcourseshpp.data.network.service.ProcessResponseException
+import com.example.androidcourseshpp.data.network.service.user.entity.UpdateUserData
 import com.example.androidcourseshpp.ui.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -16,7 +16,7 @@ import javax.inject.Inject
 private const val PHONE_NUMBER_LENGTH = 15
 
 @HiltViewModel
-class SignUpExtendedViewModel @Inject constructor(private val jwtManager: JWTManager) :
+class SignUpExtendedViewModel @Inject constructor(private val serviceProviderHolder: RetrofitServiceProviderHolder) :
     BaseViewModel<SignUpExtendedContract.Event, SignUpExtendedContract.Effect, SignUpExtendedContract.UIState>() {
 
     override fun initState(): SignUpExtendedContract.UIState = SignUpExtendedContract.UIState(
@@ -65,7 +65,7 @@ class SignUpExtendedViewModel @Inject constructor(private val jwtManager: JWTMan
                 try {
                     setState { copy(isProgressBarShowed = true) }
 
-                    RepositoryProviderHolder(jwtManager).repositoryProvider.getUserRepository()
+                    serviceProviderHolder.serviceProvider.getUserService()
                         .updateUserInfo(
                             serverUserId,
                             UpdateUserData(name = userName, phone = mobilePhone)

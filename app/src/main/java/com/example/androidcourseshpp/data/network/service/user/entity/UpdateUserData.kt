@@ -1,4 +1,4 @@
-package com.example.androidcourseshpp.data.network.repository.user.entity
+package com.example.androidcourseshpp.data.network.service.user.entity
 
 import com.example.androidcourseshpp.data.network.dto.user.UpdateUserRequestDTO
 

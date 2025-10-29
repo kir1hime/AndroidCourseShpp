@@ -8,19 +8,19 @@ import javax.inject.Inject
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.PasswordErrorMessagesContainer
 import com.example.androidcourseshpp.data.network.jwt.JWTManager
-import com.example.androidcourseshpp.data.network.RepositoryProviderHolder
-import com.example.androidcourseshpp.data.network.repository.BackendException
-import com.example.androidcourseshpp.data.network.repository.ConnectionException
-import com.example.androidcourseshpp.data.network.repository.ProcessResponseException
-import com.example.androidcourseshpp.data.network.repository.auth.entity.SignUpData
+import com.example.androidcourseshpp.data.network.RetrofitServiceProviderHolder
+import com.example.androidcourseshpp.data.network.service.BackendException
+import com.example.androidcourseshpp.data.network.service.ConnectionException
+import com.example.androidcourseshpp.data.network.service.ProcessResponseException
+import com.example.androidcourseshpp.data.network.service.auth.entity.SignUpData
 import com.example.androidcourseshpp.ui.BaseViewModel
-import com.example.androidcourseshpp.ui.screens.auth.signupextended.SignUpExtendedContract
 import kotlinx.coroutines.launch
 
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
     private val dataProvider: DataProvider,
-    private val jwtManager: JWTManager
+    private val jwtManager: JWTManager,
+    private val serviceProviderHolder: RetrofitServiceProviderHolder
 ) :
     BaseViewModel<SignUpContract.Event, SignUpContract.Effect, SignUpContract.UIState>() {
 
@@ -90,7 +90,7 @@ class SignUpViewModel @Inject constructor(
                     setState { copy(isProgressBarShowed = true) }
 
                     val response =
-                        RepositoryProviderHolder(jwtManager).repositoryProvider.getAuthRepository()
+                        serviceProviderHolder.serviceProvider.getAuthService()
                             .signUp(SignUpData(email, password))
 
                     jwtManager.saveAccessToken(response.accessToken)
@@ -107,12 +107,13 @@ class SignUpViewModel @Inject constructor(
                     )
 
                 } catch (e: BackendException) {
+                    setState { copy(eMailHelperTextResId = R.string.email_already_registered_error) }
                     setEffect(SignUpContract.Effect.ShowToast(R.string.backend_error))
                 } catch (e: ProcessResponseException) {
                     setEffect(SignUpContract.Effect.ShowToast(R.string.server_response_error))
                 } catch (e: ConnectionException) {
                     setEffect(SignUpContract.Effect.ShowToast(R.string.connection_error))
-                }finally {
+                } finally {
                     setState { copy(isProgressBarShowed = false) }
                 }
             }

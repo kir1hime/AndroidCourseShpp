@@ -1,4 +1,4 @@
-package com.example.androidcourseshpp.data.network.repository.auth.entity
+package com.example.androidcourseshpp.data.network.service.auth.entity
 
 import com.example.androidcourseshpp.data.network.dto.entity.User
 

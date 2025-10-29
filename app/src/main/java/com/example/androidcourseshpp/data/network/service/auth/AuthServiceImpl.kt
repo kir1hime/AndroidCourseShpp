@@ -1,15 +1,15 @@
-package com.example.androidcourseshpp.data.network.repository.auth
+package com.example.androidcourseshpp.data.network.service.auth
 
 import com.example.androidcourseshpp.data.network.RetrofitConfig
 import com.example.androidcourseshpp.data.network.dto.auth.SignUpRequestDTO
-import com.example.androidcourseshpp.data.network.repository.BaseRetrofitRepository
-import com.example.androidcourseshpp.data.network.repository.auth.entity.SignUpData
+import com.example.androidcourseshpp.data.network.service.BaseRetrofitService
+import com.example.androidcourseshpp.data.network.service.auth.entity.SignUpData
 import com.example.androidcourseshpp.data.network.webapi.auth.AuthAPI
 
 
-class AuthRepositoryImpl(
+class AuthServiceImpl(
     config: RetrofitConfig
-) : BaseRetrofitRepository(config), AuthRepository {
+) : BaseRetrofitService(config), AuthService {
 
     private val signUpApi = retrofit.create(AuthAPI::class.java)
 

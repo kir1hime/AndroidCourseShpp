@@ -1,13 +1,13 @@
-package com.example.androidcourseshpp.data.network.repository.user
+package com.example.androidcourseshpp.data.network.service.user
 
 import com.example.androidcourseshpp.data.network.RetrofitConfig
-import com.example.androidcourseshpp.data.network.repository.BaseRetrofitRepository
-import com.example.androidcourseshpp.data.network.repository.user.entity.UpdateUserData
+import com.example.androidcourseshpp.data.network.service.BaseRetrofitService
+import com.example.androidcourseshpp.data.network.service.user.entity.UpdateUserData
 import com.example.androidcourseshpp.data.network.webapi.user.UserAPI
 
-class UserRepositoryImpl(
+class UserServiceImpl(
     config: RetrofitConfig
-) : BaseRetrofitRepository(config), UserRepository {
+) : BaseRetrofitService(config), UserService {
 
     private val userApi = retrofit.create(UserAPI::class.java)
 
