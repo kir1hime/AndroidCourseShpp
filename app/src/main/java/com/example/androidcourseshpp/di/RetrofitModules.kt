@@ -32,7 +32,7 @@ interface RetrofitServicesModules {
     fun provideUserService(userServiceImpl: UserServiceImpl): UserService
 
     @Binds
-    fun providerServiceProvider(retrofitServicesProvider: RetrofitServicesProvider) : ServicesProvider
+    fun providerServiceProvider(retrofitServicesProvider: RetrofitServicesProvider): ServicesProvider
 }
 
 @Module

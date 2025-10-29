@@ -3,7 +3,6 @@ package com.example.androidcourseshpp.ui.screens.auth.signupextended
 import androidx.lifecycle.viewModelScope
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.network.RetrofitServiceProviderHolder
-import com.example.androidcourseshpp.data.network.jwt.JWTManager
 import com.example.androidcourseshpp.data.network.service.BackendException
 import com.example.androidcourseshpp.data.network.service.ConnectionException
 import com.example.androidcourseshpp.data.network.service.ProcessResponseException
