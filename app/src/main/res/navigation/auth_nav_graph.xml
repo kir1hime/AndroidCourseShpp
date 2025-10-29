@@ -29,9 +29,13 @@
         <argument
             android:name="password"
             app:argType="string" />
+        <argument
+            android:name="serverUserId"
+            app:argType="long" />
         <action
             android:id="@+id/action_signUpExtendedFragment_to_chooseProfilePhotoDialog"
             app:destination="@id/chooseProfilePhotoDialog" />
+
     </fragment>
     <dialog
         android:id="@+id/chooseProfilePhotoDialog"

@@ -1,4 +1,4 @@
-package com.example.androidcourseshpp.data.jwt
+package com.example.androidcourseshpp.data.network.jwt
 
 import android.content.SharedPreferences
 import javax.inject.Inject
@@ -14,18 +14,18 @@ class JWTManagerImpl @Inject constructor(@JWTManagerPref private val sharedPref:
 
     private val editor = sharedPref.edit()
 
-    override suspend fun getAccessToken() =
+    override  fun getAccessToken() =
         sharedPref.getString(ACCESS_TOKEN, null)
 
 
-    override suspend fun saveAccessToken(token: String) {
+    override  fun saveAccessToken(token: String) {
         editor.putString(ACCESS_TOKEN, token).apply()
     }
 
-    override suspend fun getRefreshToken() =
+    override  fun getRefreshToken() =
         sharedPref.getString(REFRESH_TOKEN, null)
 
-    override suspend fun saveRefreshToken(token: String) {
+    override  fun saveRefreshToken(token: String) {
         editor.putString(REFRESH_TOKEN, token).apply()
     }
 }

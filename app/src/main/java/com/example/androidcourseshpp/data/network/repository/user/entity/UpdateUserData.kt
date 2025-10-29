@@ -3,15 +3,15 @@ package com.example.androidcourseshpp.data.network.repository.user.entity
 import com.example.androidcourseshpp.data.network.dto.user.UpdateUserRequestDTO
 
 data class UpdateUserData(
-    val name: String?,
-    val phone: String?,
-    val address: String?,
-    val career: String?,
-    val birthday: String?,
-    val facebook: String?,
-    val instagram: String?,
-    val twitter: String?,
-    val linkedin: String?
+    val name: String? = null,
+    val phone: String? = null,
+    val address: String? = null,
+    val career: String? = null,
+    val birthday: String? = null,
+    val facebook: String? = null,
+    val instagram: String? = null,
+    val twitter: String? = null,
+    val linkedin: String? = null
 ) {
     fun toUpdateUserDataDTO() = UpdateUserRequestDTO(
         name = name,

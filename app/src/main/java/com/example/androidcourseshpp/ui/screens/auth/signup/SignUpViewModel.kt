@@ -7,8 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.PasswordErrorMessagesContainer
-import com.example.androidcourseshpp.data.jwt.JWTManager
-import com.example.androidcourseshpp.data.jwt.JWTManagerImpl
+import com.example.androidcourseshpp.data.network.jwt.JWTManager
 import com.example.androidcourseshpp.data.network.RepositoryProviderHolder
 import com.example.androidcourseshpp.data.network.repository.BackendException
 import com.example.androidcourseshpp.data.network.repository.auth.entity.SignUpData
@@ -87,13 +86,22 @@ class SignUpViewModel @Inject constructor(
                 try {
                     setState { copy(isProgressBarShowed = true) }
 
-                    val response = RepositoryProviderHolder.repositoryProvider.getAuthRepository()
-                        .signUp(SignUpData(email, password))
+                    val response =
+                        RepositoryProviderHolder(jwtManager).repositoryProvider.getAuthRepository()
+                            .signUp(SignUpData(email, password))
 
                     jwtManager.saveAccessToken(response.accessToken)
                     jwtManager.saveRefreshToken(response.refreshToken)
 
-                    setEffect(SignUpContract.Effect.NavigateToSignUpExtended(email, password))
+                    val serverUserId = response.user.id
+
+                    setEffect(
+                        SignUpContract.Effect.NavigateToSignUpExtended(
+                            serverUserId,
+                            email,
+                            password
+                        )
+                    )
 
                 } catch (e: BackendException) {
                     setState { copy(eMailHelperTextResId = R.string.email_already_registered_error) }

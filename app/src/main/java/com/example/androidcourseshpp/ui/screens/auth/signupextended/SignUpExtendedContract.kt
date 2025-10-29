@@ -10,7 +10,7 @@ class SignUpExtendedContract {
             val userName: String,
             val mobilePhone: String,
             val email: String,
-            val password: String
+            val serverUserId: Long
         ) : Event
 
         data object OnAddProfilePhotoImageViewClicked : Event

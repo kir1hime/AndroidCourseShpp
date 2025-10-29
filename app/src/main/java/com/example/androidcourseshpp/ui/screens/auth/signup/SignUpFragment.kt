@@ -44,6 +44,7 @@ class SignUpFragment : AuthFragment() {
         collectFlow(viewModel.effect) { effect ->
             when (effect) {
                 is SignUpContract.Effect.NavigateToSignUpExtended -> moveToSignUpExtended(
+                    effect.serverUserId,
                     effect.email,
                     effect.password
                 )
@@ -80,9 +81,13 @@ class SignUpFragment : AuthFragment() {
         )
     }
 
-    private fun moveToSignUpExtended(email: String, password: String) {
+    private fun moveToSignUpExtended(serverUserId: Long, email: String, password: String) {
         val direction =
-            SignUpFragmentDirections.actionSignUpFragmentToSignUpExtendedFragment(email, password)
+            SignUpFragmentDirections.actionSignUpFragmentToSignUpExtendedFragment(
+                email,
+                password,
+                serverUserId
+            )
         findNavController().navigate(direction)
     }
 

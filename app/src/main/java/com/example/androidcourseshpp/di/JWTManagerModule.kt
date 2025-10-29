@@ -1,7 +1,7 @@
 package com.example.androidcourseshpp.di
 
-import com.example.androidcourseshpp.data.jwt.JWTManager
-import com.example.androidcourseshpp.data.jwt.JWTManagerImpl
+import com.example.androidcourseshpp.data.network.jwt.JWTManager
+import com.example.androidcourseshpp.data.network.jwt.JWTManagerImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

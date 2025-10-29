@@ -8,7 +8,7 @@ import retrofit2.http.Path
 
 interface UserAPI {
 
-    @PUT("users/:userId")
+    @PUT("users/{userId}")
     suspend fun updateUserInfo(
         @Path("userId") userId: Long,
         @Body updateUserRequestDTO: UpdateUserRequestDTO

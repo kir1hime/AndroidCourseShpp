@@ -1,6 +1,7 @@
 package com.example.androidcourseshpp.data.network.dto.entity
 
 data class User(
+    val id: Long,
     val email: String,
     val name: String?,
     val phone: String?,

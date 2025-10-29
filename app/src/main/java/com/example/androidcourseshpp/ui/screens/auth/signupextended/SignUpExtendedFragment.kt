@@ -52,8 +52,8 @@ class SignUpExtendedFragment : AuthFragment() {
                 SignUpExtendedContract.Event.OnForwardButtonClicked(
                     inputUserName,
                     inputMobilePhone,
-                    args.email,
-                    args.password
+                   args.email,
+                    args.serverUserId
                 )
             )
         }
@@ -128,11 +128,17 @@ class SignUpExtendedFragment : AuthFragment() {
     }
 
     private fun setLoadingState(isLoaded: Boolean) = with(binding) {
-        if (isLoaded) {
-            editTextUserName.isFocusable = false
-            editTextMobilePhone.isFocusable = false
-            imageButtonAddProfilePhoto.isClickable = false
+        val isEnabled = !isLoaded
+
+        editTextUserName.apply {
+            isFocusable = isEnabled
+            isFocusableInTouchMode = isEnabled
         }
+        editTextMobilePhone.apply {
+            isFocusable = isEnabled
+            isFocusableInTouchMode = isEnabled
+        }
+        imageButtonAddProfilePhoto.isClickable = isEnabled
     }
 
     private fun updateMobilePhoneInput(sign: String?) = with(binding) {
