@@ -10,8 +10,11 @@ import com.example.androidcourseshpp.data.PasswordErrorMessagesContainer
 import com.example.androidcourseshpp.data.network.jwt.JWTManager
 import com.example.androidcourseshpp.data.network.RepositoryProviderHolder
 import com.example.androidcourseshpp.data.network.repository.BackendException
+import com.example.androidcourseshpp.data.network.repository.ConnectionException
+import com.example.androidcourseshpp.data.network.repository.ProcessResponseException
 import com.example.androidcourseshpp.data.network.repository.auth.entity.SignUpData
 import com.example.androidcourseshpp.ui.BaseViewModel
+import com.example.androidcourseshpp.ui.screens.auth.signupextended.SignUpExtendedContract
 import kotlinx.coroutines.launch
 
 @HiltViewModel
@@ -104,8 +107,12 @@ class SignUpViewModel @Inject constructor(
                     )
 
                 } catch (e: BackendException) {
-                    setState { copy(eMailHelperTextResId = R.string.email_already_registered_error) }
-                } finally {
+                    setEffect(SignUpContract.Effect.ShowToast(R.string.backend_error))
+                } catch (e: ProcessResponseException) {
+                    setEffect(SignUpContract.Effect.ShowToast(R.string.server_response_error))
+                } catch (e: ConnectionException) {
+                    setEffect(SignUpContract.Effect.ShowToast(R.string.connection_error))
+                }finally {
                     setState { copy(isProgressBarShowed = false) }
                 }
             }

@@ -48,6 +48,8 @@ class SignUpFragment : AuthFragment() {
                     effect.email,
                     effect.password
                 )
+
+                is SignUpContract.Effect.ShowToast -> makeToast(effect.toastMessageResId)
             }
         }
 

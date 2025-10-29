@@ -25,10 +25,10 @@ class MyProfileViewModel @Inject constructor(private val dataProvider: DataProvi
 
     }
 
-    private fun updateUserName(email: String) {
+    private fun updateUserName(name: String) {
         setState {
-            if (email != "") {
-               copy(EmailParser.parseEMail(email))
+            if (name != "") {
+                copy(name)
             } else {
                 copy(EmailParser.parseEMail(getSavedEmail()))
             }

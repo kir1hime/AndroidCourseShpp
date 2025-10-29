@@ -32,7 +32,7 @@ open class BaseRetrofitRepository(retrofitConfig: RetrofitConfig) {
             val errorJson = e.response()?.errorBody()?.string().orEmpty()
             val errorDTO = errorAdapter.fromJson(errorJson)
 
-            BackendException(errorDTO?.message ?: R.string.backend_error.toString())
+            BackendException(errorDTO?.message ?: R.string.backend_error_text.toString())
         } catch (e: Exception) {
             throw ProcessResponseException(e)
         }

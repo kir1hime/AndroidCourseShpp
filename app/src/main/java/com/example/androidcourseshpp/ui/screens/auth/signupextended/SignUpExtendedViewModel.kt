@@ -1,10 +1,12 @@
 package com.example.androidcourseshpp.ui.screens.auth.signupextended
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.network.RepositoryProviderHolder
 import com.example.androidcourseshpp.data.network.jwt.JWTManager
+import com.example.androidcourseshpp.data.network.repository.BackendException
+import com.example.androidcourseshpp.data.network.repository.ConnectionException
+import com.example.androidcourseshpp.data.network.repository.ProcessResponseException
 import com.example.androidcourseshpp.data.network.repository.user.entity.UpdateUserData
 import com.example.androidcourseshpp.ui.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -59,21 +61,27 @@ class SignUpExtendedViewModel @Inject constructor(private val jwtManager: JWTMan
 
         viewModelScope.launch {
             if (isMobilePhoneCorrect && isUserNameCorrect) {
-                Log.d("myTag", "aldsf")
 
-                setState { copy(isProgressBarShowed = true) }
-                RepositoryProviderHolder(jwtManager).repositoryProvider.getUserRepository()
-                    .updateUserInfo(
-                        serverUserId,
-                        UpdateUserData(name = userName, phone = mobilePhone)
-                    )
+                try {
+                    setState { copy(isProgressBarShowed = true) }
 
-                setEffect(SignUpExtendedContract.Effect.NavigateToMyProfileScreen(email))
+                    RepositoryProviderHolder(jwtManager).repositoryProvider.getUserRepository()
+                        .updateUserInfo(
+                            serverUserId,
+                            UpdateUserData(name = userName, phone = mobilePhone)
+                        )
 
+                    setEffect(SignUpExtendedContract.Effect.NavigateToMyProfileScreen(email))
+                } catch (e: BackendException) {
+                    setEffect(SignUpExtendedContract.Effect.ShowToast(R.string.backend_error))
+                } catch (e: ProcessResponseException) {
+                    setEffect(SignUpExtendedContract.Effect.ShowToast(R.string.server_response_error))
+                } catch (e: ConnectionException) {
+                    setEffect(SignUpExtendedContract.Effect.ShowToast(R.string.connection_error))
+                } finally {
+                    setState { copy(isProgressBarShowed = false) }
 
-
-                setState { copy(isProgressBarShowed = false) }
-
+                }
             }
         }
     }

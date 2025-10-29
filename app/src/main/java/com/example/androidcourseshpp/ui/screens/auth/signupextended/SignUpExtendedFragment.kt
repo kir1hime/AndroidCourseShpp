@@ -6,6 +6,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -16,6 +17,7 @@ import com.example.androidcourseshpp.ui.screens.auth.AuthFragment
 import com.example.androidcourseshpp.ui.screens.auth.signupextended.chooseprofilephotodialog.ChooseProfilePhotoDialog
 import com.example.androidcourseshpp.ui.screens.auth.signupextended.chooseprofilephotodialog.ChooseProfilePhotoDialog.Companion.PHOTO
 import dagger.hilt.android.AndroidEntryPoint
+import kotlin.time.Duration
 
 @AndroidEntryPoint
 class SignUpExtendedFragment : AuthFragment() {
@@ -52,7 +54,7 @@ class SignUpExtendedFragment : AuthFragment() {
                 SignUpExtendedContract.Event.OnForwardButtonClicked(
                     inputUserName,
                     inputMobilePhone,
-                   args.email,
+                    args.email,
                     args.serverUserId
                 )
             )
@@ -70,7 +72,7 @@ class SignUpExtendedFragment : AuthFragment() {
         collectFlow(viewModel.effect) { effect ->
             when (effect) {
                 is SignUpExtendedContract.Effect.NavigateToMyProfileScreen -> moveToMyProfileScreen(
-                    effect.email
+                    editTextUserName.text.toString()
                 )
 
                 is SignUpExtendedContract.Effect.NavigateToPreviousScreen -> findNavController().navigateUp()
@@ -80,6 +82,8 @@ class SignUpExtendedFragment : AuthFragment() {
                         SignUpExtendedFragmentDirections.actionSignUpExtendedFragmentToChooseProfilePhotoDialog()
                     findNavController().navigate(direction)
                 }
+
+                is SignUpExtendedContract.Effect.ShowToast -> makeToast(effect.toastMessageResId)
             }
         }
 

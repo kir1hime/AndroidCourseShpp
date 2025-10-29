@@ -66,6 +66,9 @@
     <string name="incorrect_mobile_phone_error">Неправильний номер мобільного телефона</string>
     <string name="open_gallery">Відкрити галерею</string>
     <string name="empty_name_error">Не вкзано ім\'я, повинно бути щонайменше одна літера</string>
-    <string name="backend_error">Backend error</string>
+    <string name="backend_error_text">Backend error</string>
+    <string name="backend_error">Сервер не відповідає</string>
+    <string name="server_response_error">Щось пішло не так. Будь ласка, спробуйте знову</string>
+    <string name="connection_error">Перевірте ваше інтернет з\'єднання</string>
 
 </resources>
