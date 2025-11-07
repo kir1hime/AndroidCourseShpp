@@ -99,7 +99,7 @@ class SignUpViewModel @Inject constructor(
                     val serverUserId = response.user.id
 
                     setEffect(
-                        SignUpContract.Effect.NavigateToSignUpExtended(
+                        SignUpContract.Effect.NavigateToSignUpExtendedScreen(
                             serverUserId,
                             email,
                             password

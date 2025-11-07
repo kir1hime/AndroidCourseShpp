@@ -5,7 +5,8 @@
     android:id="@+id/signIn"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/sign_in_screen_color">
+    android:background="@color/sign_in_screen_color"
+    tools:context="com.example.androidcourseshpp.ui.screens.auth.signin.SignInFragment">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/textHello"

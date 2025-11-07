@@ -43,7 +43,7 @@ class SignUpFragment : AuthFragment() {
     private fun setObserves() = with(binding) {
         collectFlow(viewModel.effect) { effect ->
             when (effect) {
-                is SignUpContract.Effect.NavigateToSignUpExtended -> moveToSignUpExtended(
+                is SignUpContract.Effect.NavigateToSignUpExtendedScreen -> moveToSignUpExtendedScreen(
                     effect.serverUserId,
                     effect.email,
                     effect.password
@@ -83,7 +83,7 @@ class SignUpFragment : AuthFragment() {
         )
     }
 
-    private fun moveToSignUpExtended(serverUserId: Long, email: String, password: String) {
+    private fun moveToSignUpExtendedScreen(serverUserId: Long, email: String, password: String) {
         val direction =
             SignUpFragmentDirections.actionSignUpFragmentToSignUpExtendedFragment(
                 email,
