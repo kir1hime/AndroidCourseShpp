@@ -96,6 +96,18 @@
     <dimen name="contacts_recycle_view_space_size_between_items">16dp</dimen>
     <dimen name="gallery_recycler_view_left_offset">8dp</dimen>
 
+    <dimen name="enter_your_data_padding_top">8dp</dimen>
+
+    <dimen name="sign_in_email_input_margin_top">24dp</dimen>
+    <dimen name="sign_in_email_input_margin_bottom">186dp</dimen>
+    <dimen name="sign_in_password_input_margin_top">24dp</dimen>
+
+    <dimen name="login_button_margin_bottom">50dp</dimen>
+    <dimen name="sign_up_account_question_margin_start">81dp</dimen>
+    <dimen name="sign_up_account_question_margin_end">143dp</dimen>
+
+    <dimen name="sign_up_margin_start">12dp</dimen>
+
 
     <!--paddings-->
     <dimen name="settings_padding_vertical">4.5dp</dimen>
@@ -106,6 +118,7 @@
     <dimen name="input_text_edit_padding_top">26dp</dimen>
     <dimen name="input_text_edit_padding_bottom">8dp</dimen>
     <dimen name="dialog_career_edit_text_padding_top">24dp</dimen>
+    <dimen name="forgot_your_password_label">15dp</dimen>
 
     <!--button dimens-->
     <dimen name="view_my_contacts_bt_h">55dp</dimen>

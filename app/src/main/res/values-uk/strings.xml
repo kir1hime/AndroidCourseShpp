@@ -70,5 +70,7 @@
     <string name="backend_error">Помилка сервера</string>
     <string name="server_response_error">Щось пішло не так. Будь ласка, спробуйте знову</string>
     <string name="connection_error">Перевірте ваше інтернет з\'єднання</string>
+    <string name="hello_label">Привіт!</string>
+    <string name="enter_your_data_label">Введіть вашу пошту та пароль нижче</string>
 
 </resources>

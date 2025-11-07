@@ -77,4 +77,12 @@
     <string name="server_response_error">Something went wrong. Please try again</string>
     <string name="connection_error">Check your internet connection</string>
 
+    <!--Sign in -->
+    <string name="hello_label">Hello!</string>
+    <string name="enter_your_data_label">Enter your email and password below</string>
+    <string name="login_button_text">LOGIN</string>
+    <string name="don_t_have_account_label">Don\'t have account?</string>
+    <string name="sign_up_label">Sign up</string>
+    <string name="forgot_your_password_label">Forgot your password?\n</string>
+
 </resources>

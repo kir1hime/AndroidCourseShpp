@@ -33,7 +33,7 @@
     <color name="career_text_color">@color/log_out_border_and_text_color</color>
     <color name="home_address_text_color">@color/log_out_border_and_text_color</color>
 
-    <!--Sign up (activity_auth.xml)-->
+    <!--Sign up (fragment_sign_up.xml)-->
     <color name="auth_screen_color">#242235</color>
     <color name="email_input_background_color">@color/auth_screen_color</color>
     <color name="register_background_color">@color/auth_screen_color</color>
@@ -52,6 +52,8 @@
     <color name="remember_me_text_color">@color/account_question_text_color</color>
 
     <color name="google_text_color">#000000</color>
+    <color name="fill_out_label_color">#FFFFFFFF</color>
+    <color name="sign_up_greetings_text_color">#FFFFFFFF</color>
 
     <!-- Contact list (fragment_contactlist.xml)-->
     <color name="contacts_bar_color">#242235</color>
@@ -102,4 +104,14 @@
     <!--Choose profile photo (dialog_choose_profile_photo) -->
     <color name="cancel_text_color">#B2B2B3</color>
     <color name="open_gallery_text_color">#FFFFFF</color>
+
+
+    <!--Sign In (fragment_sign_in) -->
+    <color name="sign_in_screen_color">#242235</color>
+    <color name="login_background_color">#242235</color>
+    <color name="sign_in_greetings_text_color">#FFFFFF</color>
+    <color name="forgot_your_password_label_color">#FFFFFF</color>
+    <color name="login_text_color">#FFFFFF</color>
+    <color name="sign_up_label_color">#FFFFFF</color>
+    <color name="login_border_color">#FB5E06</color>
 </resources>
