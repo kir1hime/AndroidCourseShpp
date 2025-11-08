@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.androidcourseshpp.data.MIN_NUM_OF_CHARS_IN_PASSWORD
 import com.example.androidcourseshpp.databinding.FragmentSignInBinding
 import com.example.androidcourseshpp.ui.screens.auth.AuthFragment
+import com.example.androidcourseshpp.ui.screens.auth.signup.SignUpContract
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.getValue
 
@@ -40,8 +41,9 @@ class SignInFragment : AuthFragment() {
     private fun setObservers() = with(binding) {
         collectFlow(viewModel.effect) { effect ->
             when (effect) {
-                SignInContract.Effect.NavigateToSingUpScreen -> moveToSignUpScreen()
-                SignInContract.Effect.NavigateToMyProfileScreen -> moveToMyProfileScreen("")
+                is SignInContract.Effect.NavigateToSingUpScreen -> moveToSignUpScreen()
+                is SignInContract.Effect.NavigateToMyProfileScreen -> moveToMyProfileScreen(effect.userName)
+                is SignInContract.Effect.ShowToast -> makeToast(effect.toastMessageResId)
             }
         }
 
@@ -58,7 +60,13 @@ class SignInFragment : AuthFragment() {
 
     private fun setListeners() = with(binding) {
         buttonLogin.setOnClickListener {
-            viewModel.setEvent(SignInContract.Event.OnLoginButtonClicked)
+
+            viewModel.setEvent(
+                SignInContract.Event.OnLoginButtonClicked(
+                    editTextEMail.text.toString(),
+                    editTextPassword.text.toString()
+                )
+            )
         }
         textViewSignUp.setOnClickListener {
             viewModel.setEvent(SignInContract.Event.OnSignUpLabelClicked)

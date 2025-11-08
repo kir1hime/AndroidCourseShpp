@@ -109,10 +109,13 @@ class SignUpViewModel @Inject constructor(
                 } catch (e: BackendException) {
                     setState { copy(eMailHelperTextResId = R.string.email_already_registered_error) }
                     setEffect(SignUpContract.Effect.ShowToast(R.string.backend_error))
+
                 } catch (e: ProcessResponseException) {
                     setEffect(SignUpContract.Effect.ShowToast(R.string.server_response_error))
+
                 } catch (e: ConnectionException) {
                     setEffect(SignUpContract.Effect.ShowToast(R.string.connection_error))
+
                 } finally {
                     setState { copy(isProgressBarShowed = false) }
                 }

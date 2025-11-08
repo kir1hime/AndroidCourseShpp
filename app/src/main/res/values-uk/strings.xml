@@ -72,5 +72,10 @@
     <string name="connection_error">Перевірте ваше інтернет з\'єднання</string>
     <string name="hello_label">Привіт!</string>
     <string name="enter_your_data_label">Введіть вашу пошту та пароль нижче</string>
+    <string name="login_button_text">УВІЙТИ</string>
+    <string name="don_t_have_account_label">Не маєте акаунту?</string>
+    <string name="sign_up_label">Зареєструватися</string>
+    <string name="forgot_your_password_label">Забули пароль?</string>
+    <string name="incorrect_email_or_password_error">Неправильна пошта або пароль</string>
 
 </resources>

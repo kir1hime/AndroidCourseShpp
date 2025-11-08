@@ -65,8 +65,11 @@ class SignUpFragment : AuthFragment() {
     }
 
     private fun setListeners() = with(binding) {
-        binding.buttonRegister.setOnClickListener {
+        buttonRegister.setOnClickListener {
             onRegisterButtonClick()
+        }
+        textViewSignIn.setOnClickListener {
+            findNavController().navigateUp()
         }
     }
 

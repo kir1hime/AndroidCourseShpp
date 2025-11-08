@@ -108,7 +108,7 @@
 
     <!--Sign In -->
     <color name="sign_in_screen_color">#242235</color>
-    <color name="login_background_color">#242235</color>
+    <color name="login_background_color">@color/sign_in_screen_color</color>
     <color name="sign_in_greetings_text_color">#FFFFFF</color>
     <color name="forgot_your_password_label_color">#FFFFFF</color>
     <color name="login_text_color">#FFFFFF</color>
