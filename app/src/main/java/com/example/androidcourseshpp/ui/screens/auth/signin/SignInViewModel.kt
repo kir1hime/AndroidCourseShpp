@@ -4,7 +4,7 @@ import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.ui.BaseViewModel
 
 
-class SingInViewModel() :
+class SignInViewModel() :
     BaseViewModel<SignInContract.Event, SignInContract.Effect, SignInContract.UIState>() {
 
 

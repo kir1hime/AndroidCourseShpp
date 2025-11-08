@@ -60,7 +60,7 @@ class SignUpFragment : AuthFragment() {
             textInputLayoutEMail.helperText = getString(state.eMailHelperTextResId)
 
             progressBarRequest.isVisible = state.isProgressBarShowed
-            setLoadingState(state.isProgressBarShowed)
+            setLoadingState(state.isProgressBarShowed, binding)
         }
     }
 
@@ -91,20 +91,5 @@ class SignUpFragment : AuthFragment() {
                 serverUserId
             )
         findNavController().navigate(direction)
-    }
-
-    private fun setLoadingState(isLoaded: Boolean) = with(binding) {
-        val isEnabled = !isLoaded
-
-        editTextEMail.apply {
-            isFocusable = isEnabled
-            isFocusableInTouchMode = isEnabled
-        }
-        editTextPassword.apply {
-            isFocusable = isEnabled
-            isFocusableInTouchMode = isEnabled
-        }
-        comboBoxRememberMe.isClickable = isEnabled
-
     }
 }

@@ -48,6 +48,7 @@ class SignUpExtendedFragment : AuthFragment() {
         buttonForward.setOnClickListener {
             val inputUserName = editTextUserName.text.toString()
             val inputMobilePhone = editTextMobilePhone.text.toString()
+
             viewModel.setEvent(
                 SignUpExtendedContract.Event.OnForwardButtonClicked(
                     inputUserName,
@@ -75,11 +76,7 @@ class SignUpExtendedFragment : AuthFragment() {
 
                 is SignUpExtendedContract.Effect.NavigateToPreviousScreen -> findNavController().navigateUp()
 
-                is SignUpExtendedContract.Effect.NavigateToChooseProfilePhotoDialog -> {
-                    val direction =
-                        SignUpExtendedFragmentDirections.actionSignUpExtendedFragmentToChooseProfilePhotoDialog()
-                    findNavController().navigate(direction)
-                }
+                is SignUpExtendedContract.Effect.NavigateToChooseProfilePhotoDialog -> moveToChooseProfilePhotoDialog()
 
                 is SignUpExtendedContract.Effect.ShowToast -> makeToast(effect.toastMessageResId)
             }
@@ -88,8 +85,10 @@ class SignUpExtendedFragment : AuthFragment() {
         collectFlow(viewModel.state) { state ->
             textInputLayoutUserName.helperText = getString(state.userNameHelperResId)
             textInputLayoutMobilePhone.helperText = getString(state.mobilePhoneHelperResId)
+
             progressBarRequest.isVisible = state.isProgressBarShowed
-            setLoadingState(state.isProgressBarShowed)
+
+            setLoadingState(state.isProgressBarShowed, binding)
         }
     }
 
@@ -129,26 +128,18 @@ class SignUpExtendedFragment : AuthFragment() {
         })
     }
 
-    private fun setLoadingState(isLoaded: Boolean) = with(binding) {
-        val isEnabled = !isLoaded
-
-        editTextUserName.apply {
-            isFocusable = isEnabled
-            isFocusableInTouchMode = isEnabled
-        }
-        editTextMobilePhone.apply {
-            isFocusable = isEnabled
-            isFocusableInTouchMode = isEnabled
-        }
-        imageButtonAddProfilePhoto.isClickable = isEnabled
-    }
-
     private fun updateMobilePhoneInput(sign: String?) = with(binding) {
         val currentText = editTextMobilePhone.text.toString()
         val newInputText = StringBuilder(currentText)
         newInputText.insert(currentText.length - 1, sign)
         editTextMobilePhone.setText(newInputText)
         editTextMobilePhone.setSelection(editTextMobilePhone.length())
+    }
+
+    private fun moveToChooseProfilePhotoDialog() {
+        val direction =
+            SignUpExtendedFragmentDirections.actionSignUpExtendedFragmentToChooseProfilePhotoDialog()
+        findNavController().navigate(direction)
     }
 
     companion object {
