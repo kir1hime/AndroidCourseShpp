@@ -4,10 +4,12 @@ import com.example.androidcourseshpp.data.network.BASE_URL
 import com.example.androidcourseshpp.data.network.RetrofitServicesProvider
 import com.example.androidcourseshpp.data.network.ServicesProvider
 import com.example.androidcourseshpp.data.network.jwt.JWTManager
+import com.example.androidcourseshpp.data.network.jwt.TokenAuthenticator
 import com.example.androidcourseshpp.data.network.service.auth.AuthService
 import com.example.androidcourseshpp.data.network.service.auth.AuthServiceImpl
 import com.example.androidcourseshpp.data.network.service.user.UserService
 import com.example.androidcourseshpp.data.network.service.user.UserServiceImpl
+import com.example.androidcourseshpp.data.network.webapi.refreshAPI.RefreshAPI
 import com.google.gson.Gson
 import dagger.Binds
 import dagger.Module
@@ -19,6 +21,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.create
 import javax.inject.Singleton
 
 @Module
@@ -39,10 +42,10 @@ interface RetrofitServicesModules {
 @InstallIn(SingletonComponent::class)
 class RetrofitConfigModule {
 
-
     @Provides
     @Singleton
-    fun provideRetrofit(client: OkHttpClient, gson: Gson): Retrofit {
+    @ClearRetrofit
+    fun provideClearRetrofit(@ClearOkHttpClient client: OkHttpClient, gson: Gson): Retrofit {
         return Retrofit.Builder().baseUrl(BASE_URL)
             .client(client)
             .addConverterFactory(GsonConverterFactory.create(gson))
@@ -51,16 +54,41 @@ class RetrofitConfigModule {
 
     @Provides
     @Singleton
-    fun provideGson() = Gson()
+    @ClearOkHttpClient
+    fun provideClearOkHttpClient() = OkHttpClient.Builder().build()
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(jwtManager: JWTManager): OkHttpClient {
+    @MainRetrofit
+    fun provideMainRetrofit(@MainOkHttpClient client: OkHttpClient, gson: Gson): Retrofit {
+        return Retrofit.Builder().baseUrl(BASE_URL)
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    @MainOkHttpClient
+    fun provideMainOkHttpClient(
+        @ClearRetrofit retrofit: Retrofit,
+        jwtManager: JWTManager
+    ): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(createLoggingInterceptor())
             .addInterceptor(createAuthorizationInterceptor(jwtManager))
+            .authenticator(
+                TokenAuthenticator(
+                    retrofit.create(RefreshAPI::class.java),
+                    jwtManager
+                )
+            )
             .build()
     }
+
+    @Provides
+    @Singleton
+    fun provideGson() = Gson()
 
     private fun createLoggingInterceptor() = HttpLoggingInterceptor().setLevel(
         HttpLoggingInterceptor.Level.BODY
@@ -71,7 +99,8 @@ class RetrofitConfigModule {
 
         val modifiedRequest = chain.request().newBuilder()
         if (accessToken != null) {
-            modifiedRequest.addHeader("Authorization", "Bearer $accessToken").build()
+            modifiedRequest
+                .addHeader("Authorization", "Bearer $accessToken")
         }
         chain.proceed(modifiedRequest.build())
 
