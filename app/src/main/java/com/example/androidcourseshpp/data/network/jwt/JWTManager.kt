@@ -5,4 +5,5 @@ interface JWTManager {
      fun saveAccessToken(token: String)
      fun getRefreshToken() : String?
      fun saveRefreshToken(token: String)
+     fun clearTokens()
 }

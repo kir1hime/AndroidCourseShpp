@@ -10,19 +10,23 @@ import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 import android.content.SharedPreferences
 import com.example.androidcourseshpp.data.dataProvider.USER_INFO_STORE
+import com.example.androidcourseshpp.data.dataProvider.UserDataProvider
+import com.example.androidcourseshpp.data.dataProvider.UserDataProviderImpl
 import com.example.androidcourseshpp.data.network.jwt.JWT_STORAGE
+import dagger.Binds
 
 
 @Module
 @InstallIn(SingletonComponent::class)
 class SharedPreferencesModule {
 
-    @Provides
-    @Singleton
-    @DataProviderPref
-    fun provideDataProviderSharedPreferences(@ApplicationContext context: Context): SharedPreferences {
-        return context.getSharedPreferences(USER_INFO_STORE, MODE_PRIVATE)
-    }
+       @Provides
+       @Singleton
+       @DataProviderPref
+       fun provideDataProviderSharedPreferences(@ApplicationContext context: Context): SharedPreferences {
+           return context.getSharedPreferences(USER_INFO_STORE, MODE_PRIVATE)
+       }
+
 
     @Provides
     @Singleton
@@ -30,4 +34,11 @@ class SharedPreferencesModule {
     fun provideJWTManagerSharePreferences(@ApplicationContext context: Context): SharedPreferences {
         return context.getSharedPreferences(JWT_STORAGE, MODE_PRIVATE)
     }
+}
+
+@Module
+@InstallIn(SingletonComponent::class)
+interface UserDataProvider {
+    @Binds
+    fun provideUserDataProvider(userDataProviderImpl: UserDataProviderImpl): UserDataProvider
 }

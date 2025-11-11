@@ -32,6 +32,9 @@
         <argument
             android:name="serverUserId"
             app:argType="long" />
+        <argument
+            android:name="toRememberUser"
+            app:argType="boolean" />
         <action
             android:id="@+id/action_signUpExtendedFragment_to_chooseProfilePhotoDialog"
             app:destination="@id/chooseProfilePhotoDialog" />

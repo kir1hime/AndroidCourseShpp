@@ -15,6 +15,7 @@ class SignUpExtendedContract {
 
         data object OnAddProfilePhotoImageViewClicked : Event
         data object OnCancelButtonClicked : Event
+        data class SaveUserName(val name: String): Event
     }
 
     sealed interface Effect : ViewEffect {

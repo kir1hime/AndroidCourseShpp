@@ -46,6 +46,7 @@ class SignUpExtendedFragment : AuthFragment() {
 
     private fun setListeners() = with(binding) {
         buttonForward.setOnClickListener {
+            rememberUserName()
             val inputUserName = editTextUserName.text.toString()
             val inputMobilePhone = editTextMobilePhone.text.toString()
 
@@ -64,7 +65,14 @@ class SignUpExtendedFragment : AuthFragment() {
         imageButtonAddProfilePhoto.setOnClickListener {
             viewModel.setEvent(SignUpExtendedContract.Event.OnAddProfilePhotoImageViewClicked)
         }
+    }
 
+
+    private fun rememberUserName() = with(binding) {
+        if (args.toRememberUser) {
+            val name = editTextUserName.text.toString()
+            viewModel.setEvent(SignUpExtendedContract.Event.SaveUserName(name))
+        }
     }
 
     private fun setObservers() = with(binding) {

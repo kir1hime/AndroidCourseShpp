@@ -15,7 +15,13 @@ class SignUpContract {
     }
 
     sealed interface Effect : ViewEffect {
-        data class NavigateToSignUpExtendedScreen(val serverUserId: Long, val email: String, val password: String) : Effect
+        data class NavigateToSignUpExtendedScreen(
+            val serverUserId: Long,
+            val email: String,
+            val password: String,
+            val toRememberUser: Boolean
+        ) : Effect
+
         data class ShowToast(val toastMessageResId: Int) : Effect
     }
 

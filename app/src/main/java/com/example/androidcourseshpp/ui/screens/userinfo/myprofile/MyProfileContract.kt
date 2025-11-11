@@ -9,11 +9,11 @@ class MyProfileContract {
     sealed interface Event : ViewEvent {
         data object OnViewMyContactsButtonClicked : Event
         data object OnLogOutButtonClicked : Event
-        data class UserNameUpdated(val userName: String) : Event
+        data class SetUserName(val name: String) : Event
     }
 
     sealed interface Effect : ViewEffect {
-        data object NavigateToSignUpScreen : Effect
+        data object NavigateToSignInScreen : Effect
         data object NavigateToContactList : Effect
     }
 

@@ -31,11 +31,6 @@ class SignUpFragment : AuthFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val savedEmail = viewModel.savedEmail
-        if (savedEmail != "") {
-            moveToMyProfileScreen(savedEmail)
-        }
-
         setObserves()
         setListeners()
     }
@@ -46,7 +41,8 @@ class SignUpFragment : AuthFragment() {
                 is SignUpContract.Effect.NavigateToSignUpExtendedScreen -> moveToSignUpExtendedScreen(
                     effect.serverUserId,
                     effect.email,
-                    effect.password
+                    effect.password,
+                    effect.toRememberUser
                 )
 
                 is SignUpContract.Effect.ShowToast -> makeToast(effect.toastMessageResId)
@@ -86,12 +82,18 @@ class SignUpFragment : AuthFragment() {
         )
     }
 
-    private fun moveToSignUpExtendedScreen(serverUserId: Long, email: String, password: String) {
+    private fun moveToSignUpExtendedScreen(
+        serverUserId: Long,
+        email: String,
+        password: String,
+        toRememberUser: Boolean
+    ) {
         val direction =
             SignUpFragmentDirections.actionSignUpFragmentToSignUpExtendedFragment(
                 email,
                 password,
-                serverUserId
+                serverUserId,
+                toRememberUser
             )
         findNavController().navigate(direction)
     }

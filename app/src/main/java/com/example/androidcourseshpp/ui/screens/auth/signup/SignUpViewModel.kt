@@ -2,7 +2,6 @@ package com.example.androidcourseshpp.ui.screens.auth.signup
 
 import androidx.lifecycle.viewModelScope
 import com.example.androidcourseshpp.data.SignUpValidator
-import com.example.androidcourseshpp.data.dataProvider.DataProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import com.example.androidcourseshpp.R
@@ -18,7 +17,6 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
-    private val dataProvider: DataProvider,
     private val jwtManager: JWTManager,
     private val serviceProviderHolder: RetrofitServiceProviderHolder
 ) :
@@ -29,9 +27,6 @@ class SignUpViewModel @Inject constructor(
         passwordHelperTextResId = R.string.no_error,
         false
     )
-
-    var savedEmail = getUserEMail()
-        private set
 
     private var passwordChecks: List<(s: String) -> Boolean> = listOf()
 
@@ -45,7 +40,7 @@ class SignUpViewModel @Inject constructor(
         }
     }
 
-    fun processInputData(email: String, password: String, rememberUserData: Boolean) {
+    private fun processInputData(email: String, password: String, toRememberUser: Boolean) {
         var isPasswordCorrect: Boolean
         var isEMailCorrect: Boolean
 
@@ -77,48 +72,46 @@ class SignUpViewModel @Inject constructor(
             }
         }
 
-
-        if (rememberUserData) {
-            saveUserInfo(email, password)
-        } else {
-            deleteUserInfo()
-        }
-
         if (isEMailCorrect && isPasswordCorrect) {
-            viewModelScope.launch {
-                try {
-                    setState { copy(isProgressBarShowed = true) }
+            signUpUser(email, password, toRememberUser)
+        }
+    }
 
-                    val response =
-                        serviceProviderHolder.serviceProvider.getAuthService()
-                            .signUp(SignUpData(email, password))
+    private fun signUpUser(email: String, password: String, toRememberUser: Boolean) {
+        viewModelScope.launch {
+            try {
+                setState { copy(isProgressBarShowed = true) }
 
-                    jwtManager.saveAccessToken(response.accessToken)
-                    jwtManager.saveRefreshToken(response.refreshToken)
+                val response =
+                    serviceProviderHolder.serviceProvider.getAuthService()
+                        .signUp(SignUpData(email, password))
 
-                    val serverUserId = response.user.id
+                jwtManager.saveAccessToken(response.accessToken)
+                jwtManager.saveRefreshToken(response.refreshToken)
 
-                    setEffect(
-                        SignUpContract.Effect.NavigateToSignUpExtendedScreen(
-                            serverUserId,
-                            email,
-                            password
-                        )
+                val serverUserId = response.user.id
+
+                setEffect(
+                    SignUpContract.Effect.NavigateToSignUpExtendedScreen(
+                        serverUserId,
+                        email,
+                        password,
+                        toRememberUser
                     )
+                )
 
-                } catch (e: BackendException) {
-                    setState { copy(eMailHelperTextResId = R.string.email_already_registered_error) }
-                    setEffect(SignUpContract.Effect.ShowToast(R.string.backend_error))
+            } catch (e: BackendException) {
+                setState { copy(eMailHelperTextResId = R.string.email_already_registered_error) }
+                setEffect(SignUpContract.Effect.ShowToast(R.string.backend_error))
 
-                } catch (e: ProcessResponseException) {
-                    setEffect(SignUpContract.Effect.ShowToast(R.string.server_response_error))
+            } catch (e: ProcessResponseException) {
+                setEffect(SignUpContract.Effect.ShowToast(R.string.server_response_error))
 
-                } catch (e: ConnectionException) {
-                    setEffect(SignUpContract.Effect.ShowToast(R.string.connection_error))
+            } catch (e: ConnectionException) {
+                setEffect(SignUpContract.Effect.ShowToast(R.string.connection_error))
 
-                } finally {
-                    setState { copy(isProgressBarShowed = false) }
-                }
+            } finally {
+                setState { copy(isProgressBarShowed = false) }
             }
         }
     }
@@ -154,17 +147,4 @@ class SignUpViewModel @Inject constructor(
 
     private fun checkPassword(password: String) =
         SignUpValidator.isPasswordCorrect(password)
-
-    private fun getUserEMail(): String {
-        return dataProvider.getUserEMail()
-    }
-
-    private fun saveUserInfo(eMail: String, password: String) {
-        dataProvider.saveUserInfo(eMail, password)
-    }
-
-    private fun deleteUserInfo() {
-        dataProvider.deleteUserInfo()
-    }
-
 }

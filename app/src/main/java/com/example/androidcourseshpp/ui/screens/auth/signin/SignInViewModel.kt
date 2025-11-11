@@ -1,15 +1,17 @@
 package com.example.androidcourseshpp.ui.screens.auth.signin
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.example.androidcourseshpp.R
+import com.example.androidcourseshpp.data.dataProvider.UserDataProvider
 import com.example.androidcourseshpp.data.network.RetrofitServiceProviderHolder
 import com.example.androidcourseshpp.data.network.jwt.JWTManager
 import com.example.androidcourseshpp.data.network.service.BackendException
 import com.example.androidcourseshpp.data.network.service.ConnectionException
 import com.example.androidcourseshpp.data.network.service.ProcessResponseException
 import com.example.androidcourseshpp.data.network.service.auth.entity.SignInData
+import com.example.androidcourseshpp.data.network.service.refresh.entity.RefreshTokenEntity
 import com.example.androidcourseshpp.ui.BaseViewModel
-import com.example.androidcourseshpp.ui.screens.auth.signup.SignUpContract
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -17,10 +19,28 @@ import javax.inject.Inject
 @HiltViewModel
 class SignInViewModel @Inject constructor(
     private val jwtManager: JWTManager,
-    private val serviceProviderHolder: RetrofitServiceProviderHolder
+    private val serviceProviderHolder: RetrofitServiceProviderHolder,
+    private val userDataProvider: UserDataProvider
 ) :
     BaseViewModel<SignInContract.Event, SignInContract.Effect, SignInContract.UIState>() {
 
+
+    init {
+        val currentAccessToken = jwtManager.getAccessToken()
+        val currentRefreshToken = jwtManager.getRefreshToken() ?: ""
+
+        viewModelScope.launch {
+            if (currentAccessToken != null) {
+                serviceProviderHolder.serviceProvider.getRefreshTokenService().refreshTokens(
+                    RefreshTokenEntity(currentRefreshToken)
+                )
+            }
+        }
+
+        userDataProvider.getUserName()?.let { name ->
+            setEffect(SignInContract.Effect.NavigateToMyProfileScreen(name))
+        }
+    }
 
     override fun initState(): SignInContract.UIState {
         return SignInContract.UIState(
@@ -34,14 +54,15 @@ class SignInViewModel @Inject constructor(
         when (event) {
             is SignInContract.Event.OnLoginButtonClicked -> loginUser(
                 email = event.email,
-                password = event.password
+                password = event.password,
+                toRememberUser = event.toRememberUser
             )
 
             is SignInContract.Event.OnSignUpLabelClicked -> navigateToSignUpScreen()
         }
     }
 
-    private fun loginUser(email: String, password: String) {
+    private fun loginUser(email: String, password: String, toRememberUser: Boolean) {
         viewModelScope.launch {
             try {
                 setState { copy(isProgressBarShowed = true) }
@@ -53,6 +74,11 @@ class SignInViewModel @Inject constructor(
                 jwtManager.saveRefreshToken(response.refreshToken)
 
                 val userName = response.user.name ?: ""
+
+                if (toRememberUser) {
+                    userDataProvider.saveUserName(userName)
+                }
+
                 setEffect(SignInContract.Effect.NavigateToMyProfileScreen(userName))
 
             } catch (e: BackendException) {

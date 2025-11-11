@@ -1,46 +1,38 @@
 package com.example.androidcourseshpp.ui.screens.userinfo.myprofile
 
-import com.example.androidcourseshpp.data.EmailParser
-import com.example.androidcourseshpp.data.dataProvider.DataProvider
+import android.util.Log
+import com.example.androidcourseshpp.data.dataProvider.UserDataProvider
 import com.example.androidcourseshpp.ui.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class MyProfileViewModel @Inject constructor(private val dataProvider: DataProvider) :
+class MyProfileViewModel @Inject constructor(
+    private val userDataProvider: UserDataProvider
+) :
     BaseViewModel<MyProfileContract.Event, MyProfileContract.Effect, MyProfileContract.UIState>() {
-
-    fun getSavedEmail(): String {
-        return dataProvider.getUserEMail()
-    }
 
     override fun initState() = MyProfileContract.UIState("")
 
     override fun handleEvent(event: MyProfileContract.Event) {
         when (event) {
-            is MyProfileContract.Event.OnViewMyContactsButtonClicked -> viewMyContacts()
+            is MyProfileContract.Event.OnViewMyContactsButtonClicked -> navigateToMyContacts()
             is MyProfileContract.Event.OnLogOutButtonClicked -> logOut()
-            is MyProfileContract.Event.UserNameUpdated -> updateUserName(event.userName)
+            is MyProfileContract.Event.SetUserName -> setUserName(event.name)
         }
 
     }
 
-    private fun updateUserName(name: String) {
-        setState {
-            if (name != "") {
-                copy(name)
-            } else {
-                copy(EmailParser.parseEMail(getSavedEmail()))
-            }
-        }
+    private fun setUserName(name: String) {
+        setState { copy(userName = name) }
     }
 
     private fun logOut() {
-        dataProvider.deleteUserInfo()
-        setEffect(MyProfileContract.Effect.NavigateToSignUpScreen)
+        userDataProvider.clearUserName()
+        setEffect(MyProfileContract.Effect.NavigateToSignInScreen)
     }
 
-    private fun viewMyContacts() {
+    private fun navigateToMyContacts() {
         setEffect(MyProfileContract.Effect.NavigateToContactList)
     }
 }

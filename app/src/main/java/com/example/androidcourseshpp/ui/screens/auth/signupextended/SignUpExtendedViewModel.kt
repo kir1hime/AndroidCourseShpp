@@ -2,6 +2,7 @@ package com.example.androidcourseshpp.ui.screens.auth.signupextended
 
 import androidx.lifecycle.viewModelScope
 import com.example.androidcourseshpp.R
+import com.example.androidcourseshpp.data.dataProvider.UserDataProvider
 import com.example.androidcourseshpp.data.network.RetrofitServiceProviderHolder
 import com.example.androidcourseshpp.data.network.service.BackendException
 import com.example.androidcourseshpp.data.network.service.ConnectionException
@@ -15,7 +16,10 @@ import javax.inject.Inject
 private const val PHONE_NUMBER_LENGTH = 15
 
 @HiltViewModel
-class SignUpExtendedViewModel @Inject constructor(private val serviceProviderHolder: RetrofitServiceProviderHolder) :
+class SignUpExtendedViewModel @Inject constructor(
+    private val serviceProviderHolder: RetrofitServiceProviderHolder,
+    private val userDataProvider: UserDataProvider
+) :
     BaseViewModel<SignUpExtendedContract.Event, SignUpExtendedContract.Effect, SignUpExtendedContract.UIState>() {
 
     override fun initState(): SignUpExtendedContract.UIState = SignUpExtendedContract.UIState(
@@ -35,10 +39,20 @@ class SignUpExtendedViewModel @Inject constructor(private val serviceProviderHol
 
             is SignUpExtendedContract.Event.OnAddProfilePhotoImageViewClicked -> navigateToChooseProfilePhotoDialog()
             is SignUpExtendedContract.Event.OnCancelButtonClicked -> navigateToPreviousScreen()
+            is SignUpExtendedContract.Event.SaveUserName -> saveUserName(event.name)
         }
     }
 
-    fun processInputData(userName: String, mobilePhone: String, email: String, serverUserId: Long) {
+    private fun saveUserName(name: String) {
+        userDataProvider.saveUserName(name)
+    }
+
+    private fun processInputData(
+        userName: String,
+        mobilePhone: String,
+        email: String,
+        serverUserId: Long
+    ) {
         var isMobilePhoneCorrect: Boolean
         var isUserNameCorrect: Boolean
 
@@ -85,11 +99,11 @@ class SignUpExtendedViewModel @Inject constructor(private val serviceProviderHol
         }
     }
 
-    fun navigateToChooseProfilePhotoDialog() {
+    private fun navigateToChooseProfilePhotoDialog() {
         setEffect(SignUpExtendedContract.Effect.NavigateToChooseProfilePhotoDialog)
     }
 
-    fun navigateToPreviousScreen() {
+    private fun navigateToPreviousScreen() {
         setEffect(SignUpExtendedContract.Effect.NavigateToPreviousScreen)
     }
 }

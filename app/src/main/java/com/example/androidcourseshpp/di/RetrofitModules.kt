@@ -4,6 +4,7 @@ import com.example.androidcourseshpp.data.network.BASE_URL
 import com.example.androidcourseshpp.data.network.RetrofitServicesProvider
 import com.example.androidcourseshpp.data.network.ServicesProvider
 import com.example.androidcourseshpp.data.network.jwt.JWTManager
+import com.example.androidcourseshpp.data.network.jwt.JWTManagerImpl
 import com.example.androidcourseshpp.data.network.jwt.TokenAuthenticator
 import com.example.androidcourseshpp.data.network.service.auth.AuthService
 import com.example.androidcourseshpp.data.network.service.auth.AuthServiceImpl
@@ -105,5 +106,6 @@ class RetrofitConfigModule {
         chain.proceed(modifiedRequest.build())
 
     }
+
 }
 

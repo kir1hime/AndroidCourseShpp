@@ -2,6 +2,7 @@ package com.example.androidcourseshpp.ui.screens.auth
 
 import android.app.ActivityOptions
 import android.content.Intent
+import android.util.Log
 import androidx.core.os.bundleOf
 import androidx.viewbinding.ViewBinding
 import com.example.androidcourseshpp.R
@@ -11,13 +12,13 @@ import com.example.androidcourseshpp.databinding.FragmentSignUpExtendedBinding
 import com.example.androidcourseshpp.ui.BaseFragment
 import com.example.androidcourseshpp.ui.screens.MainActivity
 
-const val USER_EMAIL = "userEmail"
+const val USER_NAME = "userName"
 
 open class AuthFragment : BaseFragment() {
-    fun moveToMyProfileScreen(userEmail: String) {
+    fun moveToMyProfileScreen(userName: String) {
         val intent = Intent(requireContext(), MainActivity::class.java)
 
-        intent.putExtras(bundleOf(USER_EMAIL to userEmail))
+        intent.putExtras(bundleOf(USER_NAME to userName))
 
         val options = ActivityOptions.makeCustomAnimation(
             requireContext(),

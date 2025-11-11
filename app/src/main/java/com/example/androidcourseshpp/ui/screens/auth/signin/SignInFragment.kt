@@ -64,7 +64,8 @@ class SignInFragment : AuthFragment() {
             viewModel.setEvent(
                 SignInContract.Event.OnLoginButtonClicked(
                     editTextEMail.text.toString(),
-                    editTextPassword.text.toString()
+                    editTextPassword.text.toString(),
+                    comboBoxRememberMe.isChecked
                 )
             )
         }

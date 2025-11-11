@@ -1,7 +1,6 @@
 package com.example.androidcourseshpp.data.network.jwt
 
 import com.example.androidcourseshpp.data.network.webapi.refreshAPI.RefreshAPI
-import com.example.androidcourseshpp.data.network.dto.refresh.RefreshTokenRequestDTO
 import kotlinx.coroutines.runBlocking
 import okhttp3.Authenticator
 import okhttp3.Request
@@ -9,8 +8,7 @@ import okhttp3.Response
 import okhttp3.Route
 
 
-
-class TokenAuthenticator (
+class TokenAuthenticator(
     private val refreshApi: RefreshAPI,
     private val jwtManagerImpl: JWTManager
 ) : Authenticator {
@@ -30,7 +28,7 @@ class TokenAuthenticator (
             }
 
             val newTokensResponse =
-                refreshApi.refreshTokens(RefreshTokenRequestDTO(currentRefreshToken))
+                refreshApi.refreshTokens(currentRefreshToken)
 
             if (!newTokensResponse.isSuccessful) {
                 return@runBlocking null

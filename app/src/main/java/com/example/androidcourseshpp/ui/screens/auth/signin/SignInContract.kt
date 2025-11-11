@@ -3,12 +3,16 @@ package com.example.androidcourseshpp.ui.screens.auth.signin
 import com.example.androidcourseshpp.ui.ViewEffect
 import com.example.androidcourseshpp.ui.ViewEvent
 import com.example.androidcourseshpp.ui.ViewState
-import com.example.androidcourseshpp.ui.screens.auth.signup.SignUpContract
 
 class SignInContract {
 
     sealed interface Event : ViewEvent {
-        data class OnLoginButtonClicked(val email: String, val password: String) : Event
+        data class OnLoginButtonClicked(
+            val email: String,
+            val password: String,
+            val toRememberUser: Boolean
+        ) : Event
+
         object OnSignUpLabelClicked : Event
     }
 
