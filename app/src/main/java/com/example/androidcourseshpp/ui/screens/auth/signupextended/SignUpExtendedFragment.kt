@@ -41,7 +41,7 @@ class SignUpExtendedFragment : AuthFragment() {
         setListeners()
         setObservers()
         setChooseProfilePhotoDialogListener()
-        formatMobilePhoneInput()
+        formatMobilePhoneInput(binding.editTextMobilePhone)
     }
 
     private fun setListeners() = with(binding) {
@@ -54,8 +54,7 @@ class SignUpExtendedFragment : AuthFragment() {
                 SignUpExtendedContract.Event.OnForwardButtonClicked(
                     inputUserName,
                     inputMobilePhone,
-                    args.email,
-                    args.serverUserId
+                    args.SignUpExtendedEntity.serverUserId
                 )
             )
         }
@@ -69,7 +68,7 @@ class SignUpExtendedFragment : AuthFragment() {
 
 
     private fun rememberUserName() = with(binding) {
-        if (args.toRememberUser) {
+        if (args.SignUpExtendedEntity.toRememberUser) {
             val name = editTextUserName.text.toString()
             viewModel.setEvent(SignUpExtendedContract.Event.SaveUserName(name))
         }
@@ -110,49 +109,10 @@ class SignUpExtendedFragment : AuthFragment() {
         }
     }
 
-    private fun formatMobilePhoneInput() = with(binding) {
-        editTextMobilePhone.addTextChangedListener(object : TextWatcher {
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun afterTextChanged(s: Editable?) {}
-
-            override fun onTextChanged(
-                inputText: CharSequence?,
-                start: Int,
-                before: Int,
-                count: Int
-            ) {
-                inputText?.let {
-
-                    if (BRACKET_POSITIONS.keys.contains(inputText.length) && count > 0 && before == 0) {
-                        updateMobilePhoneInput(BRACKET_POSITIONS[inputText.length])
-                    }
-                    if (HYPHEN_POSITIONS.contains(inputText.length) && count > 0 && before == 0) {
-                        updateMobilePhoneInput("-")
-
-                    }
-                }
-            }
-        })
-    }
-
-    private fun updateMobilePhoneInput(sign: String?) = with(binding) {
-        val currentText = editTextMobilePhone.text.toString()
-        val newInputText = StringBuilder(currentText)
-        newInputText.insert(currentText.length - 1, sign)
-        editTextMobilePhone.setText(newInputText)
-        editTextMobilePhone.setSelection(editTextMobilePhone.length())
-    }
 
     private fun moveToChooseProfilePhotoDialog() {
         val direction =
             SignUpExtendedFragmentDirections.actionSignUpExtendedFragmentToChooseProfilePhotoDialog()
         findNavController().navigate(direction)
     }
-
-    companion object {
-        private val BRACKET_POSITIONS = mapOf(1 to "(", 5 to ")-")
-        private val HYPHEN_POSITIONS = listOf(6, 10, 13)
-    }
-
 }

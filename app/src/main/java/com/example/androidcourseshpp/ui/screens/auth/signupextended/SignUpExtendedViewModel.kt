@@ -33,7 +33,6 @@ class SignUpExtendedViewModel @Inject constructor(
             is SignUpExtendedContract.Event.OnForwardButtonClicked -> processInputData(
                 event.userName,
                 event.mobilePhone,
-                event.email,
                 event.serverUserId
             )
 
@@ -50,7 +49,6 @@ class SignUpExtendedViewModel @Inject constructor(
     private fun processInputData(
         userName: String,
         mobilePhone: String,
-        email: String,
         serverUserId: Long
     ) {
         var isMobilePhoneCorrect: Boolean
@@ -84,7 +82,7 @@ class SignUpExtendedViewModel @Inject constructor(
                             UpdateUserData(name = userName, phone = mobilePhone)
                         )
 
-                    setEffect(SignUpExtendedContract.Effect.NavigateToMyProfileScreen(email))
+                    setEffect(SignUpExtendedContract.Effect.NavigateToMyProfileScreen)
                 } catch (e: BackendException) {
                     setEffect(SignUpExtendedContract.Effect.ShowToast(R.string.backend_error))
                 } catch (e: ProcessResponseException) {

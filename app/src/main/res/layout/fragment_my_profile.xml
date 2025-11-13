@@ -145,7 +145,7 @@
         app:layout_constraintBottom_toBottomOf="parent" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/buttonEditText"
+        android:id="@+id/buttonEditProfile"
         android:layout_width="match_parent"
         android:layout_height="@dimen/edit_profile_bt_h"
         android:layout_marginHorizontal="@dimen/main_margin_side"

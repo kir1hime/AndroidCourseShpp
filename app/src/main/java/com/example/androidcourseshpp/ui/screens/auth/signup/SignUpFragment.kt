@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.androidcourseshpp.data.MIN_NUM_OF_CHARS_IN_PASSWORD
 import com.example.androidcourseshpp.databinding.FragmentSignUpBinding
 import com.example.androidcourseshpp.ui.screens.auth.AuthFragment
+import com.example.androidcourseshpp.ui.screens.auth.signupextended.SignUpExtendedEntity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -40,8 +41,6 @@ class SignUpFragment : AuthFragment() {
             when (effect) {
                 is SignUpContract.Effect.NavigateToSignUpExtendedScreen -> moveToSignUpExtendedScreen(
                     effect.serverUserId,
-                    effect.email,
-                    effect.password,
                     effect.toRememberUser
                 )
 
@@ -84,16 +83,14 @@ class SignUpFragment : AuthFragment() {
 
     private fun moveToSignUpExtendedScreen(
         serverUserId: Long,
-        email: String,
-        password: String,
         toRememberUser: Boolean
     ) {
         val direction =
             SignUpFragmentDirections.actionSignUpFragmentToSignUpExtendedFragment(
-                email,
-                password,
-                serverUserId,
-                toRememberUser
+                SignUpExtendedEntity(
+                    serverUserId,
+                    toRememberUser
+                )
             )
         findNavController().navigate(direction)
     }

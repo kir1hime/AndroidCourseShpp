@@ -1,6 +1,5 @@
 package com.example.androidcourseshpp.ui.screens.auth.signin
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.dataProvider.UserDataProvider
@@ -29,7 +28,7 @@ class SignInViewModel @Inject constructor(
         val currentAccessToken = jwtManager.getAccessToken()
         val currentRefreshToken = jwtManager.getRefreshToken() ?: ""
 
-        viewModelScope.launch {
+        processNetworkExceptions {
             if (currentAccessToken != null) {
                 serviceProviderHolder.serviceProvider.getRefreshTokenService().refreshTokens(
                     RefreshTokenEntity(currentRefreshToken)
@@ -63,45 +62,49 @@ class SignInViewModel @Inject constructor(
     }
 
     private fun loginUser(email: String, password: String, toRememberUser: Boolean) {
-        viewModelScope.launch {
-            try {
-                setState { copy(isProgressBarShowed = true) }
+        processNetworkExceptions {
+            setState { copy(isProgressBarShowed = true) }
 
-                val response = serviceProviderHolder.serviceProvider.getAuthService()
-                    .singIn(SignInData(email = email, password = password))
+            val response = serviceProviderHolder.serviceProvider.getAuthService()
+                .singIn(SignInData(email = email, password = password))
 
-                jwtManager.saveAccessToken(response.accessToken)
-                jwtManager.saveRefreshToken(response.refreshToken)
+            jwtManager.saveAccessToken(response.accessToken)
+            jwtManager.saveRefreshToken(response.refreshToken)
 
-                val userName = response.user.name ?: ""
+            val userName = response.user.name ?: ""
 
-                if (toRememberUser) {
-                    userDataProvider.saveUserName(userName)
-                }
-
-                setEffect(SignInContract.Effect.NavigateToMyProfileScreen(userName))
-
-            } catch (e: BackendException) {
-                setState { copy(eMailHelperTextResId = R.string.incorrect_email_or_password_error) }
-                setEffect(SignInContract.Effect.ShowToast(R.string.backend_error))
-
-            } catch (e: ProcessResponseException) {
-                setEffect(SignInContract.Effect.ShowToast(R.string.server_response_error))
-
-            } catch (e: ConnectionException) {
-                setEffect(SignInContract.Effect.ShowToast(R.string.connection_error))
-
-            } finally {
-                setState {
-                    copy(
-                        isProgressBarShowed = false,
-                        eMailHelperTextResId = R.string.no_error
-                    )
-                }
+            if (toRememberUser) {
+                userDataProvider.saveUserName(userName)
             }
+
+            setEffect(SignInContract.Effect.NavigateToMyProfileScreen(userName))
         }
     }
 
+    private fun processNetworkExceptions(toExecute: suspend () -> Unit) {
+        try {
+            viewModelScope.launch {
+                toExecute.invoke()
+            }
+        } catch (e: BackendException) {
+            setState { copy(eMailHelperTextResId = R.string.incorrect_email_or_password_error) }
+            setEffect(SignInContract.Effect.ShowToast(R.string.backend_error))
+
+        } catch (e: ProcessResponseException) {
+            setEffect(SignInContract.Effect.ShowToast(R.string.server_response_error))
+
+        } catch (e: ConnectionException) {
+            setEffect(SignInContract.Effect.ShowToast(R.string.connection_error))
+
+        } finally {
+            setState {
+                copy(
+                    isProgressBarShowed = false,
+                    eMailHelperTextResId = R.string.no_error
+                )
+            }
+        }
+    }
 
     private fun navigateToSignUpScreen() {
         setEffect(SignInContract.Effect.NavigateToSingUpScreen)

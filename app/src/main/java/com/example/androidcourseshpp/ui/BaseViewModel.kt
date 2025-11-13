@@ -57,5 +57,7 @@ abstract class BaseViewModel<UIEvent : ViewEvent, UIEffect : ViewEffect, UIState
         }
     }
 
+
+
 }
 

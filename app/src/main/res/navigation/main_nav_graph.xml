@@ -19,13 +19,36 @@
         android:id="@+id/userInfoFragment"
         android:name="com.example.androidcourseshpp.ui.screens.userinfo.UserInfoFragment"
         android:label="fragment_userinfo"
-        tools:layout="@layout/fragment_userinfo" >
+        tools:layout="@layout/fragment_userinfo">
+        <argument
+            android:name="myProfileInfo"
+            app:argType="com.example.androidcourseshpp.ui.screens.userinfo.myprofile.MyProfileEntity" />
         <action
             android:id="@+id/action_userInfoFragment_to_contactDetailsFragment"
             app:destination="@id/contactDetailsFragment"
             app:enterAnim="@anim/slide_in_from_right_to_left"
             app:exitAnim="@anim/slide_out_from_right_to_left"
             app:popEnterAnim="@anim/slide_in_from_left_to_right"
-            app:popExitAnim="@anim/slide_out_from_left_to_right"/>
+            app:popExitAnim="@anim/slide_out_from_left_to_right" />
+        <action
+            android:id="@+id/action_userInfoFragment_to_editProfileFragment"
+            app:destination="@id/editProfileFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/editProfileFragment"
+        android:name="com.example.androidcourseshpp.ui.screens.editprofile.EditProfileFragment"
+        android:label="fragment_edit_profile"
+        tools:layout="@layout/fragment_edit_profile">
+        <argument
+            android:name="userInfo"
+            app:argType="com.example.androidcourseshpp.ui.screens.editprofile.EditProfileEntity" />
+        <action
+            android:id="@+id/action_editProfileFragment_to_chooseProfilePhotoDialog2"
+            app:destination="@id/chooseProfilePhotoDialog2" />
+    </fragment>
+    <dialog
+        android:id="@+id/chooseProfilePhotoDialog2"
+        android:name="com.example.androidcourseshpp.ui.screens.auth.signupextended.chooseprofilephotodialog.ChooseProfilePhotoDialog"
+        android:label="dialog_choose_profile_photo"
+        tools:layout="@layout/dialog_choose_profile_photo" />
 </navigation>

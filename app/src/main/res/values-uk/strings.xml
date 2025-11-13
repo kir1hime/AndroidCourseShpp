@@ -79,5 +79,6 @@
     <string name="incorrect_email_or_password_error">Неправильна пошта або пароль</string>
     <string name="save">ЗБЕРЕГТИ</string>
     <string name="username">Ім\'я</string>
+    <string name="address">Адреса</string>
 
 </resources>
