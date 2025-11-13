@@ -107,6 +107,10 @@
     <dimen name="sign_up_account_question_margin_end">143dp</dimen>
 
     <dimen name="sign_up_margin_start">12dp</dimen>
+    <dimen name="edit_profile_photo_margin_top">63dp</dimen>
+    <dimen name="save_button_margin_bottom">24dp</dimen>
+    <dimen name="edit_profile_username_margin_top">24dp</dimen>
+    <dimen name="edit_profile_username_margin_bottom">360dp</dimen>
 
 
     <!--paddings-->
@@ -132,8 +136,9 @@
     <dimen name="is_selected_check_box_w">24dp</dimen>
     <dimen name="is_selected_check_box_h">20dp</dimen>
     <dimen name="floating_delete_button_size">60dp</dimen>
-    <dimen name="forward_bt_h">55dp</dimen>
+    <dimen name="forward_bt_h">@dimen/view_my_contacts_bt_h</dimen>
     <dimen name="cancel_bt_h">40dp</dimen>
+    <dimen name="save_bt_h">@dimen/view_my_contacts_bt_h</dimen>
 
     <!-- button content dimens -->
     <dimen name="google_bt_icon_h">20dp</dimen>
@@ -162,6 +167,8 @@
     <dimen name="input_box_stroke_w_focused">1dp</dimen>
     <dimen name="profile_photo_size">113dp</dimen>
     <dimen name="gallery_item_size">85dp</dimen>
+
+    <dimen name="edit_profile_photo_size">118dp</dimen>
 
     <!--border radius -->
     <dimen name="radius_6">6dp</dimen>

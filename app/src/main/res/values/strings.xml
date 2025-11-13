@@ -86,4 +86,9 @@
     <string name="forgot_your_password_label">Forgot your password?</string>
     <string name="incorrect_email_or_password_error">Incorrect email or password</string>
 
+    <!-- Edit profile -->
+    <string name="save">SAVE</string>
+    <string name="username">Username</string>
+    <string name="address">Address</string>
+
 </resources>

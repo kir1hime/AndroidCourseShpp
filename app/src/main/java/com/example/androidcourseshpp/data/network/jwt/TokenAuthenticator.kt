@@ -15,17 +15,8 @@ class TokenAuthenticator(
 
     override fun authenticate(route: Route?, response: Response): Request? {
 
-        return runBlocking {
-            val currentAccessToken = jwtManagerImpl.getAccessToken()
+      return runBlocking {
             val currentRefreshToken = jwtManagerImpl.getRefreshToken() ?: return@runBlocking null
-
-            if (currentAccessToken != response.request.header("Authorization")
-                    ?.removePrefix("Bearer ")
-            ) {
-                return@runBlocking response.request.newBuilder()
-                    .header("Authorization", "Bearer $currentAccessToken")
-                    .build()
-            }
 
             val newTokensResponse =
                 refreshApi.refreshTokens(currentRefreshToken)
