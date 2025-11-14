@@ -239,7 +239,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/main_margin_side"
         android:layout_marginTop="@dimen/edit_profile_username_margin_top"
-        android:hint="@string/mobile_phone"
+        android:hint="@string/date_of_birthday"
         android:paddingStart="@dimen/input_text_padding"
         android:textColorHint="@color/input_hint_color"
         android:theme="@style/input_style"

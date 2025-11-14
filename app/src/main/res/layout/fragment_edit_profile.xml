@@ -86,7 +86,7 @@
         app:boxBackgroundMode="filled"
         app:boxStrokeErrorColor="@color/input_line_color"
         app:boxStrokeWidthFocused="@dimen/input_box_stroke_w_focused"
-        app:cursorColor="@color/cursor_color_1"
+        app:cursorColor="@color/cursor_color_2"
         app:expandedHintEnabled="false"
         app:hintTextAppearance="@style/hint_style"
         app:hintTextColor="@color/input_hint_color"
@@ -122,7 +122,7 @@
         app:boxBackgroundMode="filled"
         app:boxStrokeErrorColor="@color/input_line_color"
         app:boxStrokeWidthFocused="@dimen/input_box_stroke_w_focused"
-        app:cursorColor="@color/cursor_color_1"
+        app:cursorColor="@color/cursor_color_2"
         app:expandedHintEnabled="false"
         app:hintTextAppearance="@style/hint_style"
         app:hintTextColor="@color/input_hint_color"
@@ -157,7 +157,7 @@
         app:boxBackgroundMode="filled"
         app:boxStrokeErrorColor="@color/input_line_color"
         app:boxStrokeWidthFocused="@dimen/input_box_stroke_w_focused"
-        app:cursorColor="@color/cursor_color_1"
+        app:cursorColor="@color/cursor_color_2"
         app:expandedHintEnabled="false"
         app:hintTextAppearance="@style/hint_style"
         app:hintTextColor="@color/input_hint_color"
@@ -173,7 +173,8 @@
             android:maxLength="15"
             android:paddingTop="@dimen/input_text_edit_padding_top"
             android:paddingBottom="@dimen/input_text_edit_padding_bottom"
-            android:textColor="@color/edit_text_mobile_phone_text_color"
+            android:textColor="@color/edit_profile_inputs_text_color"
+            android:textSize="@dimen/big_text_size"
             android:textStyle="bold" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -191,7 +192,7 @@
         app:boxBackgroundMode="filled"
         app:boxStrokeErrorColor="@color/input_line_color"
         app:boxStrokeWidthFocused="@dimen/input_box_stroke_w_focused"
-        app:cursorColor="@color/cursor_color_1"
+        app:cursorColor="@color/cursor_color_2"
         app:expandedHintEnabled="false"
         app:hintTextAppearance="@style/hint_style"
         app:hintTextColor="@color/input_hint_color"
@@ -219,7 +220,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/main_margin_side"
         android:layout_marginTop="@dimen/edit_profile_username_margin_top"
-        android:hint="@string/mobile_phone"
+        android:hint="@string/date_of_birthday"
         android:paddingStart="@dimen/input_text_padding"
         android:textColorHint="@color/input_hint_color"
         android:theme="@style/input_style"
@@ -227,7 +228,7 @@
         app:boxBackgroundMode="filled"
         app:boxStrokeErrorColor="@color/input_line_color"
         app:boxStrokeWidthFocused="@dimen/input_box_stroke_w_focused"
-        app:cursorColor="@color/cursor_color_1"
+        app:cursorColor="@color/cursor_color_2"
         app:expandedHintEnabled="false"
         app:hintTextAppearance="@style/hint_style"
         app:hintTextColor="@color/input_hint_color"
@@ -243,7 +244,8 @@
             android:maxLength="10"
             android:paddingTop="@dimen/input_text_edit_padding_top"
             android:paddingBottom="@dimen/input_text_edit_padding_bottom"
-            android:textColor="@color/edit_text_mobile_phone_text_color"
+            android:textColor="@color/edit_profile_inputs_text_color"
+            android:textSize="@dimen/big_text_size"
             android:textStyle="bold" />
     </com.google.android.material.textfield.TextInputLayout>
 

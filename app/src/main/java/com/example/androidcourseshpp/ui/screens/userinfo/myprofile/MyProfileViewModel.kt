@@ -3,6 +3,7 @@ package com.example.androidcourseshpp.ui.screens.userinfo.myprofile
 import com.example.androidcourseshpp.data.dataProvider.UserDataProvider
 import com.example.androidcourseshpp.data.network.jwt.JWTManager
 import com.example.androidcourseshpp.ui.BaseViewModel
+import com.example.androidcourseshpp.ui.screens.editprofile.EditProfileContract
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -27,8 +28,23 @@ class MyProfileViewModel @Inject constructor(
             is MyProfileContract.Event.OnLogOutButtonClicked -> logOut()
             is MyProfileContract.Event.SetUserName -> setUserName(event.name)
             is MyProfileContract.Event.OnEditProfileClicked -> navigateToEditProfileScreen()
+            is MyProfileContract.Event.SetUserInfo -> updateState(event.state)
         }
 
+    }
+
+    private fun updateState(state: MyProfileContract.UIState) {
+        setState {
+            with(state) {
+                copy(
+                    userName = userName,
+                    career = career,
+                    mobilePhone = mobilePhone,
+                    address = address,
+                    dateOfBirthday = dateOfBirthday
+                )
+            }
+        }
     }
 
     private fun navigateToEditProfileScreen() {

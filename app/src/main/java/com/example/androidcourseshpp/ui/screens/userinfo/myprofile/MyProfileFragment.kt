@@ -7,15 +7,15 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.databinding.FragmentMyProfileBinding
 import com.example.androidcourseshpp.ui.BaseFragment
+import com.example.androidcourseshpp.ui.UserInfoEntity
 import com.example.androidcourseshpp.ui.screens.auth.AuthActivity
 import com.example.androidcourseshpp.ui.screens.auth.USER_NAME
-import com.example.androidcourseshpp.ui.screens.editprofile.EditProfileEntity
-import com.example.androidcourseshpp.ui.screens.editprofile.EditProfileFragmentDirections
 import com.example.androidcourseshpp.ui.screens.userinfo.TabSwitchable
 import com.example.androidcourseshpp.ui.screens.userinfo.UserInfoFragmentDirections
 import dagger.hilt.android.AndroidEntryPoint
@@ -38,10 +38,29 @@ class MyProfileFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        setResultListenerFromEditProfile()
         defineUserName()
         setListeners()
         setObservers()
+    }
+
+    private fun setResultListenerFromEditProfile() {
+        val userInfo = setResultListener<UserInfoEntity>()
+        userInfo?.value?.let { userInfo ->
+            userInfo.apply {
+                viewModel.setEvent(
+                    MyProfileContract.Event.SetUserInfo(
+                        MyProfileContract.UIState(
+                            userName = userName,
+                            career = career,
+                            mobilePhone = mobilePhone,
+                            address = address,
+                            dateOfBirthday = dateOfBirthday
+                        )
+                    )
+                )
+            }
+        }
     }
 
     private fun defineUserName() = with(binding) {
@@ -61,13 +80,13 @@ class MyProfileFragment : BaseFragment() {
         }
     }
 
-    private fun setObservers() {
+    private fun setObservers() = with(binding) {
         collectFlow(viewModel.effect) { effect ->
             when (effect) {
                 is MyProfileContract.Effect.NavigateToContactList -> moveToMyContactsScreen()
                 is MyProfileContract.Effect.NavigateToSignInScreen -> moveToSignUpScreen()
                 is MyProfileContract.Effect.NavigateToEditProfileScreen -> moveToEditProfileScreen(
-                    EditProfileEntity(
+                    UserInfoEntity(
                         userName = effect.state.userName,
                         mobilePhone = effect.state.mobilePhone,
                         address = effect.state.address,
@@ -78,7 +97,16 @@ class MyProfileFragment : BaseFragment() {
             }
         }
         collectFlow(viewModel.state) { state ->
-            binding.textViewName.text = state.userName
+            textViewName.text = state.userName
+            Log.d("myTag", state.career)
+            textViewCareer.updateIfNotEmpty(state.career)
+            textViewHomeAddress.updateIfNotEmpty(state.address)
+        }
+    }
+
+    fun TextView.updateIfNotEmpty(newValue: String) {
+        if (newValue.isNotEmpty()) {
+            text = newValue
         }
     }
 
@@ -101,9 +129,9 @@ class MyProfileFragment : BaseFragment() {
         parentFragment?.moveToContactsTab()
     }
 
-    private fun moveToEditProfileScreen(userData: EditProfileEntity) {
+    private fun moveToEditProfileScreen(userInfo: UserInfoEntity) {
         val direction =
-            UserInfoFragmentDirections.actionUserInfoFragmentToEditProfileFragment(userData)
+            UserInfoFragmentDirections.actionUserInfoFragmentToEditProfileFragment(userInfo)
         findNavController().navigate(direction)
     }
 }

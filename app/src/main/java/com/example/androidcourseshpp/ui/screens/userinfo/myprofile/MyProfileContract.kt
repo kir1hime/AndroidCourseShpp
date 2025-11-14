@@ -3,6 +3,7 @@ package com.example.androidcourseshpp.ui.screens.userinfo.myprofile
 import com.example.androidcourseshpp.ui.ViewEffect
 import com.example.androidcourseshpp.ui.ViewEvent
 import com.example.androidcourseshpp.ui.ViewState
+import com.example.androidcourseshpp.ui.screens.editprofile.EditProfileContract
 
 class MyProfileContract {
 
@@ -11,6 +12,7 @@ class MyProfileContract {
         data object OnLogOutButtonClicked : Event
         data class SetUserName(val name: String) : Event
         data object OnEditProfileClicked : Event
+        data class SetUserInfo(val state: UIState) : Event
     }
 
     sealed interface Effect : ViewEffect {

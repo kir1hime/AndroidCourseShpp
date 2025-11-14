@@ -80,5 +80,6 @@
     <string name="save">ЗБЕРЕГТИ</string>
     <string name="username">Ім\'я</string>
     <string name="address">Адреса</string>
+    <string name="date_of_birthday">День народження</string>
 
 </resources>

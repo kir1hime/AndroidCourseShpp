@@ -6,14 +6,15 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import androidx.viewbinding.ViewBinding
-import com.example.androidcourseshpp.databinding.FragmentEditProfileBinding
-import com.example.androidcourseshpp.ui.screens.auth.signupextended.SignUpExtendedFragmentDirections
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+
+const val RESULT_KEY = "resultPreviousScreenKey"
 
 open class BaseFragment : Fragment() {
 
@@ -63,6 +64,17 @@ open class BaseFragment : Fragment() {
         newInputText.insert(currentText.length - 1, sign)
         editText.setText(newInputText)
         editText.setSelection(editText.length())
+    }
+
+    protected fun <T> setResultForPreviousScreen(data: T) {
+        findNavController().previousBackStackEntry?.savedStateHandle?.set(
+            RESULT_KEY,
+            data
+        )
+    }
+
+    protected fun <T> setResultListener() : MutableLiveData<T>? {
+        return findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData(RESULT_KEY)
     }
 
     companion object {

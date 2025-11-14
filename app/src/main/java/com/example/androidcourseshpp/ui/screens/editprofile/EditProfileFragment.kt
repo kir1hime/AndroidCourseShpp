@@ -1,19 +1,25 @@
 package com.example.androidcourseshpp.ui.screens.editprofile
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.androidcourseshpp.databinding.FragmentEditProfileBinding
 import com.example.androidcourseshpp.ui.BaseFragment
+import com.example.androidcourseshpp.ui.UserInfoEntity
+import com.example.androidcourseshpp.ui.screens.userinfo.myprofile.MyProfileEntity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class EditProfileFragment : BaseFragment() {
     private lateinit var binding: FragmentEditProfileBinding
     private val viewModel by viewModels<EditProfileViewModel>()
+    private val args: EditProfileFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -26,14 +32,32 @@ class EditProfileFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setUserInfo()
         setListeners()
         setObservers()
         formatMobilePhoneInput(binding.editTextMobilePhone)
     }
 
+    private fun setUserInfo() = with(binding) {
+        args.userInfo.apply {
+            viewModel.setEvent(
+                EditProfileContract.Event.SetUserInfo(
+                    EditProfileContract.UIState(
+                        userName = userName,
+                        career = career,
+                        mobilePhone = mobilePhone,
+                        address = address,
+                        dateOfBirthday = dateOfBirthday
+                    )
+                )
+            )
+        }
+    }
+
+
     private fun setListeners() = with(binding) {
         buttonSave.setOnClickListener {
-
+            viewModel.setEvent(EditProfileContract.Event.OnSaveButtonClicked)
         }
         imageButtonAddProfilePhoto.setOnClickListener {
 
@@ -53,19 +77,21 @@ class EditProfileFragment : BaseFragment() {
             when (effect) {
                 is EditProfileContract.Effect.NavigateToChooseProfilePhotoDialog -> moveToChooseProfilePhotoDialog()
                 is EditProfileContract.Effect.NavigateToMyProfileScreen -> moveToMyProfileScreen(
-                    EditProfileEntity(
-                        userName = effect.state.userName,
-                        mobilePhone = effect.state.mobilePhone,
-                        address = effect.state.address,
-                        career = effect.state.career,
-                        dateOfBirthday = effect.state.dateOfBirthday
+                    UserInfoEntity(
+                        userName = editTextUsername.text.toString(),
+                        mobilePhone = editTextMobilePhone.text.toString(),
+                        address = editTextAddress.text.toString(),
+                        career = editTextCareer.text.toString(),
+                        dateOfBirthday = editTextDateOfBirthday.text.toString()
                     )
                 )
             }
         }
     }
 
-    private fun moveToMyProfileScreen(userData: EditProfileEntity) {
+    private fun moveToMyProfileScreen(userData: UserInfoEntity) {
+        setResultForPreviousScreen(userData)
+        findNavController().navigateUp()
     }
 
     private fun moveToChooseProfilePhotoDialog() {

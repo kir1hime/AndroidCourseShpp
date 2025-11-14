@@ -1,11 +1,10 @@
-package com.example.androidcourseshpp.ui.screens.editprofile
+package com.example.androidcourseshpp.ui
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
-
 @Parcelize
-data class EditProfileEntity(
+data class UserInfoEntity(
     val userName: String,
     val career: String,
     val address: String,

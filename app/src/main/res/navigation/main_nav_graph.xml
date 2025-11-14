@@ -20,9 +20,6 @@
         android:name="com.example.androidcourseshpp.ui.screens.userinfo.UserInfoFragment"
         android:label="fragment_userinfo"
         tools:layout="@layout/fragment_userinfo">
-        <argument
-            android:name="myProfileInfo"
-            app:argType="com.example.androidcourseshpp.ui.screens.userinfo.myprofile.MyProfileEntity" />
         <action
             android:id="@+id/action_userInfoFragment_to_contactDetailsFragment"
             app:destination="@id/contactDetailsFragment"
@@ -32,7 +29,11 @@
             app:popExitAnim="@anim/slide_out_from_left_to_right" />
         <action
             android:id="@+id/action_userInfoFragment_to_editProfileFragment"
-            app:destination="@id/editProfileFragment" />
+            app:destination="@id/editProfileFragment"
+            app:enterAnim="@anim/slide_in_from_top_to_bottom"
+            app:exitAnim="@anim/slide_out_from_top_to_bottom"
+            app:popEnterAnim="@anim/slide_in_from_bottom_to_top"
+            app:popExitAnim="@anim/slide_out_from_bottom_to_top" />
     </fragment>
     <fragment
         android:id="@+id/editProfileFragment"
@@ -41,7 +42,7 @@
         tools:layout="@layout/fragment_edit_profile">
         <argument
             android:name="userInfo"
-            app:argType="com.example.androidcourseshpp.ui.screens.editprofile.EditProfileEntity" />
+            app:argType="com.example.androidcourseshpp.ui.UserInfoEntity" />
         <action
             android:id="@+id/action_editProfileFragment_to_chooseProfilePhotoDialog2"
             app:destination="@id/chooseProfilePhotoDialog2" />

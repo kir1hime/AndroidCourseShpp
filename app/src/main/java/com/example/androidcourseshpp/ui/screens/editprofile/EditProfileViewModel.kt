@@ -21,12 +21,27 @@ class EditProfileViewModel @Inject constructor() :
     override fun handleEvent(event: EditProfileContract.Event) {
         when (event) {
             is EditProfileContract.Event.OnAddProfilePhotoImageViewClicked -> navigateToChooseProfilePhotoDialog()
-            is EditProfileContract.Event.OnSaveButtonClicked -> navigateToMyProfileScreen(event.state)
+            is EditProfileContract.Event.OnSaveButtonClicked -> navigateToMyProfileScreen()
+            is EditProfileContract.Event.SetUserInfo -> updateState(event.state)
         }
     }
 
-    private fun navigateToMyProfileScreen(state: EditProfileContract.UIState) {
-        setEffect(EditProfileContract.Effect.NavigateToMyProfileScreen(state))
+    private fun updateState(state: EditProfileContract.UIState) {
+        setState {
+            with(state) {
+                copy(
+                    userName = userName,
+                    career = career,
+                    mobilePhone = mobilePhone,
+                    address = address,
+                    dateOfBirthday = dateOfBirthday
+                )
+            }
+        }
+    }
+
+    private fun navigateToMyProfileScreen() {
+        setEffect(EditProfileContract.Effect.NavigateToMyProfileScreen)
     }
 
     private fun navigateToChooseProfilePhotoDialog() {

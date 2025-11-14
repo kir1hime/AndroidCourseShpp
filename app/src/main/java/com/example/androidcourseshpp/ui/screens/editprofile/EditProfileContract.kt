@@ -7,15 +7,13 @@ import com.example.androidcourseshpp.ui.ViewState
 class EditProfileContract {
 
     sealed interface Event : ViewEvent {
-        data class OnSaveButtonClicked(
-            val state: UIState
-        ) : Event
-
+        data object OnSaveButtonClicked : Event
         data object OnAddProfilePhotoImageViewClicked : Event
+        data class SetUserInfo(val state: UIState) : Event
     }
 
     sealed interface Effect : ViewEffect {
-        data class NavigateToMyProfileScreen(val state: UIState) : Effect
+        data object NavigateToMyProfileScreen : Effect
         data object NavigateToChooseProfilePhotoDialog : Effect
     }
 
