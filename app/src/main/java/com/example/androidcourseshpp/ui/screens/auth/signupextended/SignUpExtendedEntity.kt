@@ -5,6 +5,6 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class SignUpExtendedEntity(
-    val serverUserId: Long,
+    val userServerId: Long,
     val toRememberUser: Boolean
 ) : Parcelable

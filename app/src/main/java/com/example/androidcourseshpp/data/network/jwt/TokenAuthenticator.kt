@@ -10,25 +10,35 @@ import okhttp3.Route
 
 class TokenAuthenticator(
     private val refreshApi: RefreshAPI,
-    private val jwtManagerImpl: JWTManager
+    private val jwtManager: JWTManager
 ) : Authenticator {
 
     override fun authenticate(route: Route?, response: Response): Request? {
 
-      return runBlocking {
-            val currentRefreshToken = jwtManagerImpl.getRefreshToken() ?: return@runBlocking null
+        return runBlocking {
+            val currentRefreshToken = jwtManager.getRefreshToken() ?: return@runBlocking null
 
-            val newTokensResponse =
+
+            val newTokensResponse = try {
                 refreshApi.refreshTokens(currentRefreshToken)
+            } catch (e: Exception) {
+                return@runBlocking null
+            }
 
             if (!newTokensResponse.isSuccessful) {
                 return@runBlocking null
             }
 
-            val newTokens = newTokensResponse.body() ?: return@runBlocking null
+            val newTokens = newTokensResponse.body()
+            if (newTokens == null ||
+                newTokens.accessToken == null ||
+                newTokens.refreshToken == null
+            ) {
+                return@runBlocking null
+            }
 
-            jwtManagerImpl.saveAccessToken(newTokens.accessToken)
-            jwtManagerImpl.saveRefreshToken(newTokens.refreshToken)
+            jwtManager.saveAccessToken(newTokens.accessToken)
+            jwtManager.saveRefreshToken(newTokens.refreshToken)
 
             response.request.newBuilder()
                 .header("Authorization", "Bearer ${newTokens.accessToken}")

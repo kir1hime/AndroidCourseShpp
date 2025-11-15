@@ -1,6 +1,5 @@
 package com.example.androidcourseshpp.ui.screens.auth.signup
 
-import androidx.lifecycle.viewModelScope
 import com.example.androidcourseshpp.data.SignUpValidator
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -8,12 +7,8 @@ import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.PasswordErrorMessagesContainer
 import com.example.androidcourseshpp.data.network.jwt.JWTManager
 import com.example.androidcourseshpp.data.network.RetrofitServiceProviderHolder
-import com.example.androidcourseshpp.data.network.service.BackendException
-import com.example.androidcourseshpp.data.network.service.ConnectionException
-import com.example.androidcourseshpp.data.network.service.ProcessResponseException
 import com.example.androidcourseshpp.data.network.service.auth.entity.SignUpData
 import com.example.androidcourseshpp.ui.BaseViewModel
-import kotlinx.coroutines.launch
 
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
@@ -78,8 +73,9 @@ class SignUpViewModel @Inject constructor(
     }
 
     private fun signUpUser(email: String, password: String, toRememberUser: Boolean) {
-        viewModelScope.launch {
-            try {
+
+        processNetworkExceptions(
+            toExecute = {
                 setState { copy(isProgressBarShowed = true) }
 
                 val response =
@@ -91,6 +87,10 @@ class SignUpViewModel @Inject constructor(
 
                 val serverUserId = response.user.id
 
+                if (toRememberUser){
+
+                }
+
                 setEffect(
                     SignUpContract.Effect.NavigateToSignUpExtendedScreen(
                         serverUserId,
@@ -99,21 +99,22 @@ class SignUpViewModel @Inject constructor(
                         toRememberUser
                     )
                 )
-
-            } catch (e: BackendException) {
+            },
+            processBackendException = {
                 setState { copy(eMailHelperTextResId = R.string.email_already_registered_error) }
                 setEffect(SignUpContract.Effect.ShowToast(R.string.backend_error))
-
-            } catch (e: ProcessResponseException) {
+            },
+            processResponseProcessingException = {
                 setEffect(SignUpContract.Effect.ShowToast(R.string.server_response_error))
-
-            } catch (e: ConnectionException) {
+            },
+            processConnectionException = {
                 setEffect(SignUpContract.Effect.ShowToast(R.string.connection_error))
-
-            } finally {
+            },
+            processUserUnauthorizedException = {},
+            finally = {
                 setState { copy(isProgressBarShowed = false) }
             }
-        }
+        )
     }
 
     /**

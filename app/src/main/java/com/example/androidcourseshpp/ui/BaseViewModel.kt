@@ -2,7 +2,9 @@ package com.example.androidcourseshpp.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.androidcourseshpp.ui.screens.auth.signup.SignUpContract.Effect
+import com.example.androidcourseshpp.data.network.service.BackendException
+import com.example.androidcourseshpp.data.network.service.ConnectionException
+import com.example.androidcourseshpp.data.network.service.ResponseProcessingException
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,7 +17,8 @@ interface ViewEvent
 interface ViewEffect
 interface ViewState
 
-abstract class BaseViewModel<UIEvent : ViewEvent, UIEffect : ViewEffect, UIState : ViewState> : ViewModel() {
+abstract class BaseViewModel<UIEvent : ViewEvent, UIEffect : ViewEffect, UIState : ViewState> :
+    ViewModel() {
 
     protected abstract fun initState(): UIState
     protected abstract fun handleEvent(event: UIEvent)
@@ -39,7 +42,7 @@ abstract class BaseViewModel<UIEvent : ViewEvent, UIEffect : ViewEffect, UIState
         }
     }
 
-   protected fun setState(modifier: UIState.() -> UIState) {
+    protected fun setState(modifier: UIState.() -> UIState) {
         _state.update { state ->
             state.modifier()
         }
@@ -51,13 +54,41 @@ abstract class BaseViewModel<UIEvent : ViewEvent, UIEffect : ViewEffect, UIState
         }
     }
 
-    protected fun setEffect(effect : UIEffect){
+    protected fun setEffect(effect: UIEffect) {
         viewModelScope.launch {
             _effect.send(effect)
         }
     }
 
+    protected fun processNetworkExceptions(
+        toExecute: suspend () -> Unit,
+        processBackendException: () -> Unit,
+        processResponseProcessingException: () -> Unit,
+        processConnectionException: () -> Unit,
+        processUserUnauthorizedException: () -> Unit,
+        finally: () -> Unit
+    ) {
+        viewModelScope.launch {
+            try {
 
+                toExecute.invoke()
+
+            } catch (e: BackendException) {
+                processBackendException.invoke()
+
+            } catch (e: ResponseProcessingException) {
+                processResponseProcessingException
+
+            } catch (e: ConnectionException) {
+                processConnectionException
+
+            } catch (e: NullPointerException) {
+                processUserUnauthorizedException
+            } finally {
+                finally.invoke()
+            }
+        }
+    }
 
 }
 

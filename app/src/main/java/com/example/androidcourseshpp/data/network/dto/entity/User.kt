@@ -1,5 +1,7 @@
 package com.example.androidcourseshpp.data.network.dto.entity
 
+import com.example.androidcourseshpp.ui.UserInfoEntity
+
 data class User(
     val id: Long,
     val email: String,
@@ -13,4 +15,12 @@ data class User(
     val twitter: String?,
     val linkedin: String?,
     val image: String?
-)
+) {
+    fun toUserInfoEntity() = UserInfoEntity(
+        userName = name ?: "",
+        career = career ?: "",
+        address = address ?: "",
+        mobilePhone = phone ?: "",
+        dateOfBirthday = birthday ?: ""
+    )
+}

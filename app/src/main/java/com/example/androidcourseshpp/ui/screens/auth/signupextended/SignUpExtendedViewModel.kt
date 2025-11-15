@@ -1,16 +1,12 @@
 package com.example.androidcourseshpp.ui.screens.auth.signupextended
 
-import androidx.lifecycle.viewModelScope
+
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.dataProvider.UserDataProvider
 import com.example.androidcourseshpp.data.network.RetrofitServiceProviderHolder
-import com.example.androidcourseshpp.data.network.service.BackendException
-import com.example.androidcourseshpp.data.network.service.ConnectionException
-import com.example.androidcourseshpp.data.network.service.ProcessResponseException
 import com.example.androidcourseshpp.data.network.service.user.entity.UpdateUserData
 import com.example.androidcourseshpp.ui.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 private const val PHONE_NUMBER_LENGTH = 15
@@ -38,12 +34,12 @@ class SignUpExtendedViewModel @Inject constructor(
 
             is SignUpExtendedContract.Event.OnAddProfilePhotoImageViewClicked -> navigateToChooseProfilePhotoDialog()
             is SignUpExtendedContract.Event.OnCancelButtonClicked -> navigateToPreviousScreen()
-            is SignUpExtendedContract.Event.SaveUserName -> saveUserName(event.name)
+            is SignUpExtendedContract.Event.SaveUserName -> saverUserServerId(event.userServerId)
         }
     }
 
-    private fun saveUserName(name: String) {
-        userDataProvider.saveUserName(name)
+    private fun saverUserServerId(userServerId: Long) {
+        userDataProvider.saveUserServerId(userServerId)
     }
 
     private fun processInputData(
@@ -70,31 +66,41 @@ class SignUpExtendedViewModel @Inject constructor(
             setState { copy(mobilePhoneHelperResId = R.string.no_error) }
         }
 
-        viewModelScope.launch {
-            if (isMobilePhoneCorrect && isUserNameCorrect) {
-
-                try {
+        processNetworkExceptions(
+            toExecute = {
+                if (isMobilePhoneCorrect && isUserNameCorrect) {
                     setState { copy(isProgressBarShowed = true) }
 
-                    serviceProviderHolder.serviceProvider.getUserService()
+                    val userInfo = serviceProviderHolder.serviceProvider.getUserService()
                         .updateUserInfo(
                             serverUserId,
                             UpdateUserData(name = userName, phone = mobilePhone)
                         )
 
-                    setEffect(SignUpExtendedContract.Effect.NavigateToMyProfileScreen)
-                } catch (e: BackendException) {
-                    setEffect(SignUpExtendedContract.Effect.ShowToast(R.string.backend_error))
-                } catch (e: ProcessResponseException) {
-                    setEffect(SignUpExtendedContract.Effect.ShowToast(R.string.server_response_error))
-                } catch (e: ConnectionException) {
-                    setEffect(SignUpExtendedContract.Effect.ShowToast(R.string.connection_error))
-                } finally {
-                    setState { copy(isProgressBarShowed = false) }
-
+                    setEffect(
+                        SignUpExtendedContract.Effect.NavigateToMyProfileScreen(
+                            userInfo.toUserInfoEntity()
+                        )
+                    )
                 }
+
+            },
+            processBackendException = {
+                setEffect(SignUpExtendedContract.Effect.ShowToast(R.string.backend_error))
+            },
+            processResponseProcessingException = {
+                setEffect(SignUpExtendedContract.Effect.ShowToast(R.string.server_response_error))
+            },
+            processConnectionException = {
+                setEffect(SignUpExtendedContract.Effect.ShowToast(R.string.connection_error))
+            },
+            processUserUnauthorizedException = {
+                setEffect(SignUpExtendedContract.Effect.ShowToast(R.string.connection_error))
+            },
+            finally = {
+                setState { copy(isProgressBarShowed = false) }
             }
-        }
+        )
     }
 
     private fun navigateToChooseProfilePhotoDialog() {

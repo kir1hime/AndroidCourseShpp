@@ -1,16 +1,17 @@
 package com.example.androidcourseshpp.ui.screens.userinfo.myprofile
 
 import com.example.androidcourseshpp.data.dataProvider.UserDataProvider
+import com.example.androidcourseshpp.data.network.RetrofitServiceProviderHolder
 import com.example.androidcourseshpp.data.network.jwt.JWTManager
 import com.example.androidcourseshpp.ui.BaseViewModel
-import com.example.androidcourseshpp.ui.screens.editprofile.EditProfileContract
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class MyProfileViewModel @Inject constructor(
     private val userDataProvider: UserDataProvider,
-    private val jwtManager: JWTManager
+    private val jwtManager: JWTManager,
+    private val serviceProviderHolder: RetrofitServiceProviderHolder
 ) :
     BaseViewModel<MyProfileContract.Event, MyProfileContract.Effect, MyProfileContract.UIState>() {
 
@@ -26,7 +27,6 @@ class MyProfileViewModel @Inject constructor(
         when (event) {
             is MyProfileContract.Event.OnViewMyContactsButtonClicked -> navigateToMyContacts()
             is MyProfileContract.Event.OnLogOutButtonClicked -> logOut()
-            is MyProfileContract.Event.SetUserName -> setUserName(event.name)
             is MyProfileContract.Event.OnEditProfileClicked -> navigateToEditProfileScreen()
             is MyProfileContract.Event.SetUserInfo -> updateState(event.state)
         }
@@ -51,13 +51,10 @@ class MyProfileViewModel @Inject constructor(
         setEffect(MyProfileContract.Effect.NavigateToEditProfileScreen(state.value))
     }
 
-    private fun setUserName(name: String) {
-        setState { copy(userName = name) }
-    }
 
     private fun logOut() {
         jwtManager.clearTokens()
-        userDataProvider.clearUserName()
+        userDataProvider.clearUserServerId()
         setEffect(MyProfileContract.Effect.NavigateToSignInScreen)
     }
 

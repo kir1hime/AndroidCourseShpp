@@ -1,8 +1,7 @@
 package com.example.androidcourseshpp.ui.screens.auth.signupextended
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -54,7 +53,7 @@ class SignUpExtendedFragment : AuthFragment() {
                 SignUpExtendedContract.Event.OnForwardButtonClicked(
                     inputUserName,
                     inputMobilePhone,
-                    args.SignUpExtendedEntity.serverUserId
+                    args.SignUpExtendedEntity.userServerId
                 )
             )
         }
@@ -68,18 +67,21 @@ class SignUpExtendedFragment : AuthFragment() {
 
 
     private fun rememberUserName() = with(binding) {
-        if (args.SignUpExtendedEntity.toRememberUser) {
-            val name = editTextUserName.text.toString()
-            viewModel.setEvent(SignUpExtendedContract.Event.SaveUserName(name))
+        args.SignUpExtendedEntity.apply {
+            if (toRememberUser) {
+                viewModel.setEvent(SignUpExtendedContract.Event.SaveUserName(userServerId))
+            }
         }
     }
 
     private fun setObservers() = with(binding) {
         collectFlow(viewModel.effect) { effect ->
             when (effect) {
-                is SignUpExtendedContract.Effect.NavigateToMyProfileScreen -> moveToMyProfileScreen(
-                    editTextUserName.text.toString()
-                )
+                is SignUpExtendedContract.Effect.NavigateToMyProfileScreen ->{
+                    Log.d("myTag", "aldfj")
+                    moveToMyProfileScreen(
+                    effect.userInfoEntity
+                )}
 
                 is SignUpExtendedContract.Effect.NavigateToPreviousScreen -> findNavController().navigateUp()
 

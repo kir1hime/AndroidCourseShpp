@@ -1,18 +1,15 @@
 package com.example.androidcourseshpp.ui.screens.auth.signin
 
-import androidx.lifecycle.viewModelScope
+
+import android.util.Log
 import com.example.androidcourseshpp.R
+import com.example.androidcourseshpp.data.dataProvider.DEFAULT_USER_SERVER_ID_VALUE
 import com.example.androidcourseshpp.data.dataProvider.UserDataProvider
 import com.example.androidcourseshpp.data.network.RetrofitServiceProviderHolder
 import com.example.androidcourseshpp.data.network.jwt.JWTManager
-import com.example.androidcourseshpp.data.network.service.BackendException
-import com.example.androidcourseshpp.data.network.service.ConnectionException
-import com.example.androidcourseshpp.data.network.service.ProcessResponseException
 import com.example.androidcourseshpp.data.network.service.auth.entity.SignInData
-import com.example.androidcourseshpp.data.network.service.refresh.entity.RefreshTokenEntity
 import com.example.androidcourseshpp.ui.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -25,21 +22,13 @@ class SignInViewModel @Inject constructor(
 
 
     init {
-        val currentAccessToken = jwtManager.getAccessToken()
-        val currentRefreshToken = jwtManager.getRefreshToken() ?: ""
+        val userServerId = userDataProvider.getUserServerId()
 
-        processNetworkExceptions {
-            if (currentAccessToken != null) {
-                serviceProviderHolder.serviceProvider.getRefreshTokenService().refreshTokens(
-                    RefreshTokenEntity(currentRefreshToken)
-                )
-            }
-        }
-
-        userDataProvider.getUserName()?.let { name ->
-            setEffect(SignInContract.Effect.NavigateToMyProfileScreen(name))
+        if (userServerId != DEFAULT_USER_SERVER_ID_VALUE) {
+            enterToAccount(userServerId)
         }
     }
+
 
     override fun initState(): SignInContract.UIState {
         return SignInContract.UIState(
@@ -62,48 +51,78 @@ class SignInViewModel @Inject constructor(
     }
 
     private fun loginUser(email: String, password: String, toRememberUser: Boolean) {
-        processNetworkExceptions {
-            setState { copy(isProgressBarShowed = true) }
+        processNetworkExceptions(
+            toExecute = {
+                setState { copy(isProgressBarShowed = true) }
 
-            val response = serviceProviderHolder.serviceProvider.getAuthService()
-                .singIn(SignInData(email = email, password = password))
+                val response = serviceProviderHolder.serviceProvider.getAuthService()
+                    .singIn(SignInData(email = email, password = password))
 
-            jwtManager.saveAccessToken(response.accessToken)
-            jwtManager.saveRefreshToken(response.refreshToken)
+                jwtManager.saveAccessToken(response.accessToken)
+                jwtManager.saveRefreshToken(response.refreshToken)
 
-            val userName = response.user.name ?: ""
+                val userInfo = response.user
 
-            if (toRememberUser) {
-                userDataProvider.saveUserName(userName)
+                if (toRememberUser) {
+                    userDataProvider.saveUserServerId(userInfo.id)
+                }
+
+                setEffect(SignInContract.Effect.NavigateToMyProfileScreen(userInfo.toUserInfoEntity()))
+            },
+            processBackendException = {
+                setState { copy(eMailHelperTextResId = R.string.incorrect_email_or_password_error) }
+                setEffect(SignInContract.Effect.ShowToast(R.string.backend_error))
+            },
+            processResponseProcessingException = {
+                setEffect(SignInContract.Effect.ShowToast(R.string.server_response_error))
+            },
+            processConnectionException = {
+                setEffect(SignInContract.Effect.ShowToast(R.string.connection_error))
+            },
+            processUserUnauthorizedException = {
+                setEffect(SignInContract.Effect.ShowToast(R.string.unauthorized_error))
+            },
+            finally = {
+                setState {
+                    copy(
+                        isProgressBarShowed = false,
+                        eMailHelperTextResId = R.string.no_error
+                    )
+                }
             }
-
-            setEffect(SignInContract.Effect.NavigateToMyProfileScreen(userName))
-        }
+        )
     }
 
-    private fun processNetworkExceptions(toExecute: suspend () -> Unit) {
-        try {
-            viewModelScope.launch {
-                toExecute.invoke()
+    private fun enterToAccount(userServerId: Long) {
+        processNetworkExceptions(
+            toExecute = {
+                setState { copy(isProgressBarShowed = true) }
+                Log.d("myTag", userServerId.toString())
+                Log.d("myTag", jwtManager.getAccessToken().toString())
+                val userInfo =
+                    serviceProviderHolder.serviceProvider.getUserService().getUser(userServerId)
+                setEffect(SignInContract.Effect.NavigateToMyProfileScreen(userInfo.toUserInfoEntity()))
+            },
+            processBackendException = {
+                setEffect(SignInContract.Effect.ShowToast(R.string.backend_error))
+            },
+            processResponseProcessingException = {
+                setEffect(SignInContract.Effect.ShowToast(R.string.server_response_error))
+            },
+            processConnectionException = {
+                setEffect(SignInContract.Effect.ShowToast(R.string.connection_error))
+            },
+            processUserUnauthorizedException = {
+                setEffect(SignInContract.Effect.ShowToast(R.string.unauthorized_error))
+            },
+            finally = {
+                setState {
+                    copy(
+                        isProgressBarShowed = false,
+                    )
+                }
             }
-        } catch (e: BackendException) {
-            setState { copy(eMailHelperTextResId = R.string.incorrect_email_or_password_error) }
-            setEffect(SignInContract.Effect.ShowToast(R.string.backend_error))
-
-        } catch (e: ProcessResponseException) {
-            setEffect(SignInContract.Effect.ShowToast(R.string.server_response_error))
-
-        } catch (e: ConnectionException) {
-            setEffect(SignInContract.Effect.ShowToast(R.string.connection_error))
-
-        } finally {
-            setState {
-                copy(
-                    isProgressBarShowed = false,
-                    eMailHelperTextResId = R.string.no_error
-                )
-            }
-        }
+        )
     }
 
     private fun navigateToSignUpScreen() {

@@ -11,11 +11,12 @@ import android.widget.TextView
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.androidcourseshpp.R
+import com.example.androidcourseshpp.data.dataProvider.DEFAULT_USER_SERVER_ID_VALUE
 import com.example.androidcourseshpp.databinding.FragmentMyProfileBinding
 import com.example.androidcourseshpp.ui.BaseFragment
 import com.example.androidcourseshpp.ui.UserInfoEntity
 import com.example.androidcourseshpp.ui.screens.auth.AuthActivity
-import com.example.androidcourseshpp.ui.screens.auth.USER_NAME
+import com.example.androidcourseshpp.ui.screens.auth.USER_INFO
 import com.example.androidcourseshpp.ui.screens.userinfo.TabSwitchable
 import com.example.androidcourseshpp.ui.screens.userinfo.UserInfoFragmentDirections
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,7 +40,7 @@ class MyProfileFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setResultListenerFromEditProfile()
-        defineUserName()
+      //  initUserInfoLoading()
         setListeners()
         setObservers()
     }
@@ -63,10 +64,25 @@ class MyProfileFragment : BaseFragment() {
         }
     }
 
-    private fun defineUserName() = with(binding) {
-        val userName = requireActivity().intent.getStringExtra(USER_NAME) ?: ""
-        viewModel.setEvent(MyProfileContract.Event.SetUserName(userName))
-    }
+    /*private fun initUserInfoLoading() {
+        @Suppress("DEPRECATION")
+        val userInfo =
+            requireActivity().intent.getParcelableExtra<UserInfoEntity>(USER_INFO)
+
+        userInfo?.let {
+            viewModel.setEvent(
+                MyProfileContract.Event.SetUserInfo(
+                    MyProfileContract.UIState(
+                        userName = it.userName,
+                        career = it.career,
+                        address = it.address,
+                        mobilePhone = it.mobilePhone,
+                        dateOfBirthday = it.dateOfBirthday
+                    )
+                )
+            )
+        }
+    }*/
 
     private fun setListeners() = with(binding) {
         buttonLogOut.setOnClickListener {

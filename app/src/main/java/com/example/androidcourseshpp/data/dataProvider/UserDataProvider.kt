@@ -1,9 +1,9 @@
 package com.example.androidcourseshpp.data.dataProvider
 
 interface UserDataProvider {
-    fun getUserName(): String?
+    fun getUserServerId(): Long
 
-    fun saveUserName(name: String)
+    fun saveUserServerId(userServerId: Long)
 
-    fun clearUserName()
+    fun clearUserServerId()
 }

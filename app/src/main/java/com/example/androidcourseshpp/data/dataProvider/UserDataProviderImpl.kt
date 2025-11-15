@@ -6,7 +6,8 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 const val USER_INFO_STORE = "userInfo"
-const val USER_NAME = "userName"
+const val USER_SERVER_ID = "userServerId"
+const val DEFAULT_USER_SERVER_ID_VALUE: Long = -1
 
 @Singleton
 class UserDataProviderImpl @Inject constructor(@DataProviderPref private val sharedPref: SharedPreferences) :
@@ -14,14 +15,14 @@ class UserDataProviderImpl @Inject constructor(@DataProviderPref private val sha
 
     private val editor = sharedPref.edit()
 
-    override fun getUserName() = sharedPref.getString(USER_NAME, null)
+    override fun getUserServerId() =
+        sharedPref.getLong(USER_SERVER_ID, DEFAULT_USER_SERVER_ID_VALUE)
 
-
-    override fun saveUserName(name: String) {
-        editor.putString(USER_NAME, name).apply()
+    override fun saveUserServerId(userServerId: Long) {
+        editor.putLong(USER_SERVER_ID, userServerId).apply()
     }
 
-    override fun clearUserName() {
-        editor.putString(USER_NAME, null).apply()
+    override fun clearUserServerId() {
+        editor.putLong(USER_SERVER_ID, DEFAULT_USER_SERVER_ID_VALUE).apply()
     }
 }

@@ -10,7 +10,6 @@ class MyProfileContract {
     sealed interface Event : ViewEvent {
         data object OnViewMyContactsButtonClicked : Event
         data object OnLogOutButtonClicked : Event
-        data class SetUserName(val name: String) : Event
         data object OnEditProfileClicked : Event
         data class SetUserInfo(val state: UIState) : Event
     }
