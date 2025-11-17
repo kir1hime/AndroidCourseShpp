@@ -9,7 +9,7 @@ class MyProfileContract {
     sealed interface Event : ViewEvent {
         data object OnViewMyContactsButtonClicked : Event
         data object OnLogOutButtonClicked : Event
-        data class UserNameUpdated(val userName: String) : Event
+        data class UserInfoUpdated(val sate: UIState) : Event
     }
 
     sealed interface Effect : ViewEffect {
@@ -17,6 +17,12 @@ class MyProfileContract {
         data object NavigateToContactList : Effect
     }
 
-    data class UIState(val userName: String) : ViewState
+    data class UIState(
+        val userName: String,
+        val career: String,
+        val address: String,
+        val dateOfBirthday: String,
+        val mobilePhone: String
+    ) : ViewState
 
 }

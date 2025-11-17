@@ -19,7 +19,7 @@ open class BaseRetrofitService(retrofitConfig: RetrofitConfig) {
             request()
 
         } catch (e: JsonParseException) {
-            throw ProcessResponseException(e)
+            throw ResponseProcessingException(e)
         } catch (e: HttpException) {
             throw createBackendException(e)
         } catch (e: IOException) {
@@ -34,11 +34,11 @@ open class BaseRetrofitService(retrofitConfig: RetrofitConfig) {
 
             BackendException(errorDTO?.message ?: R.string.backend_error_text.toString())
         } catch (e: Exception) {
-            throw ProcessResponseException(e)
+            throw ResponseProcessingException(e)
         }
     }
 }
 
 class ConnectionException(cause: Exception) : Exception(cause)
 class BackendException(message: String) : Exception(message)
-class ProcessResponseException(cause: Exception) : Exception(cause)
+class ResponseProcessingException(cause: Exception) : Exception(cause)

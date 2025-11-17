@@ -26,12 +26,15 @@ import javax.inject.Singleton
 interface RetrofitServicesModules {
 
     @Binds
+    @Singleton
     fun provideAuthService(authServiceImpl: AuthServiceImpl): AuthService
 
     @Binds
+    @Singleton
     fun provideUserService(userServiceImpl: UserServiceImpl): UserService
 
     @Binds
+    @Singleton
     fun providerServiceProvider(retrofitServicesProvider: RetrofitServicesProvider): ServicesProvider
 }
 

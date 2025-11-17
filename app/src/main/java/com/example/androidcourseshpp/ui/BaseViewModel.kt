@@ -2,6 +2,9 @@ package com.example.androidcourseshpp.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.androidcourseshpp.data.network.service.BackendException
+import com.example.androidcourseshpp.data.network.service.ConnectionException
+import com.example.androidcourseshpp.data.network.service.ResponseProcessingException
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,7 +17,8 @@ interface ViewEvent
 interface ViewEffect
 interface ViewState
 
-abstract class BaseViewModel<UIEvent : ViewEvent, UIEffect : ViewEffect, UIState : ViewState> : ViewModel() {
+abstract class BaseViewModel<UIEvent : ViewEvent, UIEffect : ViewEffect, UIState : ViewState> :
+    ViewModel() {
 
     protected abstract fun initState(): UIState
     protected abstract fun handleEvent(event: UIEvent)
@@ -38,7 +42,7 @@ abstract class BaseViewModel<UIEvent : ViewEvent, UIEffect : ViewEffect, UIState
         }
     }
 
-   protected fun setState(modifier: UIState.() -> UIState) {
+    protected fun setState(modifier: UIState.() -> UIState) {
         _state.update { state ->
             state.modifier()
         }
@@ -50,9 +54,31 @@ abstract class BaseViewModel<UIEvent : ViewEvent, UIEffect : ViewEffect, UIState
         }
     }
 
-    protected fun setEffect(effect : UIEffect){
+    protected fun setEffect(effect: UIEffect) {
         viewModelScope.launch {
             _effect.send(effect)
+        }
+    }
+
+    protected fun processNetworkExceptions(
+        toExecute: suspend () -> Unit,
+        processBackendException: () -> Unit,
+        processConnectionException: () -> Unit,
+        processResponseProcessingException: () -> Unit,
+        finally: () -> Unit
+    ) {
+        viewModelScope.launch {
+            try {
+                toExecute.invoke()
+            } catch (e: BackendException) {
+                processBackendException.invoke()
+            } catch (e: ResponseProcessingException) {
+                processResponseProcessingException.invoke()
+            } catch (e: ConnectionException) {
+                processConnectionException.invoke()
+            } finally {
+                finally.invoke()
+            }
         }
     }
 

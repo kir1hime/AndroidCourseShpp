@@ -1,4 +1,4 @@
-package com.example.androidcourseshpp.ui.screens.auth.signupextended.chooseprofilephotodialog
+package com.example.androidcourseshpp.ui.screens.chooseprofilephotodialog
 
 import android.app.AlertDialog
 import android.app.Dialog
@@ -13,9 +13,9 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.databinding.DialogChooseProfilePhotoBinding
-import com.example.androidcourseshpp.ui.screens.auth.signupextended.chooseprofilephotodialog.adapter.GalleryAdapter
-import com.example.androidcourseshpp.ui.screens.auth.signupextended.chooseprofilephotodialog.adapter.GalleryItemDecoration
-import com.example.androidcourseshpp.ui.screens.auth.signupextended.chooseprofilephotodialog.adapter.ItemActions
+import com.example.androidcourseshpp.ui.screens.chooseprofilephotodialog.adapter.GalleryAdapter
+import com.example.androidcourseshpp.ui.screens.chooseprofilephotodialog.adapter.GalleryItemDecoration
+import com.example.androidcourseshpp.ui.screens.chooseprofilephotodialog.adapter.ItemActions
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 

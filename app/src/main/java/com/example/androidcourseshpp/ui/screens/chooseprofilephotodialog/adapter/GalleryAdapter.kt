@@ -1,4 +1,4 @@
-package com.example.androidcourseshpp.ui.screens.auth.signupextended.chooseprofilephotodialog.adapter
+package com.example.androidcourseshpp.ui.screens.chooseprofilephotodialog.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

@@ -81,7 +81,7 @@
         android:layout_marginBottom="@dimen/profile_photo_margin_bottom"
         android:contentDescription="@string/profile_photo"
         android:src="@drawable/profile_photo"
-        app:layout_constraintBottom_toBottomOf="@id/GuideLineMiddleHor"
+        app:layout_constraintBottom_toBottomOf="@id/GuideLineMiddleVer"
         app:layout_constraintEnd_toEndOf="@id/textViewTopPartOfScreen"
         app:layout_constraintStart_toStartOf="@id/textViewTopPartOfScreen"
         app:layout_constraintTop_toTopOf="@id/textViewTopPartOfScreen" />
@@ -101,7 +101,7 @@
         android:textSize="@dimen/big_text_size"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/GuideLineMiddleHor"
+        app:layout_constraintEnd_toEndOf="@id/GuideLineMiddleVer"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -117,7 +117,7 @@
         android:textColor="@color/career_text_color"
         android:textSize="@dimen/small_text_size"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@id/GuideLineMiddleHor"
+        app:layout_constraintEnd_toEndOf="@id/GuideLineMiddleVer"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textViewName" />
 
@@ -130,13 +130,13 @@
         android:layout_marginTop="@dimen/home_address_margin_top"
         android:fontFamily="@font/open_sans"
         android:text="@string/home_address"
+        android:textAlignment="center"
         android:textColor="@color/home_address_text_color"
         android:textSize="@dimen/small_text_size"
         android:textStyle="bold"
-        android:textAlignment="center"
-        app:layout_constraintStart_toStartOf="@id/textViewTopPartOfScreen"
         app:layout_constraintEnd_toStartOf="@id/textViewWhitePartOfScreen"
-        app:layout_constraintTop_toBottomOf="@id/textViewCareer"/>
+        app:layout_constraintStart_toStartOf="@id/textViewTopPartOfScreen"
+        app:layout_constraintTop_toBottomOf="@id/textViewCareer" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/buttonViewMyContacts"
@@ -165,9 +165,9 @@
         android:background="@drawable/edit_profile_background"
         android:fontFamily="@font/open_sans"
         android:text="@string/edit_profile"
+        android:textAllCaps="false"
         android:textColor="@color/edit_profile_text_color"
         android:textSize="@dimen/small_text_size"
-        android:textAllCaps="false"
         android:textStyle="bold"
         app:backgroundTint="@null"
         app:layout_constraintBottom_toTopOf="@id/buttonViewMyContacts"

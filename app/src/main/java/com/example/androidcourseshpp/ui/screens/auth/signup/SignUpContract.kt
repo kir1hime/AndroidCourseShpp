@@ -3,6 +3,8 @@ package com.example.androidcourseshpp.ui.screens.auth.signup
 import com.example.androidcourseshpp.ui.ViewEffect
 import com.example.androidcourseshpp.ui.ViewEvent
 import com.example.androidcourseshpp.ui.ViewState
+import com.example.androidcourseshpp.ui.screens.SignUpUserInfo
+import com.example.androidcourseshpp.ui.screens.UserInfoEntity
 
 class SignUpContract {
 
@@ -10,13 +12,17 @@ class SignUpContract {
         data class OnResisterButtonClicked(
             val email: String,
             val password: String,
-            val rememberUserData: Boolean
+            val toRememberUser: Boolean
         ) : Event
     }
 
     sealed interface Effect : ViewEffect {
-        data class NavigateToSignUpExtended(val serverUserId: Long, val email: String, val password: String) : Effect
+        data class NavigateToSignUpExtended(
+            val signUpUserInfo: SignUpUserInfo
+        ) : Effect
+
         data class ShowToast(val toastMessageResId: Int) : Effect
+        data class NavigateToMyProfileScreen(val userInfo: UserInfoEntity) : Effect
     }
 
     data class UIState(

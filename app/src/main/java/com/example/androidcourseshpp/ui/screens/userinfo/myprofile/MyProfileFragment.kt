@@ -8,11 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.example.androidcourseshpp.R
-import com.example.androidcourseshpp.data.EmailParser
 import com.example.androidcourseshpp.databinding.FragmentMyProfileBinding
 import com.example.androidcourseshpp.ui.BaseFragment
+import com.example.androidcourseshpp.ui.screens.UserInfoEntity
 import com.example.androidcourseshpp.ui.screens.auth.AuthActivity
-import com.example.androidcourseshpp.ui.screens.auth.USER_EMAIL
+import com.example.androidcourseshpp.ui.screens.auth.USER_INFO
 import com.example.androidcourseshpp.ui.screens.userinfo.TabSwitchable
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -35,14 +35,26 @@ class MyProfileFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        defineUserName()
+        updateUserInfo()
         setListeners()
         setObservers()
     }
 
-    private fun defineUserName() = with(binding) {
-        val transmittedEmail = requireActivity().intent.getStringExtra(USER_EMAIL) ?: ""
-        viewModel.setEvent(MyProfileContract.Event.UserNameUpdated(transmittedEmail))
+    @Suppress("DEPRECATION")
+    private fun updateUserInfo() = with(binding) {
+        val userInfo =
+            requireActivity().intent.getParcelableExtra<UserInfoEntity>(USER_INFO) ?: return
+        viewModel.setEvent(
+            MyProfileContract.Event.UserInfoUpdated(
+                MyProfileContract.UIState(
+                    userName = userInfo.userName,
+                    career = userInfo.career,
+                    address = userInfo.address,
+                    dateOfBirthday = userInfo.dateOfBirthday,
+                    mobilePhone = userInfo.mobilePhone
+                )
+            )
+        )
     }
 
     private fun setListeners() = with(binding) {

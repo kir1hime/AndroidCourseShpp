@@ -13,8 +13,8 @@ import androidx.navigation.fragment.navArgs
 import com.example.androidcourseshpp.databinding.FragmentSignUpExtendedBinding
 import com.example.androidcourseshpp.ui.extensions.loadImageFromURL
 import com.example.androidcourseshpp.ui.screens.auth.AuthFragment
-import com.example.androidcourseshpp.ui.screens.auth.signupextended.chooseprofilephotodialog.ChooseProfilePhotoDialog
-import com.example.androidcourseshpp.ui.screens.auth.signupextended.chooseprofilephotodialog.ChooseProfilePhotoDialog.Companion.PHOTO
+import com.example.androidcourseshpp.ui.screens.chooseprofilephotodialog.ChooseProfilePhotoDialog
+import com.example.androidcourseshpp.ui.screens.chooseprofilephotodialog.ChooseProfilePhotoDialog.Companion.PHOTO
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -52,8 +52,7 @@ class SignUpExtendedFragment : AuthFragment() {
                 SignUpExtendedContract.Event.OnForwardButtonClicked(
                     inputUserName,
                     inputMobilePhone,
-                    args.email,
-                    args.serverUserId
+                    args.signUpInfo
                 )
             )
         }
@@ -70,7 +69,7 @@ class SignUpExtendedFragment : AuthFragment() {
         collectFlow(viewModel.effect) { effect ->
             when (effect) {
                 is SignUpExtendedContract.Effect.NavigateToMyProfileScreen -> moveToMyProfileScreen(
-                    editTextUserName.text.toString()
+                    effect.userInfo
                 )
 
                 is SignUpExtendedContract.Effect.NavigateToPreviousScreen -> findNavController().navigateUp()

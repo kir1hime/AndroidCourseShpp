@@ -6,14 +6,15 @@ import androidx.core.os.bundleOf
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.ui.BaseFragment
 import com.example.androidcourseshpp.ui.screens.MainActivity
+import com.example.androidcourseshpp.ui.screens.UserInfoEntity
 
-const val USER_EMAIL = "userEmail"
+const val USER_INFO = "userInfo"
 
 open class AuthFragment : BaseFragment() {
-     fun moveToMyProfileScreen(userEmail : String) {
+    fun moveToMyProfileScreen(userInfo: UserInfoEntity) {
         val intent = Intent(requireContext(), MainActivity::class.java)
 
-         intent.putExtras(bundleOf(USER_EMAIL to userEmail))
+        intent.putExtras(bundleOf(USER_INFO to userInfo))
 
         val options = ActivityOptions.makeCustomAnimation(
             requireContext(),

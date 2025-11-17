@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.androidcourseshpp.data.MIN_NUM_OF_CHARS_IN_PASSWORD
 import com.example.androidcourseshpp.databinding.FragmentSignUpBinding
 import com.example.androidcourseshpp.ui.screens.auth.AuthFragment
+import com.example.androidcourseshpp.ui.screens.SignUpUserInfo
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -30,12 +31,6 @@ class SignUpFragment : AuthFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val savedEmail = viewModel.savedEmail
-        if (savedEmail != "") {
-            moveToMyProfileScreen(savedEmail)
-        }
-
         setObserves()
         setListeners()
     }
@@ -44,12 +39,11 @@ class SignUpFragment : AuthFragment() {
         collectFlow(viewModel.effect) { effect ->
             when (effect) {
                 is SignUpContract.Effect.NavigateToSignUpExtended -> moveToSignUpExtended(
-                    effect.serverUserId,
-                    effect.email,
-                    effect.password
+                    effect.signUpUserInfo
                 )
 
                 is SignUpContract.Effect.ShowToast -> makeToast(effect.toastMessageResId)
+                is SignUpContract.Effect.NavigateToMyProfileScreen -> moveToMyProfileScreen(effect.userInfo)
             }
         }
 
@@ -83,13 +77,9 @@ class SignUpFragment : AuthFragment() {
         )
     }
 
-    private fun moveToSignUpExtended(serverUserId: Long, email: String, password: String) {
+    private fun moveToSignUpExtended(signUpUserInfo: SignUpUserInfo) {
         val direction =
-            SignUpFragmentDirections.actionSignUpFragmentToSignUpExtendedFragment(
-                email,
-                password,
-                serverUserId
-            )
+            SignUpFragmentDirections.actionSignUpFragmentToSignUpExtendedFragment(signUpUserInfo)
         findNavController().navigate(direction)
     }
 

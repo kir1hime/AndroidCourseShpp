@@ -24,14 +24,8 @@
         android:label="fragment_sign_up_extended"
         tools:layout="@layout/fragment_sign_up_extended">
         <argument
-            android:name="email"
-            app:argType="string" />
-        <argument
-            android:name="password"
-            app:argType="string" />
-        <argument
-            android:name="serverUserId"
-            app:argType="long" />
+            android:name="signUpInfo"
+            app:argType="com.example.androidcourseshpp.ui.screens.SignUpUserInfo" />
         <action
             android:id="@+id/action_signUpExtendedFragment_to_chooseProfilePhotoDialog"
             app:destination="@id/chooseProfilePhotoDialog" />
@@ -39,7 +33,7 @@
     </fragment>
     <dialog
         android:id="@+id/chooseProfilePhotoDialog"
-        android:name="com.example.androidcourseshpp.ui.screens.auth.signupextended.chooseprofilephotodialog.ChooseProfilePhotoDialog"
+        android:name="com.example.androidcourseshpp.ui.screens.chooseprofilephotodialog.ChooseProfilePhotoDialog"
         android:label="dialog_choose_profile_photo"
         tools:layout="@layout/dialog_choose_profile_photo" />
 

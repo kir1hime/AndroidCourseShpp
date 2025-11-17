@@ -17,5 +17,9 @@ class UserServiceImpl(
         }
     }
 
+    override suspend fun getUser(userId: Long) = processRetrofitExceptions {
+        userApi.getUser(userId).data
+    }
+
 
 }
