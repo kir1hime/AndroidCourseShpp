@@ -10,9 +10,9 @@ import androidx.fragment.app.viewModels
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.databinding.FragmentMyProfileBinding
 import com.example.androidcourseshpp.ui.BaseFragment
+import com.example.androidcourseshpp.ui.USER_INFO
 import com.example.androidcourseshpp.ui.screens.UserInfoEntity
 import com.example.androidcourseshpp.ui.screens.auth.AuthActivity
-import com.example.androidcourseshpp.ui.screens.auth.USER_INFO
 import com.example.androidcourseshpp.ui.screens.userinfo.TabSwitchable
 import dagger.hilt.android.AndroidEntryPoint
 

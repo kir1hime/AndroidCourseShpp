@@ -14,18 +14,8 @@ import com.example.androidcourseshpp.ui.screens.UserInfoEntity
 
 
 @HiltViewModel
-class SignUpViewModel @Inject constructor(
-    dataProvider: DataProvider,
-    private val servicesProvider: ServicesProvider
-) :
-    BaseViewModel<SignUpContract.Event, SignUpContract.Effect, SignUpContract.UIState>() {
+class SignUpViewModel @Inject constructor() : BaseViewModel<SignUpContract.Event, SignUpContract.Effect, SignUpContract.UIState>() {
 
-    init {
-        val userServerId = dataProvider.getUserServerId()
-        if (userServerId != DEFAULT_ID_VALUE) {
-            enterToAccount(userServerId)
-        }
-    }
 
     override fun initState() = SignUpContract.UIState(
         eMailHelperTextResId = R.string.no_error,
@@ -89,44 +79,6 @@ class SignUpViewModel @Inject constructor(
             )
         }
     }
-
-    private fun enterToAccount(userServerId: Long) {
-        processNetworkExceptions(
-            toExecute = {
-                setState { copy(isProgressBarShowed = true) }
-
-                val response = servicesProvider.getUserService().getUser(userServerId)
-                val userInfo = response.user
-
-                setEffect(
-                    SignUpContract.Effect.NavigateToMyProfileScreen(
-                        UserInfoEntity(
-                            userName = userInfo.name ?: "",
-                            career = userInfo.career ?: "",
-                            address = userInfo.address ?: "",
-                            dateOfBirthday = userInfo.birthday ?: "",
-                            mobilePhone = userInfo.phone ?: ""
-                        )
-                    )
-                )
-
-            },
-            processBackendException = {
-                setEffect(SignUpContract.Effect.ShowToast(R.string.backend_error))
-            },
-            processResponseProcessingException = {
-                setEffect(SignUpContract.Effect.ShowToast(R.string.server_response_error))
-            },
-            processConnectionException = {
-                setEffect(SignUpContract.Effect.ShowToast(R.string.connection_error))
-            },
-            processAuthenticationException = {
-                setEffect(SignUpContract.Effect.ShowToast(R.string.backend_error))
-            },
-            finally = { setState { copy(isProgressBarShowed = false) } }
-        )
-    }
-
     /**
      * function checks all types of password checks and returns certain error text
      * */

@@ -102,4 +102,8 @@
     <!--Choose profile photo (dialog_choose_profile_photo) -->
     <color name="cancel_text_color">#B2B2B3</color>
     <color name="open_gallery_text_color">#FFFFFF</color>
+
+    <!-- Splash screen -->
+    <color name="splash_screen_background_color">@color/top_view_color</color>
+    <color name="splash_screen_greeting_text_color">#FFFFFF</color>
 </resources>

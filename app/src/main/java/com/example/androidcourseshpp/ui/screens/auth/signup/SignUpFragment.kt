@@ -9,12 +9,12 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.androidcourseshpp.data.MIN_NUM_OF_CHARS_IN_PASSWORD
 import com.example.androidcourseshpp.databinding.FragmentSignUpBinding
-import com.example.androidcourseshpp.ui.screens.auth.AuthFragment
+import com.example.androidcourseshpp.ui.BaseFragment
 import com.example.androidcourseshpp.ui.screens.SignUpUserInfo
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SignUpFragment : AuthFragment() {
+class SignUpFragment : BaseFragment() {
 
     private lateinit var binding: FragmentSignUpBinding
     private val viewModel by viewModels<SignUpViewModel>()

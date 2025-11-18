@@ -77,4 +77,7 @@
     <string name="server_response_error">Something went wrong. Please try again</string>
     <string name="connection_error">Check your internet connection</string>
 
+    <!-- Splash screen -->
+    <string name="greeting">Glad to see you again!</string>
+
 </resources>
