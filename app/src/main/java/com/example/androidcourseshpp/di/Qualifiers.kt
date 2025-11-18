@@ -9,3 +9,21 @@ annotation class DataProviderPref
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
 annotation class JWTManagerPref
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class TokenRefreshRetrofit
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class TokenRefreshOkHttpClient
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class MainRetrofit
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class MainOkHttpClient
+
+

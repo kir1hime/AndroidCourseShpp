@@ -9,31 +9,32 @@ const val ACCESS_TOKEN = "accessToken"
 const val REFRESH_TOKEN = "refreshToken"
 
 
-class JWTManagerImpl @Inject constructor(@JWTManagerPref private val sharedPref: SharedPreferences): JWTManager{
+class JWTManagerImpl @Inject constructor(@JWTManagerPref private val sharedPref: SharedPreferences) :
+    JWTManager {
 
     private val editor = sharedPref.edit()
 
-    override  fun getAccessToken() =
-        sharedPref.getString(ACCESS_TOKEN, "")
+    override fun getAccessToken() =
+        sharedPref.getString(ACCESS_TOKEN, null)
 
 
-    override  fun saveAccessToken(token: String) {
+    override fun saveAccessToken(token: String?) {
         editor.putString(ACCESS_TOKEN, token).apply()
     }
 
-    override  fun getRefreshToken() =
-        sharedPref.getString(REFRESH_TOKEN, "")
+    override fun getRefreshToken() =
+        sharedPref.getString(REFRESH_TOKEN, null)
 
-    override  fun saveRefreshToken(token: String) {
+    override fun saveRefreshToken(token: String?) {
         editor.putString(REFRESH_TOKEN, token).apply()
     }
 
-    override fun saveTokens(accessToken: String, refreshToken: String) {
+    override fun saveTokens(accessToken: String?, refreshToken: String?) {
         saveAccessToken(accessToken)
         saveRefreshToken(refreshToken)
     }
 
     override fun clearTokens() {
-        saveTokens("", "")
+        saveTokens(null, null)
     }
 }

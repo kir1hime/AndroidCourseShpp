@@ -120,6 +120,9 @@ class SignUpViewModel @Inject constructor(
             processConnectionException = {
                 setEffect(SignUpContract.Effect.ShowToast(R.string.connection_error))
             },
+            processAuthenticationException = {
+                setEffect(SignUpContract.Effect.ShowToast(R.string.backend_error))
+            },
             finally = { setState { copy(isProgressBarShowed = false) } }
         )
     }
