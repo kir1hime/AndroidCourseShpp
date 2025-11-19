@@ -1,6 +1,5 @@
 package com.example.androidcourseshpp.ui.screens.splash
 
-import android.util.Log
 import com.example.androidcourseshpp.data.dataProvider.DEFAULT_ID_VALUE
 import com.example.androidcourseshpp.data.dataProvider.DataProvider
 import com.example.androidcourseshpp.data.network.ServicesProvider

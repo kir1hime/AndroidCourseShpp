@@ -5,12 +5,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.PasswordErrorMessagesContainer
-import com.example.androidcourseshpp.data.dataProvider.DEFAULT_ID_VALUE
-import com.example.androidcourseshpp.data.dataProvider.DataProvider
-import com.example.androidcourseshpp.data.network.ServicesProvider
 import com.example.androidcourseshpp.ui.BaseViewModel
 import com.example.androidcourseshpp.ui.screens.SignUpUserInfo
-import com.example.androidcourseshpp.ui.screens.UserInfoEntity
 
 
 @HiltViewModel
