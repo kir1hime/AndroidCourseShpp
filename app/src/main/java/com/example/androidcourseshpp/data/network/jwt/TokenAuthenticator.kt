@@ -1,7 +1,6 @@
 package com.example.androidcourseshpp.data.network.jwt
 
 import com.example.androidcourseshpp.data.network.webapi.tokenrefresh.TokenRefreshAPI
-import kotlinx.coroutines.sync.Mutex
 import okhttp3.Authenticator
 import okhttp3.Request
 import okhttp3.Response
@@ -12,7 +11,7 @@ class TokenAuthenticator(
     private val jwtManager: JWTManager
 ) : Authenticator {
 
-    private val lock = Mutex()
+    private val lock = Any()
 
     override fun authenticate(route: Route?, response: Response): Request? {
 
