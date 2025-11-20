@@ -9,12 +9,12 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.androidcourseshpp.data.MIN_NUM_OF_CHARS_IN_PASSWORD
 import com.example.androidcourseshpp.databinding.FragmentSignUpBinding
-import com.example.androidcourseshpp.ui.screens.auth.AuthFragment
-import com.example.androidcourseshpp.ui.screens.auth.signupextended.SignUpExtendedEntity
+import com.example.androidcourseshpp.ui.BaseFragment
+import com.example.androidcourseshpp.ui.screens.SignUpUserInfo
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SignUpFragment : AuthFragment() {
+class SignUpFragment : BaseFragment() {
 
     private lateinit var binding: FragmentSignUpBinding
     private val viewModel by viewModels<SignUpViewModel>()
@@ -31,7 +31,6 @@ class SignUpFragment : AuthFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         setObserves()
         setListeners()
     }
@@ -39,12 +38,12 @@ class SignUpFragment : AuthFragment() {
     private fun setObserves() = with(binding) {
         collectFlow(viewModel.effect) { effect ->
             when (effect) {
-                is SignUpContract.Effect.NavigateToSignUpExtendedScreen -> moveToSignUpExtendedScreen(
-                    effect.serverUserId,
-                    effect.toRememberUser
+                is SignUpContract.Effect.NavigateToSignUpExtended -> moveToSignUpExtended(
+                    effect.signUpUserInfo
                 )
 
                 is SignUpContract.Effect.ShowToast -> makeToast(effect.toastMessageResId)
+                is SignUpContract.Effect.NavigateToMyProfileScreen -> moveToMyProfileScreen(effect.userInfo)
             }
         }
 
@@ -55,16 +54,13 @@ class SignUpFragment : AuthFragment() {
             textInputLayoutEMail.helperText = getString(state.eMailHelperTextResId)
 
             progressBarRequest.isVisible = state.isProgressBarShowed
-            setLoadingState(state.isProgressBarShowed, binding)
+            setLoadingState(state.isProgressBarShowed)
         }
     }
 
     private fun setListeners() = with(binding) {
-        buttonRegister.setOnClickListener {
+        binding.buttonRegister.setOnClickListener {
             onRegisterButtonClick()
-        }
-        textViewSignIn.setOnClickListener {
-            findNavController().navigateUp()
         }
     }
 
@@ -81,17 +77,24 @@ class SignUpFragment : AuthFragment() {
         )
     }
 
-    private fun moveToSignUpExtendedScreen(
-        serverUserId: Long,
-        toRememberUser: Boolean
-    ) {
+    private fun moveToSignUpExtended(signUpUserInfo: SignUpUserInfo) {
         val direction =
-            SignUpFragmentDirections.actionSignUpFragmentToSignUpExtendedFragment(
-                SignUpExtendedEntity(
-                    serverUserId,
-                    toRememberUser
-                )
-            )
+            SignUpFragmentDirections.actionSignUpFragmentToSignUpExtendedFragment(signUpUserInfo)
         findNavController().navigate(direction)
+    }
+
+    private fun setLoadingState(isLoaded: Boolean) = with(binding) {
+        val isEnabled = !isLoaded
+
+        editTextEMail.apply {
+            isFocusable = isEnabled
+            isFocusableInTouchMode = isEnabled
+        }
+        editTextPassword.apply {
+            isFocusable = isEnabled
+            isFocusableInTouchMode = isEnabled
+        }
+        comboBoxRememberMe.isClickable = isEnabled
+
     }
 }

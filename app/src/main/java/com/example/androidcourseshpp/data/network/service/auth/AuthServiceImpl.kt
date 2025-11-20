@@ -20,6 +20,8 @@ class AuthServiceImpl(
             val signUpRequestDTO = SignUpRequestDTO(
                 email = data.email,
                 password = data.password,
+                name = data.userName,
+                phone = data.mobilePhone
             )
             authApi.signUp(signUpRequestDTO).data
         }

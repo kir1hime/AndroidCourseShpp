@@ -4,13 +4,12 @@ import com.example.androidcourseshpp.data.network.BASE_URL
 import com.example.androidcourseshpp.data.network.RetrofitServicesProvider
 import com.example.androidcourseshpp.data.network.ServicesProvider
 import com.example.androidcourseshpp.data.network.jwt.JWTManager
-import com.example.androidcourseshpp.data.network.jwt.JWTManagerImpl
 import com.example.androidcourseshpp.data.network.jwt.TokenAuthenticator
 import com.example.androidcourseshpp.data.network.service.auth.AuthService
 import com.example.androidcourseshpp.data.network.service.auth.AuthServiceImpl
 import com.example.androidcourseshpp.data.network.service.user.UserService
 import com.example.androidcourseshpp.data.network.service.user.UserServiceImpl
-import com.example.androidcourseshpp.data.network.webapi.refreshAPI.RefreshAPI
+import com.example.androidcourseshpp.data.network.webapi.tokenrefresh.TokenRefreshAPI
 import com.google.gson.Gson
 import dagger.Binds
 import dagger.Module
@@ -22,7 +21,6 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
 import javax.inject.Singleton
 
 @Module
@@ -30,33 +28,22 @@ import javax.inject.Singleton
 interface RetrofitServicesModules {
 
     @Binds
+    @Singleton
     fun provideAuthService(authServiceImpl: AuthServiceImpl): AuthService
 
     @Binds
+    @Singleton
     fun provideUserService(userServiceImpl: UserServiceImpl): UserService
 
     @Binds
-    fun provideServiceProvider(retrofitServicesProvider: RetrofitServicesProvider): ServicesProvider
+    @Singleton
+    fun providerServiceProvider(retrofitServicesProvider: RetrofitServicesProvider): ServicesProvider
 }
 
 @Module
 @InstallIn(SingletonComponent::class)
 class RetrofitConfigModule {
 
-    @Provides
-    @Singleton
-    @ClearRetrofit
-    fun provideClearRetrofit(@ClearOkHttpClient client: OkHttpClient, gson: Gson): Retrofit {
-        return Retrofit.Builder().baseUrl(BASE_URL)
-            .client(client)
-            .addConverterFactory(GsonConverterFactory.create(gson))
-            .build()
-    }
-
-    @Provides
-    @Singleton
-    @ClearOkHttpClient
-    fun provideClearOkHttpClient() = OkHttpClient.Builder().build()
 
     @Provides
     @Singleton
@@ -72,7 +59,7 @@ class RetrofitConfigModule {
     @Singleton
     @MainOkHttpClient
     fun provideMainOkHttpClient(
-        @ClearRetrofit retrofit: Retrofit,
+        @TokenRefreshRetrofit retrofit: Retrofit,
         jwtManager: JWTManager
     ): OkHttpClient {
         return OkHttpClient.Builder()
@@ -80,12 +67,32 @@ class RetrofitConfigModule {
             .addInterceptor(createAuthorizationInterceptor(jwtManager))
             .authenticator(
                 TokenAuthenticator(
-                    retrofit.create(RefreshAPI::class.java),
+                    retrofit.create(TokenRefreshAPI::class.java),
                     jwtManager
                 )
             )
             .build()
     }
+
+    @Provides
+    @Singleton
+    @TokenRefreshRetrofit
+    fun provideTokenRefreshRetrofit(
+        @TokenRefreshOkHttpClient client: OkHttpClient,
+        gson: Gson
+    ): Retrofit {
+        return Retrofit.Builder().baseUrl(BASE_URL)
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    @TokenRefreshOkHttpClient
+    fun provideTokenRefreshOkHttpClient(jwtManager: JWTManager) =
+        OkHttpClient.Builder().addInterceptor(createAuthenticationInterceptor(jwtManager)).build()
+
 
     @Provides
     @Singleton
@@ -99,13 +106,24 @@ class RetrofitConfigModule {
         val accessToken = jwtManager.getAccessToken()
 
         val modifiedRequest = chain.request().newBuilder()
-        if (accessToken != null) {
-            modifiedRequest
-                .addHeader("Authorization", "Bearer $accessToken")
+        if (accessToken != "") {
+            modifiedRequest.addHeader("Authorization", "Bearer $accessToken").build()
         }
         chain.proceed(modifiedRequest.build())
 
     }
 
+    private fun createAuthenticationInterceptor(jwtManager: JWTManager) = Interceptor { chain ->
+        val refreshToken = jwtManager.getRefreshToken()
+
+        val modifiedRequest = chain.request().newBuilder()
+        if (refreshToken != null) {
+            modifiedRequest.addHeader("RefreshToken", refreshToken).build()
+        }
+        chain.proceed(modifiedRequest.build())
+
+    }
 }
+
+
 

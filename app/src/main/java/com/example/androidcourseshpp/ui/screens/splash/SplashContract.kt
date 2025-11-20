@@ -1,0 +1,20 @@
+package com.example.androidcourseshpp.ui.screens.splash
+
+import com.example.androidcourseshpp.ui.ViewEffect
+import com.example.androidcourseshpp.ui.ViewEvent
+import com.example.androidcourseshpp.ui.ViewState
+import com.example.androidcourseshpp.ui.screens.UserInfoEntity
+
+class SplashContract {
+
+    data object Sate : ViewState
+
+    sealed interface Event : ViewEvent
+
+    sealed interface Effect : ViewEffect {
+
+        data class NavigateToMyProfileScreen(val userInfo: UserInfoEntity) : Effect
+        data object NavigateToSignUpScreen : Effect
+    }
+
+}

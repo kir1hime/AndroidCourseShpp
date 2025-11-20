@@ -1,11 +1,13 @@
 package com.example.androidcourseshpp.ui.screens.auth.signupextended
 
-
 import com.example.androidcourseshpp.R
-import com.example.androidcourseshpp.data.dataProvider.UserDataProvider
+import com.example.androidcourseshpp.data.dataProvider.DataProvider
 import com.example.androidcourseshpp.data.network.RetrofitServiceProviderHolder
-import com.example.androidcourseshpp.data.network.service.user.entity.UpdateUserData
+import com.example.androidcourseshpp.data.network.jwt.JWTManager
+import com.example.androidcourseshpp.data.network.service.auth.entity.SignUpData
 import com.example.androidcourseshpp.ui.BaseViewModel
+import com.example.androidcourseshpp.ui.screens.SignUpUserInfo
+import com.example.androidcourseshpp.ui.screens.UserInfoEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -14,7 +16,8 @@ private const val PHONE_NUMBER_LENGTH = 15
 @HiltViewModel
 class SignUpExtendedViewModel @Inject constructor(
     private val serviceProviderHolder: RetrofitServiceProviderHolder,
-    private val userDataProvider: UserDataProvider
+    private val jwtManager: JWTManager,
+    private val dataProvider: DataProvider
 ) :
     BaseViewModel<SignUpExtendedContract.Event, SignUpExtendedContract.Effect, SignUpExtendedContract.UIState>() {
 
@@ -27,25 +30,20 @@ class SignUpExtendedViewModel @Inject constructor(
     override fun handleEvent(event: SignUpExtendedContract.Event) {
         when (event) {
             is SignUpExtendedContract.Event.OnForwardButtonClicked -> processInputData(
-                event.userName,
-                event.mobilePhone,
-                event.serverUserId
+                userName = event.userName,
+                mobilePhone = event.mobilePhone,
+                event.signUpUserInfo
             )
 
             is SignUpExtendedContract.Event.OnAddProfilePhotoImageViewClicked -> navigateToChooseProfilePhotoDialog()
             is SignUpExtendedContract.Event.OnCancelButtonClicked -> navigateToPreviousScreen()
-            is SignUpExtendedContract.Event.SaveUserName -> saverUserServerId(event.userServerId)
         }
-    }
-
-    private fun saverUserServerId(userServerId: Long) {
-        userDataProvider.saveUserServerId(userServerId)
     }
 
     private fun processInputData(
         userName: String,
         mobilePhone: String,
-        serverUserId: Long
+        signUpUserInfo: SignUpUserInfo
     ) {
         var isMobilePhoneCorrect: Boolean
         var isUserNameCorrect: Boolean
@@ -66,41 +64,54 @@ class SignUpExtendedViewModel @Inject constructor(
             setState { copy(mobilePhoneHelperResId = R.string.no_error) }
         }
 
-        processNetworkExceptions(
-            toExecute = {
-                if (isMobilePhoneCorrect && isUserNameCorrect) {
-                    setState { copy(isProgressBarShowed = true) }
 
-                    val userInfo = serviceProviderHolder.serviceProvider.getUserService()
-                        .updateUserInfo(
-                            serverUserId,
-                            UpdateUserData(name = userName, phone = mobilePhone)
+        if (isMobilePhoneCorrect && isUserNameCorrect) {
+            processNetworkExceptions(
+                toExecute = {
+                    setState { copy(isProgressBarShowed = true) }
+                    val response = serviceProviderHolder.serviceProvider.getAuthService().signUp(
+                        SignUpData(
+                            userName = userName,
+                            mobilePhone = mobilePhone,
+                            email = signUpUserInfo.email,
+                            password = signUpUserInfo.password
                         )
+                    )
+                    jwtManager.saveTokens(response.accessToken, response.refreshToken)
+
+                    if (signUpUserInfo.toRememberUser) {
+                        dataProvider.saveUserServerId(response.user.id)
+                    }
+
+                    val userInfo = response.user
 
                     setEffect(
                         SignUpExtendedContract.Effect.NavigateToMyProfileScreen(
-                            userInfo.toUserInfoEntity()
+                            UserInfoEntity(
+                                userName = userInfo.name ?: "",
+                                address = userInfo.address ?: "",
+                                career = userInfo.career ?: "",
+                                mobilePhone = userInfo.phone ?: "",
+                                dateOfBirthday = userInfo.birthday ?: ""
+                            )
                         )
                     )
+                },
+                processBackendException = {
+                    setEffect(SignUpExtendedContract.Effect.ShowToast(R.string.email_already_registered_error))
+                },
+                processResponseProcessingException = {
+                    setEffect(SignUpExtendedContract.Effect.ShowToast(R.string.server_response_error))
+                },
+                processConnectionException = {
+                    setEffect(SignUpExtendedContract.Effect.ShowToast(R.string.connection_error))
+                },
+                processAuthenticationException = {},
+                finally = {
+                    setState { copy(isProgressBarShowed = false) }
                 }
-
-            },
-            processBackendException = {
-                setEffect(SignUpExtendedContract.Effect.ShowToast(R.string.backend_error))
-            },
-            processResponseProcessingException = {
-                setEffect(SignUpExtendedContract.Effect.ShowToast(R.string.server_response_error))
-            },
-            processConnectionException = {
-                setEffect(SignUpExtendedContract.Effect.ShowToast(R.string.connection_error))
-            },
-            processUserUnauthorizedException = {
-                setEffect(SignUpExtendedContract.Effect.ShowToast(R.string.connection_error))
-            },
-            finally = {
-                setState { copy(isProgressBarShowed = false) }
-            }
-        )
+            )
+        }
     }
 
     private fun navigateToChooseProfilePhotoDialog() {

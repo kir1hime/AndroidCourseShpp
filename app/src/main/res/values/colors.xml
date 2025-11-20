@@ -124,4 +124,8 @@
     <color name="edit_profile_inputs_background_color">#FFFFFF</color>
     <color name="edit_profile_inputs_text_color">#18181F</color>
 
+    <!-- Splash screen -->
+    <color name="splash_screen_background_color">@color/top_view_color</color>
+    <color name="splash_screen_greeting_text_color">#FFFFFF</color>
+
 </resources>

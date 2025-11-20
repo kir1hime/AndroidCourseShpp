@@ -93,4 +93,7 @@
     <string name="address">Address</string>
     <string name="date_of_birthday">Date of birthday</string>
 
+    <!-- Splash screen -->
+    <string name="greeting">Glad to see you again!</string>
+
 </resources>

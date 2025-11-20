@@ -40,7 +40,7 @@
         android:textColor="@color/profile_label_text_color"
         android:textSize="@dimen/big_text_size"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@id/GuideLineMiddleHor"
+        app:layout_constraintEnd_toEndOf="@id/GuideLineMiddleVer"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -52,7 +52,7 @@
         android:layout_marginBottom="@dimen/profile_photo_margin_bottom"
         android:contentDescription="@string/profile_photo"
         android:src="@drawable/profile_photo"
-        app:layout_constraintBottom_toBottomOf="@id/GuideLineMiddleHor"
+        app:layout_constraintBottom_toBottomOf="@id/GuideLineMiddleVer"
         app:layout_constraintEnd_toEndOf="@id/textViewTopPartOfScreen"
         app:layout_constraintStart_toStartOf="@id/textViewTopPartOfScreen"
         app:layout_constraintTop_toTopOf="@id/textViewTopPartOfScreen" />
@@ -71,7 +71,7 @@
         android:textSize="@dimen/big_text_size"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/GuideLineMiddleHor"
+        app:layout_constraintEnd_toEndOf="@id/GuideLineMiddleVer"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -87,7 +87,7 @@
         android:textColor="@color/career_text_color"
         android:textSize="@dimen/small_text_size"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@id/GuideLineMiddleHor"
+        app:layout_constraintEnd_toEndOf="@id/GuideLineMiddleVer"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textViewName" />
 

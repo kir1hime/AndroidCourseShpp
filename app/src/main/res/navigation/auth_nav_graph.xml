@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/auth_nav_graph"
-    app:startDestination="@id/signInFragment">
+    app:startDestination="@id/splashFragment">
 
     <fragment
         android:id="@+id/signUpFragment"
@@ -24,9 +24,8 @@
         android:label="fragment_sign_up_extended"
         tools:layout="@layout/fragment_sign_up_extended">
         <argument
-            android:name="SignUpExtendedEntity"
-            app:argType="com.example.androidcourseshpp.ui.screens.auth.signupextended.SignUpExtendedEntity" />
-
+            android:name="signUpInfo"
+            app:argType="com.example.androidcourseshpp.ui.screens.SignUpUserInfo" />
         <action
             android:id="@+id/action_signUpExtendedFragment_to_chooseProfilePhotoDialog"
             app:destination="@id/chooseProfilePhotoDialog" />
@@ -34,21 +33,17 @@
     </fragment>
     <dialog
         android:id="@+id/chooseProfilePhotoDialog"
-        android:name="com.example.androidcourseshpp.ui.screens.auth.signupextended.chooseprofilephotodialog.ChooseProfilePhotoDialog"
+        android:name="com.example.androidcourseshpp.ui.screens.chooseprofilephotodialog.ChooseProfilePhotoDialog"
         android:label="dialog_choose_profile_photo"
         tools:layout="@layout/dialog_choose_profile_photo" />
     <fragment
-        android:id="@+id/signInFragment"
-        android:name="com.example.androidcourseshpp.ui.screens.auth.signin.SignInFragment"
-        android:label="fragment_sign_in"
-        tools:layout="@layout/fragment_sign_in">
+        android:id="@+id/splashFragment"
+        android:name="com.example.androidcourseshpp.ui.screens.splash.SplashFragment"
+        android:label="fragment_splash"
+        tools:layout="@layout/fragment_splash" >
         <action
-            android:id="@+id/action_signInFragment_to_signUpFragment"
-            app:destination="@id/signUpFragment"
-            app:enterAnim="@anim/slide_in_from_right_to_left"
-            app:exitAnim="@anim/slide_out_from_right_to_left"
-            app:popEnterAnim="@anim/slide_in_from_left_to_right"
-            app:popExitAnim="@anim/slide_out_from_left_to_right" />
+            android:id="@+id/action_splashFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment" />
     </fragment>
 
 </navigation>

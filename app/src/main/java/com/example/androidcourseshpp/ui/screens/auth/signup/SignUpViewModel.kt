@@ -5,17 +5,13 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.PasswordErrorMessagesContainer
-import com.example.androidcourseshpp.data.network.jwt.JWTManager
-import com.example.androidcourseshpp.data.network.RetrofitServiceProviderHolder
-import com.example.androidcourseshpp.data.network.service.auth.entity.SignUpData
 import com.example.androidcourseshpp.ui.BaseViewModel
+import com.example.androidcourseshpp.ui.screens.SignUpUserInfo
+
 
 @HiltViewModel
-class SignUpViewModel @Inject constructor(
-    private val jwtManager: JWTManager,
-    private val serviceProviderHolder: RetrofitServiceProviderHolder
-) :
-    BaseViewModel<SignUpContract.Event, SignUpContract.Effect, SignUpContract.UIState>() {
+class SignUpViewModel @Inject constructor() : BaseViewModel<SignUpContract.Event, SignUpContract.Effect, SignUpContract.UIState>() {
+
 
     override fun initState() = SignUpContract.UIState(
         eMailHelperTextResId = R.string.no_error,
@@ -30,7 +26,7 @@ class SignUpViewModel @Inject constructor(
             is SignUpContract.Event.OnResisterButtonClicked -> processInputData(
                 event.email,
                 event.password,
-                event.rememberUserData
+                event.toRememberUser
             )
         }
     }
@@ -68,55 +64,17 @@ class SignUpViewModel @Inject constructor(
         }
 
         if (isEMailCorrect && isPasswordCorrect) {
-            signUpUser(email, password, toRememberUser)
-        }
-    }
-
-    private fun signUpUser(email: String, password: String, toRememberUser: Boolean) {
-
-        processNetworkExceptions(
-            toExecute = {
-                setState { copy(isProgressBarShowed = true) }
-
-                val response =
-                    serviceProviderHolder.serviceProvider.getAuthService()
-                        .signUp(SignUpData(email, password))
-
-                jwtManager.saveAccessToken(response.accessToken)
-                jwtManager.saveRefreshToken(response.refreshToken)
-
-                val serverUserId = response.user.id
-
-                if (toRememberUser){
-
-                }
-
-                setEffect(
-                    SignUpContract.Effect.NavigateToSignUpExtendedScreen(
-                        serverUserId,
-                        email,
-                        password,
-                        toRememberUser
+            setEffect(
+                SignUpContract.Effect.NavigateToSignUpExtended(
+                    SignUpUserInfo(
+                        email = email,
+                        password = password,
+                        toRememberUser = toRememberUser
                     )
                 )
-            },
-            processBackendException = {
-                setState { copy(eMailHelperTextResId = R.string.email_already_registered_error) }
-                setEffect(SignUpContract.Effect.ShowToast(R.string.backend_error))
-            },
-            processResponseProcessingException = {
-                setEffect(SignUpContract.Effect.ShowToast(R.string.server_response_error))
-            },
-            processConnectionException = {
-                setEffect(SignUpContract.Effect.ShowToast(R.string.connection_error))
-            },
-            processUserUnauthorizedException = {},
-            finally = {
-                setState { copy(isProgressBarShowed = false) }
-            }
-        )
+            )
+        }
     }
-
     /**
      * function checks all types of password checks and returns certain error text
      * */

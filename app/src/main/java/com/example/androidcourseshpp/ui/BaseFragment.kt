@@ -1,19 +1,25 @@
 package com.example.androidcourseshpp.ui
 
+import android.app.ActivityOptions
+import android.content.Intent
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.EditText
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import com.example.androidcourseshpp.R
+import com.example.androidcourseshpp.ui.screens.MainActivity
+import com.example.androidcourseshpp.ui.screens.UserInfoEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
+const val USER_INFO = "userInfo"
 const val RESULT_KEY = "resultPreviousScreenKey"
 
 open class BaseFragment : Fragment() {
@@ -28,8 +34,23 @@ open class BaseFragment : Fragment() {
         }
     }
 
-    fun makeToast(messageResId: Int) {
+     fun makeToast(messageResId: Int) {
         Toast.makeText(requireContext(), messageResId, Toast.LENGTH_LONG).show()
+    }
+
+    fun moveToMyProfileScreen(userInfo: UserInfoEntity) {
+        val intent = Intent(requireContext(), MainActivity::class.java)
+
+        intent.putExtras(bundleOf(USER_INFO to userInfo))
+
+        val options = ActivityOptions.makeCustomAnimation(
+            requireContext(),
+            R.anim.slide_in_from_right_to_left,
+            R.anim.slide_out_from_right_to_left
+        )
+
+        startActivity(intent, options.toBundle())
+        requireActivity().finish()
     }
 
     protected fun formatMobilePhoneInput(editText: EditText) {

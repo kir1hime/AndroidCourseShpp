@@ -16,6 +16,6 @@ interface UserAPI {
         @Body updateUserRequestDTO: UpdateUserRequestDTO
     ): UpdateUserResponseDTO
 
-    @GET("user/{userId}")
+    @GET("users/{userId}")
     suspend fun getUser(@Path("userId") userId: Long): GetUserResponseDTO
 }

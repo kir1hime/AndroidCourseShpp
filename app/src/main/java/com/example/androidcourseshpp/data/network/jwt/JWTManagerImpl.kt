@@ -18,21 +18,23 @@ class JWTManagerImpl @Inject constructor(@JWTManagerPref private val sharedPref:
         sharedPref.getString(ACCESS_TOKEN, null)
 
 
-    override fun saveAccessToken(token: String) {
+    override fun saveAccessToken(token: String?) {
         editor.putString(ACCESS_TOKEN, token).apply()
     }
 
     override fun getRefreshToken() =
         sharedPref.getString(REFRESH_TOKEN, null)
 
-    override fun saveRefreshToken(token: String) {
+    override fun saveRefreshToken(token: String?) {
         editor.putString(REFRESH_TOKEN, token).apply()
     }
 
+    override fun saveTokens(accessToken: String?, refreshToken: String?) {
+        saveAccessToken(accessToken)
+        saveRefreshToken(refreshToken)
+    }
+
     override fun clearTokens() {
-        editor.apply {
-            putString(ACCESS_TOKEN, null)
-            putString(REFRESH_TOKEN, null)
-        }
+        saveTokens(null, null)
     }
 }
