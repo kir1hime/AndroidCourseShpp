@@ -4,7 +4,7 @@ import com.example.androidcourseshpp.data.dataProvider.DEFAULT_ID_VALUE
 import com.example.androidcourseshpp.data.dataProvider.DataProvider
 import com.example.androidcourseshpp.data.network.ServicesProvider
 import com.example.androidcourseshpp.ui.BaseViewModel
-import com.example.androidcourseshpp.ui.screens.UserInfoEntity
+import com.example.androidcourseshpp.ui.UserInfoEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 
@@ -25,8 +25,7 @@ class SplashViewModel @Inject constructor(
         val userServerId = dataProvider.getUserServerId()
 
         if (userServerId == DEFAULT_ID_VALUE) {
-            setEffect(SplashContract.Effect.NavigateToSignUpScreen)
-
+            setEffect(SplashContract.Effect.NavigateToSignInScreen)
         } else {
             enterToAccount(userServerId)
         }
@@ -52,16 +51,16 @@ class SplashViewModel @Inject constructor(
 
             },
             processBackendException = {
-                setEffect(SplashContract.Effect.NavigateToSignUpScreen)
+                setEffect(SplashContract.Effect.NavigateToSignInScreen)
             },
             processResponseProcessingException = {
-                setEffect(SplashContract.Effect.NavigateToSignUpScreen)
+                setEffect(SplashContract.Effect.NavigateToSignInScreen)
             },
             processConnectionException = {
-                setEffect(SplashContract.Effect.NavigateToSignUpScreen)
+                setEffect(SplashContract.Effect.NavigateToSignInScreen)
             },
             processAuthenticationException = {
-                setEffect(SplashContract.Effect.NavigateToSignUpScreen)
+                setEffect(SplashContract.Effect.NavigateToSignInScreen)
             },
             finally = { }
         )

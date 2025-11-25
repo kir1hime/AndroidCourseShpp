@@ -2,7 +2,7 @@ package com.example.androidcourseshpp.data.network.service.auth.entity
 
 import com.example.androidcourseshpp.data.network.dto.entity.User
 
-data class AuthResponseEntity(
+data class SignUpResponseEntity(
     val user: User,
     val accessToken: String,
     val refreshToken: String

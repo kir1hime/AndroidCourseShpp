@@ -1,15 +1,15 @@
 package com.example.androidcourseshpp.ui.screens.userinfo.myprofile
 
-import com.example.androidcourseshpp.data.dataProvider.UserDataProvider
+import com.example.androidcourseshpp.data.dataProvider.DataProvider
 import com.example.androidcourseshpp.data.network.RetrofitServiceProviderHolder
 import com.example.androidcourseshpp.data.network.jwt.JWTManager
 import com.example.androidcourseshpp.ui.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
+import jakarta.inject.Inject
 
 @HiltViewModel
 class MyProfileViewModel @Inject constructor(
-    private val userDataProvider: UserDataProvider,
+    private val dataProvider: DataProvider,
     private val jwtManager: JWTManager,
     private val serviceProviderHolder: RetrofitServiceProviderHolder
 ) :
@@ -35,7 +35,7 @@ class MyProfileViewModel @Inject constructor(
 
     private fun updateState(state: MyProfileContract.UIState) {
         setState {
-            with(state) {
+            state.apply {
                 copy(
                     userName = userName,
                     career = career,
@@ -54,7 +54,7 @@ class MyProfileViewModel @Inject constructor(
 
     private fun logOut() {
         jwtManager.clearTokens()
-        userDataProvider.clearUserServerId()
+        dataProvider.clearUserServerId()
         setEffect(MyProfileContract.Effect.NavigateToSignInScreen)
     }
 

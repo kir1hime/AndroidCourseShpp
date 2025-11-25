@@ -1,10 +1,10 @@
 package com.example.androidcourseshpp.ui.screens.auth.signupextended
 
+import com.example.androidcourseshpp.ui.UserInfoEntity
 import com.example.androidcourseshpp.ui.ViewEffect
 import com.example.androidcourseshpp.ui.ViewEvent
 import com.example.androidcourseshpp.ui.ViewState
 import com.example.androidcourseshpp.ui.screens.SignUpUserInfo
-import com.example.androidcourseshpp.ui.screens.UserInfoEntity
 
 class SignUpExtendedContract {
     sealed interface Event : ViewEvent {

@@ -6,8 +6,8 @@ import com.example.androidcourseshpp.data.network.RetrofitServiceProviderHolder
 import com.example.androidcourseshpp.data.network.jwt.JWTManager
 import com.example.androidcourseshpp.data.network.service.auth.entity.SignUpData
 import com.example.androidcourseshpp.ui.BaseViewModel
+import com.example.androidcourseshpp.ui.UserInfoEntity
 import com.example.androidcourseshpp.ui.screens.SignUpUserInfo
-import com.example.androidcourseshpp.ui.screens.UserInfoEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

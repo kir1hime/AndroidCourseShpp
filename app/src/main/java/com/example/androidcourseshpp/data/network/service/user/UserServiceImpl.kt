@@ -3,6 +3,7 @@ package com.example.androidcourseshpp.data.network.service.user
 import com.example.androidcourseshpp.data.network.RetrofitConfig
 import com.example.androidcourseshpp.data.network.dto.entity.User
 import com.example.androidcourseshpp.data.network.service.BaseRetrofitService
+import com.example.androidcourseshpp.data.network.service.user.entity.GetUserResponseEntity
 import com.example.androidcourseshpp.data.network.service.user.entity.UpdateUserData
 import com.example.androidcourseshpp.data.network.webapi.user.UserAPI
 
@@ -12,22 +13,19 @@ class UserServiceImpl(
 
     private val userApi = retrofit.create(UserAPI::class.java)
 
-    override suspend fun updateUserInfo(userId: Long, userData: UpdateUserData) =
+    override suspend fun updateUserInfo(userId: Long, userData: UpdateUserData) {
         processRetrofitExceptions {
             userApi.updateUserInfo(
                 userId,
                 userData.toUpdateUserDataDTO()
-            ).user
+            )
         }
+    }
 
     override suspend fun getUser(userId: Long) =
         processRetrofitExceptions {
-            userApi.getUser(userId).user
+            GetUserResponseEntity(
+                userApi.getUser(userId).data.user
+            )
         }
-
-    override suspend fun getUser(userId: Long) = processRetrofitExceptions {
-        userApi.getUser(userId).data
-    }
-
-
 }

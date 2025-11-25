@@ -1,10 +1,8 @@
 package com.example.androidcourseshpp.ui.screens.auth.signin
 
 
-import android.util.Log
 import com.example.androidcourseshpp.R
-import com.example.androidcourseshpp.data.dataProvider.DEFAULT_USER_SERVER_ID_VALUE
-import com.example.androidcourseshpp.data.dataProvider.UserDataProvider
+import com.example.androidcourseshpp.data.dataProvider.DataProvider
 import com.example.androidcourseshpp.data.network.RetrofitServiceProviderHolder
 import com.example.androidcourseshpp.data.network.jwt.JWTManager
 import com.example.androidcourseshpp.data.network.service.auth.entity.SignInData
@@ -16,19 +14,9 @@ import javax.inject.Inject
 class SignInViewModel @Inject constructor(
     private val jwtManager: JWTManager,
     private val serviceProviderHolder: RetrofitServiceProviderHolder,
-    private val userDataProvider: UserDataProvider
+    private val dataProvider: DataProvider
 ) :
     BaseViewModel<SignInContract.Event, SignInContract.Effect, SignInContract.UIState>() {
-
-
-    init {
-        val userServerId = userDataProvider.getUserServerId()
-
-        if (userServerId != DEFAULT_USER_SERVER_ID_VALUE) {
-            enterToAccount(userServerId)
-        }
-    }
-
 
     override fun initState(): SignInContract.UIState {
         return SignInContract.UIState(
@@ -64,7 +52,7 @@ class SignInViewModel @Inject constructor(
                 val userInfo = response.user
 
                 if (toRememberUser) {
-                    userDataProvider.saveUserServerId(userInfo.id)
+                    dataProvider.saveUserServerId(userInfo.id)
                 }
 
                 setEffect(SignInContract.Effect.NavigateToMyProfileScreen(userInfo.toUserInfoEntity()))
@@ -79,7 +67,7 @@ class SignInViewModel @Inject constructor(
             processConnectionException = {
                 setEffect(SignInContract.Effect.ShowToast(R.string.connection_error))
             },
-            processUserUnauthorizedException = {
+            processAuthenticationException = {
                 setEffect(SignInContract.Effect.ShowToast(R.string.unauthorized_error))
             },
             finally = {
@@ -92,39 +80,6 @@ class SignInViewModel @Inject constructor(
             }
         )
     }
-
-    private fun enterToAccount(userServerId: Long) {
-        processNetworkExceptions(
-            toExecute = {
-                setState { copy(isProgressBarShowed = true) }
-                Log.d("myTag", userServerId.toString())
-                Log.d("myTag", jwtManager.getAccessToken().toString())
-                val userInfo =
-                    serviceProviderHolder.serviceProvider.getUserService().getUser(userServerId)
-                setEffect(SignInContract.Effect.NavigateToMyProfileScreen(userInfo.toUserInfoEntity()))
-            },
-            processBackendException = {
-                setEffect(SignInContract.Effect.ShowToast(R.string.backend_error))
-            },
-            processResponseProcessingException = {
-                setEffect(SignInContract.Effect.ShowToast(R.string.server_response_error))
-            },
-            processConnectionException = {
-                setEffect(SignInContract.Effect.ShowToast(R.string.connection_error))
-            },
-            processUserUnauthorizedException = {
-                setEffect(SignInContract.Effect.ShowToast(R.string.unauthorized_error))
-            },
-            finally = {
-                setState {
-                    copy(
-                        isProgressBarShowed = false,
-                    )
-                }
-            }
-        )
-    }
-
     private fun navigateToSignUpScreen() {
         setEffect(SignInContract.Effect.NavigateToSingUpScreen)
     }

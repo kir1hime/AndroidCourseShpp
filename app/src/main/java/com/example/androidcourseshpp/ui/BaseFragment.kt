@@ -13,9 +13,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.viewbinding.ViewBinding
 import com.example.androidcourseshpp.R
+import com.example.androidcourseshpp.databinding.FragmentSignInBinding
+import com.example.androidcourseshpp.databinding.FragmentSignUpBinding
+import com.example.androidcourseshpp.databinding.FragmentSignUpExtendedBinding
 import com.example.androidcourseshpp.ui.screens.MainActivity
-import com.example.androidcourseshpp.ui.screens.UserInfoEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
@@ -96,6 +99,48 @@ open class BaseFragment : Fragment() {
 
     protected fun <T> setResultListener() : MutableLiveData<T>? {
         return findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData(RESULT_KEY)
+    }
+
+    fun <T : ViewBinding> setLoadingState(isLoaded: Boolean, binding: T) {
+        val isEnabled = !isLoaded
+
+        when (binding) {
+            is FragmentSignInBinding -> with(binding) {
+                editTextEMail.apply {
+                    isFocusable = isEnabled
+                    isFocusableInTouchMode = isEnabled
+                }
+                editTextPassword.apply {
+                    isFocusable = isEnabled
+                    isFocusableInTouchMode = isEnabled
+                }
+                comboBoxRememberMe.isClickable = isEnabled
+            }
+
+            is FragmentSignUpBinding -> with(binding) {
+                editTextEMail.apply {
+                    isFocusable = isEnabled
+                    isFocusableInTouchMode = isEnabled
+                }
+                editTextPassword.apply {
+                    isFocusable = isEnabled
+                    isFocusableInTouchMode = isEnabled
+                }
+                comboBoxRememberMe.isClickable = isEnabled
+            }
+
+            is FragmentSignUpExtendedBinding -> with(binding) {
+                editTextUserName.apply {
+                    isFocusable = isEnabled
+                    isFocusableInTouchMode = isEnabled
+                }
+                editTextMobilePhone.apply {
+                    isFocusable = isEnabled
+                    isFocusableInTouchMode = isEnabled
+                }
+                imageButtonAddProfilePhoto.isClickable = isEnabled
+            }
+        }
     }
 
     companion object {

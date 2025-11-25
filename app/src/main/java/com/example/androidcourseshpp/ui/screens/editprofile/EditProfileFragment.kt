@@ -76,7 +76,7 @@ class EditProfileFragment : BaseFragment() {
         collectFlow(viewModel.effect) { effect ->
             when (effect) {
                 is EditProfileContract.Effect.NavigateToChooseProfilePhotoDialog -> moveToChooseProfilePhotoDialog()
-                is EditProfileContract.Effect.NavigateToMyProfileScreen -> moveToMyProfileScreen(
+                is EditProfileContract.Effect.NavigateToMyProfileScreen -> moveBackToMyProfileScreen(
                     UserInfoEntity(
                         userName = editTextUsername.text.toString(),
                         mobilePhone = editTextMobilePhone.text.toString(),
@@ -89,7 +89,7 @@ class EditProfileFragment : BaseFragment() {
         }
     }
 
-    private fun moveToMyProfileScreen(userData: UserInfoEntity) {
+     fun moveBackToMyProfileScreen(userData: UserInfoEntity) {
         setResultForPreviousScreen(userData)
         findNavController().navigateUp()
     }

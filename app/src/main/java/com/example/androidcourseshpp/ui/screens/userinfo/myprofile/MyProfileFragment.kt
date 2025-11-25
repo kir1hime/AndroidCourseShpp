@@ -11,12 +11,11 @@ import android.widget.TextView
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.androidcourseshpp.R
-import com.example.androidcourseshpp.data.dataProvider.DEFAULT_USER_SERVER_ID_VALUE
 import com.example.androidcourseshpp.databinding.FragmentMyProfileBinding
 import com.example.androidcourseshpp.ui.BaseFragment
+import com.example.androidcourseshpp.ui.USER_INFO
 import com.example.androidcourseshpp.ui.UserInfoEntity
 import com.example.androidcourseshpp.ui.screens.auth.AuthActivity
-import com.example.androidcourseshpp.ui.screens.auth.USER_INFO
 import com.example.androidcourseshpp.ui.screens.userinfo.TabSwitchable
 import com.example.androidcourseshpp.ui.screens.userinfo.UserInfoFragmentDirections
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,14 +38,15 @@ class MyProfileFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setUserInfo()
         setResultListenerFromEditProfile()
-      //  initUserInfoLoading()
         setListeners()
         setObservers()
     }
 
     private fun setResultListenerFromEditProfile() {
         val userInfo = setResultListener<UserInfoEntity>()
+
         userInfo?.value?.let { userInfo ->
             userInfo.apply {
                 viewModel.setEvent(
@@ -64,8 +64,8 @@ class MyProfileFragment : BaseFragment() {
         }
     }
 
-    /*private fun initUserInfoLoading() {
-        @Suppress("DEPRECATION")
+    @Suppress("DEPRECATION")
+    private fun setUserInfo() {
         val userInfo =
             requireActivity().intent.getParcelableExtra<UserInfoEntity>(USER_INFO)
 
@@ -82,7 +82,7 @@ class MyProfileFragment : BaseFragment() {
                 )
             )
         }
-    }*/
+    }
 
     private fun setListeners() = with(binding) {
         buttonLogOut.setOnClickListener {
@@ -114,7 +114,6 @@ class MyProfileFragment : BaseFragment() {
         }
         collectFlow(viewModel.state) { state ->
             textViewName.text = state.userName
-            Log.d("myTag", state.career)
             textViewCareer.updateIfNotEmpty(state.career)
             textViewHomeAddress.updateIfNotEmpty(state.address)
         }
