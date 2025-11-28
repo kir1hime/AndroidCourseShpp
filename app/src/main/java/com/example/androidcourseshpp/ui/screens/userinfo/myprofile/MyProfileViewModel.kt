@@ -1,9 +1,10 @@
 package com.example.androidcourseshpp.ui.screens.userinfo.myprofile
 
+import android.util.Log
 import com.example.androidcourseshpp.data.dataProvider.DataProvider
-import com.example.androidcourseshpp.data.network.RetrofitServiceProviderHolder
 import com.example.androidcourseshpp.data.network.jwt.JWTManager
 import com.example.androidcourseshpp.ui.BaseViewModel
+import com.example.androidcourseshpp.ui.utils.ImageConvertor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 
@@ -11,7 +12,7 @@ import jakarta.inject.Inject
 class MyProfileViewModel @Inject constructor(
     private val dataProvider: DataProvider,
     private val jwtManager: JWTManager,
-    private val serviceProviderHolder: RetrofitServiceProviderHolder
+    private val imageConvertor: ImageConvertor
 ) :
     BaseViewModel<MyProfileContract.Event, MyProfileContract.Effect, MyProfileContract.UIState>() {
 
@@ -20,7 +21,8 @@ class MyProfileViewModel @Inject constructor(
         career = "",
         mobilePhone = "",
         address = "",
-        dateOfBirthday = ""
+        dateOfBirthday = "",
+        avatar = ""
     )
 
     override fun handleEvent(event: MyProfileContract.Event) {
@@ -41,7 +43,8 @@ class MyProfileViewModel @Inject constructor(
                     career = career,
                     mobilePhone = mobilePhone,
                     address = address,
-                    dateOfBirthday = dateOfBirthday
+                    dateOfBirthday = dateOfBirthday,
+                    avatar = avatar
                 )
             }
         }

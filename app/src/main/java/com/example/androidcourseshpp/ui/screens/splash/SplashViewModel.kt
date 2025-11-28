@@ -5,13 +5,15 @@ import com.example.androidcourseshpp.data.dataProvider.DataProvider
 import com.example.androidcourseshpp.data.network.ServicesProvider
 import com.example.androidcourseshpp.ui.BaseViewModel
 import com.example.androidcourseshpp.ui.UserInfoEntity
+import com.example.androidcourseshpp.ui.utils.ImageConvertor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 
 @HiltViewModel
 class SplashViewModel @Inject constructor(
     private val dataProvider: DataProvider,
-    private val servicesProvider: ServicesProvider
+    private val servicesProvider: ServicesProvider,
+    private val imageConvertor: ImageConvertor
 ) :
     BaseViewModel<SplashContract.Event, SplashContract.Effect, SplashContract.Sate>() {
 
@@ -39,12 +41,9 @@ class SplashViewModel @Inject constructor(
 
                 setEffect(
                     SplashContract.Effect.NavigateToMyProfileScreen(
-                        UserInfoEntity(
-                            userName = userInfo.name ?: "",
-                            career = userInfo.career ?: "",
-                            address = userInfo.address ?: "",
-                            dateOfBirthday = userInfo.birthday ?: "",
-                            mobilePhone = userInfo.phone ?: ""
+                        userInfo.toUserInfoEntity(
+                            imageConvertor::convertUrlToBitmap,
+                            imageConvertor::convertImageResIdToBitmap
                         )
                     )
                 )

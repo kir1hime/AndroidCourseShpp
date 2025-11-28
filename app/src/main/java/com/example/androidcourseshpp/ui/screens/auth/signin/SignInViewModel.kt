@@ -7,6 +7,7 @@ import com.example.androidcourseshpp.data.network.RetrofitServiceProviderHolder
 import com.example.androidcourseshpp.data.network.jwt.JWTManager
 import com.example.androidcourseshpp.data.network.service.auth.entity.SignInData
 import com.example.androidcourseshpp.ui.BaseViewModel
+import com.example.androidcourseshpp.ui.utils.ImageConvertor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -14,7 +15,8 @@ import javax.inject.Inject
 class SignInViewModel @Inject constructor(
     private val jwtManager: JWTManager,
     private val serviceProviderHolder: RetrofitServiceProviderHolder,
-    private val dataProvider: DataProvider
+    private val dataProvider: DataProvider,
+    private val imageConvertor: ImageConvertor
 ) :
     BaseViewModel<SignInContract.Event, SignInContract.Effect, SignInContract.UIState>() {
 
@@ -49,13 +51,14 @@ class SignInViewModel @Inject constructor(
                 jwtManager.saveAccessToken(response.accessToken)
                 jwtManager.saveRefreshToken(response.refreshToken)
 
-                val userInfo = response.user
+                val userServerId = response.user.id
 
                 if (toRememberUser) {
-                    dataProvider.saveUserServerId(userInfo.id)
+                    dataProvider.saveUserServerId(userServerId)
                 }
 
-                setEffect(SignInContract.Effect.NavigateToMyProfileScreen(userInfo.toUserInfoEntity()))
+                setEffect(SignInContract.Effect.NavigateToMyProfileScreen)
+
             },
             processBackendException = {
                 setState { copy(eMailHelperTextResId = R.string.incorrect_email_or_password_error) }
@@ -80,6 +83,7 @@ class SignInViewModel @Inject constructor(
             }
         )
     }
+
     private fun navigateToSignUpScreen() {
         setEffect(SignInContract.Effect.NavigateToSingUpScreen)
     }

@@ -1,5 +1,6 @@
 package com.example.androidcourseshpp.ui.screens.auth.signupextended
 
+import android.graphics.Bitmap
 import com.example.androidcourseshpp.ui.UserInfoEntity
 import com.example.androidcourseshpp.ui.ViewEffect
 import com.example.androidcourseshpp.ui.ViewEvent
@@ -11,7 +12,8 @@ class SignUpExtendedContract {
         data class OnForwardButtonClicked(
             val userName: String,
             val mobilePhone: String,
-            val signUpUserInfo: SignUpUserInfo
+            val signUpUserInfo: SignUpUserInfo,
+            val avatar: Bitmap
         ) : Event
 
         data object OnAddProfilePhotoImageViewClicked : Event

@@ -62,6 +62,9 @@ class SignUpFragment : BaseFragment() {
         binding.buttonRegister.setOnClickListener {
             onRegisterButtonClick()
         }
+        binding.textViewSignIn.setOnClickListener {
+            findNavController().navigateUp()
+        }
     }
 
     private fun onRegisterButtonClick() = with(binding) {

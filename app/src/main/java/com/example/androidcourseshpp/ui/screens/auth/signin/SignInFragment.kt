@@ -41,7 +41,7 @@ class SignInFragment : BaseFragment() {
         collectFlow(viewModel.effect) { effect ->
             when (effect) {
                 is SignInContract.Effect.NavigateToSingUpScreen -> moveToSignUpScreen()
-                is SignInContract.Effect.NavigateToMyProfileScreen -> moveToMyProfileScreen(effect.userInfo)
+                is SignInContract.Effect.NavigateToMyProfileScreen -> moveToMyProfileScreen()
                 is SignInContract.Effect.ShowToast -> makeToast(effect.toastMessageResId)
             }
         }

@@ -1,11 +1,14 @@
 package com.example.androidcourseshpp.ui.screens.editprofile
 
+
+import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.ui.BaseViewModel
+import com.example.androidcourseshpp.ui.utils.ImageConvertor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class EditProfileViewModel @Inject constructor() :
+class EditProfileViewModel @Inject constructor(private val imageConvertor: ImageConvertor) :
     BaseViewModel<EditProfileContract.Event, EditProfileContract.Effect, EditProfileContract.UIState>() {
 
     override fun initState(): EditProfileContract.UIState {
@@ -14,14 +17,17 @@ class EditProfileViewModel @Inject constructor() :
             mobilePhone = "",
             career = "",
             address = "",
-            dateOfBirthday = ""
+            dateOfBirthday = "",
+            avatar = ""
         ))
     }
 
     override fun handleEvent(event: EditProfileContract.Event) {
         when (event) {
             is EditProfileContract.Event.OnAddProfilePhotoImageViewClicked -> navigateToChooseProfilePhotoDialog()
-            is EditProfileContract.Event.OnSaveButtonClicked -> navigateToMyProfileScreen()
+            is EditProfileContract.Event.OnSaveButtonClicked -> {
+                updateState(event.state)
+                navigateToMyProfileScreen()}
             is EditProfileContract.Event.SetUserInfo -> updateState(event.state)
         }
     }
@@ -41,7 +47,7 @@ class EditProfileViewModel @Inject constructor() :
     }
 
     private fun navigateToMyProfileScreen() {
-        setEffect(EditProfileContract.Effect.NavigateToMyProfileScreen)
+        setEffect(EditProfileContract.Effect.NavigateToMyProfileScreen(state.value))
     }
 
     private fun navigateToChooseProfilePhotoDialog() {

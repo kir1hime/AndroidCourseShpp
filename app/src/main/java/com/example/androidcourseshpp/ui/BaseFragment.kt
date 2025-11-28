@@ -41,10 +41,8 @@ open class BaseFragment : Fragment() {
         Toast.makeText(requireContext(), messageResId, Toast.LENGTH_LONG).show()
     }
 
-    fun moveToMyProfileScreen(userInfo: UserInfoEntity) {
+    fun moveToMyProfileScreen() {
         val intent = Intent(requireContext(), MainActivity::class.java)
-
-        intent.putExtras(bundleOf(USER_INFO to userInfo))
 
         val options = ActivityOptions.makeCustomAnimation(
             requireContext(),

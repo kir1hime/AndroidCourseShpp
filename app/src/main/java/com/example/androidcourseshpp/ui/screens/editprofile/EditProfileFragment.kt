@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -47,7 +48,8 @@ class EditProfileFragment : BaseFragment() {
                         career = career,
                         mobilePhone = mobilePhone,
                         address = address,
-                        dateOfBirthday = dateOfBirthday
+                        dateOfBirthday = dateOfBirthday,
+                        avatar = avatar
                     )
                 )
             )
@@ -57,7 +59,19 @@ class EditProfileFragment : BaseFragment() {
 
     private fun setListeners() = with(binding) {
         buttonSave.setOnClickListener {
-            viewModel.setEvent(EditProfileContract.Event.OnSaveButtonClicked)
+            viewModel.setEvent(
+                EditProfileContract.Event.OnSaveButtonClicked(
+                    EditProfileContract.UIState(
+                        userName = editTextUsername.text.toString(),
+                        career = editTextCareer.text.toString(),
+                        address = editTextAddress.text.toString(),
+                        mobilePhone = editTextMobilePhone.text.toString(),
+                        dateOfBirthday = editTextDateOfBirthday.text.toString(),
+                        avatar = ""
+
+                    )
+                )
+            )
         }
         imageButtonAddProfilePhoto.setOnClickListener {
 
@@ -76,20 +90,23 @@ class EditProfileFragment : BaseFragment() {
         collectFlow(viewModel.effect) { effect ->
             when (effect) {
                 is EditProfileContract.Effect.NavigateToChooseProfilePhotoDialog -> moveToChooseProfilePhotoDialog()
-                is EditProfileContract.Effect.NavigateToMyProfileScreen -> moveBackToMyProfileScreen(
-                    UserInfoEntity(
-                        userName = editTextUsername.text.toString(),
-                        mobilePhone = editTextMobilePhone.text.toString(),
-                        address = editTextAddress.text.toString(),
-                        career = editTextCareer.text.toString(),
-                        dateOfBirthday = editTextDateOfBirthday.text.toString()
+                is EditProfileContract.Effect.NavigateToMyProfileScreen -> {
+                    moveBackToMyProfileScreen(
+                        UserInfoEntity(
+                            userName = effect.state.userName,
+                            mobilePhone = effect.state.mobilePhone,
+                            address = effect.state.address,
+                            career = effect.state.career,
+                            dateOfBirthday = effect.state.dateOfBirthday,
+                            avatar = effect.state.avatar
+                        )
                     )
-                )
+                }
             }
         }
     }
 
-     fun moveBackToMyProfileScreen(userData: UserInfoEntity) {
+    fun moveBackToMyProfileScreen(userData: UserInfoEntity) {
         setResultForPreviousScreen(userData)
         findNavController().navigateUp()
     }

@@ -1,6 +1,9 @@
 package com.example.androidcourseshpp.data.network.dto.entity
 
+import android.graphics.Bitmap
+import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.ui.UserInfoEntity
+
 
 data class User(
     val id: Long,
@@ -16,11 +19,18 @@ data class User(
     val linkedin: String?,
     val image: String?
 ) {
-    fun toUserInfoEntity() = UserInfoEntity(
-        userName = name ?: "",
-        career = career ?: "",
-        address = address ?: "",
-        mobilePhone = phone ?: "",
-        dateOfBirthday = birthday ?: ""
-    )
+
+    suspend fun toUserInfoEntity(
+        urlToBitmap: suspend (String) -> Bitmap,
+        resIdToBitmap: (Int) -> Bitmap
+    ): UserInfoEntity {
+        return UserInfoEntity(
+            userName = name ?: "",
+            career = career ?: "",
+            address = address ?: "",
+            mobilePhone = phone ?: "",
+            dateOfBirthday = birthday ?: "",
+            avatar = image ?: ""
+        )
+    }
 }

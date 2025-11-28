@@ -1,9 +1,11 @@
 package com.example.androidcourseshpp.ui.screens.userinfo.myprofile
 
+import android.graphics.Bitmap
 import com.example.androidcourseshpp.ui.ViewEffect
 import com.example.androidcourseshpp.ui.ViewEvent
 import com.example.androidcourseshpp.ui.ViewState
 import com.example.androidcourseshpp.ui.screens.editprofile.EditProfileContract
+import com.github.javafaker.Avatar
 
 class MyProfileContract {
 
@@ -26,7 +28,8 @@ class MyProfileContract {
         val career: String,
         val address: String,
         val mobilePhone: String,
-        val dateOfBirthday: String
+        val dateOfBirthday: String,
+        val avatar: String
     ) : ViewState
 
 }

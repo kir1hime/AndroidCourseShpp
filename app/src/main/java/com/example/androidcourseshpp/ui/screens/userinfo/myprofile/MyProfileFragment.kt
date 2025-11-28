@@ -15,6 +15,7 @@ import com.example.androidcourseshpp.databinding.FragmentMyProfileBinding
 import com.example.androidcourseshpp.ui.BaseFragment
 import com.example.androidcourseshpp.ui.USER_INFO
 import com.example.androidcourseshpp.ui.UserInfoEntity
+import com.example.androidcourseshpp.ui.extensions.loadImageFromURLCircled
 import com.example.androidcourseshpp.ui.screens.auth.AuthActivity
 import com.example.androidcourseshpp.ui.screens.userinfo.TabSwitchable
 import com.example.androidcourseshpp.ui.screens.userinfo.UserInfoFragmentDirections
@@ -46,7 +47,6 @@ class MyProfileFragment : BaseFragment() {
 
     private fun setResultListenerFromEditProfile() {
         val userInfo = setResultListener<UserInfoEntity>()
-
         userInfo?.value?.let { userInfo ->
             userInfo.apply {
                 viewModel.setEvent(
@@ -56,7 +56,8 @@ class MyProfileFragment : BaseFragment() {
                             career = career,
                             mobilePhone = mobilePhone,
                             address = address,
-                            dateOfBirthday = dateOfBirthday
+                            dateOfBirthday = dateOfBirthday,
+                            avatar = avatar
                         )
                     )
                 )
@@ -69,18 +70,21 @@ class MyProfileFragment : BaseFragment() {
         val userInfo =
             requireActivity().intent.getParcelableExtra<UserInfoEntity>(USER_INFO)
 
-        userInfo?.let {
-            viewModel.setEvent(
-                MyProfileContract.Event.SetUserInfo(
-                    MyProfileContract.UIState(
-                        userName = it.userName,
-                        career = it.career,
-                        address = it.address,
-                        mobilePhone = it.mobilePhone,
-                        dateOfBirthday = it.dateOfBirthday
+        userInfo?.let { info ->
+            with(info) {
+                viewModel.setEvent(
+                    MyProfileContract.Event.SetUserInfo(
+                        MyProfileContract.UIState(
+                            userName = userName,
+                            career = career,
+                            address = address,
+                            mobilePhone = mobilePhone,
+                            dateOfBirthday = dateOfBirthday,
+                            avatar = avatar
+                        )
                     )
                 )
-            )
+            }
         }
     }
 
@@ -107,7 +111,8 @@ class MyProfileFragment : BaseFragment() {
                         mobilePhone = effect.state.mobilePhone,
                         address = effect.state.address,
                         career = effect.state.career,
-                        dateOfBirthday = effect.state.dateOfBirthday
+                        dateOfBirthday = effect.state.dateOfBirthday,
+                        avatar = effect.state.avatar
                     )
                 )
             }
@@ -116,6 +121,11 @@ class MyProfileFragment : BaseFragment() {
             textViewName.text = state.userName
             textViewCareer.updateIfNotEmpty(state.career)
             textViewHomeAddress.updateIfNotEmpty(state.address)
+            circleViewProfilePhoto.loadImageFromURLCircled(
+                requireContext(),
+                state.avatar,
+                R.drawable.avatar
+            )
         }
     }
 
