@@ -9,8 +9,8 @@ const val USER_SERVER_ID = "userServerId"
 const val DEFAULT_ID_VALUE: Long = -1
 
 
-class DataProviderImpl @Inject constructor(@DataProviderPref private val sharedPref: SharedPreferences) :
-    DataProvider {
+class UserDataProviderImpl @Inject constructor(@DataProviderPref private val sharedPref: SharedPreferences) :
+    UserDataProvider {
 
     private val editor = sharedPref.edit()
 

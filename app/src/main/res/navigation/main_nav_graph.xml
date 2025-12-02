@@ -40,16 +40,16 @@
         android:name="com.example.androidcourseshpp.ui.screens.editprofile.EditProfileFragment"
         android:label="fragment_edit_profile"
         tools:layout="@layout/fragment_edit_profile">
-        <argument
-            android:name="userInfo"
-            app:argType="com.example.androidcourseshpp.ui.UserInfoEntity" />
         <action
-            android:id="@+id/action_editProfileFragment_to_chooseProfilePhotoDialog2"
+            android:id="@+id/action_editProfileFragment_to_chooseProfilePhotoDialog"
             app:destination="@id/chooseProfilePhotoDialog2" />
+        <argument
+            android:name="userServerId"
+            app:argType="long" />
     </fragment>
     <dialog
         android:id="@+id/chooseProfilePhotoDialog2"
-        android:name="com.example.androidcourseshpp.ui.screens.auth.signupextended.chooseprofilephotodialog.ChooseProfilePhotoDialog"
+        android:name="com.example.androidcourseshpp.ui.screens.chooseprofilephotodialog.ChooseProfilePhotoDialog"
         android:label="dialog_choose_profile_photo"
         tools:layout="@layout/dialog_choose_profile_photo" />
 </navigation>

@@ -13,7 +13,7 @@ class SplashContract {
 
     sealed interface Effect : ViewEffect {
 
-        data class NavigateToMyProfileScreen(val userInfo: UserInfoEntity) : Effect
+        data class NavigateToMyProfileScreen(val userServerId: Long) : Effect
         data object NavigateToSignInScreen : Effect
     }
 

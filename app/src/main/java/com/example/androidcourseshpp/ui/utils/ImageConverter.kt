@@ -28,21 +28,6 @@ class ImageConvertor @Inject constructor(@ApplicationContext private val context
         val file = convertBitmapToFile(bitmap)
         return convertFileToMultipartBody(file)
     }
-
-    suspend fun convertUrlToBitmap(url: String): Bitmap {
-        val loading = ImageLoader(context)
-        val request = ImageRequest.Builder(context)
-            .data(url).build()
-
-        val result = loading.execute(request).drawable
-        return (result as BitmapDrawable).bitmap
-    }
-
-    fun convertImageResIdToBitmap(resId: Int): Bitmap {
-        return BitmapFactory.decodeResource(context.resources, resId)
-
-    }
-
     private fun convertBitmapToFile(bitmap: Bitmap): File {
         val file = File(context.cacheDir, "user_avatar.jpg")
 

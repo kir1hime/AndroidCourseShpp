@@ -1,17 +1,16 @@
 package com.example.androidcourseshpp.ui.screens.splash
 
 import com.example.androidcourseshpp.data.dataProvider.DEFAULT_ID_VALUE
-import com.example.androidcourseshpp.data.dataProvider.DataProvider
+import com.example.androidcourseshpp.data.dataProvider.UserDataProvider
 import com.example.androidcourseshpp.data.network.ServicesProvider
 import com.example.androidcourseshpp.ui.BaseViewModel
-import com.example.androidcourseshpp.ui.UserInfoEntity
 import com.example.androidcourseshpp.ui.utils.ImageConvertor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 
 @HiltViewModel
 class SplashViewModel @Inject constructor(
-    private val dataProvider: DataProvider,
+    private val userdataProvider: UserDataProvider,
     private val servicesProvider: ServicesProvider,
     private val imageConvertor: ImageConvertor
 ) :
@@ -24,7 +23,7 @@ class SplashViewModel @Inject constructor(
     }
 
     init {
-        val userServerId = dataProvider.getUserServerId()
+        val userServerId = userdataProvider.getUserServerId()
 
         if (userServerId == DEFAULT_ID_VALUE) {
             setEffect(SplashContract.Effect.NavigateToSignInScreen)
@@ -37,15 +36,10 @@ class SplashViewModel @Inject constructor(
         processNetworkExceptions(
             toExecute = {
                 val response = servicesProvider.getUserService().getUser(userServerId)
-                val userInfo = response.user
+                val userServerId = response.user.id
 
                 setEffect(
-                    SplashContract.Effect.NavigateToMyProfileScreen(
-                        userInfo.toUserInfoEntity(
-                            imageConvertor::convertUrlToBitmap,
-                            imageConvertor::convertImageResIdToBitmap
-                        )
-                    )
+                    SplashContract.Effect.NavigateToMyProfileScreen(userServerId)
                 )
 
             },

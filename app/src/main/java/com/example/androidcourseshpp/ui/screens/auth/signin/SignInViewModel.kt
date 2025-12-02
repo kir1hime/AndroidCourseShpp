@@ -2,12 +2,11 @@ package com.example.androidcourseshpp.ui.screens.auth.signin
 
 
 import com.example.androidcourseshpp.R
-import com.example.androidcourseshpp.data.dataProvider.DataProvider
+import com.example.androidcourseshpp.data.dataProvider.UserDataProvider
 import com.example.androidcourseshpp.data.network.RetrofitServiceProviderHolder
 import com.example.androidcourseshpp.data.network.jwt.JWTManager
 import com.example.androidcourseshpp.data.network.service.auth.entity.SignInData
 import com.example.androidcourseshpp.ui.BaseViewModel
-import com.example.androidcourseshpp.ui.utils.ImageConvertor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -15,8 +14,7 @@ import javax.inject.Inject
 class SignInViewModel @Inject constructor(
     private val jwtManager: JWTManager,
     private val serviceProviderHolder: RetrofitServiceProviderHolder,
-    private val dataProvider: DataProvider,
-    private val imageConvertor: ImageConvertor
+    private val userDataProvider: UserDataProvider,
 ) :
     BaseViewModel<SignInContract.Event, SignInContract.Effect, SignInContract.UIState>() {
 
@@ -54,10 +52,10 @@ class SignInViewModel @Inject constructor(
                 val userServerId = response.user.id
 
                 if (toRememberUser) {
-                    dataProvider.saveUserServerId(userServerId)
+                    userDataProvider.saveUserServerId(userServerId)
                 }
 
-                setEffect(SignInContract.Effect.NavigateToMyProfileScreen)
+                setEffect(SignInContract.Effect.NavigateToMyProfileScreen(userServerId))
 
             },
             processBackendException = {

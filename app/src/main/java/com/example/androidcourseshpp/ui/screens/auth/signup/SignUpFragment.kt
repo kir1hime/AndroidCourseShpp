@@ -43,7 +43,6 @@ class SignUpFragment : BaseFragment() {
                 )
 
                 is SignUpContract.Effect.ShowToast -> makeToast(effect.toastMessageResId)
-                is SignUpContract.Effect.NavigateToMyProfileScreen -> moveToMyProfileScreen(effect.userInfo)
             }
         }
 
@@ -52,9 +51,6 @@ class SignUpFragment : BaseFragment() {
                 getString(state.passwordHelperTextResId, MIN_NUM_OF_CHARS_IN_PASSWORD)
 
             textInputLayoutEMail.helperText = getString(state.eMailHelperTextResId)
-
-            progressBarRequest.isVisible = state.isProgressBarShowed
-            setLoadingState(state.isProgressBarShowed)
         }
     }
 

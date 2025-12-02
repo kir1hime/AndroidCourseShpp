@@ -4,9 +4,10 @@ import android.app.ActivityOptions
 import android.content.Intent
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.View
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Toast
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.MutableLiveData
@@ -15,14 +16,18 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
 import com.example.androidcourseshpp.R
+import com.example.androidcourseshpp.databinding.FragmentEditProfileBinding
 import com.example.androidcourseshpp.databinding.FragmentSignInBinding
 import com.example.androidcourseshpp.databinding.FragmentSignUpBinding
 import com.example.androidcourseshpp.databinding.FragmentSignUpExtendedBinding
+import com.example.androidcourseshpp.ui.extensions.loadImageFromURL
 import com.example.androidcourseshpp.ui.screens.MainActivity
+import com.example.androidcourseshpp.ui.screens.chooseprofilephotodialog.ChooseProfilePhotoDialog
+import com.example.androidcourseshpp.ui.screens.chooseprofilephotodialog.ChooseProfilePhotoDialog.Companion.PHOTO
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
-const val USER_INFO = "userInfo"
+const val USER_SERVER_ID = "userServerId"
 const val RESULT_KEY = "resultPreviousScreenKey"
 
 open class BaseFragment : Fragment() {
@@ -37,12 +42,14 @@ open class BaseFragment : Fragment() {
         }
     }
 
-     fun makeToast(messageResId: Int) {
+    fun makeToast(messageResId: Int) {
         Toast.makeText(requireContext(), messageResId, Toast.LENGTH_LONG).show()
     }
 
-    fun moveToMyProfileScreen() {
+    fun moveToMyProfileScreen(userServerId: Long) {
         val intent = Intent(requireContext(), MainActivity::class.java)
+
+        intent.putExtra(USER_SERVER_ID, userServerId)
 
         val options = ActivityOptions.makeCustomAnimation(
             requireContext(),
@@ -95,51 +102,56 @@ open class BaseFragment : Fragment() {
         )
     }
 
-    protected fun <T> setResultListener() : MutableLiveData<T>? {
+    protected fun <T> setResultListener(): MutableLiveData<T>? {
         return findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData(RESULT_KEY)
     }
 
-    fun <T : ViewBinding> setLoadingState(isLoaded: Boolean, binding: T) {
+
+    protected fun setChooseProfilePhotoDialogResultListener(imageView: ImageView) {
+        parentFragmentManager.setFragmentResultListener(
+            ChooseProfilePhotoDialog.REQUEST_KEY,
+            viewLifecycleOwner
+        ) { _, data ->
+            val newProfilePhoto = data.getString(PHOTO) ?: ""
+            imageView.loadImageFromURL(requireContext(), newProfilePhoto)
+        }
+    }
+
+    protected fun <T : ViewBinding> setLoadingState(isLoaded: Boolean, binding: T) {
         val isEnabled = !isLoaded
 
         when (binding) {
             is FragmentSignInBinding -> with(binding) {
-                editTextEMail.apply {
-                    isFocusable = isEnabled
-                    isFocusableInTouchMode = isEnabled
-                }
-                editTextPassword.apply {
-                    isFocusable = isEnabled
-                    isFocusableInTouchMode = isEnabled
-                }
+                enableEditText(editTextEMail)
+                enableEditText(editTextPassword)
                 comboBoxRememberMe.isClickable = isEnabled
             }
 
-            is FragmentSignUpBinding -> with(binding) {
-                editTextEMail.apply {
-                    isFocusable = isEnabled
-                    isFocusableInTouchMode = isEnabled
-                }
-                editTextPassword.apply {
-                    isFocusable = isEnabled
-                    isFocusableInTouchMode = isEnabled
-                }
-                comboBoxRememberMe.isClickable = isEnabled
+            is FragmentEditProfileBinding -> with(binding) {
+                enableEditText(editTextUsername)
+                enableEditText(editTextCareer)
+                enableEditText(editTextMobilePhone)
+                enableEditText(editTextAddress)
+                enableEditText(editTextDateOfBirthday)
+                imageButtonAddProfilePhoto.isClickable = isEnabled
             }
 
             is FragmentSignUpExtendedBinding -> with(binding) {
-                editTextUserName.apply {
-                    isFocusable = isEnabled
-                    isFocusableInTouchMode = isEnabled
-                }
-                editTextMobilePhone.apply {
-                    isFocusable = isEnabled
-                    isFocusableInTouchMode = isEnabled
-                }
+                enableEditText(editTextUserName)
+                enableEditText(editTextMobilePhone)
                 imageButtonAddProfilePhoto.isClickable = isEnabled
             }
         }
     }
+
+    private fun enableEditText(editText: EditText) {
+        editText.apply {
+            isFocusable = isEnabled
+            isFocusableInTouchMode = isEnabled
+        }
+    }
+
+    protected fun getTextFromEditText(editText: EditText) = editText.text.toString()
 
     companion object {
         private val BRACKET_POSITIONS = mapOf(1 to "(", 5 to ")-")

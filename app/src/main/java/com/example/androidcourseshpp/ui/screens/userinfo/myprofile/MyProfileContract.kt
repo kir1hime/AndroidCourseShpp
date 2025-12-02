@@ -13,13 +13,14 @@ class MyProfileContract {
         data object OnViewMyContactsButtonClicked : Event
         data object OnLogOutButtonClicked : Event
         data object OnEditProfileClicked : Event
-        data class SetUserInfo(val state: UIState) : Event
+
+        data class UpdateUserInfo(val userServerId: Long) : Event
     }
 
     sealed interface Effect : ViewEffect {
         data object NavigateToSignInScreen : Effect
         data object NavigateToContactList : Effect
-        data class NavigateToEditProfileScreen(val state: UIState) : Effect
+        data object NavigateToEditProfileScreen : Effect
     }
 
 
@@ -27,8 +28,6 @@ class MyProfileContract {
         val userName: String,
         val career: String,
         val address: String,
-        val mobilePhone: String,
-        val dateOfBirthday: String,
         val avatar: String
     ) : ViewState
 

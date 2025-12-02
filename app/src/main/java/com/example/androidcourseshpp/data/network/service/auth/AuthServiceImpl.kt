@@ -20,11 +20,11 @@ class AuthServiceImpl(
         processRetrofitExceptions {
             with(data) {
                 authApi.signUp(
-                    email.toRequestBody(),
-                    password.toRequestBody(),
-                    userName.toRequestBody(),
-                    mobilePhone.toRequestBody(),
-                    image
+                    email = email.toRequestBody(),
+                    password = password.toRequestBody(),
+                    name = userName.toRequestBody(),
+                    phone = mobilePhone.toRequestBody(),
+                    image = image
                 ).data
             }
         }

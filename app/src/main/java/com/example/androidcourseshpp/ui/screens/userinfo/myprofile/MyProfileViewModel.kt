@@ -1,27 +1,27 @@
 package com.example.androidcourseshpp.ui.screens.userinfo.myprofile
 
-import android.util.Log
-import com.example.androidcourseshpp.data.dataProvider.DataProvider
+
+import androidx.lifecycle.viewModelScope
+import com.example.androidcourseshpp.data.dataProvider.UserDataProvider
+import com.example.androidcourseshpp.data.network.ServicesProvider
 import com.example.androidcourseshpp.data.network.jwt.JWTManager
 import com.example.androidcourseshpp.ui.BaseViewModel
-import com.example.androidcourseshpp.ui.utils.ImageConvertor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
+import kotlinx.coroutines.launch
 
 @HiltViewModel
 class MyProfileViewModel @Inject constructor(
-    private val dataProvider: DataProvider,
+    private val userDataProvider: UserDataProvider,
     private val jwtManager: JWTManager,
-    private val imageConvertor: ImageConvertor
+    private val serviceProvider: ServicesProvider
 ) :
     BaseViewModel<MyProfileContract.Event, MyProfileContract.Effect, MyProfileContract.UIState>() {
 
     override fun initState() = MyProfileContract.UIState(
         userName = "",
         career = "",
-        mobilePhone = "",
         address = "",
-        dateOfBirthday = "",
         avatar = ""
     )
 
@@ -30,34 +30,54 @@ class MyProfileViewModel @Inject constructor(
             is MyProfileContract.Event.OnViewMyContactsButtonClicked -> navigateToMyContacts()
             is MyProfileContract.Event.OnLogOutButtonClicked -> logOut()
             is MyProfileContract.Event.OnEditProfileClicked -> navigateToEditProfileScreen()
-            is MyProfileContract.Event.SetUserInfo -> updateState(event.state)
+            is MyProfileContract.Event.UpdateUserInfo -> updateUserInfo(event.userServerId)
         }
 
     }
 
-    private fun updateState(state: MyProfileContract.UIState) {
-        setState {
-            state.apply {
-                copy(
-                    userName = userName,
-                    career = career,
-                    mobilePhone = mobilePhone,
-                    address = address,
-                    dateOfBirthday = dateOfBirthday,
-                    avatar = avatar
-                )
-            }
+    private fun updateUserInfo(userServerId: Long) {
+        viewModelScope.launch {
+            processNetworkExceptions(
+                toExecute = {
+                    val response = serviceProvider.getUserService().getUser(userServerId)
+                    val userInfo = response.user
+
+                    setState {
+                        copy(
+                            userName = userInfo.name ?: "",
+                            career = userInfo.career ?: "",
+                            address = userInfo.address ?: "",
+                            avatar = userInfo.image ?: ""
+
+                        )
+                    }
+                },
+                processBackendException = {
+
+                },
+                processAuthenticationException = {
+
+                }, processResponseProcessingException = {
+
+                },
+                processConnectionException = {
+
+                },
+                finally = {
+
+                }
+            )
         }
     }
 
     private fun navigateToEditProfileScreen() {
-        setEffect(MyProfileContract.Effect.NavigateToEditProfileScreen(state.value))
+        setEffect(MyProfileContract.Effect.NavigateToEditProfileScreen)
     }
 
 
     private fun logOut() {
         jwtManager.clearTokens()
-        dataProvider.clearUserServerId()
+        userDataProvider.clearUserServerId()
         setEffect(MyProfileContract.Effect.NavigateToSignInScreen)
     }
 

@@ -2,17 +2,15 @@ package com.example.androidcourseshpp.ui.screens.auth.signupextended
 
 import android.graphics.Bitmap
 import com.example.androidcourseshpp.R
-import com.example.androidcourseshpp.data.dataProvider.DataProvider
+import com.example.androidcourseshpp.data.dataProvider.UserDataProvider
 import com.example.androidcourseshpp.data.network.RetrofitServiceProviderHolder
 import com.example.androidcourseshpp.data.network.jwt.JWTManager
-import com.example.androidcourseshpp.data.network.service.BackendException
 import com.example.androidcourseshpp.data.network.service.auth.entity.SignUpData
 import com.example.androidcourseshpp.ui.BaseViewModel
 import com.example.androidcourseshpp.ui.screens.SignUpUserInfo
 import com.example.androidcourseshpp.ui.utils.ImageConvertor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-import androidx.core.graphics.createBitmap
 
 private const val PHONE_NUMBER_LENGTH = 15
 
@@ -20,7 +18,7 @@ private const val PHONE_NUMBER_LENGTH = 15
 class SignUpExtendedViewModel @Inject constructor(
     private val serviceProviderHolder: RetrofitServiceProviderHolder,
     private val jwtManager: JWTManager,
-    private val dataProvider: DataProvider,
+    private val dataProvider: UserDataProvider,
     private val imageConvertor: ImageConvertor
 ) :
     BaseViewModel<SignUpExtendedContract.Event, SignUpExtendedContract.Effect, SignUpExtendedContract.UIState>() {
@@ -98,13 +96,9 @@ class SignUpExtendedViewModel @Inject constructor(
                     val userInfo = response.user
 
                     setEffect(
-                        SignUpExtendedContract.Effect.NavigateToMyProfileScreen(
-                            userInfo.toUserInfoEntity(
-                                imageConvertor::convertUrlToBitmap,
-                                imageConvertor::convertImageResIdToBitmap
-                            )
-                        )
+                        SignUpExtendedContract.Effect.NavigateToMyProfileScreen(userInfo.id)
                     )
+
                 },
                 processBackendException = {
                     setEffect(SignUpExtendedContract.Effect.ShowToast(R.string.email_already_registered_error))

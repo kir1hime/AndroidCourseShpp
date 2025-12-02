@@ -70,7 +70,7 @@ class SignUpExtendedFragment : BaseFragment() {
         collectFlow(viewModel.effect) { effect ->
             when (effect) {
                 is SignUpExtendedContract.Effect.NavigateToMyProfileScreen -> moveToMyProfileScreen(
-                    effect.userInfo
+                    effect.userServerId
                 )
 
                 is SignUpExtendedContract.Effect.NavigateToPreviousScreen -> findNavController().navigateUp()

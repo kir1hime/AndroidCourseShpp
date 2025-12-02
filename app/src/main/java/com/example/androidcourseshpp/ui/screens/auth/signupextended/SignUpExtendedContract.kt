@@ -21,7 +21,7 @@ class SignUpExtendedContract {
     }
 
     sealed interface Effect : ViewEffect {
-        data class NavigateToMyProfileScreen(val userInfo: UserInfoEntity) : Effect
+        data class NavigateToMyProfileScreen(val userServerId : Long) : Effect
         data class ShowToast(val toastMessageResId: Int) : Effect
         data object NavigateToPreviousScreen : Effect
         data object NavigateToChooseProfilePhotoDialog : Effect

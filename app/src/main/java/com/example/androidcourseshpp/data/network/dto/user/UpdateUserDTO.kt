@@ -1,13 +1,14 @@
 package com.example.androidcourseshpp.data.network.dto.user
 
 import com.example.androidcourseshpp.data.network.dto.entity.User
+import java.util.Date
 
 data class UpdateUserRequestDTO(
     val name: String?,
     val phone: String?,
     val address: String?,
     val career: String?,
-    val birthday: String?,
+    val birthday: Date?,
     val facebook: String?,
     val instagram: String?,
     val twitter: String?,

@@ -233,15 +233,4 @@
         app:textPaddingEnd="@dimen/google_bt_text_padding_end"
         app:textPaddingStart="@dimen/google_bt_text_padding_start" />
 
-    <ProgressBar
-        android:id="@+id/progressBarRequest"
-        android:layout_width="@dimen/progress_bar_request_size"
-        android:layout_height="@dimen/progress_bar_request_size"
-        android:indeterminateTint="@color/progress_bar_request_color"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

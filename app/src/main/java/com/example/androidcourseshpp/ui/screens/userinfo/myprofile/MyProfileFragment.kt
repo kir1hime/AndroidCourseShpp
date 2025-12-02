@@ -3,7 +3,6 @@ package com.example.androidcourseshpp.ui.screens.userinfo.myprofile
 import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,21 +10,26 @@ import android.widget.TextView
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.androidcourseshpp.R
+import com.example.androidcourseshpp.data.dataProvider.DEFAULT_ID_VALUE
+import com.example.androidcourseshpp.data.dataProvider.USER_SERVER_ID
 import com.example.androidcourseshpp.databinding.FragmentMyProfileBinding
 import com.example.androidcourseshpp.ui.BaseFragment
-import com.example.androidcourseshpp.ui.USER_INFO
-import com.example.androidcourseshpp.ui.UserInfoEntity
 import com.example.androidcourseshpp.ui.extensions.loadImageFromURLCircled
 import com.example.androidcourseshpp.ui.screens.auth.AuthActivity
 import com.example.androidcourseshpp.ui.screens.userinfo.TabSwitchable
 import com.example.androidcourseshpp.ui.screens.userinfo.UserInfoFragmentDirections
 import dagger.hilt.android.AndroidEntryPoint
+import kotlin.getValue
+import kotlin.properties.Delegates
 
 @AndroidEntryPoint
 class MyProfileFragment : BaseFragment() {
 
     private lateinit var binding: FragmentMyProfileBinding
+
     private val viewModel by viewModels<MyProfileViewModel>()
+
+    private var userServerId by Delegates.notNull<Long>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,53 +43,34 @@ class MyProfileFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setUserInfo()
-        setResultListenerFromEditProfile()
+        userServerId = requireActivity().intent.getLongExtra(USER_SERVER_ID, DEFAULT_ID_VALUE)
+        setUserInfo(userServerId)
         setListeners()
         setObservers()
     }
 
-    private fun setResultListenerFromEditProfile() {
-        val userInfo = setResultListener<UserInfoEntity>()
-        userInfo?.value?.let { userInfo ->
-            userInfo.apply {
-                viewModel.setEvent(
-                    MyProfileContract.Event.SetUserInfo(
-                        MyProfileContract.UIState(
-                            userName = userName,
-                            career = career,
-                            mobilePhone = mobilePhone,
-                            address = address,
-                            dateOfBirthday = dateOfBirthday,
-                            avatar = avatar
-                        )
-                    )
-                )
-            }
-        }
-    }
+    /* private fun setResultListenerFromEditProfile() {
+         val userInfo = setResultListener<UserInfoEntity>()
+         userInfo?.value?.let { userInfo ->
+             userInfo.apply {
+                 viewModel.setEvent(
+                     MyProfileContract.Event.SetUserInfo(
+                         MyProfileContract.UIState(
+                             userName = userName,
+                             career = career,
+                             mobilePhone = mobilePhone,
+                             address = address,
+                             dateOfBirthday = dateOfBirthday,
+                             avatar = avatar
+                         )
+                     )
+                 )
+             }
+         }
+     }*/
 
-    @Suppress("DEPRECATION")
-    private fun setUserInfo() {
-        val userInfo =
-            requireActivity().intent.getParcelableExtra<UserInfoEntity>(USER_INFO)
-
-        userInfo?.let { info ->
-            with(info) {
-                viewModel.setEvent(
-                    MyProfileContract.Event.SetUserInfo(
-                        MyProfileContract.UIState(
-                            userName = userName,
-                            career = career,
-                            address = address,
-                            mobilePhone = mobilePhone,
-                            dateOfBirthday = dateOfBirthday,
-                            avatar = avatar
-                        )
-                    )
-                )
-            }
-        }
+    private fun setUserInfo(userServerId: Long) {
+        viewModel.setEvent(MyProfileContract.Event.UpdateUserInfo(userServerId))
     }
 
     private fun setListeners() = with(binding) {
@@ -105,18 +90,10 @@ class MyProfileFragment : BaseFragment() {
             when (effect) {
                 is MyProfileContract.Effect.NavigateToContactList -> moveToMyContactsScreen()
                 is MyProfileContract.Effect.NavigateToSignInScreen -> moveToSignUpScreen()
-                is MyProfileContract.Effect.NavigateToEditProfileScreen -> moveToEditProfileScreen(
-                    UserInfoEntity(
-                        userName = effect.state.userName,
-                        mobilePhone = effect.state.mobilePhone,
-                        address = effect.state.address,
-                        career = effect.state.career,
-                        dateOfBirthday = effect.state.dateOfBirthday,
-                        avatar = effect.state.avatar
-                    )
-                )
+                is MyProfileContract.Effect.NavigateToEditProfileScreen -> moveToEditProfileScreen()
             }
         }
+
         collectFlow(viewModel.state) { state ->
             textViewName.text = state.userName
             textViewCareer.updateIfNotEmpty(state.career)
@@ -154,9 +131,9 @@ class MyProfileFragment : BaseFragment() {
         parentFragment?.moveToContactsTab()
     }
 
-    private fun moveToEditProfileScreen(userInfo: UserInfoEntity) {
+    private fun moveToEditProfileScreen() {
         val direction =
-            UserInfoFragmentDirections.actionUserInfoFragmentToEditProfileFragment(userInfo)
+            UserInfoFragmentDirections.actionUserInfoFragmentToEditProfileFragment(userServerId)
         findNavController().navigate(direction)
     }
 }

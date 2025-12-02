@@ -45,7 +45,7 @@ class ContactListFragment : BaseFragment() {
     private val onBackPressedCallback: OnBackPressedCallback =
         object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                moveToMyProfileScreen()
+                moveBackToMyProfileScreen()
             }
         }
 
@@ -143,14 +143,14 @@ class ContactListFragment : BaseFragment() {
                     effect.avatar
                 )
 
-                is ContactListContract.Effect.NavigateToMyProfileScreen -> moveToMyProfileScreen()
+                is ContactListContract.Effect.NavigateToMyProfileScreen -> moveBackToMyProfileScreen()
             }
         }
     }
 
     private fun setListeners() = with(binding) {
         imageButtonArrowBack.setOnClickListener {
-            moveToMyProfileScreen()
+            moveBackToMyProfileScreen()
         }
         textViewAddContacts.setOnClickListener {
             showAddContactDialog()
@@ -247,7 +247,7 @@ class ContactListFragment : BaseFragment() {
             }
     }
 
-    private fun moveToMyProfileScreen() {
+     fun moveBackToMyProfileScreen() {
         val parentFragment = parentFragment as? TabSwitchable
         parentFragment?.moveToMyProfileTab()
     }

@@ -35,7 +35,7 @@ class SplashFragment : BaseFragment() {
         collectFlow(viewModel.effect) { effect ->
             when (effect) {
                 is SplashContract.Effect.NavigateToSignInScreen -> moveToSignInScreen()
-                is SplashContract.Effect.NavigateToMyProfileScreen -> moveToMyProfileScreen(effect.userInfo)
+                is SplashContract.Effect.NavigateToMyProfileScreen -> moveToMyProfileScreen(effect.userServerId)
             }
         }
     }

@@ -22,7 +22,6 @@ class SignUpContract {
         ) : Effect
 
         data class ShowToast(val toastMessageResId: Int) : Effect
-        data class NavigateToMyProfileScreen(val userInfo: UserInfoEntity) : Effect
     }
 
     data class UIState(
