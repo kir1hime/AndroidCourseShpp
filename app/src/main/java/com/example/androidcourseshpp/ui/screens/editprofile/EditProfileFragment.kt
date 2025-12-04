@@ -45,7 +45,11 @@ class EditProfileFragment : BaseFragment() {
         setUserInfo()
         setListeners()
         setObservers()
-        setChooseProfilePhotoDialogResultListener(circleImageViewProfilePhoto)
+        setChooseProfilePhotoDialogResultListener(
+            circleImageViewProfilePhoto
+        ) { photoUrl ->
+            viewModel.setEvent(EditProfileContract.Event.ProfilePhotoUpdated(photoUrl))
+        }
         formatMobilePhoneInput(editTextMobilePhone)
         formatDateOfBirthday(editTextDateOfBirthday)
     }
@@ -57,26 +61,13 @@ class EditProfileFragment : BaseFragment() {
 
     @SuppressLint("ClickableViewAccessibility")
     private fun setListeners() = with(binding) {
-        buttonSave.setOnClickListener {
 
-            viewModel.setEvent(
-                EditProfileContract.Event.OnSaveButtonClicked(
-                    userServerId = args.userServerId,
-                    updateUserData =
-                        UpdateUserData(
-                            name = getTextFromEditText(editTextUsername),
-                            career = getTextFromEditText(editTextCareer),
-                            address = getTextFromEditText(editTextAddress),
-                            phone = getTextFromEditText(editTextMobilePhone),
-                            birthday = reversDateFormatting(
-                                getTextFromEditText(editTextDateOfBirthday)
-                            ),
-                        )
-                )
-            )
+        buttonSave.setOnClickListener {
+            onSaveButtonClicked()
         }
+
         imageButtonAddProfilePhoto.setOnClickListener {
-            viewModel.setEvent(EditProfileContract.Event.OnAddProfilePhotoImageViewClicked)
+            onAddProfilePhotoButtonClicked()
         }
 
         editTextDateOfBirthday.setOnTouchListener { v, event ->
@@ -87,6 +78,82 @@ class EditProfileFragment : BaseFragment() {
                 false
             }
         }
+
+        setEditTextFocusChangedListener(editTextUsername) {
+            EditProfileContract.Event.UserNameUpdated(
+                getTextFromEditText(editTextUsername)
+            )
+        }
+
+        setEditTextFocusChangedListener(editTextCareer) {
+            EditProfileContract.Event.CareerUpdated(
+                getTextFromEditText(editTextCareer)
+            )
+        }
+
+        setEditTextFocusChangedListener(editTextAddress) {
+            EditProfileContract.Event.AddressUpdated(
+                getTextFromEditText(editTextAddress)
+            )
+        }
+        setEditTextFocusChangedListener(editTextMobilePhone) {
+            EditProfileContract.Event.MobilePhoneUpdated(
+                getTextFromEditText(editTextMobilePhone)
+            )
+        }
+        setEditTextFocusChangedListener(editTextDateOfBirthday) {
+            EditProfileContract.Event.DateOfBirthdayUpdated(
+                reversDateFormatting(
+                    getTextFromEditText(editTextDateOfBirthday)
+                )
+            )
+        }
+    }
+
+    private fun setEditTextFocusChangedListener(
+        editText: EditText,
+        event: (String) -> EditProfileContract.Event,
+    ) {
+        editText.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) {
+                viewModel.setEvent(
+                    event(getTextFromEditText(editText))
+                )
+            }
+        }
+    }
+
+
+    private fun onSaveButtonClicked() = with(binding) {
+        unFocusAllEditTexts()
+        viewModel.setEvent(
+            EditProfileContract.Event.OnSaveButtonClicked(
+                userServerId = args.userServerId,
+                updateUserData =
+                    UpdateUserData(
+                        name = getTextFromEditText(editTextUsername),
+                        career = getTextFromEditText(editTextCareer),
+                        address = getTextFromEditText(editTextAddress),
+                        phone = getTextFromEditText(editTextMobilePhone),
+                        birthday = reversDateFormatting(
+                            getTextFromEditText(editTextDateOfBirthday)
+                        )
+                    )
+            )
+        )
+    }
+
+    private fun onAddProfilePhotoButtonClicked() {
+        viewModel.setEvent(EditProfileContract.Event.OnAddProfilePhotoImageViewClicked)
+        unFocusAllEditTexts()
+    }
+
+    private fun unFocusAllEditTexts() = with(binding) {
+        editTextUsername.isFocusable = false
+        editTextCareer.isFocusable = false
+        editTextAddress.isFocusable = false
+        editTextMobilePhone.isFocusable = false
+        editTextDateOfBirthday.isFocusable = false
     }
 
 

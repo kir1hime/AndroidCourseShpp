@@ -14,6 +14,13 @@ class EditProfileContract {
 
         data object OnAddProfilePhotoImageViewClicked : Event
         data class SetUserInfo(val userServerId: Long) : Event
+
+        data class ProfilePhotoUpdated(val profilePhotoUrl: String) : Event
+        data class UserNameUpdated(val userName: String) : Event
+        data class CareerUpdated(val career: String) : Event
+        data class MobilePhoneUpdated(val mobilePhone: String) : Event
+        data class AddressUpdated(val address: String) : Event
+        data class DateOfBirthdayUpdated(val dateOfBirthday: Date?) : Event
     }
 
     sealed interface Effect : ViewEffect {

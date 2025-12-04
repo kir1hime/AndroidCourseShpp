@@ -1,14 +1,20 @@
 package com.example.androidcourseshpp.ui.screens.editprofile
 
 
+import com.example.androidcourseshpp.data.dataProvider.DEFAULT_AVATAR_VALUE
+import com.example.androidcourseshpp.data.dataProvider.UserDataProvider
 import com.example.androidcourseshpp.data.network.ServicesProvider
 import com.example.androidcourseshpp.data.network.service.user.entity.UpdateUserData
 import com.example.androidcourseshpp.ui.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
-class EditProfileViewModel @Inject constructor(private val servicesProvider: ServicesProvider) :
+class EditProfileViewModel @Inject constructor(
+    private val servicesProvider: ServicesProvider,
+    private val userDataProvider: UserDataProvider
+) :
     BaseViewModel<EditProfileContract.Event, EditProfileContract.Effect, EditProfileContract.UIState>() {
 
     override fun initState(): EditProfileContract.UIState {
@@ -32,7 +38,38 @@ class EditProfileViewModel @Inject constructor(private val servicesProvider: Ser
             }
 
             is EditProfileContract.Event.SetUserInfo -> setUserInfo(event.userServerId)
+            is EditProfileContract.Event.ProfilePhotoUpdated -> updateProfilePhoto(event.profilePhotoUrl)
+            is EditProfileContract.Event.UserNameUpdated -> updateUserName(event.userName)
+            is EditProfileContract.Event.CareerUpdated -> updateCareer(event.career)
+            is EditProfileContract.Event.AddressUpdated -> updateAddress(event.address)
+            is EditProfileContract.Event.MobilePhoneUpdated -> updateMobilePhone(event.mobilePhone)
+            is EditProfileContract.Event.DateOfBirthdayUpdated -> updateDateOfBirthday(event.dateOfBirthday)
         }
+    }
+
+    private fun updateUserName(userName: String) {
+        setState { copy(userName = userName) }
+    }
+
+    private fun updateCareer(career: String) {
+        setState { copy(career = career) }
+    }
+
+    private fun updateMobilePhone(mobilePhone: String) {
+        setState { copy(mobilePhone = mobilePhone) }
+    }
+
+    private fun updateAddress(address: String) {
+        setState { copy(address = address) }
+    }
+
+    private fun updateDateOfBirthday(dateOfBirthday: Date?) {
+        setState { copy(dateOfBirthday = dateOfBirthday) }
+    }
+
+    private fun updateProfilePhoto(profilePhotoUrl: String) {
+        userDataProvider.saveUserAvatarUrl(profilePhotoUrl)
+        setState { copy(avatar = profilePhotoUrl) }
     }
 
     private fun setUserInfo(userServerId: Long) {
@@ -44,6 +81,8 @@ class EditProfileViewModel @Inject constructor(private val servicesProvider: Ser
                 val response = servicesProvider.getUserService().getUser(userServerId)
                 val userInfo = response.user
 
+                val savedAvatarUrl = userDataProvider.getUserAvatarUrl()
+
                 with(userInfo) {
                     setState {
                         copy(
@@ -52,7 +91,11 @@ class EditProfileViewModel @Inject constructor(private val servicesProvider: Ser
                             mobilePhone = phone ?: "",
                             address = userInfo.address ?: "",
                             dateOfBirthday = birthday,
-                            avatar = image ?: "",
+                            avatar = if (savedAvatarUrl != DEFAULT_AVATAR_VALUE) {
+                                savedAvatarUrl
+                            } else {
+                                userInfo.image ?: ""
+                            }
                         )
                     }
                 }
@@ -60,27 +103,14 @@ class EditProfileViewModel @Inject constructor(private val servicesProvider: Ser
             processBackendException = {},
             processAuthenticationException = {},
             processConnectionException = {}, processResponseProcessingException = {},
-            finally = {
-                setState {
-                    copy(isProgressBarShowed = false)
-                }
-            }
+            finally = { setState { copy(isProgressBarShowed = false) } }
         )
     }
 
     private fun updateUserInfo(userServerId: Long, updateUserData: UpdateUserData) {
         processNetworkExceptions(
             toExecute = {
-                setState {
-                    copy(
-                        isProgressBarShowed = true,
-                        userName = updateUserData.name ?: "",
-                        career = updateUserData.career ?: "",
-                        address = updateUserData.address ?: "",
-                        mobilePhone = updateUserData.phone ?: "",
-                        dateOfBirthday = updateUserData.birthday,
-                    )
-                }
+                setState { copy(isProgressBarShowed = true) }
 
                 servicesProvider.getUserService().updateUserInfo(userServerId, updateUserData)
             },
@@ -88,15 +118,9 @@ class EditProfileViewModel @Inject constructor(private val servicesProvider: Ser
             processAuthenticationException = {},
             processConnectionException = {},
             processResponseProcessingException = {},
-            finally = {
-                setState {
-                    copy(isProgressBarShowed = false)
-                }
-            }
+            finally = { setState { copy(isProgressBarShowed = false) } }
         )
-
     }
-
 
     private fun navigateToMyProfileScreen() {
         setEffect(EditProfileContract.Effect.NavigateToMyProfileScreen(state.value))
@@ -105,6 +129,4 @@ class EditProfileViewModel @Inject constructor(private val servicesProvider: Ser
     private fun navigateToChooseProfilePhotoDialog() {
         setEffect(EditProfileContract.Effect.NavigateToChooseProfilePhotoDialog)
     }
-
-
 }

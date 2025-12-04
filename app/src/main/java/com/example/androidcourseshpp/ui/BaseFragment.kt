@@ -4,7 +4,6 @@ import android.app.ActivityOptions
 import android.content.Intent
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
@@ -18,7 +17,6 @@ import androidx.viewbinding.ViewBinding
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.databinding.FragmentEditProfileBinding
 import com.example.androidcourseshpp.databinding.FragmentSignInBinding
-import com.example.androidcourseshpp.databinding.FragmentSignUpBinding
 import com.example.androidcourseshpp.databinding.FragmentSignUpExtendedBinding
 import com.example.androidcourseshpp.ui.extensions.loadImageFromURL
 import com.example.androidcourseshpp.ui.screens.MainActivity
@@ -107,13 +105,17 @@ open class BaseFragment : Fragment() {
     }
 
 
-    protected fun setChooseProfilePhotoDialogResultListener(imageView: ImageView) {
+    protected fun setChooseProfilePhotoDialogResultListener(
+        imageView: ImageView,
+        updateState: (String) -> Unit
+    ) {
         parentFragmentManager.setFragmentResultListener(
             ChooseProfilePhotoDialog.REQUEST_KEY,
             viewLifecycleOwner
         ) { _, data ->
-            val newProfilePhoto = data.getString(PHOTO) ?: ""
-            imageView.loadImageFromURL(requireContext(), newProfilePhoto)
+            val profilePhoto = data.getString(PHOTO) ?: ""
+            imageView.loadImageFromURL(requireContext(), profilePhoto)
+            updateState(profilePhoto)
         }
     }
 

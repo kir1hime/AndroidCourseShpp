@@ -2,6 +2,7 @@ package com.example.androidcourseshpp.ui.screens.userinfo.myprofile
 
 
 import androidx.lifecycle.viewModelScope
+import com.example.androidcourseshpp.data.dataProvider.DEFAULT_AVATAR_VALUE
 import com.example.androidcourseshpp.data.dataProvider.UserDataProvider
 import com.example.androidcourseshpp.data.network.ServicesProvider
 import com.example.androidcourseshpp.data.network.jwt.JWTManager
@@ -42,13 +43,18 @@ class MyProfileViewModel @Inject constructor(
                     val response = serviceProvider.getUserService().getUser(userServerId)
                     val userInfo = response.user
 
+                    val savedAvatarUrl = userDataProvider.getUserAvatarUrl()
+
                     setState {
                         copy(
                             userName = userInfo.name ?: "",
                             career = userInfo.career ?: "",
                             address = userInfo.address ?: "",
-                            avatar = userInfo.image ?: ""
-
+                            avatar = if (savedAvatarUrl != DEFAULT_AVATAR_VALUE) {
+                                savedAvatarUrl
+                            } else {
+                                userInfo.image ?: ""
+                            }
                         )
                     }
                 },
@@ -78,6 +84,7 @@ class MyProfileViewModel @Inject constructor(
     private fun logOut() {
         jwtManager.clearTokens()
         userDataProvider.clearUserServerId()
+        userDataProvider.clearUserAvatarUrl()
         setEffect(MyProfileContract.Effect.NavigateToSignInScreen)
     }
 
