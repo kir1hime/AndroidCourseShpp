@@ -3,8 +3,6 @@ package com.example.androidcourseshpp.ui.screens.editprofile
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -45,13 +43,12 @@ class EditProfileFragment : BaseFragment() {
         setUserInfo()
         setListeners()
         setObservers()
+        formatMobilePhoneInput(editTextMobilePhone)
         setChooseProfilePhotoDialogResultListener(
             circleImageViewProfilePhoto
         ) { photoUrl ->
             viewModel.setEvent(EditProfileContract.Event.ProfilePhotoUpdated(photoUrl))
         }
-        formatMobilePhoneInput(editTextMobilePhone)
-        formatDateOfBirthday(editTextDateOfBirthday)
     }
 
     private fun setUserInfo() = with(binding) {
@@ -62,15 +59,11 @@ class EditProfileFragment : BaseFragment() {
     @SuppressLint("ClickableViewAccessibility")
     private fun setListeners() = with(binding) {
 
-        buttonSave.setOnClickListener {
-            onSaveButtonClicked()
-        }
+        buttonSave.setOnClickListener { onSaveButtonClick() }
 
-        imageButtonAddProfilePhoto.setOnClickListener {
-            onAddProfilePhotoButtonClicked()
-        }
+        imageButtonAddProfilePhoto.setOnClickListener { onAddProfilePhotoButtonClick() }
 
-        editTextDateOfBirthday.setOnTouchListener { v, event ->
+        editTextDateOfBirthday.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_UP) {
                 setDate(editTextDateOfBirthday::setText)
                 true
@@ -123,9 +116,8 @@ class EditProfileFragment : BaseFragment() {
         }
     }
 
-
-    private fun onSaveButtonClicked() = with(binding) {
-        unFocusAllEditTexts()
+    private fun onSaveButtonClick() = with(binding) {
+        defocusAllEditTexts()
         viewModel.setEvent(
             EditProfileContract.Event.OnSaveButtonClicked(
                 userServerId = args.userServerId,
@@ -143,12 +135,66 @@ class EditProfileFragment : BaseFragment() {
         )
     }
 
-    private fun onAddProfilePhotoButtonClicked() {
+    private fun onAddProfilePhotoButtonClick() {
+        defocusAllEditTexts()
         viewModel.setEvent(EditProfileContract.Event.OnAddProfilePhotoImageViewClicked)
-        unFocusAllEditTexts()
     }
 
-    private fun unFocusAllEditTexts() = with(binding) {
+    private fun setObservers() = with(binding) {
+        collectFlow(viewModel.state) { state ->
+
+            editTextUsername.setText(state.userName)
+            editTextCareer.setText(state.career)
+            editTextAddress.setText(state.address)
+            editTextMobilePhone.setText(state.mobilePhone)
+
+            state.dateOfBirthday?.let { date ->
+                editTextDateOfBirthday.setText(dateFormating(date))
+            }
+
+            circleImageViewProfilePhoto.loadImageFromURLCircled(
+                requireContext(),
+                state.avatar,
+                R.drawable.avatar
+            )
+            buttonSave.isEnabled = !state.isProgressBarShowed
+            progressBarRequest.isVisible = state.isProgressBarShowed
+            setLoadingState(state.isProgressBarShowed, binding)
+        }
+
+        collectFlow(viewModel.effect) { effect ->
+            when (effect) {
+                is EditProfileContract.Effect.NavigateToChooseProfilePhotoDialog -> moveToChooseProfilePhotoDialog()
+                is EditProfileContract.Effect.NavigateToMyProfileScreen -> {
+                    moveBackToMyProfileScreen()
+                }
+
+                is EditProfileContract.Effect.ShowToast -> makeToast(effect.toastMessageResId)
+            }
+        }
+    }
+
+    fun moveBackToMyProfileScreen() {
+        findNavController().navigateUp()
+    }
+
+    private fun moveToChooseProfilePhotoDialog() {
+        val direction =
+            EditProfileFragmentDirections.actionEditProfileFragmentToChooseProfilePhotoDialog()
+        findNavController().navigate(direction)
+    }
+
+    private fun dateFormating(date: Date): String {
+        val simpleDateFormat = SimpleDateFormat(DATE_FORMAT, Locale.getDefault())
+        return simpleDateFormat.format(date)
+    }
+
+    private fun reversDateFormatting(date: String): Date? {
+        val simpleDateFormat = SimpleDateFormat(DATE_FORMAT, Locale.getDefault())
+        return simpleDateFormat.parse(date)
+    }
+
+    private fun defocusAllEditTexts() = with(binding) {
         editTextUsername.isFocusable = false
         editTextCareer.isFocusable = false
         editTextAddress.isFocusable = false
@@ -176,93 +222,7 @@ class EditProfileFragment : BaseFragment() {
         ).show()
     }
 
-
-    private fun dateFormating(date: Date): String {
-        val dateFormat = "dd/MM/yyyy"
-        val simpleDateFormat = SimpleDateFormat(dateFormat, Locale.getDefault())
-        return simpleDateFormat.format(date)
-    }
-
-    private fun reversDateFormatting(date: String): Date? {
-        val dateFormat = "dd/MM/yyyy"
-        val simpleDateFormat = SimpleDateFormat(dateFormat, Locale.getDefault())
-        return simpleDateFormat.parse(date)
-    }
-
-    private fun setObservers() = with(binding) {
-        collectFlow(viewModel.state) { state ->
-            editTextUsername.setText(state.userName)
-            editTextCareer.setText(state.career)
-            editTextAddress.setText(state.address)
-            editTextMobilePhone.setText(state.mobilePhone)
-            state.dateOfBirthday?.let { date ->
-                editTextDateOfBirthday.setText(dateFormating(date))
-            }
-
-            circleImageViewProfilePhoto.loadImageFromURLCircled(
-                requireContext(),
-                state.avatar,
-                R.drawable.avatar
-            )
-
-            progressBarRequest.isVisible = state.isProgressBarShowed
-            setLoadingState(state.isProgressBarShowed, binding)
-        }
-
-        collectFlow(viewModel.effect) { effect ->
-            when (effect) {
-                is EditProfileContract.Effect.NavigateToChooseProfilePhotoDialog -> moveToChooseProfilePhotoDialog()
-                is EditProfileContract.Effect.NavigateToMyProfileScreen -> {
-                    moveBackToMyProfileScreen()
-                }
-            }
-        }
-    }
-
-    fun moveBackToMyProfileScreen() {
-        findNavController().navigateUp()
-    }
-
-    private fun moveToChooseProfilePhotoDialog() {
-        val direction =
-            EditProfileFragmentDirections.actionEditProfileFragmentToChooseProfilePhotoDialog()
-        findNavController().navigate(direction)
-    }
-
-    private fun formatDateOfBirthday(editText: EditText) {
-        editText.addTextChangedListener(object : TextWatcher {
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun afterTextChanged(s: Editable?) {}
-
-            override fun onTextChanged(
-                inputText: CharSequence?,
-                start: Int,
-                before: Int,
-                count: Int
-            ) {
-                inputText?.let {
-
-                    if (HYPHEN_POSITIONS.contains(inputText.length) && count >= 0 && before == 0) {
-                        updateData(editText)
-
-                    }
-                }
-            }
-        })
-    }
-
-    private fun updateData(editText: EditText) {
-        val currentText = editText.text.toString()
-        val newInputText = StringBuilder(currentText)
-        newInputText.insert(currentText.length - 1, "/")
-        editText.setText(newInputText)
-        editText.setSelection(editText.length())
-    }
-
     companion object {
-
-        private val HYPHEN_POSITIONS = listOf(3, 6)
+        const val DATE_FORMAT = "dd/MM/yyyy"
     }
-
 }

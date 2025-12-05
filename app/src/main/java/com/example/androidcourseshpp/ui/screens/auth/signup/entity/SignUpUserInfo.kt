@@ -1,4 +1,4 @@
-package com.example.androidcourseshpp.ui.screens
+package com.example.androidcourseshpp.ui.screens.auth.signup.entity
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

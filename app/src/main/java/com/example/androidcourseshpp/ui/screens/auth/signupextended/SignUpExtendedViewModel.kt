@@ -7,7 +7,7 @@ import com.example.androidcourseshpp.data.network.RetrofitServiceProviderHolder
 import com.example.androidcourseshpp.data.network.jwt.JWTManager
 import com.example.androidcourseshpp.data.network.service.auth.entity.SignUpData
 import com.example.androidcourseshpp.ui.BaseViewModel
-import com.example.androidcourseshpp.ui.screens.SignUpUserInfo
+import com.example.androidcourseshpp.ui.screens.auth.signup.entity.SignUpUserInfo
 import com.example.androidcourseshpp.ui.utils.ImageConvertor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -70,13 +70,9 @@ class SignUpExtendedViewModel @Inject constructor(
 
 
         if (isMobilePhoneCorrect && isUserNameCorrect) {
-
             processNetworkExceptions(
-
                 toExecute = {
-
                     setState { copy(isProgressBarShowed = true) }
-
 
                     val response = serviceProviderHolder.serviceProvider.getAuthService().signUp(
                         SignUpData(
@@ -87,17 +83,14 @@ class SignUpExtendedViewModel @Inject constructor(
                             image = imageConvertor.convertBitmapToMultipartBody(avatar)
                         )
                     )
+
                     jwtManager.saveTokens(response.accessToken, response.refreshToken)
 
+                    val userServerId = response.user.id
                     if (signUpUserInfo.toRememberUser) {
-                        dataProvider.saveUserServerId(response.user.id)
+                        dataProvider.saveUserServerId(userServerId)
                     }
-
-                    val userInfo = response.user
-
-                    setEffect(
-                        SignUpExtendedContract.Effect.NavigateToMyProfileScreen(userInfo.id)
-                    )
+                    setEffect(SignUpExtendedContract.Effect.NavigateToMyProfileScreen(userServerId))
 
                 },
                 processBackendException = {

@@ -1,10 +1,9 @@
 package com.example.androidcourseshpp.ui.screens.auth.signup
 
-import com.example.androidcourseshpp.ui.UserInfoEntity
 import com.example.androidcourseshpp.ui.ViewEffect
 import com.example.androidcourseshpp.ui.ViewEvent
 import com.example.androidcourseshpp.ui.ViewState
-import com.example.androidcourseshpp.ui.screens.SignUpUserInfo
+import com.example.androidcourseshpp.ui.screens.auth.signup.entity.SignUpUserInfo
 
 class SignUpContract {
 

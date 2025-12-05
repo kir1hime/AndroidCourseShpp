@@ -1,6 +1,7 @@
 package com.example.androidcourseshpp.ui.screens.editprofile
 
 
+import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.dataProvider.DEFAULT_AVATAR_VALUE
 import com.example.androidcourseshpp.data.dataProvider.UserDataProvider
 import com.example.androidcourseshpp.data.network.ServicesProvider
@@ -100,9 +101,18 @@ class EditProfileViewModel @Inject constructor(
                     }
                 }
             },
-            processBackendException = {},
-            processAuthenticationException = {},
-            processConnectionException = {}, processResponseProcessingException = {},
+            processBackendException = {
+                setEffect(EditProfileContract.Effect.ShowToast(R.string.generic_error))
+            },
+            processAuthenticationException = {
+                setEffect(EditProfileContract.Effect.ShowToast(R.string.generic_error))
+            },
+            processResponseProcessingException = {
+                setEffect(EditProfileContract.Effect.ShowToast(R.string.generic_error))
+            },
+            processConnectionException = {
+                setEffect(EditProfileContract.Effect.ShowToast(R.string.connection_error))
+            },
             finally = { setState { copy(isProgressBarShowed = false) } }
         )
     }
@@ -114,16 +124,25 @@ class EditProfileViewModel @Inject constructor(
 
                 servicesProvider.getUserService().updateUserInfo(userServerId, updateUserData)
             },
-            processBackendException = {},
-            processAuthenticationException = {},
-            processConnectionException = {},
-            processResponseProcessingException = {},
+            processBackendException = {
+                setEffect(EditProfileContract.Effect.ShowToast(R.string.generic_error))
+            },
+            processAuthenticationException = {
+                setEffect(EditProfileContract.Effect.ShowToast(R.string.generic_error))
+            },
+            processResponseProcessingException = {
+                setEffect(EditProfileContract.Effect.ShowToast(R.string.generic_error))
+            },
+            processConnectionException = {
+                setEffect(EditProfileContract.Effect.ShowToast(R.string.connection_error))
+            },
             finally = { setState { copy(isProgressBarShowed = false) } }
         )
     }
 
+
     private fun navigateToMyProfileScreen() {
-        setEffect(EditProfileContract.Effect.NavigateToMyProfileScreen(state.value))
+        setEffect(EditProfileContract.Effect.NavigateToMyProfileScreen)
     }
 
     private fun navigateToChooseProfilePhotoDialog() {

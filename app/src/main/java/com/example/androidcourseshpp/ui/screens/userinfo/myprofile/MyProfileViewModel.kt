@@ -3,6 +3,7 @@ package com.example.androidcourseshpp.ui.screens.userinfo.myprofile
 
 import androidx.lifecycle.viewModelScope
 import com.example.androidcourseshpp.data.dataProvider.DEFAULT_AVATAR_VALUE
+import com.example.androidcourseshpp.data.dataProvider.DEFAULT_ID_VALUE
 import com.example.androidcourseshpp.data.dataProvider.UserDataProvider
 import com.example.androidcourseshpp.data.network.ServicesProvider
 import com.example.androidcourseshpp.data.network.jwt.JWTManager
@@ -23,7 +24,8 @@ class MyProfileViewModel @Inject constructor(
         userName = "",
         career = "",
         address = "",
-        avatar = ""
+        avatar = "",
+        userServerId = DEFAULT_ID_VALUE
     )
 
     override fun handleEvent(event: MyProfileContract.Event) {
@@ -54,7 +56,8 @@ class MyProfileViewModel @Inject constructor(
                                 savedAvatarUrl
                             } else {
                                 userInfo.image ?: ""
-                            }
+                            },
+                            userServerId = userServerId
                         )
                     }
                 },
@@ -77,7 +80,7 @@ class MyProfileViewModel @Inject constructor(
     }
 
     private fun navigateToEditProfileScreen() {
-        setEffect(MyProfileContract.Effect.NavigateToEditProfileScreen)
+        setEffect(MyProfileContract.Effect.NavigateToEditProfileScreen(state.value.userServerId))
     }
 
 

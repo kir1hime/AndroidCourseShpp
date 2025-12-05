@@ -1,6 +1,5 @@
 package com.example.androidcourseshpp.ui.screens.auth.signin
 
-import com.example.androidcourseshpp.ui.UserInfoEntity
 import com.example.androidcourseshpp.ui.ViewEffect
 import com.example.androidcourseshpp.ui.ViewEvent
 import com.example.androidcourseshpp.ui.ViewState

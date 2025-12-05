@@ -2,6 +2,7 @@
     <string name="app_name">ShppAndroidCourse</string>
 
     <!--My profile (activity_main.xml)-->
+    <string name="generic_error">Щось пішло не так. Будь ласка спробуйте знову</string>
     <string name="view_my_contacts">ПЕРЕГЛЯНУТИ МОЇ КОНТАКТИ</string>
     <string name="edit_profile">Редагувати профіль</string>
     <string name="settings">Налаштування</string>
@@ -66,7 +67,6 @@
     <string name="incorrect_mobile_phone_error">Неправильний номер мобільного телефона</string>
     <string name="open_gallery">Відкрити галерею</string>
     <string name="empty_name_error">Не вкзано ім\'я, повинно бути щонайменше одна літера</string>
-    <string name="backend_error_text">Backend error</string>
     <string name="backend_error">Помилка сервера</string>
     <string name="server_response_error">Щось пішло не так. Будь ласка, спробуйте знову</string>
     <string name="connection_error">Перевірте ваше інтернет з\'єднання</string>

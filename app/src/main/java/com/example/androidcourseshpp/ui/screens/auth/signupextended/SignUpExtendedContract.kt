@@ -1,11 +1,10 @@
 package com.example.androidcourseshpp.ui.screens.auth.signupextended
 
 import android.graphics.Bitmap
-import com.example.androidcourseshpp.ui.UserInfoEntity
 import com.example.androidcourseshpp.ui.ViewEffect
 import com.example.androidcourseshpp.ui.ViewEvent
 import com.example.androidcourseshpp.ui.ViewState
-import com.example.androidcourseshpp.ui.screens.SignUpUserInfo
+import com.example.androidcourseshpp.ui.screens.auth.signup.entity.SignUpUserInfo
 
 class SignUpExtendedContract {
     sealed interface Event : ViewEvent {
@@ -21,10 +20,10 @@ class SignUpExtendedContract {
     }
 
     sealed interface Effect : ViewEffect {
-        data class NavigateToMyProfileScreen(val userServerId : Long) : Effect
-        data class ShowToast(val toastMessageResId: Int) : Effect
+        data class NavigateToMyProfileScreen(val userServerId: Long) : Effect
         data object NavigateToPreviousScreen : Effect
         data object NavigateToChooseProfilePhotoDialog : Effect
+        data class ShowToast(val toastMessageResId: Int) : Effect
     }
 
     data class UIState(

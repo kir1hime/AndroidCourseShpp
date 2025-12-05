@@ -94,7 +94,7 @@ class ContactListFragment : BaseFragment() {
             }
 
             override fun showContactItemDetails(contactItem: ContactItem, avatar: ImageView) {
-                moveToDetailsScreen(contactItem, avatar)
+                viewModel.setEvent(ContactListContract.Event.OnItemClicked(contactItem, avatar))
             }
 
             override fun showFloatingDeleteButton() {
@@ -144,16 +144,17 @@ class ContactListFragment : BaseFragment() {
                 )
 
                 is ContactListContract.Effect.NavigateToMyProfileScreen -> moveBackToMyProfileScreen()
+                is ContactListContract.Effect.ShowAddContactDialog -> showAddContactDialog()
             }
         }
     }
 
     private fun setListeners() = with(binding) {
         imageButtonArrowBack.setOnClickListener {
-            moveBackToMyProfileScreen()
+            viewModel.setEvent(ContactListContract.Event.OnArrowBackButtonClicked)
         }
         textViewAddContacts.setOnClickListener {
-            showAddContactDialog()
+            viewModel.setEvent(ContactListContract.Event.OnAddContactClicked)
         }
         floatingButtonDeleteSelectedItems.setOnClickListener {
             viewModel.setEvent(
@@ -247,7 +248,7 @@ class ContactListFragment : BaseFragment() {
             }
     }
 
-     fun moveBackToMyProfileScreen() {
+    fun moveBackToMyProfileScreen() {
         val parentFragment = parentFragment as? TabSwitchable
         parentFragment?.moveToMyProfileTab()
     }

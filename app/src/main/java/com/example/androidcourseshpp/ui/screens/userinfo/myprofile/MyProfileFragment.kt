@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.androidcourseshpp.R
@@ -29,7 +30,12 @@ class MyProfileFragment : BaseFragment() {
 
     private val viewModel by viewModels<MyProfileViewModel>()
 
-    private var userServerId by Delegates.notNull<Long>()
+    private val onBackPressedCallback: OnBackPressedCallback =
+        object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                requireActivity().finish()
+            }
+        }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,33 +49,21 @@ class MyProfileFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        userServerId = requireActivity().intent.getLongExtra(USER_SERVER_ID, DEFAULT_ID_VALUE)
-        setUserInfo(userServerId)
+        setUserInfo()
         setListeners()
         setObservers()
+        setOnBackPressedListener()
     }
 
-    /* private fun setResultListenerFromEditProfile() {
-         val userInfo = setResultListener<UserInfoEntity>()
-         userInfo?.value?.let { userInfo ->
-             userInfo.apply {
-                 viewModel.setEvent(
-                     MyProfileContract.Event.SetUserInfo(
-                         MyProfileContract.UIState(
-                             userName = userName,
-                             career = career,
-                             mobilePhone = mobilePhone,
-                             address = address,
-                             dateOfBirthday = dateOfBirthday,
-                             avatar = avatar
-                         )
-                     )
-                 )
-             }
-         }
-     }*/
+    private fun setOnBackPressedListener() {
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            onBackPressedCallback
+        )
+    }
 
-    private fun setUserInfo(userServerId: Long) {
+    private fun setUserInfo() {
+        val userServerId = requireActivity().intent.getLongExtra(USER_SERVER_ID, DEFAULT_ID_VALUE)
         viewModel.setEvent(MyProfileContract.Event.UpdateUserInfo(userServerId))
     }
 
@@ -90,7 +84,9 @@ class MyProfileFragment : BaseFragment() {
             when (effect) {
                 is MyProfileContract.Effect.NavigateToContactList -> moveToMyContactsScreen()
                 is MyProfileContract.Effect.NavigateToSignInScreen -> moveToSignUpScreen()
-                is MyProfileContract.Effect.NavigateToEditProfileScreen -> moveToEditProfileScreen()
+                is MyProfileContract.Effect.NavigateToEditProfileScreen -> moveToEditProfileScreen(
+                    effect.userServerId
+                )
             }
         }
 
@@ -103,12 +99,6 @@ class MyProfileFragment : BaseFragment() {
                 state.avatar,
                 R.drawable.avatar
             )
-        }
-    }
-
-    fun TextView.updateIfNotEmpty(newValue: String) {
-        if (newValue.isNotEmpty()) {
-            text = newValue
         }
     }
 
@@ -131,7 +121,7 @@ class MyProfileFragment : BaseFragment() {
         parentFragment?.moveToContactsTab()
     }
 
-    private fun moveToEditProfileScreen() {
+    private fun moveToEditProfileScreen(userServerId: Long) {
         val direction =
             UserInfoFragmentDirections.actionUserInfoFragmentToEditProfileFragment(userServerId)
         findNavController().navigate(direction)

@@ -10,7 +10,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.androidcourseshpp.data.MIN_NUM_OF_CHARS_IN_PASSWORD
 import com.example.androidcourseshpp.databinding.FragmentSignUpBinding
 import com.example.androidcourseshpp.ui.BaseFragment
-import com.example.androidcourseshpp.ui.screens.SignUpUserInfo
+import com.example.androidcourseshpp.ui.screens.auth.signup.entity.SignUpUserInfo
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -38,10 +38,7 @@ class SignUpFragment : BaseFragment() {
     private fun setObserves() = with(binding) {
         collectFlow(viewModel.effect) { effect ->
             when (effect) {
-                is SignUpContract.Effect.NavigateToSignUpExtended -> moveToSignUpExtended(
-                    effect.signUpUserInfo
-                )
-
+                is SignUpContract.Effect.NavigateToSignUpExtended -> moveToSignUpExtended(effect.signUpUserInfo)
                 is SignUpContract.Effect.ShowToast -> makeToast(effect.toastMessageResId)
             }
         }
@@ -49,16 +46,16 @@ class SignUpFragment : BaseFragment() {
         collectFlow(viewModel.state) { state ->
             textInputLayoutPassword.helperText =
                 getString(state.passwordHelperTextResId, MIN_NUM_OF_CHARS_IN_PASSWORD)
-
             textInputLayoutEMail.helperText = getString(state.eMailHelperTextResId)
         }
     }
 
     private fun setListeners() = with(binding) {
-        binding.buttonRegister.setOnClickListener {
+        buttonRegister.setOnClickListener {
             onRegisterButtonClick()
         }
-        binding.textViewSignIn.setOnClickListener {
+
+        textViewSignIn.setOnClickListener {
             findNavController().navigateUp()
         }
     }
@@ -80,20 +77,5 @@ class SignUpFragment : BaseFragment() {
         val direction =
             SignUpFragmentDirections.actionSignUpFragmentToSignUpExtendedFragment(signUpUserInfo)
         findNavController().navigate(direction)
-    }
-
-    private fun setLoadingState(isLoaded: Boolean) = with(binding) {
-        val isEnabled = !isLoaded
-
-        editTextEMail.apply {
-            isFocusable = isEnabled
-            isFocusableInTouchMode = isEnabled
-        }
-        editTextPassword.apply {
-            isFocusable = isEnabled
-            isFocusableInTouchMode = isEnabled
-        }
-        comboBoxRememberMe.isClickable = isEnabled
-
     }
 }

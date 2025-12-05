@@ -29,7 +29,6 @@ class ChooseProfilePhotoDialog : DialogFragment() {
 
             override fun choosePhoto(photo: String) {
                 parentFragmentManager.setFragmentResult(REQUEST_KEY, bundleOf(PHOTO to photo))
-
                 findNavController().navigateUp()
             }
         })
@@ -88,8 +87,7 @@ class ChooseProfilePhotoDialog : DialogFragment() {
 
     companion object {
         private const val MOVEMENT_ALONG_Y = 400
-
-        val REQUEST_KEY = "REQUEST_KEY - ${ChooseProfilePhotoDialog::class.java}"
+        const val REQUEST_KEY = "REQUEST_KEY"
         const val PHOTO = "PHOTO"
     }
 

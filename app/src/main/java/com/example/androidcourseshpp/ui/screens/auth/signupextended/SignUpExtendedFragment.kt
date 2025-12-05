@@ -40,30 +40,34 @@ class SignUpExtendedFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         setListeners()
         setObservers()
-        setChooseProfilePhotoDialogListener()
+        setChooseProfilePhotoDialogResultListener(binding.circleImageViewProfilePhoto) {}
         formatMobilePhoneInput(binding.editTextMobilePhone)
     }
 
     private fun setListeners() = with(binding) {
-        buttonForward.setOnClickListener {
-            val inputUserName = editTextUserName.text.toString()
-            val inputMobilePhone = editTextMobilePhone.text.toString()
-            viewModel.setEvent(
-                SignUpExtendedContract.Event.OnForwardButtonClicked(
-                    inputUserName,
-                    inputMobilePhone,
-                    args.signUpInfo,
-                    circleImageViewProfilePhoto.drawable.toBitmap()
-                )
-            )
-        }
+        buttonForward.setOnClickListener { onForwardButtonClick() }
+
         buttonCancel.setOnClickListener {
             viewModel.setEvent(SignUpExtendedContract.Event.OnCancelButtonClicked)
         }
+
         imageButtonAddProfilePhoto.setOnClickListener {
             viewModel.setEvent(SignUpExtendedContract.Event.OnAddProfilePhotoImageViewClicked)
         }
+    }
 
+    private fun onForwardButtonClick() = with(binding) {
+        val inputUserName = editTextUserName.text.toString()
+        val inputMobilePhone = editTextMobilePhone.text.toString()
+
+        viewModel.setEvent(
+            SignUpExtendedContract.Event.OnForwardButtonClicked(
+                inputUserName,
+                inputMobilePhone,
+                args.signUpInfo,
+                circleImageViewProfilePhoto.drawable.toBitmap()
+            )
+        )
     }
 
     private fun setObservers() = with(binding) {
@@ -74,7 +78,6 @@ class SignUpExtendedFragment : BaseFragment() {
                 )
 
                 is SignUpExtendedContract.Effect.NavigateToPreviousScreen -> findNavController().navigateUp()
-
                 is SignUpExtendedContract.Effect.NavigateToChooseProfilePhotoDialog -> {
                     val direction =
                         SignUpExtendedFragmentDirections.actionSignUpExtendedFragmentToChooseProfilePhotoDialog()
@@ -92,15 +95,4 @@ class SignUpExtendedFragment : BaseFragment() {
             setLoadingState(state.isProgressBarShowed, binding)
         }
     }
-
-    private fun setChooseProfilePhotoDialogListener() {
-        parentFragmentManager.setFragmentResultListener(
-            ChooseProfilePhotoDialog.REQUEST_KEY,
-            viewLifecycleOwner
-        ) { _, data ->
-            val newProfilePhoto = data.getString(PHOTO) ?: ""
-            binding.circleImageViewProfilePhoto.loadImageFromURL(requireContext(), newProfilePhoto)
-        }
-    }
-
 }

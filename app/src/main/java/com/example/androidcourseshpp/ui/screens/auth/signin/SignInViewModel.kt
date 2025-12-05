@@ -28,7 +28,7 @@ class SignInViewModel @Inject constructor(
 
     override fun handleEvent(event: SignInContract.Event) {
         when (event) {
-            is SignInContract.Event.OnLoginButtonClicked -> loginUser(
+            is SignInContract.Event.OnLoginButtonClicked -> logInUser(
                 email = event.email,
                 password = event.password,
                 toRememberUser = event.toRememberUser
@@ -38,7 +38,7 @@ class SignInViewModel @Inject constructor(
         }
     }
 
-    private fun loginUser(email: String, password: String, toRememberUser: Boolean) {
+    private fun logInUser(email: String, password: String, toRememberUser: Boolean) {
         processNetworkExceptions(
             toExecute = {
                 setState { copy(isProgressBarShowed = true) }

@@ -4,7 +4,6 @@ import com.example.androidcourseshpp.data.dataProvider.DEFAULT_ID_VALUE
 import com.example.androidcourseshpp.data.dataProvider.UserDataProvider
 import com.example.androidcourseshpp.data.network.ServicesProvider
 import com.example.androidcourseshpp.ui.BaseViewModel
-import com.example.androidcourseshpp.ui.utils.ImageConvertor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 
@@ -12,7 +11,6 @@ import jakarta.inject.Inject
 class SplashViewModel @Inject constructor(
     private val userdataProvider: UserDataProvider,
     private val servicesProvider: ServicesProvider,
-    private val imageConvertor: ImageConvertor
 ) :
     BaseViewModel<SplashContract.Event, SplashContract.Effect, SplashContract.Sate>() {
 

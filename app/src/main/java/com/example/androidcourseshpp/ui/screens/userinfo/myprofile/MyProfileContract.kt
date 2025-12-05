@@ -20,7 +20,7 @@ class MyProfileContract {
     sealed interface Effect : ViewEffect {
         data object NavigateToSignInScreen : Effect
         data object NavigateToContactList : Effect
-        data object NavigateToEditProfileScreen : Effect
+        data class NavigateToEditProfileScreen(val userServerId: Long) : Effect
     }
 
 
@@ -28,7 +28,8 @@ class MyProfileContract {
         val userName: String,
         val career: String,
         val address: String,
-        val avatar: String
+        val avatar: String,
+        val userServerId: Long
     ) : ViewState
 
 }

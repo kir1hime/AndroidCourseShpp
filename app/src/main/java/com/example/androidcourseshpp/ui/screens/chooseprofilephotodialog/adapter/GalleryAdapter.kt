@@ -13,6 +13,7 @@ class GalleryAdapter(private val actions: ItemActions) :
     ListAdapter<GalleryItem, GalleryAdapter.ViewHolder>(
         GalleryItemDiffUtilCallback
     ) {
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -41,7 +42,7 @@ class GalleryAdapter(private val actions: ItemActions) :
             setListeners(galleryItem.photoURL)
         }
 
-        private fun setListeners(photo : String) {
+        private fun setListeners(photo: String) {
             binding.imageViewPhoto.setOnClickListener {
                 actions.choosePhoto(photo)
             }
