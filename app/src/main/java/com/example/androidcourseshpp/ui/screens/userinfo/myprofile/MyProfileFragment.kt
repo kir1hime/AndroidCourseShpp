@@ -85,6 +85,8 @@ class MyProfileFragment : BaseFragment() {
                 is MyProfileContract.Effect.NavigateToEditProfileScreen -> moveToEditProfileScreen(
                     effect.userServerId
                 )
+
+                is MyProfileContract.Effect.ShowToast -> makeToast(effect.toastMessageResId)
             }
         }
 
