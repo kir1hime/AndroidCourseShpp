@@ -18,6 +18,7 @@ class MyProfileContract {
         data object NavigateToSignInScreen : Effect
         data object NavigateToContactList : Effect
         data class NavigateToEditProfileScreen(val userServerId: Long) : Effect
+        data class ShowToast(val toastMessageResId: Int) : Effect
     }
 
 

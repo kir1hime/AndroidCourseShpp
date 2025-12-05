@@ -26,7 +26,8 @@ class EditProfileViewModel @Inject constructor(
             address = "",
             dateOfBirthday = null,
             avatar = "",
-            isProgressBarShowed = false
+            isProgressBarShowed = false,
+            isSaveButtonEnabled = true
         ))
     }
 
@@ -103,15 +104,19 @@ class EditProfileViewModel @Inject constructor(
             },
             processBackendException = {
                 setEffect(EditProfileContract.Effect.ShowToast(R.string.generic_error))
+                disableSaveButton()
             },
             processAuthenticationException = {
                 setEffect(EditProfileContract.Effect.ShowToast(R.string.generic_error))
+                disableSaveButton()
             },
             processResponseProcessingException = {
                 setEffect(EditProfileContract.Effect.ShowToast(R.string.generic_error))
+                disableSaveButton()
             },
             processConnectionException = {
                 setEffect(EditProfileContract.Effect.ShowToast(R.string.connection_error))
+                disableSaveButton()
             },
             finally = { setState { copy(isProgressBarShowed = false) } }
         )
@@ -140,6 +145,9 @@ class EditProfileViewModel @Inject constructor(
         )
     }
 
+    private fun disableSaveButton() {
+        setState { copy(isSaveButtonEnabled = false) }
+    }
 
     private fun navigateToMyProfileScreen() {
         setEffect(EditProfileContract.Effect.NavigateToMyProfileScreen)

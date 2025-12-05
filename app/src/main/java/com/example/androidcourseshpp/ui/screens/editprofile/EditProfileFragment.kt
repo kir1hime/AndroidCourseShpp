@@ -157,7 +157,7 @@ class EditProfileFragment : BaseFragment() {
                 state.avatar,
                 R.drawable.avatar
             )
-            buttonSave.isEnabled = !state.isProgressBarShowed
+            buttonSave.isEnabled = state.isSaveButtonEnabled
             progressBarRequest.isVisible = state.isProgressBarShowed
             setLoadingState(state.isProgressBarShowed, binding)
         }

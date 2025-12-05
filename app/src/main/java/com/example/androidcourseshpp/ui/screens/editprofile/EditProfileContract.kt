@@ -9,12 +9,13 @@ import java.util.Date
 class EditProfileContract {
 
     sealed interface Event : ViewEvent {
-        data class OnSaveButtonClicked(val userServerId: Long, val updateUserData: UpdateUserData) :
-            Event
+        data class OnSaveButtonClicked(
+            val userServerId: Long,
+            val updateUserData: UpdateUserData
+        ) : Event
 
         data object OnAddProfilePhotoImageViewClicked : Event
         data class SetUserInfo(val userServerId: Long) : Event
-
         data class ProfilePhotoUpdated(val profilePhotoUrl: String) : Event
         data class UserNameUpdated(val userName: String) : Event
         data class CareerUpdated(val career: String) : Event
@@ -36,6 +37,7 @@ class EditProfileContract {
         val address: String,
         val dateOfBirthday: Date?,
         val avatar: String,
-        val isProgressBarShowed: Boolean
+        val isProgressBarShowed: Boolean,
+        val isSaveButtonEnabled: Boolean
     ) : ViewState
 }

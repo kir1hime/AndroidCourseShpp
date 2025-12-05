@@ -2,6 +2,7 @@ package com.example.androidcourseshpp.ui.screens.userinfo.myprofile
 
 
 import androidx.lifecycle.viewModelScope
+import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.dataProvider.DEFAULT_AVATAR_VALUE
 import com.example.androidcourseshpp.data.dataProvider.DEFAULT_ID_VALUE
 import com.example.androidcourseshpp.data.dataProvider.UserDataProvider
@@ -62,19 +63,18 @@ class MyProfileViewModel @Inject constructor(
                     }
                 },
                 processBackendException = {
-
+                    setEffect(MyProfileContract.Effect.ShowToast(R.string.enter_error))
                 },
                 processAuthenticationException = {
-
-                }, processResponseProcessingException = {
-
+                    setEffect(MyProfileContract.Effect.ShowToast(R.string.enter_error))
+                },
+                processResponseProcessingException = {
+                    setEffect(MyProfileContract.Effect.ShowToast(R.string.enter_error))
                 },
                 processConnectionException = {
-
+                    setEffect(MyProfileContract.Effect.ShowToast(R.string.connection_error))
                 },
-                finally = {
-
-                }
+                finally = {}
             )
         }
     }

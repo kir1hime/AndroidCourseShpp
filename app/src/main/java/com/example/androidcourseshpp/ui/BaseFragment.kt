@@ -2,6 +2,7 @@ package com.example.androidcourseshpp.ui
 
 import android.app.ActivityOptions
 import android.content.Intent
+import android.net.Uri
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.EditText

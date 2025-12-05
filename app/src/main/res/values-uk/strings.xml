@@ -3,6 +3,7 @@
 
     <!--My profile (activity_main.xml)-->
     <string name="generic_error">Щось пішло не так. Будь ласка спробуйте знову</string>
+    <string name="enter_error">Будь ласка перезайдіть в застосунок</string>
     <string name="view_my_contacts">ПЕРЕГЛЯНУТИ МОЇ КОНТАКТИ</string>
     <string name="edit_profile">Редагувати профіль</string>
     <string name="settings">Налаштування</string>

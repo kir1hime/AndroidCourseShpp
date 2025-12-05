@@ -42,7 +42,7 @@ class GalleryAdapter(private val actions: ItemActions) :
             setListeners(galleryItem.photoURL)
         }
 
-        private fun setListeners(photo: String) {
+        private fun setListeners(photo: String){
             binding.imageViewPhoto.setOnClickListener {
                 actions.choosePhoto(photo)
             }
