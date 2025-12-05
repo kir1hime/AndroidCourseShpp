@@ -29,7 +29,7 @@ const val USER_SERVER_ID = "userServerId"
 
 open class BaseFragment : Fragment() {
 
-    fun <T> BaseFragment.collectFlow(flow: Flow<T>, onCollect: (T) -> Unit) {
+    protected fun <T> BaseFragment.collectFlow(flow: Flow<T>, onCollect: (T) -> Unit) {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 flow.collect {
@@ -39,17 +39,17 @@ open class BaseFragment : Fragment() {
         }
     }
 
-    fun makeToast(messageResId: Int) {
+    protected fun makeToast(messageResId: Int) {
         Toast.makeText(requireContext(), messageResId, Toast.LENGTH_LONG).show()
     }
 
-    private fun TextView.updateIfNotEmpty(newValue: String) {
+    protected fun TextView.updateIfNotEmpty(newValue: String) {
         if (newValue.isNotEmpty()) {
             text = newValue
         }
     }
 
-    fun moveToMyProfileScreen(userServerId: Long) {
+    protected fun moveToMyProfileScreen(userServerId: Long) {
         val intent = Intent(requireContext(), MainActivity::class.java)
 
         intent.putExtra(USER_SERVER_ID, userServerId)

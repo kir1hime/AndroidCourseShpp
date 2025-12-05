@@ -14,8 +14,8 @@ import com.example.androidcourseshpp.ui.extensions.loadImageFromURLCircled
 
 class ContactDetailsFragment : BaseFragment() {
 
-    private lateinit var binding : FragmentDetailviewBinding
-    private val args : ContactDetailsFragmentArgs by navArgs()
+    private lateinit var binding: FragmentDetailviewBinding
+    private val args: ContactDetailsFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,20 +36,24 @@ class ContactDetailsFragment : BaseFragment() {
         setListeners()
     }
 
-    private fun profilePhotoTransition(){
-        sharedElementEnterTransition = TransitionInflater.from(requireContext()).inflateTransition(R.transition.shared_element_transition)
+    private fun profilePhotoTransition() {
+        sharedElementEnterTransition = TransitionInflater.from(requireContext())
+            .inflateTransition(R.transition.shared_element_transition)
         binding.circleViewProfilePhoto.transitionName = args.contactDetails.id.toString()
 
     }
 
-    private fun setContactDetailsInfo() = with(binding){
-        circleViewProfilePhoto.loadImageFromURLCircled(requireContext(), args.contactDetails.avatarURL)
+    private fun setContactDetailsInfo() = with(binding) {
+        circleViewProfilePhoto.loadImageFromURLCircled(
+            requireContext(),
+            args.contactDetails.avatarURL
+        )
         textViewName.text = args.contactDetails.name
         textViewCareer.text = args.contactDetails.career
     }
 
-    private fun setListeners(){
-        binding.imageButtonArrowBack.setOnClickListener{
+    private fun setListeners() {
+        binding.imageButtonArrowBack.setOnClickListener {
             findNavController().navigateUp()
         }
     }

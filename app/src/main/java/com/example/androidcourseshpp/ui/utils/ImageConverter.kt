@@ -3,13 +3,6 @@ package com.example.androidcourseshpp.ui.utils
 
 import android.content.Context
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.drawable.BitmapDrawable
-import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.graphics.drawable.toBitmap
-import coil.ImageLoader
-import coil.request.ImageRequest
-import com.example.androidcourseshpp.R
 import dagger.hilt.android.qualifiers.ApplicationContext
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
@@ -28,6 +21,7 @@ class ImageConvertor @Inject constructor(@ApplicationContext private val context
         val file = convertBitmapToFile(bitmap)
         return convertFileToMultipartBody(file)
     }
+
     private fun convertBitmapToFile(bitmap: Bitmap): File {
         val file = File(context.cacheDir, "user_avatar.jpg")
 

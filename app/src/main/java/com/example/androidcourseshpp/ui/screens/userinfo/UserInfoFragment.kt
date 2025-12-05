@@ -38,9 +38,9 @@ class UserInfoFragment : BaseFragment(), TabSwitchable {
         viewPagerUserInformation.adapter = adapter
         TabLayoutMediator(tabLayoutUserInfo, viewPagerUserInformation) { tabItem, position ->
 
-            tabItem.text = when(Tab.entries[position]){
+            tabItem.text = when (Tab.entries[position]) {
                 Tab.MYPROFILE -> getString(R.string.my_profile)
-                Tab.CONTACTS ->getString(R.string.contacts)
+                Tab.CONTACTS -> getString(R.string.contacts)
             }
 
         }.attach()

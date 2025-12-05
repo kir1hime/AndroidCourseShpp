@@ -6,7 +6,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class ChooseProfilePhotoViewModel @Inject constructor(galleryRepository: GalleryRepository) : ViewModel() {
+class ChooseProfilePhotoViewModel @Inject constructor(galleryRepository: GalleryRepository) :
+    ViewModel() {
 
     val galleryPhotos = galleryRepository.galleryPhotos
 }

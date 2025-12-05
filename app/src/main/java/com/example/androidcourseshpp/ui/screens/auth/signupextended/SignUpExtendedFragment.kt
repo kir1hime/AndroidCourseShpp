@@ -12,9 +12,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.androidcourseshpp.databinding.FragmentSignUpExtendedBinding
 import com.example.androidcourseshpp.ui.BaseFragment
-import com.example.androidcourseshpp.ui.extensions.loadImageFromURL
-import com.example.androidcourseshpp.ui.screens.chooseprofilephotodialog.ChooseProfilePhotoDialog
-import com.example.androidcourseshpp.ui.screens.chooseprofilephotodialog.ChooseProfilePhotoDialog.Companion.PHOTO
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
