@@ -1,4 +1,4 @@
-package com.example.androidcourseshpp.data.network.webapi.user
+package com.example.androidcourseshpp.data.network.api.user
 
 import com.example.androidcourseshpp.data.network.dto.user.GetUserResponseDTO
 import com.example.androidcourseshpp.data.network.dto.user.UpdateUserRequestDTO

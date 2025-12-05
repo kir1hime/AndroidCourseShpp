@@ -1,4 +1,4 @@
-package com.example.androidcourseshpp.ui.extensions
+package com.example.androidcourseshpp.ui.utils
 
 import android.content.Context
 import android.widget.ImageView

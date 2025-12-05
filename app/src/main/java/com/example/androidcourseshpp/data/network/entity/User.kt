@@ -1,7 +1,6 @@
-package com.example.androidcourseshpp.data.network.dto.entity
+package com.example.androidcourseshpp.data.network.entity
 
 import java.util.Date
-
 
 data class User(
     val id: Long,

@@ -9,7 +9,7 @@ import com.example.androidcourseshpp.data.network.service.auth.AuthService
 import com.example.androidcourseshpp.data.network.service.auth.AuthServiceImpl
 import com.example.androidcourseshpp.data.network.service.user.UserService
 import com.example.androidcourseshpp.data.network.service.user.UserServiceImpl
-import com.example.androidcourseshpp.data.network.webapi.tokenrefresh.TokenRefreshAPI
+import com.example.androidcourseshpp.data.network.api.token.TokenRefreshAPI
 import com.google.gson.Gson
 import dagger.Binds
 import dagger.Module

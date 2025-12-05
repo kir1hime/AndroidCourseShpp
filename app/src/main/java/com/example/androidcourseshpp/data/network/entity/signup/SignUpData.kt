@@ -1,7 +1,6 @@
-package com.example.androidcourseshpp.data.network.service.auth.entity
+package com.example.androidcourseshpp.data.network.entity.signup
 
 import okhttp3.MultipartBody
-import okhttp3.RequestBody.Companion.toRequestBody
 
 data class SignUpData(
     val email: String,

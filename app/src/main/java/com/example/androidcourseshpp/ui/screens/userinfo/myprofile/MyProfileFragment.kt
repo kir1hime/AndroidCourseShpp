@@ -14,7 +14,7 @@ import com.example.androidcourseshpp.data.dataProvider.DEFAULT_ID_VALUE
 import com.example.androidcourseshpp.data.dataProvider.USER_SERVER_ID
 import com.example.androidcourseshpp.databinding.FragmentMyProfileBinding
 import com.example.androidcourseshpp.ui.BaseFragment
-import com.example.androidcourseshpp.ui.extensions.loadImageFromURLCircled
+import com.example.androidcourseshpp.ui.utils.loadImageFromURLCircled
 import com.example.androidcourseshpp.ui.screens.auth.AuthActivity
 import com.example.androidcourseshpp.ui.screens.userinfo.TabSwitchable
 import com.example.androidcourseshpp.ui.screens.userinfo.UserInfoFragmentDirections

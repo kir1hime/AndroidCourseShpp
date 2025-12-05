@@ -13,10 +13,10 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.androidcourseshpp.R
-import com.example.androidcourseshpp.data.network.service.user.entity.UpdateUserData
+import com.example.androidcourseshpp.data.network.entity.user.UpdateUserData
 import com.example.androidcourseshpp.databinding.FragmentEditProfileBinding
 import com.example.androidcourseshpp.ui.BaseFragment
-import com.example.androidcourseshpp.ui.extensions.loadImageFromURLCircled
+import com.example.androidcourseshpp.ui.utils.loadImageFromURLCircled
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.Calendar

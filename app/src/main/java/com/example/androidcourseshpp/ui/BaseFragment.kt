@@ -2,7 +2,6 @@ package com.example.androidcourseshpp.ui
 
 import android.app.ActivityOptions
 import android.content.Intent
-import android.net.Uri
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.EditText
@@ -18,7 +17,7 @@ import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.databinding.FragmentEditProfileBinding
 import com.example.androidcourseshpp.databinding.FragmentSignInBinding
 import com.example.androidcourseshpp.databinding.FragmentSignUpExtendedBinding
-import com.example.androidcourseshpp.ui.extensions.loadImageFromURL
+import com.example.androidcourseshpp.ui.utils.loadImageFromURL
 import com.example.androidcourseshpp.ui.screens.MainActivity
 import com.example.androidcourseshpp.ui.screens.chooseprofilephotodialog.ChooseProfilePhotoDialog
 import com.example.androidcourseshpp.ui.screens.chooseprofilephotodialog.ChooseProfilePhotoDialog.Companion.PHOTO

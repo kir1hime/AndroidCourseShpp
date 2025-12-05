@@ -9,7 +9,7 @@ import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.contactlist.ContactItem
 import com.example.androidcourseshpp.data.contactlist.SelectableContactItem
 import com.example.androidcourseshpp.databinding.ContactItemBinding
-import com.example.androidcourseshpp.ui.extensions.loadImageFromURLCircled
+import com.example.androidcourseshpp.ui.utils.loadImageFromURLCircled
 
 
 class ContactsAdapter(private val actions: ItemActions) :

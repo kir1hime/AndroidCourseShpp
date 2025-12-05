@@ -5,7 +5,7 @@ import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.dataProvider.UserDataProvider
 import com.example.androidcourseshpp.data.network.RetrofitServiceProviderHolder
 import com.example.androidcourseshpp.data.network.jwt.JWTManager
-import com.example.androidcourseshpp.data.network.service.auth.entity.SignUpData
+import com.example.androidcourseshpp.data.network.entity.signup.SignUpData
 import com.example.androidcourseshpp.ui.BaseViewModel
 import com.example.androidcourseshpp.ui.screens.auth.signup.entity.SignUpUserInfo
 import com.example.androidcourseshpp.ui.utils.ImageConvertor

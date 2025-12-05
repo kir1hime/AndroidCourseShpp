@@ -13,7 +13,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 interface UserDataProviderModule {
 
-    @Singleton
     @Binds
+    @Singleton
     fun provideDataProvider(dataProviderImpl: UserDataProviderImpl): UserDataProvider
 }

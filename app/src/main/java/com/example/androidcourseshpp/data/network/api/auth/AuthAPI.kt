@@ -1,4 +1,4 @@
-package com.example.androidcourseshpp.data.network.webapi.auth
+package com.example.androidcourseshpp.data.network.api.auth
 
 import com.example.androidcourseshpp.data.network.dto.auth.SignInRequestDTO
 import com.example.androidcourseshpp.data.network.dto.auth.SignInResponseDTO

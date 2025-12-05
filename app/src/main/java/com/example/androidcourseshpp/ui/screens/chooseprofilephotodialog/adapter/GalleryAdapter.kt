@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.gallery.GalleryItem
 import com.example.androidcourseshpp.databinding.GalleryItemBinding
-import com.example.androidcourseshpp.ui.extensions.loadImageFromURL
+import com.example.androidcourseshpp.ui.utils.loadImageFromURL
 
 class GalleryAdapter(private val actions: ItemActions) :
     ListAdapter<GalleryItem, GalleryAdapter.ViewHolder>(

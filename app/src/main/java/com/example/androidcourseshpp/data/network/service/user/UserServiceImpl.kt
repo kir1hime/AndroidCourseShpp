@@ -1,11 +1,10 @@
 package com.example.androidcourseshpp.data.network.service.user
 
 import com.example.androidcourseshpp.data.network.RetrofitConfig
-import com.example.androidcourseshpp.data.network.dto.entity.User
 import com.example.androidcourseshpp.data.network.service.BaseRetrofitService
-import com.example.androidcourseshpp.data.network.service.user.entity.GetUserResponseEntity
-import com.example.androidcourseshpp.data.network.service.user.entity.UpdateUserData
-import com.example.androidcourseshpp.data.network.webapi.user.UserAPI
+import com.example.androidcourseshpp.data.network.entity.user.GetUserResponseEntity
+import com.example.androidcourseshpp.data.network.entity.user.UpdateUserData
+import com.example.androidcourseshpp.data.network.api.user.UserAPI
 
 class UserServiceImpl(
     config: RetrofitConfig

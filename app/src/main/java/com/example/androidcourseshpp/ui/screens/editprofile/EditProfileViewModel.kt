@@ -5,7 +5,7 @@ import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.dataProvider.DEFAULT_AVATAR_VALUE
 import com.example.androidcourseshpp.data.dataProvider.UserDataProvider
 import com.example.androidcourseshpp.data.network.ServicesProvider
-import com.example.androidcourseshpp.data.network.service.user.entity.UpdateUserData
+import com.example.androidcourseshpp.data.network.entity.user.UpdateUserData
 import com.example.androidcourseshpp.ui.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.util.Date

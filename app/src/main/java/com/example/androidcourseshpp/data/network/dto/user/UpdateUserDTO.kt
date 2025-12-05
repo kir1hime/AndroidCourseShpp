@@ -1,6 +1,6 @@
 package com.example.androidcourseshpp.data.network.dto.user
 
-import com.example.androidcourseshpp.data.network.dto.entity.User
+import com.example.androidcourseshpp.data.network.entity.User
 import java.util.Date
 
 data class UpdateUserRequestDTO(

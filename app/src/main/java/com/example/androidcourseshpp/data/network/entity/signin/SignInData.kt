@@ -1,4 +1,4 @@
-package com.example.androidcourseshpp.data.network.service.auth.entity
+package com.example.androidcourseshpp.data.network.entity.signin
 
 data class SignInData(
     val email: String,

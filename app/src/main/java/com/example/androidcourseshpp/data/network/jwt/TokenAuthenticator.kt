@@ -1,6 +1,6 @@
 package com.example.androidcourseshpp.data.network.jwt
 
-import com.example.androidcourseshpp.data.network.webapi.tokenrefresh.TokenRefreshAPI
+import com.example.androidcourseshpp.data.network.api.token.TokenRefreshAPI
 import okhttp3.Authenticator
 import okhttp3.Request
 import okhttp3.Response

@@ -10,7 +10,7 @@ import androidx.transition.TransitionInflater
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.databinding.FragmentDetailviewBinding
 import com.example.androidcourseshpp.ui.BaseFragment
-import com.example.androidcourseshpp.ui.extensions.loadImageFromURLCircled
+import com.example.androidcourseshpp.ui.utils.loadImageFromURLCircled
 
 class ContactDetailsFragment : BaseFragment() {
 
