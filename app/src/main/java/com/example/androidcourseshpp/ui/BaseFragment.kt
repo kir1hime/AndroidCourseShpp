@@ -21,6 +21,7 @@ import com.example.androidcourseshpp.ui.utils.loadImageFromURL
 import com.example.androidcourseshpp.ui.screens.MainActivity
 import com.example.androidcourseshpp.ui.screens.chooseprofilephotodialog.ChooseProfilePhotoDialog
 import com.example.androidcourseshpp.ui.screens.chooseprofilephotodialog.ChooseProfilePhotoDialog.Companion.PHOTO
+import com.example.androidcourseshpp.ui.utils.onChangeTextListener
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
@@ -65,29 +66,15 @@ open class BaseFragment : Fragment() {
     }
 
     protected fun formatMobilePhoneInput(editText: EditText) {
-        editText.addTextChangedListener(object : TextWatcher {
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun afterTextChanged(s: Editable?) {}
-
-            override fun onTextChanged(
-                inputText: CharSequence?,
-                start: Int,
-                before: Int,
-                count: Int
-            ) {
-                inputText?.let {
-
-                    if (BRACKET_POSITIONS.keys.contains(inputText.length) && count > 0 && before == 0) {
-                        updateMobilePhoneInput(BRACKET_POSITIONS[inputText.length], editText)
-                    }
-                    if (HYPHEN_POSITIONS.contains(inputText.length) && count > 0 && before == 0) {
-                        updateMobilePhoneInput("-", editText)
-
-                    }
-                }
+        editText.onChangeTextListener { inputText, _, before, count ->
+            if (BRACKET_POSITIONS.keys.contains(inputText.length) && count > 0 && before == 0) {
+                updateMobilePhoneInput(BRACKET_POSITIONS[inputText.length], editText)
             }
-        })
+            if (HYPHEN_POSITIONS.contains(inputText.length) && count > 0 && before == 0) {
+                updateMobilePhoneInput("-", editText)
+
+            }
+        }
     }
 
     private fun updateMobilePhoneInput(sign: String?, editText: EditText) {

@@ -3,6 +3,8 @@ package com.example.androidcourseshpp.ui.screens.editprofile
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -17,6 +19,7 @@ import com.example.androidcourseshpp.data.network.entity.user.UpdateUserData
 import com.example.androidcourseshpp.databinding.FragmentEditProfileBinding
 import com.example.androidcourseshpp.ui.BaseFragment
 import com.example.androidcourseshpp.ui.utils.loadImageFromURLCircled
+import com.example.androidcourseshpp.ui.utils.onChangeTextListener
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -59,7 +62,9 @@ class EditProfileFragment : BaseFragment() {
     @SuppressLint("ClickableViewAccessibility")
     private fun setListeners() = with(binding) {
 
-        buttonSave.setOnClickListener { onSaveButtonClick() }
+        buttonSave.setOnClickListener {
+            onSaveButtonClick()
+        }
 
         imageButtonAddProfilePhoto.setOnClickListener { onAddProfilePhotoButtonClick() }
 
@@ -94,14 +99,18 @@ class EditProfileFragment : BaseFragment() {
                 getTextFromEditText(editTextMobilePhone)
             )
         }
-        setEditTextFocusChangedListener(editTextDateOfBirthday) {
-            EditProfileContract.Event.DateOfBirthdayUpdated(
-                reversDateFormatting(
-                    getTextFromEditText(editTextDateOfBirthday)
+
+        editTextDateOfBirthday.onChangeTextListener { _, _, _, _ ->
+            viewModel.setEvent(
+                EditProfileContract.Event.DateOfBirthdayUpdated(
+                    reversDateFormatting(
+                        getTextFromEditText(editTextDateOfBirthday)
+                    )
                 )
             )
         }
     }
+
 
     private fun setEditTextFocusChangedListener(
         editText: EditText,
