@@ -2,19 +2,19 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tool="http://schemas.android.com/tools"
-    android:id="@+id/contactListItem"
+    android:id="@+id/add_contact_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/contacts_item_background_unselected_mode">
+    android:background="@drawable/add_contact_item_background">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/imageViewAvatar"
         android:layout_width="@dimen/contacts_recycle_view_item_ava_size"
         android:layout_height="@dimen/contacts_recycle_view_item_ava_size"
         android:layout_marginStart="@dimen/contacts_recycle_view_margin_start"
-        app:layout_constraintBottom_toBottomOf="@id/contactListItem"
-        app:layout_constraintStart_toEndOf="@id/checkBoxIsSelected"
-        app:layout_constraintTop_toTopOf="@id/contactListItem"
+        app:layout_constraintBottom_toBottomOf="@id/add_contact_item"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/add_contact_item"
         tool:src="@drawable/profile_photo"/>
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -29,9 +29,9 @@
         android:textColor="@color/item_name_text_color"
         android:textSize="@dimen/big_text_size"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@id/contactListItem"
+        app:layout_constraintBottom_toBottomOf="@id/add_contact_item"
         app:layout_constraintStart_toEndOf="@id/imageViewAvatar"
-        app:layout_constraintTop_toTopOf="@id/contactListItem" />
+        app:layout_constraintTop_toTopOf="@id/add_contact_item" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/textViewCareer"
@@ -43,31 +43,32 @@
         android:text="@string/career"
         android:textColor="@color/item_career_text_color"
         android:textSize="@dimen/tiny_text_size"
-        app:layout_constraintBottom_toBottomOf="@id/contactListItem"
+        app:layout_constraintBottom_toBottomOf="@id/add_contact_item"
         app:layout_constraintStart_toStartOf="@id/textViewName"
-        app:layout_constraintTop_toTopOf="@id/contactListItem" />
+        app:layout_constraintTop_toTopOf="@id/add_contact_item" />
 
-    <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/imageButtonDelete"
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/textViewAddContact"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/item_trash_can_margin_end"
-        android:background="@android:color/transparent"
-        android:src="@drawable/ic_orange_trash_can"
-        app:layout_constraintBottom_toBottomOf="@id/contactListItem"
-        app:layout_constraintEnd_toEndOf="@id/contactListItem"
-        app:layout_constraintTop_toTopOf="@id/contactListItem" />
-
-    <androidx.appcompat.widget.AppCompatCheckBox
-        android:id="@+id/checkBoxIsSelected"
-        android:layout_width="@dimen/is_selected_check_box_w"
-        android:layout_height="@dimen/is_selected_check_box_h"
-        android:layout_marginStart="@dimen/is_selected_check_box_margin_start"
-        android:button="@drawable/contact_item_selection_mode"
-        app:buttonTint="@null"
-        android:visibility="gone"
+        android:layout_marginEnd="@dimen/add_contact_label_margin_end"
+        android:text="@string/add"
+        android:textColor="@color/add_contact_label_color"
+        android:textSize="@dimen/big_text_size"
+        android:textStyle="bold"
+        app:fontFamily="@font/open_sans"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:src="@drawable/ic_add_contact"
+        android:background="null"
+        android:layout_marginEnd="@dimen/add_contact_icon_margin_end"
+        app:layout_constraintTop_toTopOf="@id/textViewAddContact"
+        app:layout_constraintBottom_toBottomOf="@id/textViewAddContact"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

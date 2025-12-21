@@ -44,11 +44,7 @@
     <dimen name="sign_in_margin_start">12dp</dimen>
 
     <dimen name="contacts_margin_top">10dp</dimen>
-
-    <dimen name="contacts_arrow_back_margin_start">20dp</dimen>
-    <dimen name="contacts_arrow_back_margin_top">17.5dp</dimen>
-
-    <dimen name="search_margin_top">@dimen/contacts_arrow_back_margin_top</dimen>
+    <dimen name="users_label_margin_top">@dimen/contacts_margin_top</dimen>
 
     <dimen name="add_contacts_margin_top">73dp</dimen>
     <dimen name="add_contacts_margin_bottom">26dp</dimen>
@@ -113,6 +109,9 @@
     <dimen name="edit_profile_username_margin_top">24dp</dimen>
     <dimen name="edit_profile_username_margin_bottom">360dp</dimen>
 
+    <dimen name="add_contact_label_margin_end">43dp</dimen>
+    <dimen name="add_contact_icon_margin_end">12dp</dimen>
+
 
     <!--paddings-->
     <dimen name="settings_padding_vertical">4.5dp</dimen>
@@ -152,6 +151,7 @@
 
     <!--view/textView dimens-->
     <dimen name="contacts_bar_h">149dp</dimen>
+    <dimen name="user_bar_h">@dimen/contacts_bar_h</dimen>
     <dimen name="contacts_recycle_view_item_h">66dp</dimen>
     <dimen name="contacts_recycle_view_item_ava_size">50dp</dimen>
     <dimen name="choose_profile_photo_dialog_h">219dp</dimen>

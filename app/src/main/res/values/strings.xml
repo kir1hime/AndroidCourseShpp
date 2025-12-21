@@ -99,4 +99,8 @@
     <!-- Splash screen -->
     <string name="greeting">Glad to see you again!</string>
 
+    <!-- Add contacts -->
+    <string name="users">Users</string>
+    <string name="add">Add</string>
+
 </resources>

@@ -10,6 +10,8 @@
 
     <color name="input_hint_color">#B2B2B3</color>
 
+    <color name="top_view_color">#242235</color>
+
     <!-- User Info -->
     <color name="background_userinfo_tab_layout">#242235</color>
     <color name="tab_selected_text_color">#FB5E06</color>
@@ -20,8 +22,6 @@
     <color name="view_my_contacts_text_color">@color/bottom_view_color</color>
     <color name="name_text_color">@color/bottom_view_color</color>
     <color name="settings_text_color">@color/bottom_view_color</color>
-
-    <color name="top_view_color">#242235</color>
     <color name="edit_profile_border_color">@color/top_view_color</color>
 
     <color name="view_my_contacts_color">#FB5E06</color>
@@ -61,7 +61,6 @@
     <color name="contacts_screen_color">#FFFFFF</color>
     <color name="contacts_label_color">#FFFFFF</color>
     <color name="add_contact_color">@color/contacts_label_color</color>
-
     <color name="floating_delete_button_color">#FB5E06</color>
 
 
@@ -128,4 +127,8 @@
     <color name="splash_screen_background_color">@color/top_view_color</color>
     <color name="splash_screen_greeting_text_color">#FFFFFF</color>
 
+    <!-- Add contacts -->
+    <color name="users_label_color">#FFFFFF</color>
+    <color name="add_contacts_bar_color">#242235</color>
+    <color name="add_contact_label_color">#FB5E06</color>
 </resources>

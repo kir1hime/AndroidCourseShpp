@@ -86,5 +86,6 @@
     <string name="username">Ім\'я</string>
     <string name="address">Адреса</string>
     <string name="date_of_birthday">День народження</string>
+    <string name="users">Користувачі</string>
 
 </resources>
