@@ -33,12 +33,12 @@
     </fragment>
     <dialog
         android:id="@+id/chooseProfilePhotoDialog"
-        android:name="com.example.androidcourseshpp.ui.screens.chooseprofilephotodialog.ChooseProfilePhotoDialog"
+        android:name="com.example.androidcourseshpp.ui.screens.main.chooseprofilephotodialog.ChooseProfilePhotoDialog"
         android:label="dialog_choose_profile_photo"
         tools:layout="@layout/dialog_choose_profile_photo" />
     <fragment
         android:id="@+id/splashFragment"
-        android:name="com.example.androidcourseshpp.ui.screens.splash.SplashFragment"
+        android:name="com.example.androidcourseshpp.ui.screens.auth.splash.SplashFragment"
         android:label="fragment_splash"
         tools:layout="@layout/fragment_splash" >
         <action

@@ -1,9 +1,7 @@
 package com.example.androidcourseshpp.ui.screens.auth.signin
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -14,30 +12,18 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlin.getValue
 
 @AndroidEntryPoint
-class SignInFragment : BaseFragment() {
-
-    private lateinit var binding: FragmentSignInBinding
-
+class SignInFragment : BaseFragment<FragmentSignInBinding>
+    (FragmentSignInBinding::inflate) {
     private val viewModel by viewModels<SignInViewModel>()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentSignInBinding.inflate(inflater, container, false)
-
-        return binding.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setListeners()
         setObservers()
-
     }
 
-    private fun setObservers() = with(binding) {
+    override fun setObservers() = with(binding) {
         collectFlow(viewModel.effect) { effect ->
             when (effect) {
                 is SignInContract.Effect.NavigateToSingUpScreen -> moveToSignUpScreen()
@@ -57,7 +43,7 @@ class SignInFragment : BaseFragment() {
         }
     }
 
-    private fun setListeners() = with(binding) {
+    override fun setListeners() = with(binding) {
         buttonLogin.setOnClickListener {
 
             viewModel.setEvent(

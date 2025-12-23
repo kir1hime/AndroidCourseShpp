@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/dialog_add_contact_background_color"
-    tools:context="com.example.androidcourseshpp.ui.screens.userinfo.contactlist.addcontactdialog.AddContactDialog">
+    tools:context=".ui.screens.main.userinfo.contactlist.addcontactdialog.AddContactDialog">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayoutContactName"

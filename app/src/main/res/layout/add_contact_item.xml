@@ -66,7 +66,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         android:src="@drawable/ic_add_contact"
-        android:background="null"
+        android:background="@null"
         android:layout_marginEnd="@dimen/add_contact_icon_margin_end"
         app:layout_constraintTop_toTopOf="@id/textViewAddContact"
         app:layout_constraintBottom_toBottomOf="@id/textViewAddContact"/>

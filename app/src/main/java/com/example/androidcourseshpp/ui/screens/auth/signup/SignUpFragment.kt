@@ -1,9 +1,7 @@
 package com.example.androidcourseshpp.ui.screens.auth.signup
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.androidcourseshpp.data.MIN_NUM_OF_CHARS_IN_PASSWORD
@@ -13,28 +11,11 @@ import com.example.androidcourseshpp.ui.screens.auth.signup.entity.SignUpUserInf
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SignUpFragment : BaseFragment() {
+class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding::inflate) {
 
-    private lateinit var binding: FragmentSignUpBinding
     private val viewModel by viewModels<SignUpViewModel>()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentSignUpBinding.inflate(inflater, container, false)
-
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        setObserves()
-        setListeners()
-    }
-
-    private fun setObserves() = with(binding) {
+    override fun setObservers() = with(binding) {
         collectFlow(viewModel.effect) { effect ->
             when (effect) {
                 is SignUpContract.Effect.NavigateToSignUpExtended -> moveToSignUpExtended(effect.signUpUserInfo)
@@ -49,7 +30,7 @@ class SignUpFragment : BaseFragment() {
         }
     }
 
-    private fun setListeners() = with(binding) {
+    override fun setListeners() = with(binding) {
         buttonRegister.setOnClickListener {
             onRegisterButtonClick()
         }
@@ -57,6 +38,12 @@ class SignUpFragment : BaseFragment() {
         textViewSignIn.setOnClickListener {
             findNavController().navigateUp()
         }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setObservers()
+        setListeners()
     }
 
     private fun onRegisterButtonClick() = with(binding) {

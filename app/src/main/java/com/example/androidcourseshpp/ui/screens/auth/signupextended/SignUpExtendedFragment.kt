@@ -2,9 +2,7 @@ package com.example.androidcourseshpp.ui.screens.auth.signupextended
 
 import android.os.Bundle
 
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
@@ -15,22 +13,12 @@ import com.example.androidcourseshpp.ui.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SignUpExtendedFragment : BaseFragment() {
-
-    private lateinit var binding: FragmentSignUpExtendedBinding
+class SignUpExtendedFragment : BaseFragment<FragmentSignUpExtendedBinding>(
+    FragmentSignUpExtendedBinding::inflate
+) {
     private val viewModel by viewModels<SignUpExtendedViewModel>()
 
     private val args: SignUpExtendedFragmentArgs by navArgs()
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentSignUpExtendedBinding.inflate(inflater, container, false)
-
-        return binding.root
-    }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -41,7 +29,7 @@ class SignUpExtendedFragment : BaseFragment() {
         formatMobilePhoneInput(binding.editTextMobilePhone)
     }
 
-    private fun setListeners() = with(binding) {
+    override fun setListeners() = with(binding) {
         buttonForward.setOnClickListener { onForwardButtonClick() }
 
         buttonCancel.setOnClickListener {
@@ -67,7 +55,7 @@ class SignUpExtendedFragment : BaseFragment() {
         )
     }
 
-    private fun setObservers() = with(binding) {
+    override fun setObservers() = with(binding) {
         collectFlow(viewModel.effect) { effect ->
             when (effect) {
                 is SignUpExtendedContract.Effect.NavigateToMyProfileScreen -> moveToMyProfileScreen(

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/splash_screen_background_color"
-    tools:context="com.example.androidcourseshpp.ui.screens.splash.SplashFragment">
+    tools:context=".ui.screens.auth.splash.SplashFragment">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/textViewGreeting"

@@ -5,7 +5,7 @@
     android:id="@+id/userInfo"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tool:context="com.example.androidcourseshpp.ui.screens.userinfo.UserInfoFragment">
+    tool:context=".ui.screens.main.userinfo.UserInfoFragment">
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPagerUserInformation"

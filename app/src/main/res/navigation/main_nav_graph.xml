@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/contactDetailsFragment"
-        android:name="com.example.androidcourseshpp.ui.screens.contactdetails.ContactDetailsFragment"
+        android:name="com.example.androidcourseshpp.ui.screens.main.contactdetails.ContactDetailsFragment"
         android:label="fragment_detailview"
         tools:layout="@layout/fragment_detailview">
         <argument
@@ -17,7 +17,7 @@
     </fragment>
     <fragment
         android:id="@+id/userInfoFragment"
-        android:name="com.example.androidcourseshpp.ui.screens.userinfo.UserInfoFragment"
+        android:name="com.example.androidcourseshpp.ui.screens.main.userinfo.UserInfoFragment"
         android:label="fragment_userinfo"
         tools:layout="@layout/fragment_userinfo">
         <action
@@ -40,7 +40,7 @@
     </fragment>
     <fragment
         android:id="@+id/editProfileFragment"
-        android:name="com.example.androidcourseshpp.ui.screens.editprofile.EditProfileFragment"
+        android:name="com.example.androidcourseshpp.ui.screens.main.editprofile.EditProfileFragment"
         android:label="fragment_edit_profile"
         tools:layout="@layout/fragment_edit_profile">
         <action
@@ -52,12 +52,12 @@
     </fragment>
     <dialog
         android:id="@+id/chooseProfilePhotoDialog"
-        android:name="com.example.androidcourseshpp.ui.screens.chooseprofilephotodialog.ChooseProfilePhotoDialog"
+        android:name="com.example.androidcourseshpp.ui.screens.main.chooseprofilephotodialog.ChooseProfilePhotoDialog"
         android:label="dialog_choose_profile_photo"
         tools:layout="@layout/dialog_choose_profile_photo" />
     <dialog
         android:id="@+id/addContactDialog"
-        android:name="com.example.androidcourseshpp.ui.screens.userinfo.contactlist.addcontactdialog.AddContactDialog"
+        android:name="com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.addcontactdialog.AddContactDialog"
         android:label="dialog_add_contact"
         tools:layout="@layout/dialog_add_contact" />
 </navigation>
