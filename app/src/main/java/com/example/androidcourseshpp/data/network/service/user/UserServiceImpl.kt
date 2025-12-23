@@ -2,7 +2,6 @@ package com.example.androidcourseshpp.data.network.service.user
 
 import com.example.androidcourseshpp.data.network.RetrofitConfig
 import com.example.androidcourseshpp.data.network.service.BaseRetrofitService
-import com.example.androidcourseshpp.data.network.entity.user.GetUserResponseEntity
 import com.example.androidcourseshpp.data.network.entity.user.UpdateUserData
 import com.example.androidcourseshpp.data.network.api.user.UserAPI
 
@@ -21,10 +20,11 @@ class UserServiceImpl(
         }
     }
 
-    override suspend fun getUser(userId: Long) =
-        processRetrofitExceptions {
-            GetUserResponseEntity(
-                userApi.getUser(userId).data.user
-            )
-        }
+    override suspend fun getUser(userId: Long) = processRetrofitExceptions {
+        userApi.getUser(userId).data
+    }
+
+    override suspend fun getUsers() = processRetrofitExceptions {
+        userApi.getUsers().data
+    }
 }

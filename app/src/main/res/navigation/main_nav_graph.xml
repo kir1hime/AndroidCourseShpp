@@ -35,8 +35,12 @@
             app:popEnterAnim="@anim/slide_in_from_bottom_to_top"
             app:popExitAnim="@anim/slide_out_from_bottom_to_top" />
         <action
-            android:id="@+id/action_userInfoFragment_to_addContactDialog"
-            app:destination="@id/addContactDialog" />
+            android:id="@+id/action_userInfoFragment_to_addContactsFragment"
+            app:destination="@id/addContactsFragment"
+            app:enterAnim="@anim/slide_in_from_right_to_left"
+            app:exitAnim="@anim/slide_out_from_right_to_left"
+            app:popEnterAnim="@anim/slide_in_from_left_to_right"
+            app:popExitAnim="@anim/slide_out_from_left_to_right"/>
     </fragment>
     <fragment
         android:id="@+id/editProfileFragment"
@@ -55,9 +59,9 @@
         android:name="com.example.androidcourseshpp.ui.screens.main.chooseprofilephotodialog.ChooseProfilePhotoDialog"
         android:label="dialog_choose_profile_photo"
         tools:layout="@layout/dialog_choose_profile_photo" />
-    <dialog
-        android:id="@+id/addContactDialog"
-        android:name="com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.addcontactdialog.AddContactDialog"
-        android:label="dialog_add_contact"
-        tools:layout="@layout/dialog_add_contact" />
+    <fragment
+        android:id="@+id/addContactsFragment"
+        android:name="com.example.androidcourseshpp.ui.screens.main.addcontacts.AddContactsFragment"
+        android:label="fragment_add_contacts"
+        tools:layout="@layout/fragment_add_contacts" />
 </navigation>

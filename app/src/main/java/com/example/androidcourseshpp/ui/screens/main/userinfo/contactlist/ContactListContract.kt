@@ -42,7 +42,7 @@ class ContactListContract {
             val avatar: ImageView
         ) : Effect
 
-        data object ShowAddContactDialog : Effect
+        data object NavigateToAddContactsScreen : Effect
     }
 
     data class UIState(

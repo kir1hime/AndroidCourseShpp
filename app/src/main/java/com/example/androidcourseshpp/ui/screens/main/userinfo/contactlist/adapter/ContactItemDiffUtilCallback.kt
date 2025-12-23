@@ -1,6 +1,5 @@
 package com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.adapter
 
-import android.annotation.SuppressLint
 import androidx.recyclerview.widget.DiffUtil
 import com.example.androidcourseshpp.data.contactlist.SelectableContactItem
 
@@ -12,7 +11,6 @@ object ContactItemDiffUtilCallback : DiffUtil.ItemCallback<SelectableContactItem
         return oldItem.item.id == newItem.item.id
     }
 
-    @SuppressLint("DiffUtilEquals")
     override fun areContentsTheSame(
         oldItem: SelectableContactItem,
         newItem: SelectableContactItem

@@ -1,11 +1,8 @@
 package com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist
 
 import android.Manifest
-import android.app.AlertDialog
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultLauncher
@@ -21,17 +18,12 @@ import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.contactlist.ContactItem
 import com.example.androidcourseshpp.data.contactlist.SelectableContactItem
 import com.example.androidcourseshpp.databinding.FragmentContactlistBinding
-import com.example.androidcourseshpp.databinding.FragmentSignUpBinding
 import com.example.androidcourseshpp.ui.BaseFragment
-import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.addcontactdialog.AddContactDialog.Companion.CAREER_KEY
-import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.addcontactdialog.AddContactDialog.Companion.NAME_KEY
-import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.addcontactdialog.AddContactDialog.Companion.RESPONSE_KEY
 import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.adapter.ContactItemDecoration
 import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.adapter.ContactsAdapter
 import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.adapter.ItemActions
 import com.example.androidcourseshpp.ui.screens.main.userinfo.TabSwitchable
 import com.example.androidcourseshpp.ui.screens.main.userinfo.UserInfoFragmentDirections
-import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.addcontactdialog.AddContactDialog
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -64,7 +56,6 @@ class ContactListFragment : BaseFragment<FragmentContactlistBinding>(FragmentCon
 
         setListeners()
         setObservers()
-        setAddContactDialogListener()
         setOnBackPressedListener()
     }
 
@@ -157,9 +148,6 @@ class ContactListFragment : BaseFragment<FragmentContactlistBinding>(FragmentCon
         }
     }
 
-    private fun showAddContactDialog() {
-        AddContactDialog().show(childFragmentManager, AddContactDialog.TAG)
-    }
 
     private fun showUndoDeletingSnackBarItem(contactItem: ContactItem, position: Int) {
         val undoDeletingSnackBar = Snackbar.make(
@@ -180,25 +168,6 @@ class ContactListFragment : BaseFragment<FragmentContactlistBinding>(FragmentCon
         }.setActionTextColor(ContextCompat.getColor(requireContext(), R.color.custom_primary_color))
 
         undoDeletingSnackBar.show()
-    }
-
-    private fun setAddContactDialogListener() {
-        childFragmentManager.setFragmentResultListener(
-            AddContactDialog.REQUEST_KEY, viewLifecycleOwner
-        ) { _, data ->
-
-            val event = data.getInt(RESPONSE_KEY)
-            val newContactName = data.getString(NAME_KEY) ?: ""
-            val newContactCareer = data.getString(CAREER_KEY) ?: ""
-
-            when (event) {
-                AlertDialog.BUTTON_POSITIVE -> viewModel.setEvent(
-                    ContactListContract.Event.AddContactDialogEventProcessed(
-                        newContactName, newContactCareer
-                    )
-                )
-            }
-        }
     }
 
     private fun initSwipeToDeleteOfContactItem() {
