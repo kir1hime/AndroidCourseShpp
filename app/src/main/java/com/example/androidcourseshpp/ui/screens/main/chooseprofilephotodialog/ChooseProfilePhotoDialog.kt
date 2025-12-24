@@ -17,7 +17,7 @@ import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.databinding.DialogChooseProfilePhotoBinding
 import com.example.androidcourseshpp.ui.screens.main.chooseprofilephotodialog.adapter.GalleryAdapter
 import com.example.androidcourseshpp.ui.screens.main.chooseprofilephotodialog.adapter.GalleryItemDecoration
-import com.example.androidcourseshpp.ui.screens.main.chooseprofilephotodialog.adapter.ItemActions
+import com.example.androidcourseshpp.ui.screens.main.chooseprofilephotodialog.adapter.GalleryItemActions
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -39,7 +39,7 @@ class ChooseProfilePhotoDialog : DialogFragment() {
             }
         }
     private val adapter: GalleryAdapter by lazy {
-        GalleryAdapter(object : ItemActions {
+        GalleryAdapter(object : GalleryItemActions {
 
             override fun choosePhoto(photo: String) {
                 parentFragmentManager.setFragmentResult(REQUEST_KEY, bundleOf(PHOTO to photo))

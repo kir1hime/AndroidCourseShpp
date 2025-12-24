@@ -21,7 +21,7 @@ import com.example.androidcourseshpp.databinding.FragmentContactlistBinding
 import com.example.androidcourseshpp.ui.BaseFragment
 import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.adapter.ContactItemDecoration
 import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.adapter.ContactsAdapter
-import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.adapter.ItemActions
+import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.adapter.ContactItemActions
 import com.example.androidcourseshpp.ui.screens.main.userinfo.TabSwitchable
 import com.example.androidcourseshpp.ui.screens.main.userinfo.UserInfoFragmentDirections
 import com.google.android.material.snackbar.Snackbar
@@ -29,7 +29,8 @@ import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
-class ContactListFragment : BaseFragment<FragmentContactlistBinding>(FragmentContactlistBinding::inflate) {
+class ContactListFragment :
+    BaseFragment<FragmentContactlistBinding>(FragmentContactlistBinding::inflate) {
 
     private val viewModel by viewModels<ContactListViewModel>()
     private lateinit var requestPermissionsLauncher: ActivityResultLauncher<String>
@@ -63,8 +64,8 @@ class ContactListFragment : BaseFragment<FragmentContactlistBinding>(FragmentCon
         adapter = ContactsAdapter(getItemActions())
     }
 
-    private fun getItemActions(): ItemActions = with(binding) {
-        return object : ItemActions {
+    private fun getItemActions(): ContactItemActions = with(binding) {
+        return object : ContactItemActions {
             override fun deleteContactItem(contactItem: ContactItem, position: Int) {
                 viewModel.setEvent(
                     ContactListContract.Event.ContactItemDeleted(
@@ -126,7 +127,7 @@ class ContactListFragment : BaseFragment<FragmentContactlistBinding>(FragmentCon
                 )
 
                 is ContactListContract.Effect.NavigateToMyProfileScreen -> moveBackToMyProfileScreen()
-                is ContactListContract.Effect.ShowAddContactDialog -> showAddContactDialog()
+                is ContactListContract.Effect.NavigateToAddContactsScreen -> moveToAddContactsScreen()
             }
         }
     }
@@ -220,6 +221,12 @@ class ContactListFragment : BaseFragment<FragmentContactlistBinding>(FragmentCon
             UserInfoFragmentDirections.actionUserInfoFragmentToContactDetailsFragment(contact)
 
         findNavController().navigate(direction, extras)
+    }
+
+    private fun moveToAddContactsScreen() {
+        val direction = UserInfoFragmentDirections.actionUserInfoFragmentToAddContactsFragment()
+
+        findNavController().navigate(direction)
     }
 
 }

@@ -9,7 +9,7 @@ import com.example.androidcourseshpp.data.gallery.GalleryItem
 import com.example.androidcourseshpp.databinding.GalleryItemBinding
 import com.example.androidcourseshpp.ui.utils.loadImageFromURL
 
-class GalleryAdapter(private val actions: ItemActions) :
+class GalleryAdapter(private val actions: GalleryItemActions) :
     ListAdapter<GalleryItem, GalleryAdapter.ViewHolder>(
         GalleryItemDiffUtilCallback
     ) {
@@ -30,7 +30,7 @@ class GalleryAdapter(private val actions: ItemActions) :
     }
 
 
-    class ViewHolder(val binding: GalleryItemBinding, val actions: ItemActions) :
+    class ViewHolder(val binding: GalleryItemBinding, val actions: GalleryItemActions) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(galleryItem: GalleryItem) = with(binding) {

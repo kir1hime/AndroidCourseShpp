@@ -3,7 +3,7 @@ package com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.adapt
 import android.widget.ImageView
 import com.example.androidcourseshpp.data.contactlist.ContactItem
 
-interface ItemActions {
+interface ContactItemActions {
 
     fun deleteContactItem(contactItem: ContactItem, position: Int)
 

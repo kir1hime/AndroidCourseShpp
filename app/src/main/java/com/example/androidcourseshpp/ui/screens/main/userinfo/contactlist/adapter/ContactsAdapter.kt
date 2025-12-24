@@ -12,7 +12,7 @@ import com.example.androidcourseshpp.databinding.ContactItemBinding
 import com.example.androidcourseshpp.ui.utils.loadImageFromURLCircled
 
 
-class ContactsAdapter(private val actions: ItemActions) :
+class ContactsAdapter(private val actions: ContactItemActions) :
     ListAdapter<SelectableContactItem, ContactsAdapter.ViewHolder>(ContactItemDiffUtilCallback) {
 
     var selectedItems: MutableList<ContactItem> = mutableListOf()
@@ -20,7 +20,7 @@ class ContactsAdapter(private val actions: ItemActions) :
 
     inner class ViewHolder(
         private val binding: ContactItemBinding,
-        private val actions: ItemActions
+        private val actions: ContactItemActions
     ) :
         RecyclerView.ViewHolder(binding.root) {
 
