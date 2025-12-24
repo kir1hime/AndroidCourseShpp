@@ -7,9 +7,11 @@ import com.example.androidcourseshpp.data.network.entity.signin.SignInData
 import com.example.androidcourseshpp.data.network.entity.signup.SignUpData
 import com.example.androidcourseshpp.data.network.api.auth.AuthAPI
 import okhttp3.RequestBody.Companion.toRequestBody
+import javax.inject.Inject
+import javax.inject.Singleton
 
-
-class AuthServiceImpl(
+@Singleton
+class AuthServiceImpl @Inject constructor(
     config: RetrofitConfig
 ) : BaseRetrofitService(config), AuthService {
 

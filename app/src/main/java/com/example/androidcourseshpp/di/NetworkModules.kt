@@ -10,6 +10,8 @@ import com.example.androidcourseshpp.data.network.service.auth.AuthServiceImpl
 import com.example.androidcourseshpp.data.network.service.user.UserService
 import com.example.androidcourseshpp.data.network.service.user.UserServiceImpl
 import com.example.androidcourseshpp.data.network.api.token.TokenRefreshAPI
+import com.example.androidcourseshpp.data.network.service.contacts.ContactsService
+import com.example.androidcourseshpp.data.network.service.contacts.ContactsServiceImpl
 import com.google.gson.Gson
 import dagger.Binds
 import dagger.Module
@@ -34,6 +36,10 @@ interface RetrofitServicesModules {
     @Binds
     @Singleton
     fun provideUserService(userServiceImpl: UserServiceImpl): UserService
+
+    @Binds
+    @Singleton
+    fun provideContactsService(contactsServiceImpl: ContactsServiceImpl): ContactsService
 
     @Binds
     @Singleton

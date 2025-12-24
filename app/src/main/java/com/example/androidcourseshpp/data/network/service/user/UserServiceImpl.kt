@@ -4,8 +4,11 @@ import com.example.androidcourseshpp.data.network.RetrofitConfig
 import com.example.androidcourseshpp.data.network.service.BaseRetrofitService
 import com.example.androidcourseshpp.data.network.entity.user.UpdateUserData
 import com.example.androidcourseshpp.data.network.api.user.UserAPI
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class UserServiceImpl(
+@Singleton
+class UserServiceImpl @Inject constructor(
     config: RetrofitConfig
 ) : BaseRetrofitService(config), UserService {
 
