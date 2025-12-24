@@ -18,7 +18,7 @@ private const val PHONE_NUMBER_LENGTH = 15
 class SignUpExtendedViewModel @Inject constructor(
     private val serviceProviderHolder: RetrofitServiceProviderHolder,
     private val jwtManager: JWTManager,
-    private val dataProvider: UserDataProvider,
+    private val userDataProvider: UserDataProvider,
     private val imageConvertor: ImageConvertor
 ) :
     BaseViewModel<SignUpExtendedContract.Event, SignUpExtendedContract.Effect, SignUpExtendedContract.UIState>() {
@@ -88,7 +88,7 @@ class SignUpExtendedViewModel @Inject constructor(
 
                     val userServerId = response.user.id
                     if (signUpUserInfo.toRememberUser) {
-                        dataProvider.saveUserServerId(userServerId)
+                        userDataProvider.saveUserServerId(userServerId)
                     }
                     setEffect(SignUpExtendedContract.Effect.NavigateToMyProfileScreen(userServerId))
 

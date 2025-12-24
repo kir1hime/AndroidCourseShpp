@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/addContacts"
     android:layout_width="match_parent"
-    android:background="@color/add_contact_background_color"
     android:layout_height="match_parent"
+    android:background="@color/add_contact_background_color"
     tools:context=".ui.screens.main.addcontacts.AddContactsFragment">
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -57,11 +57,22 @@
         android:id="@+id/recyclerViewUsers"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_margin="@dimen/main_margin_side"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="@dimen/main_margin_side"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textViewUsersBar"
-        tools:listitem="@layout/add_contact_item"/>
+        tools:listitem="@layout/add_contact_item" />
+
+    <ProgressBar
+        android:id="@+id/progressBarRequest"
+        android:layout_width="@dimen/progress_bar_request_size"
+        android:layout_height="@dimen/progress_bar_request_size"
+        android:indeterminateTint="@color/progress_bar_request_color"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

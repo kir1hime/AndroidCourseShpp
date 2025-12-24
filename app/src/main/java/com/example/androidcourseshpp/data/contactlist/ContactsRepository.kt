@@ -9,7 +9,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 private val javaFaker = Faker.instance()
-private const val NUM_OF_DEFAULT_CONTACT_ITEMS = 5
+private const val NUM_OF_DEFAULT_CONTACT_ITEMS = 10
 private const val NUM_OF_CAREERS = 10
 
 @Singleton

@@ -15,6 +15,7 @@ class AddContactsContract {
     }
 
     data class UIState(
-        val userList: List<UserItem>
+        val userList: List<UserItem>,
+        val isProgressBarShowed: Boolean
     ): ViewState
 }
