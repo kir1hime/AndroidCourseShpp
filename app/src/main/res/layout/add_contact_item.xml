@@ -61,11 +61,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/imageButtonAddContact"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/add_contact_icon_margin_end"
+        android:layout_marginEnd="@dimen/add_contact_margin_end"
         android:background="@null"
         android:src="@drawable/ic_add_contact"
         app:layout_constraintBottom_toBottomOf="@id/textViewAddContact"
@@ -73,14 +74,26 @@
         app:layout_constraintTop_toTopOf="@id/textViewAddContact" />
 
     <ProgressBar
-        android:id="@+id/progressBarRequest"
-        android:layout_width="@dimen/progress_bar_request_size"
-        android:layout_height="@dimen/progress_bar_request_size"
+        android:id="@+id/progressBarAddContact"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginEnd="@dimen/add_contact_margin_end"
         android:indeterminateTint="@color/progress_bar_request_color"
         android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/textViewAddContact"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@id/textViewAddContact" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/imageButtonContactAdded"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginEnd="@dimen/add_contact_margin_end"
+        android:src="@drawable/ic_contact_added"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/textViewAddContact"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/textViewAddContact" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

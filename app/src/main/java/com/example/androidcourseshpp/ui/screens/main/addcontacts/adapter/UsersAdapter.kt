@@ -1,6 +1,7 @@
 package com.example.androidcourseshpp.ui.screens.main.addcontacts.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.ListAdapter
@@ -44,8 +45,15 @@ class UsersAdapter(
         }
 
         private fun addContact(userItem: UserItem) = with(binding) {
-            progressBarRequest.isVisible = true
-            actions.addToContacts(userItem) { progressBarRequest.isVisible = false }
+            imageButtonAddContact.isVisible = false
+            progressBarAddContact.isVisible = true
+
+            actions.addToContacts(userItem) {
+                progressBarAddContact.isVisible = false
+
+                imageButtonContactAdded.isVisible = true
+
+            }
         }
     }
 

@@ -55,6 +55,7 @@ class AddContactsViewModel @Inject constructor(
             toExecute = {
                 serviceProviderHolder.serviceProvider.getContactsService()
                     .addContact(ContactData(userServerId, userItem.id))
+
             },
             processBackendException = {
                 setEffect(AddContactsContract.Effect.ShowToast(R.string.generic_error))
