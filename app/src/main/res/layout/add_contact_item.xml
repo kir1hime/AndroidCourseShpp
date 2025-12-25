@@ -15,7 +15,7 @@
         app:layout_constraintBottom_toBottomOf="@id/add_contact_item"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/add_contact_item"
-        tool:src="@drawable/profile_photo"/>
+        tool:src="@drawable/profile_photo" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@id/textViewName"
@@ -65,11 +65,22 @@
         android:id="@+id/imageButtonAddContact"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:src="@drawable/ic_add_contact"
-        android:background="@null"
         android:layout_marginEnd="@dimen/add_contact_icon_margin_end"
-        app:layout_constraintTop_toTopOf="@id/textViewAddContact"
-        app:layout_constraintBottom_toBottomOf="@id/textViewAddContact"/>
+        android:background="@null"
+        android:src="@drawable/ic_add_contact"
+        app:layout_constraintBottom_toBottomOf="@id/textViewAddContact"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/textViewAddContact" />
+
+    <ProgressBar
+        android:id="@+id/progressBarRequest"
+        android:layout_width="@dimen/progress_bar_request_size"
+        android:layout_height="@dimen/progress_bar_request_size"
+        android:indeterminateTint="@color/progress_bar_request_color"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

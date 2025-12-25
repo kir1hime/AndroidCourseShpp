@@ -51,8 +51,7 @@ class ContactListViewModel @Inject constructor(
             )
 
             is ContactListContract.Event.OnItemClicked -> navigateToDetailsScreen(
-                event.contact,
-                event.avatar
+                event.contact
             )
 
             is ContactListContract.Event.PhoneContactsAdded -> addPhoneContacts()
@@ -111,8 +110,8 @@ class ContactListViewModel @Inject constructor(
         return contactItem.career.isBlank() || contactItem.name.isBlank()
     }
 
-    private fun navigateToDetailsScreen(contact: ContactItem, avatar: ImageView) {
-        setEffect(ContactListContract.Effect.NavigateToDetailsScreen(contact, avatar))
+    private fun navigateToDetailsScreen(contact: ContactItem) {
+        setEffect(ContactListContract.Effect.NavigateToDetailsScreen(contact))
     }
 
     private fun navigateToPreviousScreen() {

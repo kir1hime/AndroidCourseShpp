@@ -39,7 +39,7 @@ class UserProfileViewModel @Inject constructor(
 
     }
 
-    private fun updateUserInfo(userServerId: Long) {
+    private fun updateUserInfo(userServerId: Int) {
         viewModelScope.launch {
             processNetworkExceptions(
                 toExecute = {

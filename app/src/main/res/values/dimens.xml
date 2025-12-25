@@ -139,6 +139,8 @@
     <dimen name="forward_bt_h">@dimen/view_my_contacts_bt_h</dimen>
     <dimen name="cancel_bt_h">40dp</dimen>
     <dimen name="save_bt_h">@dimen/view_my_contacts_bt_h</dimen>
+    <dimen name="try_again_bt_w">100dp</dimen>
+    <dimen name="try_again_bt_h">40dp</dimen>
 
     <!-- button content dimens -->
     <dimen name="google_bt_icon_h">20dp</dimen>

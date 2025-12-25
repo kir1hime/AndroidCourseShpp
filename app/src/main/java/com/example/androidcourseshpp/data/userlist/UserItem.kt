@@ -3,7 +3,7 @@ package com.example.androidcourseshpp.data.userlist
 import com.example.androidcourseshpp.ui.screens.main.contactdetails.ContactDetailsEntity
 
 data class UserItem(
-    val id: Long,
+    val id: Int,
     val name: String,
     val career: String,
     val avatarURL: String

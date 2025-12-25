@@ -9,7 +9,8 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class ContactsServiceImpl @Inject constructor(val config: RetrofitConfig) : BaseRetrofitService(config),
+class ContactsServiceImpl @Inject constructor(config: RetrofitConfig) :
+    BaseRetrofitService(config),
     ContactsService {
 
     private val contactsApi = retrofit.create(ContactsAPI::class.java)
@@ -26,7 +27,7 @@ class ContactsServiceImpl @Inject constructor(val config: RetrofitConfig) : Base
         }
     }
 
-    override suspend fun getUserContacts(userId: Long) = processRetrofitExceptions {
+    override suspend fun getUserContacts(userId: Int) = processRetrofitExceptions {
         contactsApi.getUserContacts(userId).data
     }
 }

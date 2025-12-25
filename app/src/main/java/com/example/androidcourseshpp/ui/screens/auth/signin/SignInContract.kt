@@ -19,7 +19,7 @@ class SignInContract {
     sealed interface Effect : ViewEffect {
         data object NavigateToSingUpScreen : Effect
 
-        data class NavigateToUserProfileScreen(val userServerId: Long) : Effect
+        data class NavigateToUserProfileScreen(val userServerId: Int) : Effect
 
         data class ShowToast(val toastMessageResId: Int) : Effect
     }

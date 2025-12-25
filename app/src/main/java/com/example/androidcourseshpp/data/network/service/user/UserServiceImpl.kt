@@ -14,7 +14,7 @@ class UserServiceImpl @Inject constructor(
 
     private val userApi = retrofit.create(UserAPI::class.java)
 
-    override suspend fun updateUserInfo(userId: Long, userData: UpdateUserData) {
+    override suspend fun updateUserInfo(userId: Int, userData: UpdateUserData) {
         processRetrofitExceptions {
             userApi.updateUserInfo(
                 userId,
@@ -23,7 +23,7 @@ class UserServiceImpl @Inject constructor(
         }
     }
 
-    override suspend fun getUser(userId: Long) = processRetrofitExceptions {
+    override suspend fun getUser(userId: Int) = processRetrofitExceptions {
         userApi.getUser(userId).data
     }
 

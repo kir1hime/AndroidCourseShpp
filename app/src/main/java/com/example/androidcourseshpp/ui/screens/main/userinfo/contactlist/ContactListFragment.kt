@@ -33,6 +33,8 @@ class ContactListFragment :
     BaseFragment<FragmentContactlistBinding>(FragmentContactlistBinding::inflate) {
 
     private val viewModel by viewModels<ContactListViewModel>()
+
+    private lateinit var sharedContactProfilePhoto: ImageView
     private lateinit var requestPermissionsLauncher: ActivityResultLauncher<String>
 
     private val onBackPressedCallback: OnBackPressedCallback =
@@ -77,7 +79,8 @@ class ContactListFragment :
             }
 
             override fun showContactItemDetails(contactItem: ContactItem, avatar: ImageView) {
-                viewModel.setEvent(ContactListContract.Event.OnItemClicked(contactItem, avatar))
+                sharedContactProfilePhoto = avatar
+                viewModel.setEvent(ContactListContract.Event.OnItemClicked(contactItem))
             }
 
             override fun showFloatingDeleteButton() {
@@ -122,8 +125,7 @@ class ContactListFragment :
         collectFlow(viewModel.effect) { effect ->
             when (effect) {
                 is ContactListContract.Effect.NavigateToDetailsScreen -> moveToDetailsScreen(
-                    effect.contact,
-                    effect.avatar
+                    effect.contact
                 )
 
                 is ContactListContract.Effect.NavigateToUserProfileScreen -> moveBackToUserProfileScreen()
@@ -214,8 +216,8 @@ class ContactListFragment :
         parentFragment?.moveToUserProfileTab()
     }
 
-    private fun moveToDetailsScreen(contactItem: ContactItem, avatar: ImageView) {
-        val extras = FragmentNavigatorExtras(avatar to contactItem.id.toString())
+    private fun moveToDetailsScreen(contactItem: ContactItem) {
+        val extras = FragmentNavigatorExtras(sharedContactProfilePhoto to contactItem.id.toString())
 
         val direction = UserInfoFragmentDirections
             .actionUserInfoFragmentToContactDetailsFragment(contactItem.toContactDetailsEntity())

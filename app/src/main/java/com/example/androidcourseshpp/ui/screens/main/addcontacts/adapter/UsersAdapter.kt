@@ -2,6 +2,7 @@ package com.example.androidcourseshpp.ui.screens.main.addcontacts.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidcourseshpp.R
@@ -10,7 +11,9 @@ import com.example.androidcourseshpp.databinding.AddContactItemBinding
 import com.example.androidcourseshpp.ui.utils.loadImageFromURLCircled
 
 
-class UsersAdapter(private val actions: UserItemActions) :
+class UsersAdapter(
+    private val actions: UserItemActions,
+) :
     ListAdapter<UserItem, UsersAdapter.ViewHolder>(UserItemDIffUtilCallback) {
     inner class ViewHolder(private val binding: AddContactItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -30,14 +33,19 @@ class UsersAdapter(private val actions: UserItemActions) :
 
         private fun setListeners(userItem: UserItem) = with(binding) {
             textViewAddContact.setOnClickListener {
-                actions.addToContacts(userItem)
+                addContact(userItem)
             }
             imageButtonAddContact.setOnClickListener {
-                actions.addToContacts(userItem)
+                addContact(userItem)
             }
             addContactItem.setOnClickListener {
                 actions.showUserItemDetails(userItem, imageViewAvatar)
             }
+        }
+
+        private fun addContact(userItem: UserItem) = with(binding) {
+            progressBarRequest.isVisible = true
+            actions.addToContacts(userItem) { progressBarRequest.isVisible = false }
         }
     }
 

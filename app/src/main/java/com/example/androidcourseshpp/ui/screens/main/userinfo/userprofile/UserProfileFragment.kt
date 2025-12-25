@@ -50,7 +50,7 @@ class UserProfileFragment : BaseFragment<FragmentUserProfileBinding>(FragmentUse
     }
 
     private fun setUserInfo() {
-        val userServerId = requireActivity().intent.getLongExtra(USER_SERVER_ID, DEFAULT_ID_VALUE)
+        val userServerId = requireActivity().intent.getIntExtra(USER_SERVER_ID, DEFAULT_ID_VALUE)
         viewModel.setEvent(UserProfileContract.Event.UpdateUserInfo(userServerId))
     }
 
@@ -110,7 +110,7 @@ class UserProfileFragment : BaseFragment<FragmentUserProfileBinding>(FragmentUse
         parentFragment?.moveToContactsTab()
     }
 
-    private fun moveToEditProfileScreen(userServerId: Long) {
+    private fun moveToEditProfileScreen(userServerId: Int) {
         val direction =
             UserInfoFragmentDirections.actionUserInfoFragmentToEditProfileFragment(userServerId)
         findNavController().navigate(direction)

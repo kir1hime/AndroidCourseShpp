@@ -16,8 +16,7 @@ class ContactListContract {
             Event
 
         data class OnItemClicked(
-            val contact: ContactItem,
-            val avatar: ImageView
+            val contact: ContactItem
         ) : Event
 
         data class ContactItemDeleted(
@@ -38,8 +37,7 @@ class ContactListContract {
     sealed interface Effect : ViewEffect {
         data object NavigateToUserProfileScreen : Effect
         data class NavigateToDetailsScreen(
-            val contact: ContactItem,
-            val avatar: ImageView
+            val contact: ContactItem
         ) : Effect
 
         data object NavigateToAddContactsScreen : Effect

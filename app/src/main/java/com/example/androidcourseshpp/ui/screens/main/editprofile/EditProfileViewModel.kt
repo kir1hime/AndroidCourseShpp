@@ -74,7 +74,7 @@ class EditProfileViewModel @Inject constructor(
         setState { copy(avatar = profilePhotoUrl) }
     }
 
-    private fun setUserInfo(userServerId: Long) {
+    private fun setUserInfo(userServerId: Int) {
         processNetworkExceptions(
             toExecute = {
                 setState {
@@ -118,7 +118,7 @@ class EditProfileViewModel @Inject constructor(
         )
     }
 
-    private fun updateUserInfo(userServerId: Long, updateUserData: UpdateUserData) {
+    private fun updateUserInfo(userServerId: Int, updateUserData: UpdateUserData) {
         processNetworkExceptions(
             toExecute = {
                 setState { copy(isProgressBarShowed = true) }

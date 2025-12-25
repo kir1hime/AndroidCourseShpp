@@ -7,5 +7,5 @@ interface ContactsService {
 
     suspend fun addContact(contactData: ContactData)
     suspend fun deleteContact(contactData: ContactData)
-    suspend fun getUserContacts(userId:Long): GetUserContactsEntity
+    suspend fun getUserContacts(userId:Int): GetUserContactsEntity
 }

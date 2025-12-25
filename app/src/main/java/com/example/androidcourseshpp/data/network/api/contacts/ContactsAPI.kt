@@ -11,11 +11,11 @@ import retrofit2.http.Path
 interface ContactsAPI {
 
     @PUT("users/{userId}/contacts")
-    suspend fun addContact(@Path("userId") userId: Long, @Body addContactRequestDTO: AddContactRequestDTO)
+    suspend fun addContact(@Path("userId") userId: Int, @Body addContactRequestDTO: AddContactRequestDTO)
 
     @DELETE("users/{userId}/contacts/{contactId}")
-    suspend fun deleteContact(@Path("userId") userId:Long, @Path("contactId") contactId:Int)
+    suspend fun deleteContact(@Path("userId") userId:Int, @Path("contactId") contactId:Int)
 
     @GET("users/{userId}/contacts")
-    suspend fun getUserContacts(@Path("userId") userId: Long): GetUserContactsResponseDTO
+    suspend fun getUserContacts(@Path("userId") userId: Int): GetUserContactsResponseDTO
 }

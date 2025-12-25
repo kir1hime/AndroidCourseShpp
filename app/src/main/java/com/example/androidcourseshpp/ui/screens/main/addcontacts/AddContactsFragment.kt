@@ -23,14 +23,22 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
     (FragmentAddContactsBinding::inflate) {
 
     private val viewModel by viewModels<AddContactsViewModel>()
+
+    private lateinit var sharedUserProfilePhoto: ImageView
     private val adapter by lazy {
         UsersAdapter(object : UserItemActions {
-            override fun addToContacts(userItem: UserItem) {
-                viewModel.setEvent(AddContactsContract.Event.OnAddContactClicked)
+            override fun addToContacts(userItem: UserItem, interruptProgressBar: () -> Unit) {
+                viewModel.setEvent(
+                    AddContactsContract.Event.OnAddContactClicked(
+                        userItem,
+                        interruptProgressBar
+                    )
+                )
             }
 
             override fun showUserItemDetails(userItem: UserItem, avatar: ImageView) {
-                viewModel.setEvent(AddContactsContract.Event.OnUserItemClicked(userItem, avatar))
+                sharedUserProfilePhoto = avatar
+                viewModel.setEvent(AddContactsContract.Event.OnUserItemClicked(userItem))
             }
         })
     }
@@ -64,8 +72,7 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
                 is AddContactsContract.Effect.NavigateToContactListScreen -> moveToUserList()
                 is AddContactsContract.Effect.ShowToast -> makeToast(effect.toastMessageResId)
                 is AddContactsContract.Effect.NavigateToDetailsScreen -> moveToDetailsScreen(
-                    effect.userItem,
-                    effect.avatar
+                    effect.userItem
                 )
             }
         }
@@ -77,8 +84,10 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
         }
     }
 
-    private fun moveToDetailsScreen(userItem: UserItem, avatar: ImageView) {
-        val extras = FragmentNavigatorExtras(avatar to userItem.id.toString())
+    private fun moveToDetailsScreen(userItem: UserItem) {
+        val extras =
+            FragmentNavigatorExtras(sharedUserProfilePhoto to userItem.id.toString())
+
 
         val direction =
             AddContactsFragmentDirections.actionAddContactsFragmentToContactDetailsFragment(userItem.toContactDetailsEntity())
