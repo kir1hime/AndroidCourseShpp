@@ -3,8 +3,10 @@ package com.example.androidcourseshpp.ui.screens.main.addcontacts
 
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.androidcourseshpp.R
@@ -24,11 +26,11 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
     private val adapter by lazy {
         UsersAdapter(object : UserItemActions {
             override fun addToContacts(userItem: UserItem) {
-                TODO("Not yet implemented")
+                viewModel.setEvent(AddContactsContract.Event.OnAddContactClicked)
             }
 
-            override fun showUserItemDetails(userItem: UserItem) {
-                TODO("Not yet implemented")
+            override fun showUserItemDetails(userItem: UserItem, avatar: ImageView) {
+                viewModel.setEvent(AddContactsContract.Event.OnUserItemClicked(userItem, avatar))
             }
         })
     }
@@ -56,12 +58,36 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
             adapter.submitList(userList)
             progressBarRequest.isVisible = state.isProgressBarShowed
         }
+
+        collectFlow(viewModel.effect) { effect ->
+            when (effect) {
+                is AddContactsContract.Effect.NavigateToDetailsScreen -> moveToDetailsScreen(
+                    effect.userItem,
+                    effect.avatar
+                )
+
+                is AddContactsContract.Effect.NavigateToContactListScreen -> moveToUserList()
+            }
+        }
     }
 
     override fun setListeners() = with(binding) {
         imageButtonArrowBack.setOnClickListener {
             findNavController().navigateUp()
         }
+    }
+
+    private fun moveToDetailsScreen(userItem: UserItem, avatar: ImageView) {
+        val extras = FragmentNavigatorExtras(avatar to userItem.id.toString())
+
+        val direction =
+            AddContactsFragmentDirections.actionAddContactsFragmentToContactDetailsFragment(userItem.toContactDetailsEntity())
+
+        findNavController().navigate(direction, extras)
+    }
+
+    private fun moveToUserList() {
+        findNavController().navigateUp()
     }
 
 }

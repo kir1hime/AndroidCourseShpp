@@ -1,8 +1,18 @@
 package com.example.androidcourseshpp.data.userlist
 
+import com.example.androidcourseshpp.ui.screens.main.contactdetails.ContactDetailsEntity
+
 data class UserItem(
     val id: Long,
     val name: String,
     val career: String,
     val avatarURL: String
-)
+) {
+    fun toContactDetailsEntity() =
+        ContactDetailsEntity(
+            id = id,
+            name = name,
+            career = career,
+            avatarURL = avatarURL
+        )
+}

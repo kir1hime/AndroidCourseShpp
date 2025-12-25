@@ -10,7 +10,7 @@ data class ContactItem(
 ) {
     fun toContactDetailsEntity() =
         ContactDetailsEntity(
-            id = id,
+            id = id.toLong(),
             name = name,
             career = career,
             avatarURL = avatarURL

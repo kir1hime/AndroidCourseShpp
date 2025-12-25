@@ -30,6 +30,9 @@ class UsersAdapter(private val actions: UserItemActions) :
             imageButtonAddContact.setOnClickListener {
                 actions.addToContacts(userItem)
             }
+            addContactItem.setOnClickListener {
+                actions.showUserItemDetails(userItem, imageViewAvatar)
+            }
         }
     }
 

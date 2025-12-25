@@ -1,10 +1,12 @@
 package com.example.androidcourseshpp.ui.screens.main.addcontacts
 
 
+import android.widget.ImageView
 import com.example.androidcourseshpp.data.dataProvider.UserDataProvider
 import com.example.androidcourseshpp.data.network.RetrofitServiceProviderHolder
 import com.example.androidcourseshpp.data.userlist.UserItem
 import com.example.androidcourseshpp.ui.BaseViewModel
+import com.example.androidcourseshpp.ui.utils.ImageConvertor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -15,14 +17,35 @@ class AddContactsViewModel @Inject constructor(
 ) :
     BaseViewModel<AddContactsContract.Event, AddContactsContract.Effect, AddContactsContract.UIState>() {
 
+    init {
+        initUsers()
+    }
+
     override fun initState() = AddContactsContract.UIState(emptyList(), false)
 
     override fun handleEvent(event: AddContactsContract.Event) {
-        TODO("Not yet implemented")
+        when (event) {
+            is AddContactsContract.Event.OnAddContactClicked -> addContact()
+            is AddContactsContract.Event.OnSearchButtonClicked -> onSearchButtonClicked()
+            is AddContactsContract.Event.OnArrowBackButtonClicked -> navigateToPreviousScreen()
+            is AddContactsContract.Event.OnUserItemClicked -> navigateToDetailsScreen(
+                event.userItem,
+                event.avatar
+            )
+        }
     }
 
-    init {
-        initUsers()
+    private fun onSearchButtonClicked() {}
+    private fun navigateToPreviousScreen() {
+        setEffect(AddContactsContract.Effect.NavigateToContactListScreen)
+    }
+
+    private fun addContact() {
+
+    }
+
+    private fun navigateToDetailsScreen(userItem: UserItem, avatar: ImageView) {
+        setEffect(AddContactsContract.Effect.NavigateToDetailsScreen(userItem, avatar))
     }
 
     private fun initUsers() {

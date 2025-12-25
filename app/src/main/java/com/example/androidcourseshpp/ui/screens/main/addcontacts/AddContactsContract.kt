@@ -10,7 +10,7 @@ class AddContactsContract {
     sealed interface Event : ViewEvent {
         data object OnArrowBackButtonClicked : Event
         data object OnSearchButtonClicked : Event
-        data object OnUserItemClicked : Event
+        data class OnUserItemClicked(val userItem: UserItem, val avatar: ImageView) : Event
         data object OnAddContactClicked : Event
     }
 
