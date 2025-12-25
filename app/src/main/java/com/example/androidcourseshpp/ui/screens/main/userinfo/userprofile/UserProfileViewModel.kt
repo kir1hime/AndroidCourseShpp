@@ -65,9 +65,6 @@ class UserProfileViewModel @Inject constructor(
                 processBackendException = {
                     setEffect(UserProfileContract.Effect.ShowToast(R.string.enter_error))
                 },
-                processAuthenticationException = {
-                    setEffect(UserProfileContract.Effect.ShowToast(R.string.enter_error))
-                },
                 processResponseProcessingException = {
                     setEffect(UserProfileContract.Effect.ShowToast(R.string.enter_error))
                 },

@@ -50,9 +50,6 @@ class SplashViewModel @Inject constructor(
             processConnectionException = {
                 setEffect(SplashContract.Effect.NavigateToSignInScreen)
             },
-            processAuthenticationException = {
-                setEffect(SplashContract.Effect.NavigateToSignInScreen)
-            },
             finally = { }
         )
     }

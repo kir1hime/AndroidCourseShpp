@@ -67,7 +67,6 @@ class AddContactsViewModel @Inject constructor(
             },
             processBackendException = {},
             processConnectionException = {},
-            processAuthenticationException = {},
             processResponseProcessingException = {},
             finally = { setState { copy(isProgressBarShowed = false) } }
         )

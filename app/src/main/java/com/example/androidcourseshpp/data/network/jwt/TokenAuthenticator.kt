@@ -17,7 +17,7 @@ class TokenAuthenticator(
 
         synchronized(lock) {
             if (countNumberOfResponses(response) >= MAX_NUM_OF_RESPONSES) {
-                throw AuthenticationException()
+                return null
             }
             val currentAccessToken = jwtManager.getAccessToken()
 
@@ -32,9 +32,10 @@ class TokenAuthenticator(
             val newTokensResponse = tokenRefreshAPI.refreshToken().execute()
 
             if (!newTokensResponse.isSuccessful) {
-                throw AuthenticationException()
+                jwtManager.clearTokens()
+                return null
             }
-            val newTokens = newTokensResponse.body()?.data ?: throw AuthenticationException()
+            val newTokens = newTokensResponse.body()?.data ?: return null
 
             jwtManager.saveTokens(newTokens.accessToken, newTokens.refreshToken)
 
@@ -62,5 +63,3 @@ class TokenAuthenticator(
         const val MAX_NUM_OF_RESPONSES = 3
     }
 }
-
-class AuthenticationException() : Exception()
