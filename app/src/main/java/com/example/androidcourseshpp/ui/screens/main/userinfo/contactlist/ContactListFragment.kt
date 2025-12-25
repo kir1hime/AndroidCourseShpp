@@ -38,7 +38,7 @@ class ContactListFragment :
     private val onBackPressedCallback: OnBackPressedCallback =
         object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                moveBackToMyProfileScreen()
+                moveBackToUserProfileScreen()
             }
         }
 
@@ -126,7 +126,7 @@ class ContactListFragment :
                     effect.avatar
                 )
 
-                is ContactListContract.Effect.NavigateToMyProfileScreen -> moveBackToMyProfileScreen()
+                is ContactListContract.Effect.NavigateToUserProfileScreen -> moveBackToUserProfileScreen()
                 is ContactListContract.Effect.NavigateToAddContactsScreen -> moveToAddContactsScreen()
             }
         }
@@ -209,16 +209,16 @@ class ContactListFragment :
             }
     }
 
-    fun moveBackToMyProfileScreen() {
+    fun moveBackToUserProfileScreen() {
         val parentFragment = parentFragment as? TabSwitchable
-        parentFragment?.moveToMyProfileTab()
+        parentFragment?.moveToUserProfileTab()
     }
 
-    private fun moveToDetailsScreen(contact: ContactItem, avatar: ImageView) {
-        val extras = FragmentNavigatorExtras(avatar to contact.id.toString())
+    private fun moveToDetailsScreen(contactItem: ContactItem, avatar: ImageView) {
+        val extras = FragmentNavigatorExtras(avatar to contactItem.id.toString())
 
-        val direction =
-            UserInfoFragmentDirections.actionUserInfoFragmentToContactDetailsFragment(contact)
+        val direction = UserInfoFragmentDirections
+            .actionUserInfoFragmentToContactDetailsFragment(contactItem.toContactDetailsEntity())
 
         findNavController().navigate(direction, extras)
     }

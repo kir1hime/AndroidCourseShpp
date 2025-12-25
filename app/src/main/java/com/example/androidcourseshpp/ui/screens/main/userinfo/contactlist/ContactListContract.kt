@@ -36,7 +36,7 @@ class ContactListContract {
     }
 
     sealed interface Effect : ViewEffect {
-        data object NavigateToMyProfileScreen : Effect
+        data object NavigateToUserProfileScreen : Effect
         data class NavigateToDetailsScreen(
             val contact: ContactItem,
             val avatar: ImageView

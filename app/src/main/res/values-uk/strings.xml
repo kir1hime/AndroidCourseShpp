@@ -55,7 +55,7 @@
     <string name="add_contact_dialog_negative_button_text">Закрити</string>
     <string name="profile_label">Профіль</string>
     <string name="message">Повідомлення</string>
-    <string name="my_profile">Мій профіль</string>
+    <string name="user_profile">Мій профіль</string>
 
     <!-- Sign up extended-->
     <string name="delete_button_description">видалити всі вибрані елементи</string>

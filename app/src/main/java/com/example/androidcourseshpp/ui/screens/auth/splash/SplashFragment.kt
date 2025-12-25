@@ -1,9 +1,7 @@
 package com.example.androidcourseshpp.ui.screens.auth.splash
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.androidcourseshpp.databinding.FragmentSplashBinding
@@ -22,7 +20,7 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>(FragmentSplashBinding
         collectFlow(viewModel.effect) { effect ->
             when (effect) {
                 is SplashContract.Effect.NavigateToSignInScreen -> moveToSignInScreen()
-                is SplashContract.Effect.NavigateToMyProfileScreen -> moveToMyProfileScreen(effect.userServerId)
+                is SplashContract.Effect.NavigateToUserProfileScreen -> moveToUserProfileScreen(effect.userServerId)
             }
         }
     }

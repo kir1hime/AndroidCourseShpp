@@ -3,6 +3,7 @@ package com.example.androidcourseshpp.ui.screens.main.addcontacts
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,6 +24,10 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
     private val adapter by lazy {
         UsersAdapter(object : UserItemActions {
             override fun addToContacts(userItem: UserItem) {
+                TODO("Not yet implemented")
+            }
+
+            override fun showUserItemDetails(userItem: UserItem) {
                 TODO("Not yet implemented")
             }
         })
@@ -49,6 +54,7 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
         collectFlow(viewModel.state) { state ->
             val userList = state.userList
             adapter.submitList(userList)
+            progressBarRequest.isVisible = state.isProgressBarShowed
         }
     }
 

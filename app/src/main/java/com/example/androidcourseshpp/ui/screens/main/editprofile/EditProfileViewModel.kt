@@ -36,7 +36,7 @@ class EditProfileViewModel @Inject constructor(
             is EditProfileContract.Event.OnAddProfilePhotoImageViewClicked -> navigateToChooseProfilePhotoDialog()
             is EditProfileContract.Event.OnSaveButtonClicked -> {
                 updateUserInfo(event.userServerId, event.updateUserData)
-                navigateToMyProfileScreen()
+                navigateToUserProfileScreen()
             }
 
             is EditProfileContract.Event.SetUserInfo -> setUserInfo(event.userServerId)
@@ -149,8 +149,8 @@ class EditProfileViewModel @Inject constructor(
         setState { copy(isSaveButtonEnabled = false) }
     }
 
-    private fun navigateToMyProfileScreen() {
-        setEffect(EditProfileContract.Effect.NavigateToMyProfileScreen)
+    private fun navigateToUserProfileScreen() {
+        setEffect(EditProfileContract.Effect.NavigateToUserProfileScreen)
     }
 
     private fun navigateToChooseProfilePhotoDialog() {

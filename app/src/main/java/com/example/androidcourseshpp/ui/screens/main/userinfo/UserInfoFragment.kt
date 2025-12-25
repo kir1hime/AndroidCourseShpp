@@ -27,15 +27,15 @@ class UserInfoFragment : BaseFragment<FragmentUserinfoBinding>(FragmentUserinfoB
         TabLayoutMediator(tabLayoutUserInfo, viewPagerUserInformation) { tabItem, position ->
 
             tabItem.text = when (Tab.entries[position]) {
-                Tab.MYPROFILE -> getString(R.string.my_profile)
+                Tab.USER_PROFILE -> getString(R.string.user_profile)
                 Tab.CONTACTS -> getString(R.string.contacts)
             }
 
         }.attach()
     }
 
-    override fun moveToMyProfileTab() {
-        binding.viewPagerUserInformation.currentItem = Tab.MYPROFILE.ordinal
+    override fun moveToUserProfileTab() {
+        binding.viewPagerUserInformation.currentItem = Tab.USER_PROFILE.ordinal
     }
 
     override fun moveToContactsTab() {

@@ -7,7 +7,7 @@ import com.example.androidcourseshpp.data.network.RetrofitServiceProviderHolder
 import com.example.androidcourseshpp.data.network.jwt.JWTManager
 import com.example.androidcourseshpp.data.network.entity.signup.SignUpData
 import com.example.androidcourseshpp.ui.BaseViewModel
-import com.example.androidcourseshpp.ui.screens.auth.signup.entity.SignUpUserInfo
+import com.example.androidcourseshpp.ui.screens.auth.signup.entity.SignUpUserInfoEntity
 import com.example.androidcourseshpp.ui.utils.ImageConvertor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -46,7 +46,7 @@ class SignUpExtendedViewModel @Inject constructor(
     private fun processInputData(
         userName: String,
         mobilePhone: String,
-        signUpUserInfo: SignUpUserInfo,
+        signUpUserInfo: SignUpUserInfoEntity,
         avatar: Bitmap
     ) {
         var isMobilePhoneCorrect: Boolean
@@ -90,7 +90,7 @@ class SignUpExtendedViewModel @Inject constructor(
                     if (signUpUserInfo.toRememberUser) {
                         userDataProvider.saveUserServerId(userServerId)
                     }
-                    setEffect(SignUpExtendedContract.Effect.NavigateToMyProfileScreen(userServerId))
+                    setEffect(SignUpExtendedContract.Effect.NavigateToUserProfileScreen(userServerId))
 
                 },
                 processBackendException = {

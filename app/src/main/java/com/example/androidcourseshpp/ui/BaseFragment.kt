@@ -74,7 +74,7 @@ abstract class BaseFragment<VBinding : ViewBinding>(
         }
     }
 
-    protected fun moveToMyProfileScreen(userServerId: Long) {
+    protected fun moveToUserProfileScreen(userServerId: Long) {
         val intent = Intent(requireContext(), MainActivity::class.java)
 
         intent.putExtra(USER_SERVER_ID, userServerId)

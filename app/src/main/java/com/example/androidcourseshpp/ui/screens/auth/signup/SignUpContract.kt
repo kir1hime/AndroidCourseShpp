@@ -3,7 +3,7 @@ package com.example.androidcourseshpp.ui.screens.auth.signup
 import com.example.androidcourseshpp.ui.ViewEffect
 import com.example.androidcourseshpp.ui.ViewEvent
 import com.example.androidcourseshpp.ui.ViewState
-import com.example.androidcourseshpp.ui.screens.auth.signup.entity.SignUpUserInfo
+import com.example.androidcourseshpp.ui.screens.auth.signup.entity.SignUpUserInfoEntity
 
 class SignUpContract {
 
@@ -17,7 +17,7 @@ class SignUpContract {
 
     sealed interface Effect : ViewEffect {
         data class NavigateToSignUpExtended(
-            val signUpUserInfo: SignUpUserInfo
+            val signUpUserInfo: SignUpUserInfoEntity
         ) : Effect
 
         data class ShowToast(val toastMessageResId: Int) : Effect

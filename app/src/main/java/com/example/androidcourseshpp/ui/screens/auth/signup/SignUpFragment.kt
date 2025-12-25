@@ -7,7 +7,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.androidcourseshpp.data.MIN_NUM_OF_CHARS_IN_PASSWORD
 import com.example.androidcourseshpp.databinding.FragmentSignUpBinding
 import com.example.androidcourseshpp.ui.BaseFragment
-import com.example.androidcourseshpp.ui.screens.auth.signup.entity.SignUpUserInfo
+import com.example.androidcourseshpp.ui.screens.auth.signup.entity.SignUpUserInfoEntity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -59,7 +59,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
         )
     }
 
-    private fun moveToSignUpExtended(signUpUserInfo: SignUpUserInfo) {
+    private fun moveToSignUpExtended(signUpUserInfo: SignUpUserInfoEntity) {
         val direction =
             SignUpFragmentDirections.actionSignUpFragmentToSignUpExtendedFragment(signUpUserInfo)
         findNavController().navigate(direction)

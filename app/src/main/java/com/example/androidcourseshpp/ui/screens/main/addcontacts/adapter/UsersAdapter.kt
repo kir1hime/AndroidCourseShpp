@@ -16,6 +16,7 @@ class UsersAdapter(private val actions: UserItemActions) :
 
         fun bind(userItem: UserItem) = with(binding) {
             imageViewAvatar.loadImageFromURLCircled(root.context, userItem.avatarURL)
+            imageViewAvatar.transitionName = userItem.id.toString()
             textViewName.text = userItem.name
             textViewCareer.text = userItem.career
 

@@ -6,7 +6,7 @@ import javax.inject.Inject
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.PasswordErrorMessagesContainer
 import com.example.androidcourseshpp.ui.BaseViewModel
-import com.example.androidcourseshpp.ui.screens.auth.signup.entity.SignUpUserInfo
+import com.example.androidcourseshpp.ui.screens.auth.signup.entity.SignUpUserInfoEntity
 
 
 @HiltViewModel
@@ -54,7 +54,7 @@ class SignUpViewModel @Inject constructor() :
         if (isEMailCorrect && isPasswordCorrect) {
             setEffect(
                 SignUpContract.Effect.NavigateToSignUpExtended(
-                    SignUpUserInfo(
+                    SignUpUserInfoEntity(
                         email = email,
                         password = password,
                         toRememberUser = toRememberUser

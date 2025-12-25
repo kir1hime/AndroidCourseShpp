@@ -1,15 +1,21 @@
 package com.example.androidcourseshpp.data.contactlist
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
+import com.example.androidcourseshpp.ui.screens.main.contactdetails.ContactDetailsEntity
 
-@Parcelize
 data class ContactItem(
     val id: Int,
     val name: String,
     val career: String,
     val avatarURL: String,
-) : Parcelable
+) {
+    fun toContactDetailsEntity() =
+        ContactDetailsEntity(
+            id = id,
+            name = name,
+            career = career,
+            avatarURL = avatarURL
+        )
+}
 
 
 data class SelectableContactItem(val item: ContactItem, var isSelectionModeEnabled: Boolean)

@@ -64,7 +64,7 @@
     <!-- Detail view -->
     <string name="profile_label">Profile</string>
     <string name="message">MESSAGE</string>
-    <string name="my_profile">My Profile</string>
+    <string name="user_profile">My Profile</string>
 
     <!-- Sign up extended-->
     <string name="delete_button_description">to delete all selcted items</string>

@@ -27,7 +27,7 @@ class EditProfileContract {
     sealed interface Effect : ViewEffect {
         data class ShowToast(val toastMessageResId: Int) : Effect
         data object NavigateToChooseProfilePhotoDialog : Effect
-        data object NavigateToMyProfileScreen : Effect
+        data object NavigateToUserProfileScreen : Effect
     }
 
     data class UIState(

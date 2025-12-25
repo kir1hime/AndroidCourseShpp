@@ -57,7 +57,7 @@ class SignUpExtendedFragment : BaseFragment<FragmentSignUpExtendedBinding>(
     override fun setObservers() = with(binding) {
         collectFlow(viewModel.effect) { effect ->
             when (effect) {
-                is SignUpExtendedContract.Effect.NavigateToMyProfileScreen -> moveToMyProfileScreen(
+                is SignUpExtendedContract.Effect.NavigateToUserProfileScreen -> moveToUserProfileScreen(
                     effect.userServerId
                 )
 

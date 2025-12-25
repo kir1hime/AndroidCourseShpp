@@ -116,7 +116,7 @@ class ContactListViewModel @Inject constructor(
     }
 
     private fun navigateToPreviousScreen() {
-        setEffect(ContactListContract.Effect.NavigateToMyProfileScreen)
+        setEffect(ContactListContract.Effect.NavigateToUserProfileScreen)
     }
     private fun navigateToAddContactsScreen() {
         setEffect(ContactListContract.Effect.NavigateToAddContactsScreen)

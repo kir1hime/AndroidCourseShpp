@@ -161,8 +161,8 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(FragmentEdi
         collectFlow(viewModel.effect) { effect ->
             when (effect) {
                 is EditProfileContract.Effect.NavigateToChooseProfilePhotoDialog -> moveToChooseProfilePhotoDialog()
-                is EditProfileContract.Effect.NavigateToMyProfileScreen -> {
-                    moveBackToMyProfileScreen()
+                is EditProfileContract.Effect.NavigateToUserProfileScreen -> {
+                    moveBackToUserProfileScreen()
                 }
 
                 is EditProfileContract.Effect.ShowToast -> makeToast(effect.toastMessageResId)
@@ -170,7 +170,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(FragmentEdi
         }
     }
 
-    fun moveBackToMyProfileScreen() {
+    fun moveBackToUserProfileScreen() {
         findNavController().navigateUp()
     }
 

@@ -30,7 +30,7 @@
         <com.google.android.material.tabs.TabItem
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tool:text="@string/my_profile" />
+            tool:text="@string/user_profile" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="match_parent"

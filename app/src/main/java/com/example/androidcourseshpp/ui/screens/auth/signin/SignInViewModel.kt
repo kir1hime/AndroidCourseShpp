@@ -55,7 +55,7 @@ class SignInViewModel @Inject constructor(
                     userDataProvider.saveUserServerId(userServerId)
                 }
 
-                setEffect(SignInContract.Effect.NavigateToMyProfileScreen(userServerId))
+                setEffect(SignInContract.Effect.NavigateToUserProfileScreen(userServerId))
 
             },
             processBackendException = {

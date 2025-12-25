@@ -12,7 +12,7 @@
         tools:layout="@layout/fragment_detailview">
         <argument
             android:name="contactDetails"
-            app:argType="com.example.androidcourseshpp.data.contactlist.ContactItem" />
+            app:argType="com.example.androidcourseshpp.ui.screens.main.contactdetails.ContactDetailsEntity" />
 
     </fragment>
     <fragment
@@ -63,5 +63,9 @@
         android:id="@+id/addContactsFragment"
         android:name="com.example.androidcourseshpp.ui.screens.main.addcontacts.AddContactsFragment"
         android:label="fragment_add_contacts"
-        tools:layout="@layout/fragment_add_contacts" />
+        tools:layout="@layout/fragment_add_contacts" >
+        <action
+            android:id="@+id/action_addContactsFragment_to_contactDetailsFragment"
+            app:destination="@id/contactDetailsFragment" />
+    </fragment>
 </navigation>

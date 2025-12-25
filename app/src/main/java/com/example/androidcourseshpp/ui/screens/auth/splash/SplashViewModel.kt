@@ -37,7 +37,7 @@ class SplashViewModel @Inject constructor(
                 val userServerId = response.user.id
 
                 setEffect(
-                    SplashContract.Effect.NavigateToMyProfileScreen(userServerId)
+                    SplashContract.Effect.NavigateToUserProfileScreen(userServerId)
                 )
 
             },
