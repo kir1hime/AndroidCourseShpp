@@ -2,12 +2,15 @@ package com.example.androidcourseshpp.ui.screens.main.addcontacts
 
 
 import android.widget.ImageView
+import androidx.lifecycle.viewModelScope
+import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.dataProvider.UserDataProvider
 import com.example.androidcourseshpp.data.network.RetrofitServiceProviderHolder
 import com.example.androidcourseshpp.data.userlist.UserItem
 import com.example.androidcourseshpp.ui.BaseViewModel
 import com.example.androidcourseshpp.ui.utils.ImageConvertor
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -63,11 +66,18 @@ class AddContactsViewModel @Inject constructor(
                     )
                 }
 
+
                 setState { copy(userList = userItemList) }
             },
-            processBackendException = {},
-            processConnectionException = {},
-            processResponseProcessingException = {},
+            processBackendException = {
+                setEffect(AddContactsContract.Effect.ShowToast(R.string.generic_error))
+            },
+            processConnectionException = {
+                setEffect(AddContactsContract.Effect.ShowToast(R.string.generic_error))
+            },
+            processResponseProcessingException = {
+                setEffect(AddContactsContract.Effect.ShowToast(R.string.connection_error))
+            },
             finally = { setState { copy(isProgressBarShowed = false) } }
         )
     }

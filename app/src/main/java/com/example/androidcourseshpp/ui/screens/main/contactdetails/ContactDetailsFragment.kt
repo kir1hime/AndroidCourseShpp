@@ -1,7 +1,9 @@
 package com.example.androidcourseshpp.ui.screens.main.contactdetails
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import androidx.core.graphics.drawable.toDrawable
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.transition.TransitionInflater
@@ -33,10 +35,17 @@ class ContactDetailsFragment :
     }
 
     private fun setContactDetailsInfo() = with(binding) {
-        circleViewProfilePhoto.loadImageFromURLCircled(
-            requireContext(),
-            args.contactDetails.avatarURL
-        )
+        val avatarURL = args.contactDetails.avatarURL
+
+        if (avatarURL.isBlank()) {
+            circleViewProfilePhoto.setImageResource(R.drawable.profile_mockup)
+        } else {
+            circleViewProfilePhoto.loadImageFromURLCircled(
+                requireContext(),
+                avatarURL
+            )
+        }
+
         textViewName.text = args.contactDetails.name
         textViewCareer.text = args.contactDetails.career
     }

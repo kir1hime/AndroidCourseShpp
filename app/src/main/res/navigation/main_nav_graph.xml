@@ -23,8 +23,6 @@
         <action
             android:id="@+id/action_userInfoFragment_to_contactDetailsFragment"
             app:destination="@id/contactDetailsFragment"
-            app:enterAnim="@anim/slide_in_from_right_to_left"
-            app:exitAnim="@anim/slide_out_from_right_to_left"
             app:popEnterAnim="@anim/slide_in_from_left_to_right"
             app:popExitAnim="@anim/slide_out_from_left_to_right" />
         <action
@@ -40,7 +38,7 @@
             app:enterAnim="@anim/slide_in_from_right_to_left"
             app:exitAnim="@anim/slide_out_from_right_to_left"
             app:popEnterAnim="@anim/slide_in_from_left_to_right"
-            app:popExitAnim="@anim/slide_out_from_left_to_right"/>
+            app:popExitAnim="@anim/slide_out_from_left_to_right" />
     </fragment>
     <fragment
         android:id="@+id/editProfileFragment"
@@ -63,9 +61,11 @@
         android:id="@+id/addContactsFragment"
         android:name="com.example.androidcourseshpp.ui.screens.main.addcontacts.AddContactsFragment"
         android:label="fragment_add_contacts"
-        tools:layout="@layout/fragment_add_contacts" >
+        tools:layout="@layout/fragment_add_contacts">
         <action
             android:id="@+id/action_addContactsFragment_to_contactDetailsFragment"
-            app:destination="@id/contactDetailsFragment" />
+            app:destination="@id/contactDetailsFragment"
+            app:popEnterAnim="@anim/slide_in_from_left_to_right"
+            app:popExitAnim="@anim/slide_out_from_left_to_right" />
     </fragment>
 </navigation>

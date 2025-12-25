@@ -4,6 +4,7 @@ import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.network.RetrofitConfig
 import com.example.androidcourseshpp.data.network.dto.ErrorResponseDTO
 import com.google.gson.JsonParseException
+import com.google.gson.stream.MalformedJsonException
 import retrofit2.HttpException
 import java.io.IOException
 

@@ -21,6 +21,7 @@ class AddContactsContract {
         ) : Effect
 
         data object NavigateToContactListScreen : Effect
+        data class ShowToast(val  toastMessageResId: Int): Effect
     }
 
     data class UIState(

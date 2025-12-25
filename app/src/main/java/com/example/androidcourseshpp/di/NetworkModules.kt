@@ -20,7 +20,9 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import okhttp3.ResponseBody.Companion.toResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
+import okhttp3.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -69,6 +71,7 @@ class RetrofitConfigModule {
         jwtManager: JWTManager
     ): OkHttpClient {
         return OkHttpClient.Builder()
+            .addInterceptor(createResponseInterceptor())
             .addInterceptor(createLoggingInterceptor())
             .addInterceptor(createAuthorizationInterceptor(jwtManager))
             .authenticator(
@@ -110,7 +113,6 @@ class RetrofitConfigModule {
 
     private fun createAuthorizationInterceptor(jwtManager: JWTManager) = Interceptor { chain ->
         val accessToken = jwtManager.getAccessToken()
-
         val modifiedRequest = chain.request().newBuilder()
         if (accessToken != "") {
             modifiedRequest.addHeader("Authorization", "Bearer $accessToken").build()
@@ -127,6 +129,22 @@ class RetrofitConfigModule {
             modifiedRequest.addHeader("RefreshToken", refreshToken).build()
         }
         chain.proceed(modifiedRequest.build())
+
+    }
+
+    private fun createResponseInterceptor() = Interceptor { chain ->
+        val response = chain.proceed(chain.request())
+
+        val body = response.body
+        var bodyString = body.string().trim()
+        val contentType = body.contentType()
+
+        if (bodyString.endsWith("]}")) {
+            bodyString = "$bodyString}"
+        }
+        bodyString.replace("nll", "null")
+        return@Interceptor response.newBuilder().body(bodyString.toResponseBody(contentType))
+            .build()
 
     }
 }

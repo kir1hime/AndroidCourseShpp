@@ -61,12 +61,12 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
 
         collectFlow(viewModel.effect) { effect ->
             when (effect) {
+                is AddContactsContract.Effect.NavigateToContactListScreen -> moveToUserList()
+                is AddContactsContract.Effect.ShowToast -> makeToast(effect.toastMessageResId)
                 is AddContactsContract.Effect.NavigateToDetailsScreen -> moveToDetailsScreen(
                     effect.userItem,
                     effect.avatar
                 )
-
-                is AddContactsContract.Effect.NavigateToContactListScreen -> moveToUserList()
             }
         }
     }

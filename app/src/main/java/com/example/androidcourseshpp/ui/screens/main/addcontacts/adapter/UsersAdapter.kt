@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.userlist.UserItem
 import com.example.androidcourseshpp.databinding.AddContactItemBinding
 import com.example.androidcourseshpp.ui.utils.loadImageFromURLCircled
@@ -15,7 +16,11 @@ class UsersAdapter(private val actions: UserItemActions) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(userItem: UserItem) = with(binding) {
-            imageViewAvatar.loadImageFromURLCircled(root.context, userItem.avatarURL)
+            imageViewAvatar.loadImageFromURLCircled(
+                context = root.context,
+                url = userItem.avatarURL,
+                placeholder = R.drawable.profile_mockup
+            )
             imageViewAvatar.transitionName = userItem.id.toString()
             textViewName.text = userItem.name
             textViewCareer.text = userItem.career
