@@ -76,6 +76,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonTryAgain"
         android:layout_width="@dimen/try_again_bt_w"
         android:layout_height="@dimen/try_again_bt_h"
         android:background="@drawable/try_again_background"

@@ -15,6 +15,8 @@ class AddContactsContract {
             val userItem: UserItem,
             val interruptProgressBar: () -> Unit
         ) : Event
+
+        data object OnTryAgainButtonClicked : Event
     }
 
     sealed interface Effect : ViewEffect {
@@ -29,5 +31,6 @@ class AddContactsContract {
     data class UIState(
         val userList: List<UserItem>,
         val isProgressBarShowed: Boolean,
+        val isTryAgainButtonShowed: Boolean
     ) : ViewState
 }

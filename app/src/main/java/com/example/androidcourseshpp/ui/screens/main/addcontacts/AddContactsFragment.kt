@@ -65,6 +65,7 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
             val userList = state.userList
             adapter.submitList(userList)
             progressBarRequest.isVisible = state.isProgressBarShowed
+            buttonTryAgain.isVisible = state.isTryAgainButtonShowed
         }
 
         collectFlow(viewModel.effect) { effect ->
@@ -82,15 +83,19 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
         imageButtonArrowBack.setOnClickListener {
             findNavController().navigateUp()
         }
+        buttonTryAgain.setOnClickListener {
+            viewModel.setEvent(AddContactsContract.Event.OnTryAgainButtonClicked)
+        }
     }
 
     private fun moveToDetailsScreen(userItem: UserItem) {
         val extras =
             FragmentNavigatorExtras(sharedUserProfilePhoto to userItem.id.toString())
 
-
         val direction =
-            AddContactsFragmentDirections.actionAddContactsFragmentToContactDetailsFragment(userItem.toContactDetailsEntity())
+            AddContactsFragmentDirections.actionAddContactsFragmentToContactDetailsFragment(
+                userItem.toContactDetailsEntity()
+            )
 
         findNavController().navigate(direction, extras)
     }

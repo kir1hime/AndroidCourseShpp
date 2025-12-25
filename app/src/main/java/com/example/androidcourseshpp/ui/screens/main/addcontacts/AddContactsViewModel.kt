@@ -1,18 +1,13 @@
 package com.example.androidcourseshpp.ui.screens.main.addcontacts
 
 
-import android.view.View
-import android.widget.ImageView
-import androidx.lifecycle.viewModelScope
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.dataProvider.UserDataProvider
 import com.example.androidcourseshpp.data.network.RetrofitServiceProviderHolder
 import com.example.androidcourseshpp.data.network.entity.contacts.ContactData
 import com.example.androidcourseshpp.data.userlist.UserItem
 import com.example.androidcourseshpp.ui.BaseViewModel
-import com.example.androidcourseshpp.ui.utils.ImageConvertor
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -29,6 +24,7 @@ class AddContactsViewModel @Inject constructor(
     override fun initState() = AddContactsContract.UIState(
         userList = emptyList(),
         isProgressBarShowed = false,
+        isTryAgainButtonShowed = false
     )
 
     override fun handleEvent(event: AddContactsContract.Event) {
@@ -37,6 +33,8 @@ class AddContactsViewModel @Inject constructor(
                 event.userItem,
                 event.interruptProgressBar
             )
+
+            is AddContactsContract.Event.OnTryAgainButtonClicked -> initUsers()
 
             is AddContactsContract.Event.OnSearchButtonClicked -> onSearchButtonClicked()
             is AddContactsContract.Event.OnArrowBackButtonClicked -> navigateToPreviousScreen()
@@ -67,7 +65,7 @@ class AddContactsViewModel @Inject constructor(
             processResponseProcessingException = {
                 setEffect(AddContactsContract.Effect.ShowToast(R.string.connection_error))
             },
-            finally = {interruptProgressBar()}
+            finally = { interruptProgressBar() }
         )
     }
 
@@ -78,7 +76,7 @@ class AddContactsViewModel @Inject constructor(
     private fun initUsers() {
         processNetworkExceptions(
             toExecute = {
-                setState { copy(isProgressBarShowed = true) }
+                setState { copy(isProgressBarShowed = true, isTryAgainButtonShowed = false) }
                 val response = serviceProviderHolder.serviceProvider.getUserService().getUsers()
 
                 val userItemList = response.users.map { user ->
@@ -90,16 +88,18 @@ class AddContactsViewModel @Inject constructor(
                     )
                 }
 
-
                 setState { copy(userList = userItemList) }
             },
             processBackendException = {
+                setState { copy(isTryAgainButtonShowed = true) }
                 setEffect(AddContactsContract.Effect.ShowToast(R.string.generic_error))
             },
             processConnectionException = {
+                setState { copy(isTryAgainButtonShowed = true) }
                 setEffect(AddContactsContract.Effect.ShowToast(R.string.generic_error))
             },
             processResponseProcessingException = {
+                setState { copy(isTryAgainButtonShowed = true) }
                 setEffect(AddContactsContract.Effect.ShowToast(R.string.connection_error))
             },
             finally = { setState { copy(isProgressBarShowed = false) } }
