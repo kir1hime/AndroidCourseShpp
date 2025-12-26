@@ -158,6 +158,7 @@
     <dimen name="contacts_recycle_view_item_ava_size">50dp</dimen>
     <dimen name="choose_profile_photo_dialog_h">219dp</dimen>
     <dimen name="progress_bar_request_size">70dp</dimen>
+    <dimen name ="add_contact_item_state_icon_size">25dp</dimen>
 
 
     <!--text sizes-->

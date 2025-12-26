@@ -27,11 +27,11 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
     private lateinit var sharedUserProfilePhoto: ImageView
     private val adapter by lazy {
         UsersAdapter(object : UserItemActions {
-            override fun addToContacts(userItem: UserItem, interruptProgressBar: () -> Unit) {
+            override fun addToContacts(userItem: UserItem, interruptLoading: () -> Unit) {
                 viewModel.setEvent(
                     AddContactsContract.Event.OnAddContactClicked(
                         userItem,
-                        interruptProgressBar
+                        interruptLoading
                     )
                 )
             }

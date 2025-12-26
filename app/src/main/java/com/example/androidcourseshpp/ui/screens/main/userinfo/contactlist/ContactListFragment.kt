@@ -8,6 +8,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
@@ -35,7 +36,6 @@ class ContactListFragment :
     private val viewModel by viewModels<ContactListViewModel>()
 
     private lateinit var sharedContactProfilePhoto: ImageView
-    private lateinit var requestPermissionsLauncher: ActivityResultLauncher<String>
 
     private val onBackPressedCallback: OnBackPressedCallback =
         object : OnBackPressedCallback(true) {
@@ -49,10 +49,7 @@ class ContactListFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        checkPermissions()
-        requestPermissionsLauncher.launch(Manifest.permission.READ_CONTACTS)
-
+        viewModel.setEvent(ContactListContract.Event.UpdateContactList)
         createContactListAdapter()
         initRecyclerView()
         initSwipeToDeleteOfContactItem()
@@ -120,16 +117,16 @@ class ContactListFragment :
                     false
                 )
             })
+            binding.progressBarRequest.isVisible = state.isProgressBarShowed
         }
 
         collectFlow(viewModel.effect) { effect ->
             when (effect) {
+                is ContactListContract.Effect.NavigateToUserProfileScreen -> moveBackToUserProfileScreen()
+                is ContactListContract.Effect.NavigateToAddContactsScreen -> moveToAddContactsScreen()
                 is ContactListContract.Effect.NavigateToDetailsScreen -> moveToDetailsScreen(
                     effect.contact
                 )
-
-                is ContactListContract.Effect.NavigateToUserProfileScreen -> moveBackToUserProfileScreen()
-                is ContactListContract.Effect.NavigateToAddContactsScreen -> moveToAddContactsScreen()
             }
         }
     }
@@ -202,14 +199,6 @@ class ContactListFragment :
         helper.attachToRecyclerView(binding.recyclerViewContacts)
     }
 
-    private fun checkPermissions() {
-        requestPermissionsLauncher =
-            registerForActivityResult(ActivityResultContracts.RequestPermission()) { isPermissionsGranted ->
-                if (isPermissionsGranted) {
-                    viewModel.setEvent(ContactListContract.Event.PhoneContactsAdded)
-                }
-            }
-    }
 
     fun moveBackToUserProfileScreen() {
         val parentFragment = parentFragment as? TabSwitchable

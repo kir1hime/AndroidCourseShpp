@@ -1,6 +1,5 @@
 package com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist
 
-import android.widget.ImageView
 import com.example.androidcourseshpp.data.contactlist.ContactItem
 import com.example.androidcourseshpp.ui.ViewEffect
 import com.example.androidcourseshpp.ui.ViewEvent
@@ -11,7 +10,6 @@ class ContactListContract {
     sealed interface Event : ViewEvent {
         data object OnArrowBackButtonClicked : Event
         data object OnAddContactClicked : Event
-        data object PhoneContactsAdded : Event
         data class ContactItemAdded(val contactItem: ContactItem, val position: Int) :
             Event
 
@@ -28,10 +26,7 @@ class ContactListContract {
             val contactItems: List<ContactItem>
         ) : Event
 
-        data class AddContactDialogEventProcessed(
-            val contactName: String,
-            val contactCareer: String
-        ) : Event
+        data object UpdateContactList : Event
     }
 
     sealed interface Effect : ViewEffect {
@@ -45,6 +40,6 @@ class ContactListContract {
 
     data class UIState(
         val contactList: List<ContactItem>,
-        val isPhoneContactsLoaded: Boolean
+        val isProgressBarShowed: Boolean
     ) : ViewState
 }

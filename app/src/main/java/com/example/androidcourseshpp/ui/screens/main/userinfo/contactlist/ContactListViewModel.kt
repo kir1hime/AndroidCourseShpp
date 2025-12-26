@@ -1,36 +1,35 @@
 package com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist
 
-import android.widget.ImageView
-import androidx.lifecycle.viewModelScope
 import com.example.androidcourseshpp.data.contactlist.ContactsRepository
 import com.example.androidcourseshpp.data.contactlist.ContactItem
+import com.example.androidcourseshpp.data.dataProvider.UserDataProvider
+import com.example.androidcourseshpp.data.network.RetrofitServiceProviderHolder
+import com.example.androidcourseshpp.data.network.entity.contacts.ContactData
 import com.example.androidcourseshpp.ui.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import java.util.Stack
 import javax.inject.Inject
 
-private const val NEW_CONTACT_AVATAR =
-    "https://kartinki.pics/uploads/posts/2022-02/1645235615_4-kartinkin-net-p-kroliki-kartinki-4.jpg"
 
 @HiltViewModel
 class ContactListViewModel @Inject constructor(
-    private val contactsRepository: ContactsRepository
+    private val contactsRepository: ContactsRepository,
+    private val serviceProviderHolder: RetrofitServiceProviderHolder,
+    private val userDataProvider: UserDataProvider
 ) : BaseViewModel<ContactListContract.Event, ContactListContract.Effect, ContactListContract.UIState>() {
 
     override fun initState() = ContactListContract.UIState(emptyList(), false)
     val deletedItems = Stack<Pair<ContactItem, Int>>()
 
-    init {
-        viewModelScope.launch {
-            contactsRepository.contactList.collect { list ->
-                setState { copy(list) }
-            }
-        }
-    }
 
     override fun handleEvent(event: ContactListContract.Event) {
         when (event) {
+            is ContactListContract.Event.OnArrowBackButtonClicked -> navigateToPreviousScreen()
+            is ContactListContract.Event.OnAddContactClicked -> navigateToAddContactsScreen()
+            is ContactListContract.Event.UpdateContactList -> loadContacts()
             is ContactListContract.Event.ContactItemAdded -> addContactItem(
                 event.contactItem,
                 event.position
@@ -45,69 +44,88 @@ class ContactListViewModel @Inject constructor(
                 event.contactItems
             )
 
-            is ContactListContract.Event.AddContactDialogEventProcessed -> processAddContactDialogEvent(
-                event.contactName,
-                event.contactCareer
-            )
-
             is ContactListContract.Event.OnItemClicked -> navigateToDetailsScreen(
                 event.contact
             )
-
-            is ContactListContract.Event.PhoneContactsAdded -> addPhoneContacts()
-
-            is ContactListContract.Event.OnArrowBackButtonClicked -> navigateToPreviousScreen()
-            is ContactListContract.Event.OnAddContactClicked -> navigateToAddContactsScreen()
         }
     }
 
-    private fun addPhoneContacts() {
-        if (!state.value.isPhoneContactsLoaded) {
-            val lastContactItemId = state.value.contactList.last().id
-            val contactItemsFromPhoneContacts =
-                contactsRepository.getContactItemsFromPhoneContacts(lastContactItemId)
-            contactsRepository.addContactItems(contactItemsFromPhoneContacts)
-            setState {
-                copy(isPhoneContactsLoaded = true)
-            }
-        }
-    }
 
-    private fun processAddContactDialogEvent(newContactName: String, newContactCareer: String) {
-        val newContact = createNewContact(newContactName, newContactCareer)
-        if (!isNewContactDataIsBlank(newContact)) {
-            addContactItem(newContact, state.value.contactList.size)
-        }
-    }
+    private fun loadContacts() {
+        processNetworkExceptions(
+            toExecute = {
+                setState { copy(isProgressBarShowed = true) }
+                val response = serviceProviderHolder.serviceProvider.getContactsService()
+                    .getUserContacts(userDataProvider.getUserServerId())
 
-    private fun createNewContact(contactName: String, contactCareer: String): ContactItem {
-        val lastContactItemId = state.value.contactList.last().id
+                val contactItemList = response.contacts.map { contact ->
+                    ContactItem(
+                        id = contact.id,
+                        name = contact.name ?: "",
+                        career = contact.career ?: "",
+                        avatarURL = contact.image ?: ""
+                    )
+                }
 
-        val newContact = ContactItem(
-            lastContactItemId + 1,
-            contactName,
-            contactCareer,
-            NEW_CONTACT_AVATAR
+                setState { copy(contactList = contactItemList) }
+            },
+            processBackendException = {},
+            processResponseProcessingException = {},
+            processConnectionException = {},
+            finally = { setState { copy(isProgressBarShowed = false) } }
         )
-
-        return newContact
     }
 
     private fun deleteContactItem(contactItem: ContactItem, position: Int) {
-        contactsRepository.deleteContactItem(contactItem)
+        processNetworkExceptions(
+            toExecute = {
+                serviceProviderHolder.serviceProvider.getContactsService().deleteContact(
+                    ContactData(userDataProvider.getUserServerId(), contactItem.id)
+                )
+                loadContacts()
+            },
+            processBackendException = {},
+            processResponseProcessingException = {},
+            processConnectionException = {},
+            finally = { })
         deletedItems.push(Pair(contactItem, position))
     }
 
     private fun deleteListOfContactItems(contactItems: List<ContactItem>) {
-        contactsRepository.deleteContactItems(contactItems)
+        processNetworkExceptions(
+            toExecute = {
+                coroutineScope {
+                    val jobs = contactItems.map { contactItem ->
+                        async {
+                            serviceProviderHolder.serviceProvider.getContactsService()
+                                .deleteContact(
+                                    ContactData(userDataProvider.getUserServerId(), contactItem.id)
+                                )
+                        }
+                    }
+                    jobs.awaitAll()
+                }
+                loadContacts()
+
+            },
+            processBackendException = {},
+            processResponseProcessingException = {},
+            processConnectionException = {},
+            finally = { })
     }
 
     private fun addContactItem(contactItem: ContactItem, position: Int) {
-        contactsRepository.addContactItem(contactItem, position)
-    }
-
-    private fun isNewContactDataIsBlank(contactItem: ContactItem): Boolean {
-        return contactItem.career.isBlank() || contactItem.name.isBlank()
+        processNetworkExceptions(
+            toExecute = {
+                serviceProviderHolder.serviceProvider.getContactsService().addContact(
+                    ContactData(userDataProvider.getUserServerId(), contactItem.id)
+                )
+                loadContacts()
+            },
+            processBackendException = {},
+            processResponseProcessingException = {},
+            processConnectionException = {},
+            finally = { })
     }
 
     private fun navigateToDetailsScreen(contact: ContactItem) {
@@ -117,6 +135,7 @@ class ContactListViewModel @Inject constructor(
     private fun navigateToPreviousScreen() {
         setEffect(ContactListContract.Effect.NavigateToUserProfileScreen)
     }
+
     private fun navigateToAddContactsScreen() {
         setEffect(ContactListContract.Effect.NavigateToAddContactsScreen)
     }

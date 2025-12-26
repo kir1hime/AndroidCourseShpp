@@ -29,7 +29,20 @@ class UsersAdapter(
             textViewName.text = userItem.name
             textViewCareer.text = userItem.career
 
+            markContacts(userItem)
             setListeners(userItem)
+        }
+
+        private fun markContacts(userItem: UserItem) = with(binding) {
+            if (userItem.isContact) {
+                imageButtonAddContact.visibility = View.GONE
+                imageButtonContactAdded.isVisible = true
+                textViewAddContact.visibility = View.GONE
+            } else {
+                imageButtonAddContact.isVisible = true
+                imageButtonContactAdded.isVisible = false
+                textViewAddContact.isVisible = true
+            }
         }
 
         private fun setListeners(userItem: UserItem) = with(binding) {
@@ -45,14 +58,15 @@ class UsersAdapter(
         }
 
         private fun addContact(userItem: UserItem) = with(binding) {
+            userItem.isContact = true
+
             imageButtonAddContact.isVisible = false
+            textViewAddContact.isVisible = false
             progressBarAddContact.isVisible = true
 
             actions.addToContacts(userItem) {
                 progressBarAddContact.isVisible = false
-
                 imageButtonContactAdded.isVisible = true
-
             }
         }
     }

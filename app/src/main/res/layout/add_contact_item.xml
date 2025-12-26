@@ -75,8 +75,8 @@
 
     <ProgressBar
         android:id="@+id/progressBarAddContact"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
+        android:layout_width="@dimen/add_contact_item_state_icon_size"
+        android:layout_height="@dimen/add_contact_item_state_icon_size"
         android:layout_marginEnd="@dimen/add_contact_margin_end"
         android:indeterminateTint="@color/progress_bar_request_color"
         android:visibility="invisible"
@@ -86,8 +86,8 @@
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/imageButtonContactAdded"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
+        android:layout_width="@dimen/add_contact_item_state_icon_size"
+        android:layout_height="@dimen/add_contact_item_state_icon_size"
         android:layout_marginEnd="@dimen/add_contact_margin_end"
         android:src="@drawable/ic_contact_added"
         android:visibility="gone"

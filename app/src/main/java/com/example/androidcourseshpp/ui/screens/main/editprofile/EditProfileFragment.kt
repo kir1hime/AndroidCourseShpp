@@ -88,6 +88,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(FragmentEdi
         }
 
         editTextDateOfBirthday.onChangeTextListener { _, _, _, _ ->
+            defocusAllEditTexts()
             viewModel.setEvent(
                 EditProfileContract.Event.DateOfBirthdayUpdated(
                     reversDateFormatting(
