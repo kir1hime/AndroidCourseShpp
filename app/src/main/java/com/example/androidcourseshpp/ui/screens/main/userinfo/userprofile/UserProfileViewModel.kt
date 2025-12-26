@@ -3,9 +3,9 @@ package com.example.androidcourseshpp.ui.screens.main.userinfo.userprofile
 
 import androidx.lifecycle.viewModelScope
 import com.example.androidcourseshpp.R
-import com.example.androidcourseshpp.data.dataProvider.DEFAULT_AVATAR_VALUE
-import com.example.androidcourseshpp.data.dataProvider.DEFAULT_ID_VALUE
-import com.example.androidcourseshpp.data.dataProvider.UserDataProvider
+import com.example.androidcourseshpp.data.userdata.DEFAULT_AVATAR_VALUE
+import com.example.androidcourseshpp.data.userdata.DEFAULT_ID_VALUE
+import com.example.androidcourseshpp.data.userdata.UserDataProvider
 import com.example.androidcourseshpp.data.network.ServicesProvider
 import com.example.androidcourseshpp.data.network.jwt.JWTManager
 import com.example.androidcourseshpp.ui.BaseViewModel

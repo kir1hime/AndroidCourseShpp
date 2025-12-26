@@ -1,4 +1,4 @@
-package com.example.androidcourseshpp.data.gallery
+package com.example.androidcourseshpp.data.models.gallery
 
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

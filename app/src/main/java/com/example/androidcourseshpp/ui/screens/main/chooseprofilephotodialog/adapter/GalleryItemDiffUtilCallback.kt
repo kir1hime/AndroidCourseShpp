@@ -1,7 +1,7 @@
 package com.example.androidcourseshpp.ui.screens.main.chooseprofilephotodialog.adapter
 
 import androidx.recyclerview.widget.DiffUtil
-import com.example.androidcourseshpp.data.gallery.GalleryItem
+import com.example.androidcourseshpp.data.models.gallery.GalleryItem
 
 object GalleryItemDiffUtilCallback : DiffUtil.ItemCallback<GalleryItem>() {
     override fun areItemsTheSame(

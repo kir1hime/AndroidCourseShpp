@@ -1,4 +1,4 @@
-package com.example.androidcourseshpp.data.dataProvider
+package com.example.androidcourseshpp.data.userdata
 
 interface UserDataProvider {
     fun saveUserServerId(userServerId: Int)

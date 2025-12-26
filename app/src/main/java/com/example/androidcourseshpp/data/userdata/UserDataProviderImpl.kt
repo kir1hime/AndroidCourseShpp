@@ -1,4 +1,4 @@
-package com.example.androidcourseshpp.data.dataProvider
+package com.example.androidcourseshpp.data.userdata
 
 import android.content.SharedPreferences
 import com.example.androidcourseshpp.di.DataProviderPref

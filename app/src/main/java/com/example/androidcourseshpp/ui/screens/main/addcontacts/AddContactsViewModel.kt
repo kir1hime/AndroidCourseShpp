@@ -2,11 +2,11 @@ package com.example.androidcourseshpp.ui.screens.main.addcontacts
 
 
 import com.example.androidcourseshpp.R
-import com.example.androidcourseshpp.data.dataProvider.UserDataProvider
+import com.example.androidcourseshpp.data.userdata.UserDataProvider
 import com.example.androidcourseshpp.data.network.RetrofitServiceProviderHolder
 import com.example.androidcourseshpp.data.network.entity.User
 import com.example.androidcourseshpp.data.network.entity.contacts.ContactData
-import com.example.androidcourseshpp.data.userlist.UserItem
+import com.example.androidcourseshpp.data.models.userlist.UserItem
 import com.example.androidcourseshpp.ui.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async

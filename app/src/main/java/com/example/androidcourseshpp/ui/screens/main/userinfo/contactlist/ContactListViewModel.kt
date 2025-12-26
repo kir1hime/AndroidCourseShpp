@@ -1,8 +1,8 @@
 package com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist
 
-import com.example.androidcourseshpp.data.contactlist.ContactsRepository
-import com.example.androidcourseshpp.data.contactlist.ContactItem
-import com.example.androidcourseshpp.data.dataProvider.UserDataProvider
+import com.example.androidcourseshpp.data.models.contactlist.ContactsRepository
+import com.example.androidcourseshpp.data.models.contactlist.ContactItem
+import com.example.androidcourseshpp.data.userdata.UserDataProvider
 import com.example.androidcourseshpp.data.network.RetrofitServiceProviderHolder
 import com.example.androidcourseshpp.data.network.entity.contacts.ContactData
 import com.example.androidcourseshpp.ui.BaseViewModel

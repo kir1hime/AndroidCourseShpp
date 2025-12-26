@@ -1,7 +1,6 @@
 package com.example.androidcourseshpp.ui.screens.main.addcontacts
 
-import android.widget.ImageView
-import com.example.androidcourseshpp.data.userlist.UserItem
+import com.example.androidcourseshpp.data.models.userlist.UserItem
 import com.example.androidcourseshpp.ui.ViewEffect
 import com.example.androidcourseshpp.ui.ViewEvent
 import com.example.androidcourseshpp.ui.ViewState

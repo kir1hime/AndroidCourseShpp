@@ -7,7 +7,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidcourseshpp.R
-import com.example.androidcourseshpp.data.userlist.UserItem
+import com.example.androidcourseshpp.data.models.userlist.UserItem
 import com.example.androidcourseshpp.databinding.AddContactItemBinding
 import com.example.androidcourseshpp.ui.utils.loadImageFromURLCircled
 

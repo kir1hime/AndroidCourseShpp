@@ -3,7 +3,7 @@ package com.example.androidcourseshpp.ui.screens.main.userinfo
 import android.os.Bundle
 import android.view.View
 import com.example.androidcourseshpp.R
-import com.example.androidcourseshpp.data.Tab
+import com.example.androidcourseshpp.ui.screens.main.userinfo.Tab
 import com.example.androidcourseshpp.databinding.FragmentUserinfoBinding
 import com.example.androidcourseshpp.ui.BaseFragment
 import com.example.androidcourseshpp.ui.screens.main.userinfo.adapter.UserInfoAdapter
