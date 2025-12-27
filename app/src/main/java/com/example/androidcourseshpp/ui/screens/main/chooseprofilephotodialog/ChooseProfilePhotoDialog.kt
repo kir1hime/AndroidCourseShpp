@@ -30,21 +30,17 @@ class ChooseProfilePhotoDialog : DialogFragment() {
     private val pickMedia =
         registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
             if (uri != null) {
-                parentFragmentManager.setFragmentResult(
-                    REQUEST_KEY,
-                    bundleOf(PHOTO to uri.toString())
-                )
-                findNavController().navigateUp()
+                viewModel.setEvent(ChooseProfilePhotoContract.Event.PhotoChosen(uri.toString()))
             } else {
                 findNavController().navigateUp()
             }
         }
+
     private val adapter: GalleryAdapter by lazy {
         GalleryAdapter(object : GalleryItemActions {
 
             override fun choosePhoto(photo: String) {
-                parentFragmentManager.setFragmentResult(REQUEST_KEY, bundleOf(PHOTO to photo))
-                findNavController().navigateUp()
+                viewModel.setEvent(ChooseProfilePhotoContract.Event.PhotoChosen(photo))
             }
         })
     }
@@ -69,19 +65,40 @@ class ChooseProfilePhotoDialog : DialogFragment() {
 
     private fun setListeners() = with(binding) {
         textViewCancel.setOnClickListener {
-            findNavController().navigateUp()
+            viewModel.setEvent(ChooseProfilePhotoContract.Event.OnCancelButtonClicked)
         }
-        textViewOpenGallery.setOnClickListener { launchMediaPicker() }
-        /*textViewDeleteCurrentPhoto.setOnClickListener {
-            setFragmentResult(R.drawable.profile_mockup.toUri(requireContext()).toString())
-        }*/
+        textViewOpenGallery.setOnClickListener {
+            viewModel.setEvent(ChooseProfilePhotoContract.Event.OnOpenGalleryButtonClicked)
+        }
+        textViewDeleteCurrentPhoto.setOnClickListener {
+            viewModel.setEvent(
+                ChooseProfilePhotoContract.Event.PhotoChosen(
+                    R.drawable.profile_mockup.toUri(
+                        requireContext()
+                    ).toString()
+                )
+            )
+        }
     }
 
     private fun setObservers() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.galleryPhotos.collect { photos ->
-                    adapter.submitList(photos)
+                viewModel.state.collect { state ->
+                    adapter.submitList(state.photoList)
+                }
+            }
+        }
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.effect.collect { effect ->
+                    when (effect) {
+                        is ChooseProfilePhotoContract.Effect.NavigateToParentFragment -> findNavController().navigateUp()
+                        is ChooseProfilePhotoContract.Effect.OpenPhoneGallery -> launchMediaPicker()
+                        is ChooseProfilePhotoContract.Effect.SendPhotoToParentFragment -> setFragmentResult(
+                            effect.photo
+                        )
+                    }
                 }
             }
         }
@@ -89,13 +106,11 @@ class ChooseProfilePhotoDialog : DialogFragment() {
 
     private fun initRecycleView() = with(binding.recyclerViewGallery) {
         adapter = this@ChooseProfilePhotoDialog.adapter
-
         addItemDecoration(
             GalleryItemDecoration(
                 resources.getDimensionPixelSize(R.dimen.gallery_recycler_view_left_offset)
             )
         )
-
     }
 
     override fun onStart() {
@@ -106,6 +121,10 @@ class ChooseProfilePhotoDialog : DialogFragment() {
             layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
             window.attributes = layoutParams
         }
+    }
+
+    private fun setFragmentResult(data: String) {
+        parentFragmentManager.setFragmentResult(REQUEST_KEY, bundleOf(PHOTO to data))
     }
 
     companion object {

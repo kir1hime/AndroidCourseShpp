@@ -1,13 +1,15 @@
 package com.example.androidcourseshpp.data.models.gallery
 
+import com.example.androidcourseshpp.data.userdata.UserDataProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class GalleryRepository @Inject constructor() {
+class GalleryRepository @Inject constructor(private val userDataProvider: UserDataProvider) {
 
     private val defaultStringPhotos: List<String> = listOf(
         "https://cdn.images.express.co.uk/img/dynamic/130/940x/secondary/Cavalier-King-Charles-Spaniel-5464056.jpg?r=1722869239639",
@@ -21,11 +23,39 @@ class GalleryRepository @Inject constructor() {
     private val _galleryPhotos = MutableStateFlow(getDefaultGalleryItems())
     val galleryPhotos: StateFlow<List<GalleryItem>> get() = _galleryPhotos.asStateFlow()
 
+    fun addPhoto(photoURL: String) {
+        val newItem = GalleryItem(id = _galleryPhotos.value.size + 1, photoURL = photoURL)
+
+        _galleryPhotos.update { photoList ->
+            val newList = photoList.toMutableList()
+
+            photoList.forEach { photo ->
+                if (photo.photoURL == newItem.photoURL) {
+                    return
+                }
+            }
+
+            newList.add(0, newItem)
+            return@update newList
+        }
+
+        val photoURLSet = mutableSetOf<String>()
+        _galleryPhotos.value.map { photo -> photoURLSet.add(photo.photoURL) }
+
+        userDataProvider.saveUserGalleryPhotos(photoURLSet)
+    }
+
     private fun getDefaultGalleryItems(): List<GalleryItem> {
         val galleryItemList = mutableListOf<GalleryItem>()
 
-        repeat(defaultStringPhotos.size) { index ->
-            galleryItemList.add(GalleryItem(index, defaultStringPhotos[index]))
+        if (userDataProvider.getUserGalleryPhotos().isEmpty()) {
+            repeat(defaultStringPhotos.size) { index ->
+                galleryItemList.add(GalleryItem(index, defaultStringPhotos[index]))
+            }
+        } else {
+            userDataProvider.getUserGalleryPhotos().mapIndexed { index, photoURL ->
+                galleryItemList.add(GalleryItem(index, photoURL))
+            }
         }
 
         return galleryItemList

@@ -7,6 +7,7 @@ import javax.inject.Inject
 const val USER_INFO_STORE = "userInfo"
 const val USER_AVATAR_URL = "userAvatar"
 const val USER_SERVER_ID = "userServerId"
+const val USER_PHOTOS = "userPhotos"
 const val DEFAULT_ID_VALUE: Int = -1
 const val DEFAULT_AVATAR_VALUE = ""
 
@@ -37,4 +38,13 @@ class UserDataProviderImpl @Inject constructor(@DataProviderPref private val sha
     override fun clearUserAvatarUrl() {
         editor.putString(USER_AVATAR_URL, DEFAULT_AVATAR_VALUE).apply()
     }
+
+    override fun saveUserGalleryPhotos(photoURLs: Set<String>) {
+        editor.putStringSet(USER_PHOTOS, photoURLs).apply()
+    }
+
+    override fun getUserGalleryPhotos() =
+        sharedPref.getStringSet(USER_PHOTOS, emptySet<String>()) ?: emptySet<String>()
+
+
 }
