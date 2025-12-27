@@ -49,10 +49,6 @@
     <string name="snackbar_action_text">Скасувати</string>
 
     <!-- Add contact dialog -->
-    <string name="add_contact_dialog_title">Додати новий контакт</string>
-    <string name="add_contact_dialog_message">Введіть дані нового користувача</string>
-    <string name="add_contact_dialog_positive_button_text">Зберігти</string>
-    <string name="add_contact_dialog_negative_button_text">Закрити</string>
     <string name="profile_label">Профіль</string>
     <string name="message">Повідомлення</string>
     <string name="user_profile">Мій профіль</string>
@@ -75,6 +71,7 @@
 
     <!-- Sign in -->
     <string name="unauthorized_error">"Користувач не "</string>
+    <string name="delete_current_photo">Видалити поточне фото</string>
     <string name="hello_label">Привіт!</string>
     <string name="enter_your_data_label">Введіть вашу пошту та пароль нижче</string>
     <string name="login_button_text">УВІЙТИ</string>
@@ -87,5 +84,7 @@
     <string name="address">Адреса</string>
     <string name="date_of_birthday">День народження</string>
     <string name="users">Користувачі</string>
+    <string name="add">ДОДАТИ</string>
+    <string name="try_again">СПРОБУВАТИ ЗНОВУ</string>
 
 </resources>

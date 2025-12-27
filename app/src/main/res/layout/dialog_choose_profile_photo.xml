@@ -16,20 +16,6 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/textViewCancel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/main_margin_side"
-        android:fontFamily="@font/open_sans"
-        android:text="@string/cancel"
-        android:textColor="@color/cancel_text_color"
-        android:textSize="@dimen/small_text_size"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/textViewOpenGallery"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -37,6 +23,34 @@
         android:fontFamily="@font/open_sans"
         android:text="@string/open_gallery"
         android:textColor="@color/open_gallery_text_color"
+        android:textSize="@dimen/small_text_size"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/textViewDeleteCurrentPhoto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/delete_current_photo_margin_bottom"
+        android:fontFamily="@font/open_sans"
+        android:text="@string/delete_current_photo"
+        android:textColor="@color/delete_current_photo_text_color"
+        android:textSize="@dimen/small_text_size"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/textViewCancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/main_margin_side"
+        android:fontFamily="@font/open_sans"
+        android:text="@string/cancel"
+        android:textColor="@color/cancel_text_color"
         android:textSize="@dimen/small_text_size"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -52,16 +66,16 @@
         android:background="@drawable/ic_camera"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-    
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewGallery"
         android:layout_width="match_parent"
         android:layout_height="@dimen/gallery_item_size"
+        android:layout_marginStart="@dimen/gallery_item_margin_start"
         android:layout_marginTop="@dimen/gallery_item_margin_top"
         android:orientation="horizontal"
-        android:layout_marginStart="@dimen/gallery_item_margin_start"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintTop_toTopOf="parent"
-        tools:listitem="@layout/gallery_item"/>
+        tools:listitem="@layout/gallery_item" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

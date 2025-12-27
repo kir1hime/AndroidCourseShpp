@@ -101,9 +101,9 @@
     <color name="progress_bar_request_color">#FB5E06</color>
 
     <!--Choose profile photo -->
-    <color name="cancel_text_color">#B2B2B3</color>
     <color name="open_gallery_text_color">#FFFFFF</color>
-
+    <color name="cancel_text_color">@color/open_gallery_text_color</color>
+    <color name="delete_current_photo_text_color">#B2B2B3</color>
 
     <!--Sign In -->
     <color name="sign_in_screen_color">#242235</color>

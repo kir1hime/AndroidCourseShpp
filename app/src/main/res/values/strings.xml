@@ -55,12 +55,6 @@
     <string name="snackbar_text">Do you want to undo deletion of this contact?</string>
     <string name="snackbar_action_text">Undo</string>
 
-    <!-- Add contact dialog -->
-    <string name="add_contact_dialog_title">Add new contact</string>
-    <string name="add_contact_dialog_message">Enter the data of the new contact</string>
-    <string name="add_contact_dialog_positive_button_text">Save</string>
-    <string name="add_contact_dialog_negative_button_text">Cancel</string>
-
     <!-- Detail view -->
     <string name="profile_label">Profile</string>
     <string name="message">MESSAGE</string>
@@ -79,7 +73,7 @@
 
     <!--Choose profile photo -->
     <string name="open_gallery">Open gallery</string>
-
+    <string name="delete_current_photo">Delete current photo</string>
 
     <!--Sign in -->
     <string name="hello_label">Hello!</string>
@@ -103,5 +97,6 @@
     <string name="users">Users</string>
     <string name="add">Add</string>
     <string name="try_again">TRY AGAIN</string>
+
 
 </resources>

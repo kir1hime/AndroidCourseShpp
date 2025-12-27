@@ -21,7 +21,7 @@ class AddContactsViewModel @Inject constructor(
     BaseViewModel<AddContactsContract.Event, AddContactsContract.Effect, AddContactsContract.UIState>() {
 
     init {
-        initUsers()
+        loadUsers()
     }
 
     override fun initState() = AddContactsContract.UIState(
@@ -32,17 +32,16 @@ class AddContactsViewModel @Inject constructor(
 
     override fun handleEvent(event: AddContactsContract.Event) {
         when (event) {
-            is AddContactsContract.Event.OnAddContactClicked -> addContact(
-                event.userItem,
-                event.interruptProgressBar
-            )
-
-            is AddContactsContract.Event.OnTryAgainButtonClicked -> initUsers()
-
+            is AddContactsContract.Event.OnTryAgainButtonClicked -> loadUsers()
             is AddContactsContract.Event.OnSearchButtonClicked -> onSearchButtonClicked()
             is AddContactsContract.Event.OnArrowBackButtonClicked -> navigateToPreviousScreen()
             is AddContactsContract.Event.OnUserItemClicked -> navigateToDetailsScreen(
                 event.userItem
+            )
+
+            is AddContactsContract.Event.OnAddContactClicked -> addContact(
+                event.userItem,
+                event.interruptProgressBar
             )
         }
     }
@@ -77,7 +76,7 @@ class AddContactsViewModel @Inject constructor(
         setEffect(AddContactsContract.Effect.NavigateToDetailsScreen(userItem))
     }
 
-    private fun initUsers() {
+    private fun loadUsers() {
         var userList = emptyList<User>()
         var contactList = emptyList<User>()
         processNetworkExceptions(
@@ -101,7 +100,7 @@ class AddContactsViewModel @Inject constructor(
                         name = user.name ?: "",
                         career = user.career ?: "",
                         avatarURL = user.image ?: "",
-                        isContact =contactList.contains(user)
+                        isContact = contactList.contains(user)
                     )
                 }
 

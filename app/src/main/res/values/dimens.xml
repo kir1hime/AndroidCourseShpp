@@ -81,8 +81,8 @@
     <dimen name="text_input_layout_user_name_margin_top">24dp</dimen>
 
     <dimen name="cancel_button_margin_bottom">16dp</dimen>
-
-    <dimen name="open_gallery_text_margin_bottom">50dp</dimen>
+    <dimen name="open_gallery_text_margin_bottom">84dp</dimen>
+    <dimen name="delete_current_photo_margin_bottom">50dp</dimen>
 
     <dimen name="take_photo_margins">8dp</dimen>
 
@@ -139,7 +139,6 @@
     <dimen name="forward_bt_h">@dimen/view_my_contacts_bt_h</dimen>
     <dimen name="cancel_bt_h">40dp</dimen>
     <dimen name="save_bt_h">@dimen/view_my_contacts_bt_h</dimen>
-    <dimen name="try_again_bt_w">100dp</dimen>
     <dimen name="try_again_bt_h">40dp</dimen>
 
     <!-- button content dimens -->

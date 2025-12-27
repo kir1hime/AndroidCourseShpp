@@ -77,7 +77,7 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/buttonTryAgain"
-        android:layout_width="@dimen/try_again_bt_w"
+        android:layout_width="wrap_content"
         android:layout_height="@dimen/try_again_bt_h"
         android:background="@drawable/try_again_background"
         android:fontFamily="@font/open_sans"

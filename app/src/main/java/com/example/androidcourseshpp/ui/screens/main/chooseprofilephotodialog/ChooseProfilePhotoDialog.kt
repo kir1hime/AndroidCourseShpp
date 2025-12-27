@@ -18,6 +18,7 @@ import com.example.androidcourseshpp.databinding.DialogChooseProfilePhotoBinding
 import com.example.androidcourseshpp.ui.screens.main.chooseprofilephotodialog.adapter.GalleryAdapter
 import com.example.androidcourseshpp.ui.screens.main.chooseprofilephotodialog.adapter.GalleryItemDecoration
 import com.example.androidcourseshpp.ui.screens.main.chooseprofilephotodialog.adapter.GalleryItemActions
+import com.example.androidcourseshpp.ui.utils.toUri
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -54,7 +55,6 @@ class ChooseProfilePhotoDialog : DialogFragment() {
         initRecycleView()
         setObservers()
         setListeners()
-        binding.textViewOpenGallery.setOnClickListener { launchMediaPicker() }
 
         val dialog = AlertDialog.Builder(requireContext())
             .setView(binding.root)
@@ -71,6 +71,10 @@ class ChooseProfilePhotoDialog : DialogFragment() {
         textViewCancel.setOnClickListener {
             findNavController().navigateUp()
         }
+        textViewOpenGallery.setOnClickListener { launchMediaPicker() }
+        /*textViewDeleteCurrentPhoto.setOnClickListener {
+            setFragmentResult(R.drawable.profile_mockup.toUri(requireContext()).toString())
+        }*/
     }
 
     private fun setObservers() {
