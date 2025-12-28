@@ -46,7 +46,6 @@ class ContactListFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.setEvent(ContactListContract.Event.UpdateContactList)
         createContactListAdapter()
         initRecyclerView()
         initSwipeToDeleteOfContactItem()
@@ -154,7 +153,7 @@ class ContactListFragment :
         )
 
         undoDeletingSnackBar.setAction(R.string.snackbar_action_text) {
-            viewModel.setEvent(ContactListContract.Event.ContactItemAdded(contactItem, position))
+            viewModel.setEvent(ContactListContract.Event.ContactItemAdded(contactItem))
             viewModel.deletedItems.pop()
 
             if (!viewModel.deletedItems.isEmpty()) {

@@ -1,27 +1,28 @@
 package com.example.androidcourseshpp.ui.screens.main.addcontacts
 
 
+import androidx.lifecycle.viewModelScope
 import com.example.androidcourseshpp.R
-import com.example.androidcourseshpp.data.userdata.UserDataProvider
-import com.example.androidcourseshpp.data.network.RetrofitServiceProviderHolder
-import com.example.androidcourseshpp.data.network.entity.User
-import com.example.androidcourseshpp.data.network.entity.contacts.ContactData
 import com.example.androidcourseshpp.data.models.userlist.UserItem
+import com.example.androidcourseshpp.data.models.userlist.UsersRepository
 import com.example.androidcourseshpp.ui.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class AddContactsViewModel @Inject constructor(
-    private val serviceProviderHolder: RetrofitServiceProviderHolder,
-    private val userDataProvider: UserDataProvider
+    private val usersRepository: UsersRepository
 ) :
     BaseViewModel<AddContactsContract.Event, AddContactsContract.Effect, AddContactsContract.UIState>() {
 
     init {
         loadUsers()
+        viewModelScope.launch {
+            usersRepository.userList.collect { userList ->
+                setState { copy(userList = userList) }
+            }
+        }
     }
 
     override fun initState() = AddContactsContract.UIState(
@@ -52,12 +53,10 @@ class AddContactsViewModel @Inject constructor(
     }
 
     private fun addContact(userItem: UserItem, interruptLoading: () -> Unit) {
-        val userServerId = userDataProvider.getUserServerId()
+
         processNetworkExceptions(
             toExecute = {
-                serviceProviderHolder.serviceProvider.getContactsService()
-                    .addContact(ContactData(userServerId, userItem.id))
-
+                usersRepository.addContact(userItem)
             },
             processBackendException = {
                 setEffect(AddContactsContract.Effect.ShowToast(R.string.generic_error))
@@ -77,36 +76,10 @@ class AddContactsViewModel @Inject constructor(
     }
 
     private fun loadUsers() {
-        var userList = emptyList<User>()
-        var contactList = emptyList<User>()
         processNetworkExceptions(
             toExecute = {
                 setState { copy(isProgressBarShowed = true, isTryAgainButtonShowed = false) }
-
-                coroutineScope {
-                    val usersResponse =
-                        async { serviceProviderHolder.serviceProvider.getUserService().getUsers() }
-                    val contactsResponse = async {
-                        serviceProviderHolder.serviceProvider.getContactsService()
-                            .getUserContacts(userDataProvider.getUserServerId())
-                    }
-                    userList = usersResponse.await().users
-                    contactList = contactsResponse.await().contacts
-                }
-
-                val userItemList = userList.map { user ->
-                    UserItem(
-                        id = user.id,
-                        name = user.name ?: "",
-                        career = user.career ?: "",
-                        avatarURL = user.image ?: "",
-                        isContact = contactList.contains(user)
-                    )
-                }
-
-
-                setState { copy(userList = userItemList) }
-
+                usersRepository.initUserList()
             },
             processBackendException = {
                 setState { copy(isTryAgainButtonShowed = true) }
@@ -122,6 +95,5 @@ class AddContactsViewModel @Inject constructor(
             },
             finally = { setState { copy(isProgressBarShowed = false) } }
         )
-
     }
 }

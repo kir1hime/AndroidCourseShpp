@@ -1,0 +1,79 @@
+package com.example.androidcourseshpp.data.models.contactlist
+
+import com.example.androidcourseshpp.data.network.RetrofitServiceProviderHolder
+import com.example.androidcourseshpp.data.network.entity.contacts.ContactData
+import com.example.androidcourseshpp.data.userdata.UserDataProvider
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.withContext
+import javax.inject.Inject
+
+
+class ContactsRepositoryImpl @Inject constructor(
+    private val serviceProviderHolder: RetrofitServiceProviderHolder,
+    private val userDataProvider: UserDataProvider
+) : ContactsRepository {
+
+    private val _contactList = MutableStateFlow(emptyList<ContactItem>())
+    override val contactList: StateFlow<List<ContactItem>> get() = _contactList
+
+    override suspend fun initContactList() {
+        updateContactList()
+    }
+
+    override suspend fun addContactItem(contactItem: ContactItem) {
+        withContext(Dispatchers.IO) {
+            serviceProviderHolder.serviceProvider.getContactsService().addContact(
+                ContactData(userDataProvider.getUserServerId(), contactItem.id)
+            )
+        }
+        updateContactList()
+    }
+
+    override suspend fun deleteContactItem(contactItem: ContactItem) {
+        withContext(Dispatchers.IO) {
+            serviceProviderHolder.serviceProvider.getContactsService().deleteContact(
+                ContactData(userDataProvider.getUserServerId(), contactItem.id)
+            )
+        }
+        updateContactList()
+    }
+
+    override suspend fun deleteContactItems(contactItems: List<ContactItem>) {
+        withContext(Dispatchers.IO) {
+            contactItems.map { contactItem ->
+                async {
+                    serviceProviderHolder.serviceProvider.getContactsService()
+                        .deleteContact(
+                            ContactData(userDataProvider.getUserServerId(), contactItem.id)
+                        )
+                }
+            }.awaitAll()
+        }
+        updateContactList()
+    }
+
+    private suspend fun loadContacts(): List<ContactItem> {
+        val response = serviceProviderHolder.serviceProvider.getContactsService()
+            .getUserContacts(userDataProvider.getUserServerId())
+
+        val contactItemList = response.contacts.map { contact ->
+            ContactItem(
+                id = contact.id,
+                name = contact.name ?: "",
+                career = contact.career ?: "",
+                avatarURL = contact.image ?: ""
+            )
+        }
+
+        return contactItemList
+    }
+
+    private suspend fun updateContactList() {
+        _contactList.update { loadContacts() }
+    }
+}

@@ -1,0 +1,61 @@
+package com.example.androidcourseshpp.data.models.userlist
+
+import com.example.androidcourseshpp.data.network.RetrofitServiceProviderHolder
+import com.example.androidcourseshpp.data.network.entity.User
+import com.example.androidcourseshpp.data.network.entity.contacts.ContactData
+import com.example.androidcourseshpp.data.userdata.UserDataProvider
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.withContext
+import javax.inject.Inject
+
+class UsersRepositoryImpl @Inject constructor(
+    private val serviceProviderHolder: RetrofitServiceProviderHolder,
+    private val userDataProvider: UserDataProvider
+) : UsersRepository {
+
+    private val _userList = MutableStateFlow(emptyList<UserItem>())
+    override val userList: StateFlow<List<UserItem>> get() = _userList
+
+    override suspend fun addContact(userItem: UserItem) {
+        withContext(Dispatchers.IO) {
+            serviceProviderHolder.serviceProvider.getContactsService()
+                .addContact(ContactData(userDataProvider.getUserServerId(), userItem.id))
+        }
+    }
+
+    private suspend fun loadUsers(): List<UserItem> {
+        var userList = emptyList<User>()
+        var contactList = emptyList<User>()
+
+        withContext(Dispatchers.IO) {
+            val usersResponse = async {
+                serviceProviderHolder.serviceProvider.getUserService().getUsers()
+            }
+            val contactsResponse = async {
+                serviceProviderHolder.serviceProvider.getContactsService()
+                    .getUserContacts(userDataProvider.getUserServerId())
+            }
+            userList = usersResponse.await().users
+            contactList = contactsResponse.await().contacts
+        }
+
+        val userItemList = userList.map { user ->
+            UserItem(
+                id = user.id,
+                name = user.name ?: "",
+                career = user.career ?: "",
+                avatarURL = user.image ?: "",
+                isContact = contactList.contains(user)
+            )
+        }
+
+        return userItemList
+    }
+
+    override suspend fun initUserList() {
+        _userList.value = loadUsers()
+    }
+}

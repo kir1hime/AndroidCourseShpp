@@ -10,7 +10,7 @@ class ContactListContract {
     sealed interface Event : ViewEvent {
         data object OnArrowBackButtonClicked : Event
         data object OnAddContactClicked : Event
-        data class ContactItemAdded(val contactItem: ContactItem, val position: Int) :
+        data class ContactItemAdded(val contactItem: ContactItem) :
             Event
 
         data class OnItemClicked(
@@ -26,7 +26,6 @@ class ContactListContract {
             val contactItems: List<ContactItem>
         ) : Event
 
-        data object UpdateContactList : Event
     }
 
     sealed interface Effect : ViewEffect {
