@@ -15,7 +15,7 @@ class AddContactsContract {
             val interruptProgressBar: () -> Unit
         ) : Event
 
-        data object OnTryAgainButtonClicked : Event
+        data object LoadUserList: Event
     }
 
     sealed interface Effect : ViewEffect {

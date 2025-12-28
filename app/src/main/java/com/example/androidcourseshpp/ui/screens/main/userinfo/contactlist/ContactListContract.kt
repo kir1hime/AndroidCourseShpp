@@ -26,6 +26,7 @@ class ContactListContract {
             val contactItems: List<ContactItem>
         ) : Event
 
+        data object LoadContactList : Event
     }
 
     sealed interface Effect : ViewEffect {
@@ -39,6 +40,7 @@ class ContactListContract {
 
     data class UIState(
         val contactList: List<ContactItem>,
-        val isProgressBarShowed: Boolean
+        val isProgressBarShowed: Boolean,
+        val isTryAgainButtonShowed: Boolean
     ) : ViewState
 }

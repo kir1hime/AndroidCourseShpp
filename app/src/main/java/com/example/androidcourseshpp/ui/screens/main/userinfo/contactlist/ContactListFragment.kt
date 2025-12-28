@@ -46,6 +46,7 @@ class ContactListFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.setEvent(ContactListContract.Event.LoadContactList)
         createContactListAdapter()
         initRecyclerView()
         initSwipeToDeleteOfContactItem()
@@ -68,7 +69,7 @@ class ContactListFragment :
                         position
                     )
                 )
-                showUndoDeletingSnackBarItem(contactItem, position)
+                showUndoDeletingItemSnackBar(contactItem, position)
             }
 
             override fun showContactItemDetails(contactItem: ContactItem, avatar: ImageView) {
@@ -104,7 +105,7 @@ class ContactListFragment :
         )
     }
 
-    override fun setObservers() {
+    override fun setObservers() = with(binding) {
         collectFlow(viewModel.state) { state ->
             val contactList = state.contactList
             adapter.submitList(contactList.map { contactItem ->
@@ -113,7 +114,8 @@ class ContactListFragment :
                     false
                 )
             })
-            binding.progressBarRequest.isVisible = state.isProgressBarShowed
+            progressBarRequest.isVisible = state.isProgressBarShowed
+            buttonTryAgain.isVisible = state.isTryAgainButtonShowed
         }
 
         collectFlow(viewModel.effect) { effect ->
@@ -142,10 +144,13 @@ class ContactListFragment :
             )
             floatingButtonDeleteSelectedItems.visibility = View.GONE
         }
+        buttonTryAgain.setOnClickListener {
+            viewModel.setEvent(ContactListContract.Event.LoadContactList)
+        }
     }
 
 
-    private fun showUndoDeletingSnackBarItem(contactItem: ContactItem, position: Int) {
+    private fun showUndoDeletingItemSnackBar(contactItem: ContactItem, position: Int) {
         val undoDeletingSnackBar = Snackbar.make(
             binding.root,
             R.string.snackbar_text,
@@ -158,7 +163,7 @@ class ContactListFragment :
 
             if (!viewModel.deletedItems.isEmpty()) {
                 val deletedItem = viewModel.deletedItems.peek()
-                showUndoDeletingSnackBarItem(deletedItem.first, deletedItem.second)
+                showUndoDeletingItemSnackBar(deletedItem.first, deletedItem.second)
             }
 
         }.setActionTextColor(ContextCompat.getColor(requireContext(), R.color.custom_primary_color))
@@ -182,7 +187,7 @@ class ContactListFragment :
                     val adapterPosition = viewHolder.adapterPosition
 
                     val deletedItem = viewModel.state.value.contactList[adapterPosition]
-                    showUndoDeletingSnackBarItem(deletedItem, adapterPosition)
+                    showUndoDeletingItemSnackBar(deletedItem, adapterPosition)
                     viewModel.setEvent(
                         ContactListContract.Event.ContactItemDeleted(
                             deletedItem,

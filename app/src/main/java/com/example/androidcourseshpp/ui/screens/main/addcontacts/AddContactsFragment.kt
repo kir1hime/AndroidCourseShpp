@@ -45,6 +45,7 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.setEvent(AddContactsContract.Event.LoadUserList)
         initRecyclerView()
 
         setObservers()
@@ -84,7 +85,7 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
             findNavController().navigateUp()
         }
         buttonTryAgain.setOnClickListener {
-            viewModel.setEvent(AddContactsContract.Event.OnTryAgainButtonClicked)
+            viewModel.setEvent(AddContactsContract.Event.LoadUserList)
         }
     }
 

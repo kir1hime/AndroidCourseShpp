@@ -82,7 +82,7 @@
         android:background="@drawable/try_again_background"
         android:fontFamily="@font/open_sans"
         android:text="@string/try_again"
-        android:textColor="@color/top_view_color"
+        android:textColor="@color/try_again_button_text_color"
         android:textSize="@dimen/middle_text_size"
         android:textStyle="bold"
         android:visibility="gone"

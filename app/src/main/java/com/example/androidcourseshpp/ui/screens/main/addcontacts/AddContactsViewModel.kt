@@ -16,8 +16,13 @@ class AddContactsViewModel @Inject constructor(
 ) :
     BaseViewModel<AddContactsContract.Event, AddContactsContract.Effect, AddContactsContract.UIState>() {
 
+    override fun initState() = AddContactsContract.UIState(
+        userList = emptyList(),
+        isProgressBarShowed = false,
+        isTryAgainButtonShowed = false
+    )
+
     init {
-        loadUsers()
         viewModelScope.launch {
             usersRepository.userList.collect { userList ->
                 setState { copy(userList = userList) }
@@ -25,15 +30,9 @@ class AddContactsViewModel @Inject constructor(
         }
     }
 
-    override fun initState() = AddContactsContract.UIState(
-        userList = emptyList(),
-        isProgressBarShowed = false,
-        isTryAgainButtonShowed = false
-    )
-
     override fun handleEvent(event: AddContactsContract.Event) {
         when (event) {
-            is AddContactsContract.Event.OnTryAgainButtonClicked -> loadUsers()
+            is AddContactsContract.Event.LoadUserList -> loadUsers()
             is AddContactsContract.Event.OnSearchButtonClicked -> onSearchButtonClicked()
             is AddContactsContract.Event.OnArrowBackButtonClicked -> navigateToPreviousScreen()
             is AddContactsContract.Event.OnUserItemClicked -> navigateToDetailsScreen(
@@ -78,8 +77,15 @@ class AddContactsViewModel @Inject constructor(
     private fun loadUsers() {
         processNetworkExceptions(
             toExecute = {
-                setState { copy(isProgressBarShowed = true, isTryAgainButtonShowed = false) }
+                setState {
+                    copy(
+                        isProgressBarShowed = true,
+                        isTryAgainButtonShowed = false,
+                        userList = emptyList()
+                    )
+                }
                 usersRepository.initUserList()
+                setState { copy(userList = usersRepository.userList.value) }
             },
             processBackendException = {
                 setState { copy(isTryAgainButtonShowed = true) }

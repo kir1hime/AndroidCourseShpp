@@ -15,12 +15,16 @@ class ContactListViewModel @Inject constructor(
     private val contactsRepository: ContactsRepository
 ) : BaseViewModel<ContactListContract.Event, ContactListContract.Effect, ContactListContract.UIState>() {
 
-    override fun initState() = ContactListContract.UIState(emptyList(), false)
+    override fun initState() = ContactListContract.UIState(
+        contactList = emptyList(),
+        isProgressBarShowed = false,
+        isTryAgainButtonShowed = false
+    )
+
     val deletedItems = Stack<Pair<ContactItem, Int>>()
 
     init {
         viewModelScope.launch {
-            loadContacts()
             contactsRepository.contactList.collect { contactList ->
                 setState { copy(contactList = contactList) }
             }
@@ -31,6 +35,7 @@ class ContactListViewModel @Inject constructor(
     override fun handleEvent(event: ContactListContract.Event) {
         when (event) {
             is ContactListContract.Event.OnArrowBackButtonClicked -> navigateToPreviousScreen()
+            is ContactListContract.Event.LoadContactList -> loadContacts()
             is ContactListContract.Event.OnAddContactClicked -> navigateToAddContactsScreen()
             is ContactListContract.Event.ContactItemAdded -> addContactItem(
                 event.contactItem
@@ -79,23 +84,39 @@ class ContactListViewModel @Inject constructor(
     private fun addContactItem(contactItem: ContactItem) {
         processNetworkExceptions(
             toExecute = {
+
                 contactsRepository.addContactItem(contactItem)
             },
             processBackendException = {},
             processResponseProcessingException = {},
             processConnectionException = {},
-            finally = { })
+            finally = { }
+        )
     }
 
     private fun loadContacts() {
         processNetworkExceptions(
             toExecute = {
+                setState {
+                    copy(
+                        isProgressBarShowed = true,
+                        isTryAgainButtonShowed = false,
+                        contactList = emptyList()
+                    )
+                }
                 contactsRepository.initContactList()
+                setState { copy(contactList = contactsRepository.contactList.value) }
             },
-            processBackendException = {},
-            processConnectionException = {},
-            processResponseProcessingException = {},
-            finally = {}
+            processBackendException = {
+                setState { copy(isTryAgainButtonShowed = true) }
+            },
+            processConnectionException = {
+                setState { copy(isTryAgainButtonShowed = true) }
+            },
+            processResponseProcessingException = {
+                setState { copy(isTryAgainButtonShowed = true) }
+            },
+            finally = { setState { copy(isProgressBarShowed = false) } }
         )
     }
 
