@@ -34,24 +34,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/main_margin_side"
+        android:layout_marginTop="@dimen/main_margin_side"
         android:background="@color/add_contacts_bar_color"
         android:contentDescription="@string/arrow_back_imagebutton"
         android:src="@drawable/ic_arrow_back"
-        app:layout_constraintBottom_toBottomOf="@id/textViewUsers"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/textViewUsers" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/imageButtonSearch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/main_margin_side"
         android:layout_marginEnd="@dimen/main_margin_side"
         android:background="@color/contacts_bar_color"
         android:contentDescription="@string/search_imagebutton"
         android:src="@drawable/ic_search"
-        app:layout_constraintBottom_toBottomOf="@id/textViewUsers"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/textViewUsers" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewUsers"
@@ -90,5 +90,43 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayoutSearch"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/main_margin_side"
+        android:layout_marginTop="@dimen/search_bar_margin_top"
+        android:layout_marginEnd="@dimen/search_bar_margin_end"
+        android:background="@drawable/search_bar_background"
+        android:visibility="gone"
+        app:boxBackgroundColor="@color/search_bar_background_color"
+        app:boxStrokeWidth="@dimen/search_bar_stroke"
+        app:cursorColor="@color/cursor_color_1"
+        app:endIconDrawable="@drawable/ic_search"
+        app:endIconMode="custom"
+        app:endIconTint="@color/search_bar_icon_color"
+        app:hintEnabled="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextSearch"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/search_bar_h"
+            android:fontFamily="@font/open_sans"
+            android:gravity="top"
+            android:includeFontPadding="false"
+            android:paddingStart="@dimen/search_bar_padding_start"
+            android:paddingTop="@dimen/search_bar_padding_top"
+            android:paddingEnd="@dimen/search_bar_padding_end"
+            android:paddingBottom="@dimen/search_bar_padding_bottom"
+            android:textColor="@color/input_text_color"
+            android:textSize="@dimen/small_text_size"
+            android:textStyle="bold"
+            tools:text="Some text" />
+    </com.google.android.material.textfield.TextInputLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

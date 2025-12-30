@@ -13,6 +13,9 @@
     <color name="top_view_color">#242235</color>
     <color name="try_again_button_text_color">#242235</color>
     <color name="try_again_button_color">#FB5E06</color>
+    <color name="search_bar_background_color">#18181F</color>
+    <color name="search_bar_icon_color">#B2B2B3</color>
+    <color name="input_text_color">#FFFFFFFF</color>
 
     <!-- User Info -->
     <color name="background_userinfo_tab_layout">#242235</color>
@@ -47,7 +50,7 @@
     <color name="google_background_color">@color/agreements_text_color</color>
     <color name="or_text_color">@color/agreements_text_color</color>
     <color name="register_text_color">@color/agreements_text_color</color>
-    <color name="input_text_color">@color/agreements_text_color</color>
+
     <color name="remember_me_check_box_color">@color/agreements_text_color</color>
 
     <color name="account_question_text_color">#B2B2B3</color>
@@ -64,6 +67,7 @@
     <color name="contacts_label_color">#FFFFFF</color>
     <color name="add_contact_color">@color/contacts_label_color</color>
     <color name="floating_delete_button_color">#FB5E06</color>
+
 
 
     <!-- Contact item -->
