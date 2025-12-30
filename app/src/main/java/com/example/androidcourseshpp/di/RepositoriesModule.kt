@@ -2,6 +2,8 @@ package com.example.androidcourseshpp.di
 
 import com.example.androidcourseshpp.data.models.contactlist.ContactsRepository
 import com.example.androidcourseshpp.data.models.contactlist.ContactsRepositoryImpl
+import com.example.androidcourseshpp.data.models.gallery.GalleryRepository
+import com.example.androidcourseshpp.data.models.gallery.GalleryRepositoryImpl
 import com.example.androidcourseshpp.data.models.userlist.UsersRepository
 import com.example.androidcourseshpp.data.models.userlist.UsersRepositoryImpl
 import dagger.Binds
@@ -21,4 +23,8 @@ interface RepositoriesModule {
     @Binds
     @Singleton
     fun provideUsersRepository(usersRepositoryImpl: UsersRepositoryImpl): UsersRepository
+
+    @Binds
+    @Singleton
+    fun provideGalleryRepository(galleryRepositoryImpl: GalleryRepositoryImpl): GalleryRepository
 }
