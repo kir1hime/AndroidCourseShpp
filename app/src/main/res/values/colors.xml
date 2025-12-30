@@ -11,6 +11,8 @@
     <color name="input_hint_color">#B2B2B3</color>
 
     <color name="top_view_color">#242235</color>
+    <color name="try_again_button_text_color">#242235</color>
+    <color name="try_again_button_color">#FB5E06</color>
 
     <!-- User Info -->
     <color name="background_userinfo_tab_layout">#242235</color>
@@ -130,9 +132,7 @@
     <!-- Add contacts -->
     <color name="users_label_color">#FFFFFF</color>
     <color name="add_contacts_bar_color">#242235</color>
-    <color name="try_agian_button_text_color">#242235</color>
     <color name="add_contact_label_color">#FB5E06</color>
-    <color name="try_again_button_color">#FB5E06</color>
     <color name="add_contact_background_color">#FFFFFF</color>
 
 </resources>

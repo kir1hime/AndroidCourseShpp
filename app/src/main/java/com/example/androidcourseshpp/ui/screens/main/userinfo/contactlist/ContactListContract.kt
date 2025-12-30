@@ -10,7 +10,7 @@ class ContactListContract {
     sealed interface Event : ViewEvent {
         data object OnArrowBackButtonClicked : Event
         data object OnAddContactClicked : Event
-        data class ContactItemAdded(val contactItem: ContactItem, val position: Int) :
+        data class ContactItemAdded(val contactItem: ContactItem) :
             Event
 
         data class OnItemClicked(
@@ -18,15 +18,14 @@ class ContactListContract {
         ) : Event
 
         data class ContactItemDeleted(
-            val contactItem: ContactItem,
-            val position: Int
+            val contactItem: ContactItem
         ) : Event
 
         data class OnDeleteSelectedItemsFloatingButtonClicked(
             val contactItems: List<ContactItem>
         ) : Event
 
-        data object UpdateContactList : Event
+        data object LoadContactList : Event
     }
 
     sealed interface Effect : ViewEffect {
@@ -36,10 +35,12 @@ class ContactListContract {
         ) : Effect
 
         data object NavigateToAddContactsScreen : Effect
+        data class ShowToast(val toastMessageResId: Int) : Effect
     }
 
     data class UIState(
         val contactList: List<ContactItem>,
-        val isProgressBarShowed: Boolean
+        val isProgressBarShowed: Boolean,
+        val isTryAgainButtonShowed: Boolean
     ) : ViewState
 }

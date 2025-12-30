@@ -8,6 +8,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.navOptions
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.models.userlist.UserItem
@@ -17,6 +18,8 @@ import com.example.androidcourseshpp.ui.screens.main.addcontacts.adapter.UserIte
 import com.example.androidcourseshpp.ui.screens.main.addcontacts.adapter.UserItemDecorations
 import com.example.androidcourseshpp.ui.screens.main.addcontacts.adapter.UsersAdapter
 import dagger.hilt.android.AndroidEntryPoint
+
+const val TO_RELOAD_CONTACT_LIST = "reloadContactList"
 
 @AndroidEntryPoint
 class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
@@ -70,7 +73,7 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
 
         collectFlow(viewModel.effect) { effect ->
             when (effect) {
-                is AddContactsContract.Effect.NavigateToContactListScreen -> moveToUserList()
+                is AddContactsContract.Effect.NavigateToContactListScreen -> moveToContactList()
                 is AddContactsContract.Effect.ShowToast -> makeToast(effect.toastMessageResId)
                 is AddContactsContract.Effect.NavigateToDetailsScreen -> moveToDetailsScreen(
                     effect.userItem
@@ -84,7 +87,7 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
             findNavController().navigateUp()
         }
         buttonTryAgain.setOnClickListener {
-            viewModel.setEvent(AddContactsContract.Event.OnTryAgainButtonClicked)
+            viewModel.setEvent(AddContactsContract.Event.LoadUserList)
         }
     }
 
@@ -100,8 +103,33 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
         findNavController().navigate(direction, extras)
     }
 
-    private fun moveToUserList() {
-        findNavController().navigateUp()
+    private fun moveToContactList() {
+        findNavController()
+            .getBackStackEntry(R.id.userInfoFragment)
+            .savedStateHandle[TO_RELOAD_CONTACT_LIST] = true
+
+        findNavController().navigate(
+            R.id.userInfoFragment,
+            null,
+            navOptions {
+                popUpTo(R.id.addContactsFragment) {
+                    inclusive = true
+                }
+            }
+        )
+    }
+
+    override fun onPause() {
+        super.onPause()
+        val userListState = binding.recyclerViewUsers.layoutManager?.onSaveInstanceState()
+        viewModel.setEvent(AddContactsContract.Event.SaveUserListState(userListState))
+    }
+
+    override fun onResume() {
+        super.onResume()
+        collectFlow(viewModel.userListState) { state ->
+            binding.recyclerViewUsers.layoutManager?.onRestoreInstanceState(state)
+        }
     }
 
 }
