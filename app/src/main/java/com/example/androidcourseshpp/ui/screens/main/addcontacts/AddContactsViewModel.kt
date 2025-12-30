@@ -1,37 +1,40 @@
 package com.example.androidcourseshpp.ui.screens.main.addcontacts
 
 
-import androidx.lifecycle.viewModelScope
+import android.os.Parcelable
+import androidx.lifecycle.SavedStateHandle
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.models.userlist.UserItem
 import com.example.androidcourseshpp.data.models.userlist.UsersRepository
 import com.example.androidcourseshpp.ui.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
 @HiltViewModel
 class AddContactsViewModel @Inject constructor(
-    private val usersRepository: UsersRepository
+    private val usersRepository: UsersRepository,
+    private val savedStateHandle: SavedStateHandle
 ) :
     BaseViewModel<AddContactsContract.Event, AddContactsContract.Effect, AddContactsContract.UIState>() {
+
+    private val _userListState = savedStateHandle.getStateFlow(USER_LIST_STATE, null)
+    val userListState: StateFlow<Parcelable?> get() = _userListState
 
     override fun initState() = AddContactsContract.UIState(
         userList = emptyList(),
         isProgressBarShowed = false,
-        isTryAgainButtonShowed = false
+        isTryAgainButtonShowed = false,
+        isContactListChanged = false
     )
 
     init {
-        viewModelScope.launch {
-            usersRepository.userList.collect { userList ->
-                setState { copy(userList = userList) }
-            }
-        }
+        loadUsers()
     }
 
     override fun handleEvent(event: AddContactsContract.Event) {
         when (event) {
+            is AddContactsContract.Event.SaveUserListState -> saveUserListState(event.state)
             is AddContactsContract.Event.LoadUserList -> loadUsers()
             is AddContactsContract.Event.OnSearchButtonClicked -> onSearchButtonClicked()
             is AddContactsContract.Event.OnArrowBackButtonClicked -> navigateToPreviousScreen()
@@ -46,16 +49,22 @@ class AddContactsViewModel @Inject constructor(
         }
     }
 
+    private fun saveUserListState(state: Parcelable?) {
+        savedStateHandle[USER_LIST_STATE] = state
+    }
+
     private fun onSearchButtonClicked() {}
     private fun navigateToPreviousScreen() {
         setEffect(AddContactsContract.Effect.NavigateToContactListScreen)
     }
+
 
     private fun addContact(userItem: UserItem, interruptLoading: () -> Unit) {
 
         processNetworkExceptions(
             toExecute = {
                 usersRepository.addContact(userItem)
+                setState { copy(isContactListChanged = true) }
             },
             processBackendException = {
                 setEffect(AddContactsContract.Effect.ShowToast(R.string.generic_error))
@@ -84,8 +93,8 @@ class AddContactsViewModel @Inject constructor(
                         userList = emptyList()
                     )
                 }
-                usersRepository.initUserList()
-                setState { copy(userList = usersRepository.userList.value) }
+                val userList = usersRepository.loadUsers()
+                setState { copy(userList = userList) }
             },
             processBackendException = {
                 setState { copy(isTryAgainButtonShowed = true) }
@@ -101,5 +110,9 @@ class AddContactsViewModel @Inject constructor(
             },
             finally = { setState { copy(isProgressBarShowed = false) } }
         )
+    }
+
+    companion object {
+        const val USER_LIST_STATE = "userStateList"
     }
 }

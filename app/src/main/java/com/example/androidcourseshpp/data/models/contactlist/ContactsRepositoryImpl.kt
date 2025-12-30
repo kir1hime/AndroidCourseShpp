@@ -6,9 +6,6 @@ import com.example.androidcourseshpp.data.userdata.UserDataProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -18,12 +15,6 @@ class ContactsRepositoryImpl @Inject constructor(
     private val userDataProvider: UserDataProvider
 ) : ContactsRepository {
 
-    private val _contactList = MutableStateFlow(emptyList<ContactItem>())
-    override val contactList: StateFlow<List<ContactItem>> get() = _contactList
-
-    override suspend fun initContactList() {
-        updateContactList()
-    }
 
     override suspend fun addContactItem(contactItem: ContactItem) {
         withContext(Dispatchers.IO) {
@@ -31,7 +22,6 @@ class ContactsRepositoryImpl @Inject constructor(
                 ContactData(userDataProvider.getUserServerId(), contactItem.id)
             )
         }
-        updateContactList()
     }
 
     override suspend fun deleteContactItem(contactItem: ContactItem) {
@@ -40,7 +30,6 @@ class ContactsRepositoryImpl @Inject constructor(
                 ContactData(userDataProvider.getUserServerId(), contactItem.id)
             )
         }
-        updateContactList()
     }
 
     override suspend fun deleteContactItems(contactItems: List<ContactItem>) {
@@ -54,10 +43,9 @@ class ContactsRepositoryImpl @Inject constructor(
                 }
             }.awaitAll()
         }
-        updateContactList()
     }
 
-    private suspend fun loadContacts(): List<ContactItem> {
+    override suspend fun loadContacts(): List<ContactItem> {
         val response = serviceProviderHolder.serviceProvider.getContactsService()
             .getUserContacts(userDataProvider.getUserServerId())
 
@@ -69,11 +57,6 @@ class ContactsRepositoryImpl @Inject constructor(
                 avatarURL = contact.image ?: ""
             )
         }
-
         return contactItemList
-    }
-
-    private suspend fun updateContactList() {
-        _contactList.update { loadContacts() }
     }
 }

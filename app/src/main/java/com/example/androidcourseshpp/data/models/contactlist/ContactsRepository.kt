@@ -5,11 +5,10 @@ import kotlinx.coroutines.flow.StateFlow
 
 interface ContactsRepository {
 
-    val contactList: StateFlow<List<ContactItem>>
-    suspend fun initContactList()
     suspend fun addContactItem(contactItem: ContactItem)
 
     suspend fun deleteContactItem(contactItem: ContactItem)
 
     suspend fun deleteContactItems(contactItems: List<ContactItem>)
+    suspend fun loadContacts(): List<ContactItem>
 }

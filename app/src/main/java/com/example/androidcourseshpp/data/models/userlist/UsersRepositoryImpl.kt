@@ -6,8 +6,6 @@ import com.example.androidcourseshpp.data.network.entity.contacts.ContactData
 import com.example.androidcourseshpp.data.userdata.UserDataProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -16,8 +14,6 @@ class UsersRepositoryImpl @Inject constructor(
     private val userDataProvider: UserDataProvider
 ) : UsersRepository {
 
-    private val _userList = MutableStateFlow(emptyList<UserItem>())
-    override val userList: StateFlow<List<UserItem>> get() = _userList
 
     override suspend fun addContact(userItem: UserItem) {
         withContext(Dispatchers.IO) {
@@ -26,7 +22,7 @@ class UsersRepositoryImpl @Inject constructor(
         }
     }
 
-    private suspend fun loadUsers(): List<UserItem> {
+    override suspend fun loadUsers(): List<UserItem> {
         var userList = emptyList<User>()
         var contactList = emptyList<User>()
 
@@ -53,9 +49,5 @@ class UsersRepositoryImpl @Inject constructor(
         }
 
         return userItemList
-    }
-
-    override suspend fun initUserList() {
-        _userList.value = loadUsers()
     }
 }

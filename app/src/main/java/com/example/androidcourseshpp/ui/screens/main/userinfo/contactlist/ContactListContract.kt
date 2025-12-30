@@ -18,8 +18,7 @@ class ContactListContract {
         ) : Event
 
         data class ContactItemDeleted(
-            val contactItem: ContactItem,
-            val position: Int
+            val contactItem: ContactItem
         ) : Event
 
         data class OnDeleteSelectedItemsFloatingButtonClicked(
@@ -36,6 +35,7 @@ class ContactListContract {
         ) : Effect
 
         data object NavigateToAddContactsScreen : Effect
+        data class ShowToast(val toastMessageResId: Int) : Effect
     }
 
     data class UIState(

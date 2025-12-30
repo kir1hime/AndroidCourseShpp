@@ -1,11 +1,11 @@
 package com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist
 
-import androidx.lifecycle.viewModelScope
+
+import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.models.contactlist.ContactsRepository
 import com.example.androidcourseshpp.data.models.contactlist.ContactItem
 import com.example.androidcourseshpp.ui.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import java.util.Stack
 import javax.inject.Inject
 
@@ -21,14 +21,10 @@ class ContactListViewModel @Inject constructor(
         isTryAgainButtonShowed = false
     )
 
-    val deletedItems = Stack<Pair<ContactItem, Int>>()
+    val deletedItems = Stack<ContactItem>()
 
     init {
-        viewModelScope.launch {
-            contactsRepository.contactList.collect { contactList ->
-                setState { copy(contactList = contactList) }
-            }
-        }
+        loadContacts()
     }
 
 
@@ -41,10 +37,7 @@ class ContactListViewModel @Inject constructor(
                 event.contactItem
             )
 
-            is ContactListContract.Event.ContactItemDeleted -> deleteContactItem(
-                event.contactItem,
-                event.position
-            )
+            is ContactListContract.Event.ContactItemDeleted -> deleteContactItem(event.contactItem)
 
             is ContactListContract.Event.OnDeleteSelectedItemsFloatingButtonClicked -> deleteListOfContactItems(
                 event.contactItems
@@ -56,41 +49,68 @@ class ContactListViewModel @Inject constructor(
         }
     }
 
-    private fun deleteContactItem(contactItem: ContactItem, position: Int) {
+    private fun deleteContactItem(contactItem: ContactItem) {
         processNetworkExceptions(
             toExecute = {
+                setState { copy(isProgressBarShowed = true) }
                 contactsRepository.deleteContactItem(contactItem)
+                val contactList = contactsRepository.loadContacts()
+                setState { copy(contactList = contactList) }
             },
-            processBackendException = {},
-            processResponseProcessingException = {},
-            processConnectionException = {},
-            finally = { }
+            processBackendException = {
+                setEffect(ContactListContract.Effect.ShowToast(R.string.generic_error))
+            },
+            processResponseProcessingException = {
+                setEffect(ContactListContract.Effect.ShowToast(R.string.generic_error))
+            },
+            processConnectionException = {
+                setEffect(ContactListContract.Effect.ShowToast(R.string.connection_error))
+            },
+            finally = { setState { copy(isProgressBarShowed = false) } }
         )
 
-        deletedItems.push(Pair(contactItem, position))
+        deletedItems.push(contactItem)
     }
 
     private fun deleteListOfContactItems(contactItems: List<ContactItem>) {
         processNetworkExceptions(
             toExecute = {
+                setState { copy(isProgressBarShowed = true) }
                 contactsRepository.deleteContactItems(contactItems)
+                val contactList = contactsRepository.loadContacts()
+                setState { copy(contactList = contactList) }
             },
-            processBackendException = {},
-            processResponseProcessingException = {},
-            processConnectionException = {},
-            finally = { })
+            processBackendException = {
+                setEffect(ContactListContract.Effect.ShowToast(R.string.generic_error))
+            },
+            processResponseProcessingException = {
+                setEffect(ContactListContract.Effect.ShowToast(R.string.generic_error))
+            },
+            processConnectionException = {
+                setEffect(ContactListContract.Effect.ShowToast(R.string.connection_error))
+            },
+            finally = { setState { copy(isProgressBarShowed = false) } }
+        )
     }
 
     private fun addContactItem(contactItem: ContactItem) {
         processNetworkExceptions(
             toExecute = {
-
+                setState { copy(isProgressBarShowed = true) }
                 contactsRepository.addContactItem(contactItem)
+                val contactList = contactsRepository.loadContacts()
+                setState { copy(contactList = contactList) }
             },
-            processBackendException = {},
-            processResponseProcessingException = {},
-            processConnectionException = {},
-            finally = { }
+            processBackendException = {
+                setEffect(ContactListContract.Effect.ShowToast(R.string.generic_error))
+            },
+            processResponseProcessingException = {
+                setEffect(ContactListContract.Effect.ShowToast(R.string.generic_error))
+            },
+            processConnectionException = {
+                setEffect(ContactListContract.Effect.ShowToast(R.string.connection_error))
+            },
+            finally = { setState { copy(isProgressBarShowed = false) } }
         )
     }
 
@@ -104,17 +124,20 @@ class ContactListViewModel @Inject constructor(
                         contactList = emptyList()
                     )
                 }
-                contactsRepository.initContactList()
-                setState { copy(contactList = contactsRepository.contactList.value) }
+                val contactList = contactsRepository.loadContacts()
+                setState { copy(contactList = contactList) }
             },
             processBackendException = {
                 setState { copy(isTryAgainButtonShowed = true) }
+                setEffect(ContactListContract.Effect.ShowToast(R.string.generic_error))
             },
             processConnectionException = {
                 setState { copy(isTryAgainButtonShowed = true) }
+                setEffect(ContactListContract.Effect.ShowToast(R.string.generic_error))
             },
             processResponseProcessingException = {
                 setState { copy(isTryAgainButtonShowed = true) }
+                setEffect(ContactListContract.Effect.ShowToast(R.string.connection_error))
             },
             finally = { setState { copy(isProgressBarShowed = false) } }
         )

@@ -1,5 +1,6 @@
 package com.example.androidcourseshpp.ui.screens.main.addcontacts
 
+import android.os.Parcelable
 import com.example.androidcourseshpp.data.models.userlist.UserItem
 import com.example.androidcourseshpp.ui.ViewEffect
 import com.example.androidcourseshpp.ui.ViewEvent
@@ -15,7 +16,8 @@ class AddContactsContract {
             val interruptProgressBar: () -> Unit
         ) : Event
 
-        data object LoadUserList: Event
+        data object LoadUserList : Event
+        data class SaveUserListState(val state: Parcelable?) : Event
     }
 
     sealed interface Effect : ViewEffect {
@@ -30,6 +32,7 @@ class AddContactsContract {
     data class UIState(
         val userList: List<UserItem>,
         val isProgressBarShowed: Boolean,
-        val isTryAgainButtonShowed: Boolean
+        val isTryAgainButtonShowed: Boolean,
+        val isContactListChanged: Boolean
     ) : ViewState
 }

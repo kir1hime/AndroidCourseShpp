@@ -1,6 +1,7 @@
 package com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import androidx.activity.OnBackPressedCallback
@@ -17,6 +18,7 @@ import com.example.androidcourseshpp.data.models.contactlist.ContactItem
 import com.example.androidcourseshpp.data.models.contactlist.SelectableContactItem
 import com.example.androidcourseshpp.databinding.FragmentContactlistBinding
 import com.example.androidcourseshpp.ui.BaseFragment
+import com.example.androidcourseshpp.ui.screens.main.addcontacts.TO_RELOAD_CONTACT_LIST
 import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.adapter.ContactItemDecoration
 import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.adapter.ContactsAdapter
 import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.adapter.ContactItemActions
@@ -34,6 +36,7 @@ class ContactListFragment :
 
     private lateinit var sharedContactProfilePhoto: ImageView
 
+
     private val onBackPressedCallback: OnBackPressedCallback =
         object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -46,7 +49,8 @@ class ContactListFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.setEvent(ContactListContract.Event.LoadContactList)
+        reloadContactList()
+
         createContactListAdapter()
         initRecyclerView()
         initSwipeToDeleteOfContactItem()
@@ -54,6 +58,22 @@ class ContactListFragment :
         setListeners()
         setObservers()
         setOnBackPressedListener()
+    }
+
+    private fun reloadContactList() {
+        val navBackStackEntry =
+            findNavController().currentBackStackEntry ?: return
+
+        navBackStackEntry
+            .savedStateHandle
+            .getLiveData<Boolean>(TO_RELOAD_CONTACT_LIST)
+            .observe(viewLifecycleOwner) { shouldReload ->
+                if (shouldReload) {
+                    Log.d("myTag", shouldReload.toString())
+                    viewModel.setEvent(ContactListContract.Event.LoadContactList)
+                    navBackStackEntry.savedStateHandle.remove<Boolean>(TO_RELOAD_CONTACT_LIST)
+                }
+            }
     }
 
     private fun createContactListAdapter() {
@@ -65,11 +85,10 @@ class ContactListFragment :
             override fun deleteContactItem(contactItem: ContactItem, position: Int) {
                 viewModel.setEvent(
                     ContactListContract.Event.ContactItemDeleted(
-                        contactItem,
-                        position
+                        contactItem
                     )
                 )
-                showUndoDeletingItemSnackBar(contactItem, position)
+                showUndoDeletingItemSnackBar(contactItem)
             }
 
             override fun showContactItemDetails(contactItem: ContactItem, avatar: ImageView) {
@@ -116,12 +135,14 @@ class ContactListFragment :
             })
             progressBarRequest.isVisible = state.isProgressBarShowed
             buttonTryAgain.isVisible = state.isTryAgainButtonShowed
+            recyclerViewContacts.isVisible = !state.isTryAgainButtonShowed
         }
 
         collectFlow(viewModel.effect) { effect ->
             when (effect) {
                 is ContactListContract.Effect.NavigateToUserProfileScreen -> moveBackToUserProfileScreen()
                 is ContactListContract.Effect.NavigateToAddContactsScreen -> moveToAddContactsScreen()
+                is ContactListContract.Effect.ShowToast -> makeToast(effect.toastMessageResId)
                 is ContactListContract.Effect.NavigateToDetailsScreen -> moveToDetailsScreen(
                     effect.contact
                 )
@@ -150,7 +171,7 @@ class ContactListFragment :
     }
 
 
-    private fun showUndoDeletingItemSnackBar(contactItem: ContactItem, position: Int) {
+    private fun showUndoDeletingItemSnackBar(contactItem: ContactItem) {
         val undoDeletingSnackBar = Snackbar.make(
             binding.root,
             R.string.snackbar_text,
@@ -163,7 +184,7 @@ class ContactListFragment :
 
             if (!viewModel.deletedItems.isEmpty()) {
                 val deletedItem = viewModel.deletedItems.peek()
-                showUndoDeletingItemSnackBar(deletedItem.first, deletedItem.second)
+                showUndoDeletingItemSnackBar(deletedItem)
             }
 
         }.setActionTextColor(ContextCompat.getColor(requireContext(), R.color.custom_primary_color))
@@ -187,11 +208,10 @@ class ContactListFragment :
                     val adapterPosition = viewHolder.adapterPosition
 
                     val deletedItem = viewModel.state.value.contactList[adapterPosition]
-                    showUndoDeletingItemSnackBar(deletedItem, adapterPosition)
+                    showUndoDeletingItemSnackBar(deletedItem)
                     viewModel.setEvent(
                         ContactListContract.Event.ContactItemDeleted(
-                            deletedItem,
-                            adapterPosition
+                            deletedItem
                         )
                     )
                 }
