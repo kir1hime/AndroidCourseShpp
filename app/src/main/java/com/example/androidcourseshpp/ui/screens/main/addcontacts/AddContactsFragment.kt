@@ -8,7 +8,6 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.navOptions
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.models.userlist.UserItem
@@ -84,7 +83,7 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
 
     override fun setListeners() = with(binding) {
         imageButtonArrowBack.setOnClickListener {
-            findNavController().navigateUp()
+            viewModel.setEvent(AddContactsContract.Event.OnArrowBackButtonClicked)
         }
         buttonTryAgain.setOnClickListener {
             viewModel.setEvent(AddContactsContract.Event.LoadUserList)
@@ -104,32 +103,10 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
     }
 
     private fun moveToContactList() {
-        findNavController()
-            .getBackStackEntry(R.id.userInfoFragment)
-            .savedStateHandle[TO_RELOAD_CONTACT_LIST] = true
-
-        findNavController().navigate(
-            R.id.userInfoFragment,
-            null,
-            navOptions {
-                popUpTo(R.id.addContactsFragment) {
-                    inclusive = true
-                }
-            }
+        findNavController().previousBackStackEntry?.savedStateHandle?.set(
+            TO_RELOAD_CONTACT_LIST,
+            true
         )
+        findNavController().navigateUp()
     }
-
-    override fun onPause() {
-        super.onPause()
-        val userListState = binding.recyclerViewUsers.layoutManager?.onSaveInstanceState()
-        viewModel.setEvent(AddContactsContract.Event.SaveUserListState(userListState))
-    }
-
-    override fun onResume() {
-        super.onResume()
-        collectFlow(viewModel.userListState) { state ->
-            binding.recyclerViewUsers.layoutManager?.onRestoreInstanceState(state)
-        }
-    }
-
 }

@@ -17,7 +17,6 @@ class AddContactsContract {
         ) : Event
 
         data object LoadUserList : Event
-        data class SaveUserListState(val state: Parcelable?) : Event
     }
 
     sealed interface Effect : ViewEffect {

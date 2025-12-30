@@ -1,7 +1,6 @@
 package com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import androidx.activity.OnBackPressedCallback
@@ -46,7 +45,6 @@ class ContactListFragment :
 
     private lateinit var adapter: ContactsAdapter
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         reloadContactList()
@@ -61,19 +59,18 @@ class ContactListFragment :
     }
 
     private fun reloadContactList() {
-        val navBackStackEntry =
-            findNavController().currentBackStackEntry ?: return
+        val savedStateHandle = findNavController().currentBackStackEntry?.savedStateHandle
 
-        navBackStackEntry
-            .savedStateHandle
-            .getLiveData<Boolean>(TO_RELOAD_CONTACT_LIST)
-            .observe(viewLifecycleOwner) { shouldReload ->
-                if (shouldReload) {
-                    Log.d("myTag", shouldReload.toString())
-                    viewModel.setEvent(ContactListContract.Event.LoadContactList)
-                    navBackStackEntry.savedStateHandle.remove<Boolean>(TO_RELOAD_CONTACT_LIST)
-                }
-            }
+        val toReloadLiveData =
+            savedStateHandle?.getLiveData<Boolean>(TO_RELOAD_CONTACT_LIST)
+
+        toReloadLiveData?.observe(viewLifecycleOwner) {
+            viewModel.setEvent(ContactListContract.Event.LoadContactList)
+            savedStateHandle.remove<Boolean>(
+                TO_RELOAD_CONTACT_LIST
+            )
+
+        }
     }
 
     private fun createContactListAdapter() {

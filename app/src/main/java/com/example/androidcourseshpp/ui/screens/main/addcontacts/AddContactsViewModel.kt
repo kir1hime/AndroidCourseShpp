@@ -13,13 +13,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddContactsViewModel @Inject constructor(
-    private val usersRepository: UsersRepository,
-    private val savedStateHandle: SavedStateHandle
+    private val usersRepository: UsersRepository
 ) :
     BaseViewModel<AddContactsContract.Event, AddContactsContract.Effect, AddContactsContract.UIState>() {
-
-    private val _userListState = savedStateHandle.getStateFlow(USER_LIST_STATE, null)
-    val userListState: StateFlow<Parcelable?> get() = _userListState
 
     override fun initState() = AddContactsContract.UIState(
         userList = emptyList(),
@@ -34,7 +30,6 @@ class AddContactsViewModel @Inject constructor(
 
     override fun handleEvent(event: AddContactsContract.Event) {
         when (event) {
-            is AddContactsContract.Event.SaveUserListState -> saveUserListState(event.state)
             is AddContactsContract.Event.LoadUserList -> loadUsers()
             is AddContactsContract.Event.OnSearchButtonClicked -> onSearchButtonClicked()
             is AddContactsContract.Event.OnArrowBackButtonClicked -> navigateToPreviousScreen()
@@ -49,9 +44,6 @@ class AddContactsViewModel @Inject constructor(
         }
     }
 
-    private fun saveUserListState(state: Parcelable?) {
-        savedStateHandle[USER_LIST_STATE] = state
-    }
 
     private fun onSearchButtonClicked() {}
     private fun navigateToPreviousScreen() {

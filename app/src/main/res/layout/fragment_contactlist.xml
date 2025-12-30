@@ -37,9 +37,9 @@
         android:background="@color/contacts_bar_color"
         android:contentDescription="@string/arrow_back_imagebutton"
         android:src="@drawable/ic_arrow_back"
+        app:layout_constraintBottom_toBottomOf="@id/textViewContacts"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/textViewContacts"
-        app:layout_constraintBottom_toBottomOf="@id/textViewContacts"/>
+        app:layout_constraintTop_toTopOf="@id/textViewContacts" />
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/imageButtonSearch"
@@ -49,9 +49,9 @@
         android:background="@color/contacts_bar_color"
         android:contentDescription="@string/search_imagebutton"
         android:src="@drawable/ic_search"
+        app:layout_constraintBottom_toBottomOf="@id/textViewContacts"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/textViewContacts"
-        app:layout_constraintBottom_toBottomOf="@id/textViewContacts"/>
+        app:layout_constraintTop_toTopOf="@id/textViewContacts" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/textViewAddContacts"
@@ -88,8 +88,8 @@
         android:contentDescription="@string/delete_button_description"
         android:src="@drawable/ic_white_trash_can"
         android:visibility="gone"
-        app:fabCustomSize="@dimen/floating_delete_button_fab_custom_size"
         app:elevation="@dimen/floating_delete_button_elevation"
+        app:fabCustomSize="@dimen/floating_delete_button_fab_custom_size"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:shapeAppearanceOverlay="@style/customFloatingButton"
