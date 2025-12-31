@@ -1,6 +1,5 @@
 package com.example.androidcourseshpp.ui.screens.main.addcontacts
 
-import android.os.Parcelable
 import com.example.androidcourseshpp.data.models.userlist.UserItem
 import com.example.androidcourseshpp.ui.ViewEffect
 import com.example.androidcourseshpp.ui.ViewEvent

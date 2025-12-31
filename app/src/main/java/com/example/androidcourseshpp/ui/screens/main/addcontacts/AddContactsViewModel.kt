@@ -1,14 +1,10 @@
 package com.example.androidcourseshpp.ui.screens.main.addcontacts
 
-
-import android.os.Parcelable
-import androidx.lifecycle.SavedStateHandle
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.models.userlist.UserItem
 import com.example.androidcourseshpp.data.models.userlist.UsersRepository
 import com.example.androidcourseshpp.ui.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
 @HiltViewModel
@@ -102,9 +98,5 @@ class AddContactsViewModel @Inject constructor(
             },
             finally = { setState { copy(isProgressBarShowed = false) } }
         )
-    }
-
-    companion object {
-        const val USER_LIST_STATE = "userStateList"
     }
 }
