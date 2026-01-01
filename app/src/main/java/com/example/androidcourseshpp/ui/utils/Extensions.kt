@@ -57,7 +57,7 @@ fun Int.toUri(context: Context): Uri {
 }
 
 fun String.isContainsOrderedSequence(searched: String): Boolean {
-    val lowerCaseSearched = searched.lowercase()
+    val lowerCaseSearched = searched.lowercase().trim()
     val lowercaseSource = this.lowercase()
 
     var subSource = lowercaseSource
