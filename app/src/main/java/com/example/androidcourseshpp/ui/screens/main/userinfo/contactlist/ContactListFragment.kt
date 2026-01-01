@@ -125,7 +125,26 @@ class ContactListFragment :
     }
 
     override fun setObservers() = with(binding) {
+
+        collectFlow(viewModel.filteredContactList) { filteredContactList ->
+            if (filteredContactList.isEmpty()) {
+                textViewNoResultsFound.isVisible = true
+                textViewAdvice.isVisible = true
+            } else {
+                textViewNoResultsFound.isVisible = false
+                textViewAdvice.isVisible = false
+            }
+            adapter.submitList(filteredContactList.map { contactItem ->
+                SelectableContactItem(
+                    contactItem,
+                    false
+                )
+            })
+        }
+
         collectFlow(viewModel.state) { state ->
+
+
             val contactList = state.contactList
             adapter.submitList(contactList.map { contactItem ->
                 SelectableContactItem(
@@ -136,6 +155,8 @@ class ContactListFragment :
             progressBarRequest.isVisible = state.isProgressBarShowed
             buttonTryAgain.isVisible = state.isTryAgainButtonShowed
             recyclerViewContacts.isVisible = !state.isTryAgainButtonShowed
+            textViewNoResultsFound.isVisible = false
+            textViewAdvice.isVisible = false
         }
 
         collectFlow(viewModel.effect) { effect ->
@@ -150,11 +171,6 @@ class ContactListFragment :
                 )
             }
         }
-
-        collectFlow(viewModel.filteredContactList) {
-            adapter.submitList(it.map { contactItem -> SelectableContactItem(contactItem, false) })
-        }
-
     }
 
     override fun setListeners() = with(binding) {
@@ -190,6 +206,7 @@ class ContactListFragment :
     }
 
     override fun hideSearchBar() = with(binding) {
+        editTextSearch.setText("")
         textInputLayoutSearch.isVisible = false
         imageButtonSearch.isVisible = true
         imageButtonHideSearch.isVisible = false

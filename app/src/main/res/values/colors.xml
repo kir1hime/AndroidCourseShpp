@@ -67,7 +67,8 @@
     <color name="contacts_label_color">#FFFFFF</color>
     <color name="add_contact_color">@color/contacts_label_color</color>
     <color name="floating_delete_button_color">#FB5E06</color>
-
+    <color name="no_results_label_text_color">#18181F</color>
+    <color name="advice_label_text_color">@color/no_results_label_text_color</color>
 
 
     <!-- Contact item -->

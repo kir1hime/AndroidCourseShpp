@@ -116,6 +116,9 @@
     <dimen name="search_bar_margin_top">10dp</dimen>
     <dimen name="search_bar_margin_end">48dp</dimen>
 
+    <dimen name="no_results_margin_top">32dp</dimen>
+    <dimen name="contact_list_advice_margin_top">8dp</dimen>
+
 
     <!--paddings-->
     <dimen name="settings_padding_vertical">4.5dp</dimen>
@@ -165,7 +168,7 @@
     <dimen name="contacts_recycle_view_item_ava_size">50dp</dimen>
     <dimen name="choose_profile_photo_dialog_h">219dp</dimen>
     <dimen name="progress_bar_request_size">70dp</dimen>
-    <dimen name ="add_contact_item_state_icon_size">25dp</dimen>
+    <dimen name="add_contact_item_state_icon_size">25dp</dimen>
     <dimen name="search_bar_h">30dp</dimen>
 
 
