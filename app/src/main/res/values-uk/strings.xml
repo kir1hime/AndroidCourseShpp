@@ -89,5 +89,6 @@
     <string name="no_results_found">Немає результатів</string>
     <string name="you_can_see_more_contacts_on_the_users_page">Ви можете побачити більше контактів на сторінці користувачів</string>
     <string name="oops_there_are_no_users_with_this_name">Упс! Немає користувачів з таким ім\'ям</string>
+    <string name="arrow_top_description">move to top of user list</string>
 
 </resources>

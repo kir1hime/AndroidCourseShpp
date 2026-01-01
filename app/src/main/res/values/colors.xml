@@ -139,5 +139,6 @@
     <color name="add_contacts_bar_color">#242235</color>
     <color name="add_contact_label_color">#FB5E06</color>
     <color name="add_contact_background_color">#FFFFFF</color>
+    <color name="floating_arrow_top_button_color">#FB5E06</color>
 
 </resources>

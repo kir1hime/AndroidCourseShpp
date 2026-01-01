@@ -98,7 +98,7 @@
         android:layout_marginEnd="@dimen/main_margin_side"
         android:layout_marginBottom="@dimen/floating_delete_button_margin_bottom"
         android:backgroundTint="@color/floating_delete_button_color"
-        android:contentDescription="@string/delete_button_description"
+        android:contentDescription="@string/arrow_top_description"
         android:src="@drawable/ic_white_trash_can"
         android:visibility="gone"
         app:elevation="@dimen/floating_delete_button_elevation"

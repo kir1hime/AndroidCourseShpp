@@ -10,7 +10,6 @@ class UserProfileContract {
         data object OnViewMyContactsButtonClicked : Event
         data object OnLogOutButtonClicked : Event
         data object OnEditProfileClicked : Event
-
         data class UpdateUserInfo(val userServerId: Int) : Event
     }
 

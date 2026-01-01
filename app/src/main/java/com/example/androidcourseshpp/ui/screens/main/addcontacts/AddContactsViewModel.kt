@@ -19,7 +19,8 @@ class AddContactsViewModel @Inject constructor(
         userList = emptyList(),
         isProgressBarShowed = false,
         isTryAgainButtonShowed = false,
-        isContactListChanged = false
+        isContactListChanged = false,
+        isSearchMode = false
     )
 
     init {
@@ -31,6 +32,8 @@ class AddContactsViewModel @Inject constructor(
 
     override fun handleEvent(event: AddContactsContract.Event) {
         when (event) {
+            is AddContactsContract.Event.OnArrowTopFloatingButtonClicked -> scrollUserListToTop()
+            is AddContactsContract.Event.SearchModeSwitched -> switchSearchMode(event.isSearchModeEnabled)
             is AddContactsContract.Event.OnHideSearchButtonClicked -> hideSearchBar()
             is AddContactsContract.Event.LoadUserList -> loadUsers()
             is AddContactsContract.Event.OnSearchButtonClicked -> showSearchBar()
@@ -45,6 +48,14 @@ class AddContactsViewModel @Inject constructor(
                 event.interruptProgressBar
             )
         }
+    }
+
+    private fun scrollUserListToTop() {
+        setEffect(AddContactsContract.Effect.ScrollUserListToTop)
+    }
+
+    private fun switchSearchMode(isSearchMode: Boolean) {
+        setState { copy(isSearchMode = isSearchMode) }
     }
 
     private fun searchBy(input: String) {

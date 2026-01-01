@@ -124,40 +124,46 @@ class ContactListFragment :
 
     override fun setObservers() = with(binding) {
 
-        collectFlow(viewModel.filteredContactList) { filteredContactList ->
-            if (filteredContactList.isEmpty()) {
-                textViewNoResultsFound.isVisible = true
-                textViewAdvice.isVisible = true
-            } else {
-                textViewNoResultsFound.isVisible = false
-                textViewAdvice.isVisible = false
-            }
-            adapter.submitList(filteredContactList.map { contactItem ->
-                SelectableContactItem(
-                    contactItem,
-                    false
-                )
-            }) {
-                recyclerViewContacts.scrollToPosition(0)
-            }
-        }
-
         collectFlow(viewModel.state) { state ->
+            if (state.isSearchMode) {
+                showSearchBar()
+            }
 
+            if (!state.isSearchMode) {
+                val contactList = state.contactList
+                adapter.submitList(contactList.map { contactItem ->
+                    SelectableContactItem(
+                        contactItem,
+                        false
+                    )
+                })
+            }
 
-            val contactList = state.contactList
-            adapter.submitList(contactList.map { contactItem ->
-                SelectableContactItem(
-                    contactItem,
-                    false
-                )
-            })
             progressBarRequest.isVisible = state.isProgressBarShowed
             buttonTryAgain.isVisible = state.isTryAgainButtonShowed
             recyclerViewContacts.isVisible = !state.isTryAgainButtonShowed
             textViewNoResultsFound.isVisible = false
             textViewAdvice.isVisible = false
         }
+
+
+        collectFlow(viewModel.filteredContactList) { filteredContactList ->
+            if (filteredContactList.isEmpty() && textInputLayoutSearch.isVisible) {
+                textViewNoResultsFound.isVisible = true
+                textViewAdvice.isVisible = true
+            } else {
+                textViewNoResultsFound.isVisible = false
+                textViewAdvice.isVisible = false
+            }
+
+            adapter.submitList(filteredContactList.map { contactItem ->
+                SelectableContactItem(
+                    contactItem,
+                    false
+                )
+            })
+        }
+
 
         collectFlow(viewModel.effect) { effect ->
             when (effect) {
@@ -194,9 +200,11 @@ class ContactListFragment :
         }
 
         imageButtonSearch.setOnClickListener {
+            viewModel.setEvent(ContactListContract.Event.SearchModeSwitched(true))
             viewModel.setEvent(ContactListContract.Event.OnSearchButtonClicked)
         }
         imageButtonHideSearch.setOnClickListener {
+            viewModel.setEvent(ContactListContract.Event.SearchModeSwitched(false))
             viewModel.setEvent(ContactListContract.Event.OnHideSearchButtonCLicked)
         }
 
@@ -205,11 +213,14 @@ class ContactListFragment :
         }
     }
 
-    override fun hideSearchBar() = with(binding) {
+    override fun hideSearchBar(): Unit = with(binding) {
         editTextSearch.setText("")
         textInputLayoutSearch.isVisible = false
         imageButtonSearch.isVisible = true
         imageButtonHideSearch.isVisible = false
+        recyclerViewContacts.post {
+            recyclerViewContacts.scrollToPosition(0)
+        }
     }
 
     private fun showSearchBar() = with(binding) {

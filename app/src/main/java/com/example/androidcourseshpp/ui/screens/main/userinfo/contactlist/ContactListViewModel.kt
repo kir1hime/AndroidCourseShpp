@@ -21,20 +21,22 @@ class ContactListViewModel @Inject constructor(
     override fun initState() = ContactListContract.UIState(
         contactList = emptyList(),
         isProgressBarShowed = false,
-        isTryAgainButtonShowed = false
+        isTryAgainButtonShowed = false,
+        isSearchMode = false
     )
 
     val deletedItems = Stack<ContactItem>()
+    private val _filteredContactList = MutableStateFlow(emptyList<ContactItem>())
+    val filteredContactList: StateFlow<List<ContactItem>> get() = _filteredContactList
 
     init {
         loadContacts()
     }
 
-    private val _filteredContactList = MutableStateFlow(emptyList<ContactItem>())
-    val filteredContactList: StateFlow<List<ContactItem>> get() = _filteredContactList
 
     override fun handleEvent(event: ContactListContract.Event) {
         when (event) {
+            is ContactListContract.Event.SearchModeSwitched -> switchSearchMode(event.isSearchModeEnabled)
             is ContactListContract.Event.OnHideSearchButtonCLicked -> hideSearchBar()
             is ContactListContract.Event.OnSearchButtonClicked -> showSearchBar()
             is ContactListContract.Event.OnArrowBackButtonClicked -> navigateToPreviousScreen()
@@ -54,6 +56,10 @@ class ContactListViewModel @Inject constructor(
                 event.contact
             )
         }
+    }
+
+    private fun switchSearchMode(isSearchMode: Boolean) {
+        setState { copy(isSearchMode = isSearchMode) }
     }
 
     private fun hideSearchBar() {

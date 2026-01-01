@@ -119,6 +119,8 @@
     <dimen name="no_results_margin_top">32dp</dimen>
     <dimen name="items_list_advice_margin_top">8dp</dimen>
 
+    <dimen name="floating_arrow_top_button_margin">45dp</dimen>
+
 
     <!--paddings-->
     <dimen name="settings_padding_vertical">4.5dp</dimen>
@@ -151,6 +153,7 @@
     <dimen name="cancel_bt_h">40dp</dimen>
     <dimen name="save_bt_h">@dimen/view_my_contacts_bt_h</dimen>
     <dimen name="try_again_bt_h">40dp</dimen>
+    <dimen name="floating_arrow_top_bt_size">@dimen/floating_delete_button_size</dimen>
 
     <!-- button content dimens -->
     <dimen name="google_bt_icon_h">20dp</dimen>
@@ -190,6 +193,11 @@
 
     <dimen name="floating_delete_button_elevation">0dp</dimen>
     <dimen name="floating_delete_button_fab_custom_size">60dp</dimen>
+    <dimen name="floating_arrow_top_button_elevation">@dimen/floating_delete_button_elevation
+    </dimen>
+    <dimen name="floating_arrow_top_button_fab_custom_size">
+        @dimen/floating_delete_button_fab_custom_size
+    </dimen>
 
     <!--stroke with -->
     <dimen name="stroke_1">1dp</dimen>

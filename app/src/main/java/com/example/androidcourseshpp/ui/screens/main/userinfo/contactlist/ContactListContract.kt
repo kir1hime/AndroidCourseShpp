@@ -10,6 +10,12 @@ class ContactListContract {
     sealed interface Event : ViewEvent {
         data object OnArrowBackButtonClicked : Event
         data object OnAddContactClicked : Event
+        data object OnSearchButtonClicked : Event
+        data object OnHideSearchButtonCLicked : Event
+        data object LoadContactList : Event
+        data class OnSearchBarTextChanged(val input: String) : Event
+
+        data class SearchModeSwitched(val isSearchModeEnabled: Boolean) : Event
         data class ContactItemAdded(val contactItem: ContactItem) :
             Event
 
@@ -24,28 +30,23 @@ class ContactListContract {
         data class OnDeleteSelectedItemsFloatingButtonClicked(
             val contactItems: List<ContactItem>
         ) : Event
-
-        data object LoadContactList : Event
-        data class OnSearchBarTextChanged(val input: String) : Event
-        data object OnSearchButtonClicked : Event
-        data object OnHideSearchButtonCLicked : Event
     }
 
     sealed interface Effect : ViewEffect {
+        data object ShowSearchBar : Effect
+        data object HideSearchBar : Effect
         data object NavigateToUserProfileScreen : Effect
+        data object NavigateToAddContactsScreen : Effect
+        data class ShowToast(val toastMessageResId: Int) : Effect
         data class NavigateToDetailsScreen(
             val contact: ContactItem
         ) : Effect
-
-        data object NavigateToAddContactsScreen : Effect
-        data class ShowToast(val toastMessageResId: Int) : Effect
-        data object ShowSearchBar : Effect
-        data object HideSearchBar : Effect
     }
 
     data class UIState(
         val contactList: List<ContactItem>,
         val isProgressBarShowed: Boolean,
-        val isTryAgainButtonShowed: Boolean
+        val isTryAgainButtonShowed: Boolean,
+        val isSearchMode: Boolean
     ) : ViewState
 }

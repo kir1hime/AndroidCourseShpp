@@ -64,33 +64,39 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
     }
 
     override fun setObservers() = with(binding) {
+
+        collectFlow(viewModel.state) { state ->
+            if (state.isSearchMode) {
+                showSearchBar()
+            }
+            if (!state.isSearchMode) {
+                val userList = state.userList
+                adapter.submitList(userList)
+            }
+
+            progressBarRequest.isVisible = state.isProgressBarShowed
+            buttonTryAgain.isVisible = state.isTryAgainButtonShowed
+            imageButtonSearch.isClickable = !buttonTryAgain.isVisible
+            textViewNoResultsFound.isVisible = false
+            textViewAdvice.isVisible = false
+        }
+
         collectFlow(viewModel.filteredUserList) { filteredUserList ->
-            if (filteredUserList.isEmpty()) {
+            if (filteredUserList.isEmpty() && textInputLayoutSearch.isVisible) {
                 textViewNoResultsFound.isVisible = true
                 textViewAdvice.isVisible = true
             } else {
                 textViewNoResultsFound.isVisible = false
                 textViewAdvice.isVisible = false
             }
-
-            adapter.submitList(filteredUserList) {
-                recyclerViewUsers.scrollToPosition(0)
+            if (textInputLayoutSearch.isVisible) {
+                adapter.submitList(filteredUserList)
             }
-        }
-
-        collectFlow(viewModel.state) { state ->
-            val userList = state.userList
-
-            adapter.submitList(userList)
-
-            progressBarRequest.isVisible = state.isProgressBarShowed
-            buttonTryAgain.isVisible = state.isTryAgainButtonShowed
-            textViewNoResultsFound.isVisible = false
-            textViewAdvice.isVisible = false
         }
 
         collectFlow(viewModel.effect) { effect ->
             when (effect) {
+                is AddContactsContract.Effect.ScrollUserListToTop -> scrollUserListToTop()
                 is AddContactsContract.Effect.ShowToast -> makeToast(effect.toastMessageResId)
                 is AddContactsContract.Effect.ShowSearchBar -> showSearchBar()
                 is AddContactsContract.Effect.HideSearchBar -> hideSearchBar()
@@ -103,6 +109,12 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
                 )
             }
         }
+    }
+
+    private fun scrollUserListToTop() = with(binding) {
+        recyclerViewUsers.scrollToPosition(
+            0
+        )
     }
 
     private fun hideSearchBar() = with(binding) {
@@ -126,15 +138,19 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
             viewModel.setEvent(AddContactsContract.Event.LoadUserList)
         }
         imageButtonSearch.setOnClickListener {
+            viewModel.setEvent(AddContactsContract.Event.SearchModeSwitched(true))
             viewModel.setEvent(AddContactsContract.Event.OnSearchButtonClicked)
         }
         imageButtonHideSearch.setOnClickListener {
+            viewModel.setEvent(AddContactsContract.Event.SearchModeSwitched(false))
             viewModel.setEvent(AddContactsContract.Event.OnHideSearchButtonClicked)
+        }
+        floatingButtonDeleteSelectedItems.setOnClickListener {
+            viewModel.setEvent(AddContactsContract.Event.OnArrowTopFloatingButtonClicked)
         }
         editTextSearch.onChangeTextListener { sequence, _, _, _ ->
             viewModel.setEvent(AddContactsContract.Event.OnSearchBarTextChanged(sequence.toString()))
         }
-
     }
 
     private fun moveToDetailsScreen(userItem: UserItem) {

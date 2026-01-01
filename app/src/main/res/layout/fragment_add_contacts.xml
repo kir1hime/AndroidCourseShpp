@@ -171,5 +171,21 @@
         android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@id/textViewNoResultsFound" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingButtonDeleteSelectedItems"
+        android:layout_width="@dimen/floating_arrow_top_bt_size"
+        android:layout_height="@dimen/floating_arrow_top_bt_size"
+        android:layout_marginEnd="@dimen/main_margin_side"
+        android:layout_marginBottom="@dimen/floating_arrow_top_button_margin"
+        android:backgroundTint="@color/floating_arrow_top_button_color"
+        android:contentDescription="@string/arrow_top_description"
+        android:src="@drawable/ic_arrow_top"
+        app:elevation="@dimen/floating_arrow_top_button_margin"
+        app:fabCustomSize="@dimen/floating_arrow_top_button_fab_custom_size"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:shapeAppearanceOverlay="@style/customFloatingButton"
+        app:tint="@null" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
