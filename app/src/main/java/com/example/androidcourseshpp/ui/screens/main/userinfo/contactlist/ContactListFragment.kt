@@ -23,15 +23,18 @@ import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.adapte
 import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.adapter.ContactItemActions
 import com.example.androidcourseshpp.ui.screens.main.userinfo.TabSwitchable
 import com.example.androidcourseshpp.ui.screens.main.userinfo.UserInfoFragmentDirections
+import com.example.androidcourseshpp.ui.screens.main.userinfo.Searchable
+import com.example.androidcourseshpp.ui.utils.onChangeTextListener
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
 class ContactListFragment :
-    BaseFragment<FragmentContactlistBinding>(FragmentContactlistBinding::inflate) {
+    BaseFragment<FragmentContactlistBinding>(FragmentContactlistBinding::inflate), Searchable {
 
     private val viewModel by viewModels<ContactListViewModel>()
+
 
     private lateinit var sharedContactProfilePhoto: ImageView
 
@@ -137,6 +140,8 @@ class ContactListFragment :
 
         collectFlow(viewModel.effect) { effect ->
             when (effect) {
+                is ContactListContract.Effect.HideSearchBar -> hideSearchBar()
+                is ContactListContract.Effect.ShowSearchBar -> showSearchBar()
                 is ContactListContract.Effect.NavigateToUserProfileScreen -> moveBackToUserProfileScreen()
                 is ContactListContract.Effect.NavigateToAddContactsScreen -> moveToAddContactsScreen()
                 is ContactListContract.Effect.ShowToast -> makeToast(effect.toastMessageResId)
@@ -145,6 +150,11 @@ class ContactListFragment :
                 )
             }
         }
+
+        collectFlow(viewModel.filteredContactList) {
+            adapter.submitList(it.map { contactItem -> SelectableContactItem(contactItem, false) })
+        }
+
     }
 
     override fun setListeners() = with(binding) {
@@ -162,9 +172,33 @@ class ContactListFragment :
             )
             floatingButtonDeleteSelectedItems.visibility = View.GONE
         }
+
         buttonTryAgain.setOnClickListener {
             viewModel.setEvent(ContactListContract.Event.LoadContactList)
         }
+
+        imageButtonSearch.setOnClickListener {
+            viewModel.setEvent(ContactListContract.Event.OnSearchButtonClicked)
+        }
+        imageButtonHideSearch.setOnClickListener {
+            viewModel.setEvent(ContactListContract.Event.OnHideSearchButtonCLicked)
+        }
+
+        editTextSearch.onChangeTextListener { sequence, _, _, _ ->
+            viewModel.setEvent(ContactListContract.Event.OnSearchBarTextChanged(sequence.toString()))
+        }
+    }
+
+    override fun hideSearchBar() = with(binding) {
+        textInputLayoutSearch.isVisible = false
+        imageButtonSearch.isVisible = true
+        imageButtonHideSearch.isVisible = false
+    }
+
+    fun showSearchBar() = with(binding) {
+        textInputLayoutSearch.isVisible = true
+        imageButtonSearch.isVisible = false
+        imageButtonHideSearch.isVisible = true
     }
 
 
@@ -218,7 +252,7 @@ class ContactListFragment :
     }
 
 
-    fun moveBackToUserProfileScreen() {
+    private fun moveBackToUserProfileScreen() {
         val parentFragment = parentFragment as? TabSwitchable
         parentFragment?.moveToUserProfileTab()
     }
@@ -237,5 +271,4 @@ class ContactListFragment :
 
         findNavController().navigate(direction)
     }
-
 }

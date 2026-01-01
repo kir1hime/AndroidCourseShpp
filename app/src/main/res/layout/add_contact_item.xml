@@ -19,17 +19,21 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@id/textViewName"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/item_info_margin_start"
         android:layout_marginTop="@dimen/item_name_margin_top"
+        android:layout_marginEnd="@dimen/item_name_margin_end"
         android:layout_marginBottom="@dimen/item_name_margin_bottom"
+        android:ellipsize="end"
         android:fontFamily="@font/open_sans"
+        android:maxLines="1"
         android:text="@string/name"
         android:textColor="@color/item_name_text_color"
         android:textSize="@dimen/big_text_size"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@id/add_contact_item"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/imageViewAvatar"
         app:layout_constraintTop_toTopOf="@id/add_contact_item" />
 

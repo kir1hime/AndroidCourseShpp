@@ -23,7 +23,7 @@ class AddContactsContract {
             val userItem: UserItem
         ) : Effect
 
-        data object NavigateToContactListScreen : Effect
+        data class NavigateToContactListScreen(val isContactListChanged: Boolean) : Effect
         data class ShowToast(val toastMessageResId: Int) : Effect
     }
 

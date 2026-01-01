@@ -5,7 +5,10 @@ import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.models.contactlist.ContactsRepository
 import com.example.androidcourseshpp.data.models.contactlist.ContactItem
 import com.example.androidcourseshpp.ui.BaseViewModel
+import com.example.androidcourseshpp.ui.utils.isContainsOrderedSequence
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import java.util.Stack
 import javax.inject.Inject
 
@@ -27,15 +30,21 @@ class ContactListViewModel @Inject constructor(
         loadContacts()
     }
 
+    private val _filteredContactList = MutableStateFlow(emptyList<ContactItem>())
+    val filteredContactList: StateFlow<List<ContactItem>> get() = _filteredContactList
 
     override fun handleEvent(event: ContactListContract.Event) {
         when (event) {
+            is ContactListContract.Event.OnHideSearchButtonCLicked -> hideSearchBar()
+            is ContactListContract.Event.OnSearchButtonClicked -> showSearchBar()
             is ContactListContract.Event.OnArrowBackButtonClicked -> navigateToPreviousScreen()
             is ContactListContract.Event.LoadContactList -> loadContacts()
             is ContactListContract.Event.OnAddContactClicked -> navigateToAddContactsScreen()
             is ContactListContract.Event.ContactItemAdded -> addContactItem(
                 event.contactItem
             )
+
+            is ContactListContract.Event.OnSearchBarTextChanged -> searchContactBy(event.input)
 
             is ContactListContract.Event.ContactItemDeleted -> deleteContactItem(event.contactItem)
 
@@ -47,6 +56,24 @@ class ContactListViewModel @Inject constructor(
                 event.contact
             )
         }
+    }
+
+    private fun hideSearchBar() {
+        setEffect(ContactListContract.Effect.HideSearchBar)
+    }
+
+    private fun showSearchBar() {
+        setEffect(ContactListContract.Effect.ShowSearchBar)
+    }
+
+    private fun searchContactBy(input: String) {
+        val filteredContactList = mutableListOf<ContactItem>()
+        state.value.contactList.forEach { contact ->
+            if (contact.name.isContainsOrderedSequence(input)) {
+                filteredContactList.add(contact)
+            }
+        }
+        _filteredContactList.value = filteredContactList
     }
 
     private fun deleteContactItem(contactItem: ContactItem) {
@@ -154,5 +181,6 @@ class ContactListViewModel @Inject constructor(
     private fun navigateToAddContactsScreen() {
         setEffect(ContactListContract.Effect.NavigateToAddContactsScreen)
     }
+
 }
 

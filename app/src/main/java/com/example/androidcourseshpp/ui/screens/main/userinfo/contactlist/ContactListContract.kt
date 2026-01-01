@@ -26,6 +26,9 @@ class ContactListContract {
         ) : Event
 
         data object LoadContactList : Event
+        data class OnSearchBarTextChanged(val input: String) : Event
+        data object OnSearchButtonClicked : Event
+        data object OnHideSearchButtonCLicked : Event
     }
 
     sealed interface Effect : ViewEffect {
@@ -36,6 +39,8 @@ class ContactListContract {
 
         data object NavigateToAddContactsScreen : Effect
         data class ShowToast(val toastMessageResId: Int) : Effect
+        data object ShowSearchBar : Effect
+        data object HideSearchBar : Effect
     }
 
     data class UIState(

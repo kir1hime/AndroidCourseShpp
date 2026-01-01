@@ -72,7 +72,10 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
 
         collectFlow(viewModel.effect) { effect ->
             when (effect) {
-                is AddContactsContract.Effect.NavigateToContactListScreen -> moveToContactList()
+                is AddContactsContract.Effect.NavigateToContactListScreen -> moveToContactList(
+                    effect.isContactListChanged
+                )
+
                 is AddContactsContract.Effect.ShowToast -> makeToast(effect.toastMessageResId)
                 is AddContactsContract.Effect.NavigateToDetailsScreen -> moveToDetailsScreen(
                     effect.userItem
@@ -102,11 +105,13 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
         findNavController().navigate(direction, extras)
     }
 
-    private fun moveToContactList() {
-        findNavController().previousBackStackEntry?.savedStateHandle?.set(
-            TO_RELOAD_CONTACT_LIST,
-            true
-        )
+    private fun moveToContactList(isContactListChanged: Boolean) {
+        if (isContactListChanged) {
+            findNavController().previousBackStackEntry?.savedStateHandle?.set(
+                TO_RELOAD_CONTACT_LIST,
+                true
+            )
+        }
         findNavController().navigateUp()
     }
 }

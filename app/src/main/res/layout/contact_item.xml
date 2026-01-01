@@ -15,21 +15,25 @@
         app:layout_constraintBottom_toBottomOf="@id/contactListItem"
         app:layout_constraintStart_toEndOf="@id/checkBoxIsSelected"
         app:layout_constraintTop_toTopOf="@id/contactListItem"
-        tool:src="@drawable/profile_photo"/>
+        tool:src="@drawable/profile_photo" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@id/textViewName"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/item_info_margin_start"
+        android:layout_marginEnd="@dimen/main_margin_side"
         android:layout_marginTop="@dimen/item_name_margin_top"
         android:layout_marginBottom="@dimen/item_name_margin_bottom"
+        android:ellipsize="end"
         android:fontFamily="@font/open_sans"
+        android:maxLines="1"
         android:text="@string/name"
         android:textColor="@color/item_name_text_color"
         android:textSize="@dimen/big_text_size"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@id/contactListItem"
+        app:layout_constraintEnd_toStartOf="@id/imageButtonDelete"
         app:layout_constraintStart_toEndOf="@id/imageViewAvatar"
         app:layout_constraintTop_toTopOf="@id/contactListItem" />
 
@@ -64,8 +68,8 @@
         android:layout_height="@dimen/is_selected_check_box_h"
         android:layout_marginStart="@dimen/is_selected_check_box_margin_start"
         android:button="@drawable/contact_item_selection_mode"
-        app:buttonTint="@null"
         android:visibility="gone"
+        app:buttonTint="@null"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

@@ -56,4 +56,21 @@ fun Int.toUri(context: Context): Uri {
     return "android.resource://${context.packageName}/${R.drawable.profile_mockup}".toUri()
 }
 
+fun String.isContainsOrderedSequence(searched: String): Boolean {
+    val lowerCaseSearched = searched.lowercase()
+    val lowercaseSource = this.lowercase()
+
+    var subSource = lowercaseSource
+    var searchedCounter = 0
+
+    for (char in lowerCaseSearched.withIndex()) {
+        if (subSource.contains(char.value)) {
+
+            subSource = subSource.substring(subSource.indexOf(char.value) + 1, subSource.length)
+            searchedCounter++
+        }
+    }
+    return lowerCaseSearched.length == searchedCounter
+}
+
 

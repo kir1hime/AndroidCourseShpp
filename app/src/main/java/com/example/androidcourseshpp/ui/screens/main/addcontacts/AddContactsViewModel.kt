@@ -43,7 +43,7 @@ class AddContactsViewModel @Inject constructor(
 
     private fun onSearchButtonClicked() {}
     private fun navigateToPreviousScreen() {
-        setEffect(AddContactsContract.Effect.NavigateToContactListScreen)
+        setEffect(AddContactsContract.Effect.NavigateToContactListScreen(state.value.isContactListChanged))
     }
 
 

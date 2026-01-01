@@ -53,6 +53,7 @@
     <dimen name="item_info_margin_start">16dp</dimen>
     <dimen name="item_name_margin_top">14dp</dimen>
     <dimen name="item_name_margin_bottom">29dp</dimen>
+    <dimen name="item_name_margin_end">90dp</dimen>
 
     <dimen name="item_career_margin_top">37dp</dimen>
     <dimen name="item_career_margin_bottom">13dp</dimen>
