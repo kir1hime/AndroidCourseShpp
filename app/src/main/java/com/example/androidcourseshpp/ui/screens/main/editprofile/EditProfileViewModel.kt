@@ -34,11 +34,6 @@ class EditProfileViewModel @Inject constructor(
     override fun handleEvent(event: EditProfileContract.Event) {
         when (event) {
             is EditProfileContract.Event.OnAddProfilePhotoImageViewClicked -> navigateToChooseProfilePhotoDialog()
-            is EditProfileContract.Event.OnSaveButtonClicked -> {
-                updateUserInfo(event.userServerId, event.updateUserData)
-                navigateToUserProfileScreen()
-            }
-
             is EditProfileContract.Event.SetUserInfo -> setUserInfo(event.userServerId)
             is EditProfileContract.Event.ProfilePhotoUpdated -> updateProfilePhoto(event.profilePhotoUrl)
             is EditProfileContract.Event.UserNameUpdated -> updateUserName(event.userName)
@@ -46,6 +41,10 @@ class EditProfileViewModel @Inject constructor(
             is EditProfileContract.Event.AddressUpdated -> updateAddress(event.address)
             is EditProfileContract.Event.MobilePhoneUpdated -> updateMobilePhone(event.mobilePhone)
             is EditProfileContract.Event.DateOfBirthdayUpdated -> updateDateOfBirthday(event.dateOfBirthday)
+            is EditProfileContract.Event.OnSaveButtonClicked -> {
+                updateUserInfo(event.userServerId, event.updateUserData)
+                navigateToUserProfileScreen()
+            }
         }
     }
 

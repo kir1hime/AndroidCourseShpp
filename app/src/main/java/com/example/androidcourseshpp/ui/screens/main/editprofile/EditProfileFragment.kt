@@ -161,12 +161,11 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(FragmentEdi
 
         collectFlow(viewModel.effect) { effect ->
             when (effect) {
+                is EditProfileContract.Effect.ShowToast -> makeToast(effect.toastMessageResId)
                 is EditProfileContract.Effect.NavigateToChooseProfilePhotoDialog -> moveToChooseProfilePhotoDialog()
                 is EditProfileContract.Effect.NavigateToUserProfileScreen -> {
                     moveBackToUserProfileScreen()
                 }
-
-                is EditProfileContract.Effect.ShowToast -> makeToast(effect.toastMessageResId)
             }
         }
     }

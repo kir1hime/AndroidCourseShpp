@@ -40,13 +40,11 @@ class ContactListViewModel @Inject constructor(
             is ContactListContract.Event.OnArrowBackButtonClicked -> navigateToPreviousScreen()
             is ContactListContract.Event.LoadContactList -> loadContacts()
             is ContactListContract.Event.OnAddContactClicked -> navigateToAddContactsScreen()
+            is ContactListContract.Event.OnSearchBarTextChanged -> searchContactBy(event.input)
+            is ContactListContract.Event.ContactItemDeleted -> deleteContactItem(event.contactItem)
             is ContactListContract.Event.ContactItemAdded -> addContactItem(
                 event.contactItem
             )
-
-            is ContactListContract.Event.OnSearchBarTextChanged -> searchContactBy(event.input)
-
-            is ContactListContract.Event.ContactItemDeleted -> deleteContactItem(event.contactItem)
 
             is ContactListContract.Event.OnDeleteSelectedItemsFloatingButtonClicked -> deleteListOfContactItems(
                 event.contactItems

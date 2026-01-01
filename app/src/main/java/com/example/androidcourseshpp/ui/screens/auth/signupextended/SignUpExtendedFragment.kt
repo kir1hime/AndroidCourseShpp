@@ -57,10 +57,7 @@ class SignUpExtendedFragment : BaseFragment<FragmentSignUpExtendedBinding>(
     override fun setObservers() = with(binding) {
         collectFlow(viewModel.effect) { effect ->
             when (effect) {
-                is SignUpExtendedContract.Effect.NavigateToUserProfileScreen -> moveToUserProfileScreen(
-                    effect.userServerId
-                )
-
+                is SignUpExtendedContract.Effect.ShowToast -> makeToast(effect.toastMessageResId)
                 is SignUpExtendedContract.Effect.NavigateToPreviousScreen -> findNavController().navigateUp()
                 is SignUpExtendedContract.Effect.NavigateToChooseProfilePhotoDialog -> {
                     val direction =
@@ -68,7 +65,9 @@ class SignUpExtendedFragment : BaseFragment<FragmentSignUpExtendedBinding>(
                     findNavController().navigate(direction)
                 }
 
-                is SignUpExtendedContract.Effect.ShowToast -> makeToast(effect.toastMessageResId)
+                is SignUpExtendedContract.Effect.NavigateToUserProfileScreen -> moveToUserProfileScreen(
+                    effect.userServerId
+                )
             }
         }
 

@@ -99,6 +99,7 @@
     <string name="try_again">TRY AGAIN</string>
     <string name="no_results_found">No results found</string>
     <string name="you_can_see_more_contacts_on_the_users_page">You can see more contacts on the users page</string>
+    <string name="oops_there_are_no_users_with_this_name">Oops! There are no users with this name</string>
 
 
 </resources>

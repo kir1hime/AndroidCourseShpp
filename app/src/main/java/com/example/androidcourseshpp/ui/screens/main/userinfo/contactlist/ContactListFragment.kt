@@ -35,9 +35,7 @@ class ContactListFragment :
 
     private val viewModel by viewModels<ContactListViewModel>()
 
-
     private lateinit var sharedContactProfilePhoto: ImageView
-
 
     private val onBackPressedCallback: OnBackPressedCallback =
         object : OnBackPressedCallback(true) {
@@ -139,7 +137,9 @@ class ContactListFragment :
                     contactItem,
                     false
                 )
-            })
+            }) {
+                recyclerViewContacts.scrollToPosition(0)
+            }
         }
 
         collectFlow(viewModel.state) { state ->
@@ -212,7 +212,7 @@ class ContactListFragment :
         imageButtonHideSearch.isVisible = false
     }
 
-    fun showSearchBar() = with(binding) {
+    private fun showSearchBar() = with(binding) {
         textInputLayoutSearch.isVisible = true
         imageButtonSearch.isVisible = false
         imageButtonHideSearch.isVisible = true

@@ -45,7 +45,6 @@ class SignInFragment : BaseFragment<FragmentSignInBinding>
 
     override fun setListeners() = with(binding) {
         buttonLogin.setOnClickListener {
-
             viewModel.setEvent(
                 SignInContract.Event.OnLoginButtonClicked(
                     editTextEMail.text.toString(),

@@ -31,15 +31,14 @@ class SignUpExtendedViewModel @Inject constructor(
 
     override fun handleEvent(event: SignUpExtendedContract.Event) {
         when (event) {
+            is SignUpExtendedContract.Event.OnAddProfilePhotoImageViewClicked -> navigateToChooseProfilePhotoDialog()
+            is SignUpExtendedContract.Event.OnCancelButtonClicked -> navigateToPreviousScreen()
             is SignUpExtendedContract.Event.OnForwardButtonClicked -> processInputData(
                 userName = event.userName,
                 mobilePhone = event.mobilePhone,
                 event.signUpUserInfo,
                 event.avatar
             )
-
-            is SignUpExtendedContract.Event.OnAddProfilePhotoImageViewClicked -> navigateToChooseProfilePhotoDialog()
-            is SignUpExtendedContract.Event.OnCancelButtonClicked -> navigateToPreviousScreen()
         }
     }
 

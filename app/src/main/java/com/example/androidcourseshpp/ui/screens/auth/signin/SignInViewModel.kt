@@ -28,13 +28,12 @@ class SignInViewModel @Inject constructor(
 
     override fun handleEvent(event: SignInContract.Event) {
         when (event) {
+            is SignInContract.Event.OnSignUpLabelClicked -> navigateToSignUpScreen()
             is SignInContract.Event.OnLoginButtonClicked -> logInUser(
                 email = event.email,
                 password = event.password,
                 toRememberUser = event.toRememberUser
             )
-
-            is SignInContract.Event.OnSignUpLabelClicked -> navigateToSignUpScreen()
         }
     }
 

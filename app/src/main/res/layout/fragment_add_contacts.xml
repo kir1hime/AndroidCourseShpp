@@ -53,6 +53,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/imageButtonHideSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/main_margin_side"
+        android:layout_marginEnd="@dimen/main_margin_side"
+        android:background="@color/contacts_bar_color"
+        android:contentDescription="@string/search_imagebutton"
+        android:src="@drawable/ic_close"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewUsers"
         android:layout_width="0dp"
@@ -102,6 +115,7 @@
         android:visibility="gone"
         app:boxBackgroundColor="@color/search_bar_background_color"
         app:boxStrokeWidth="@dimen/search_bar_stroke"
+        app:boxStrokeWidthFocused="0dp"
         app:cursorColor="@color/cursor_color_1"
         app:endIconDrawable="@drawable/ic_search"
         app:endIconMode="custom"
@@ -126,7 +140,36 @@
             android:textSize="@dimen/small_text_size"
             android:textStyle="bold"
             tools:text="Some text" />
+
     </com.google.android.material.textfield.TextInputLayout>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/textViewNoResultsFound"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/main_margin_side"
+        android:layout_marginTop="@dimen/no_results_margin_top"
+        android:fontFamily="@font/open_sans"
+        android:gravity="center"
+        android:text="@string/no_results_found"
+        android:textColor="@color/no_results_label_text_color"
+        android:textSize="@dimen/large_text_size"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/textViewUsersBar" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/textViewAdvice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/items_list_advice_margin_top"
+        android:fontFamily="@font/open_sans"
+        android:gravity="center"
+        android:text="@string/oops_there_are_no_users_with_this_name"
+        android:textColor="@color/advice_label_text_color"
+        android:textSize="@dimen/small_text_size"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/textViewNoResultsFound" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

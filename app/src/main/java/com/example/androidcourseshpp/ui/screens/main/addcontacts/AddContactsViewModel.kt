@@ -4,7 +4,9 @@ import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.models.userlist.UserItem
 import com.example.androidcourseshpp.data.models.userlist.UsersRepository
 import com.example.androidcourseshpp.ui.BaseViewModel
+import com.example.androidcourseshpp.ui.utils.isContainsOrderedSequence
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
@@ -24,11 +26,16 @@ class AddContactsViewModel @Inject constructor(
         loadUsers()
     }
 
+    private val _filteredUserList = MutableStateFlow<List<UserItem>>(emptyList())
+    val filteredUserList get() = _filteredUserList
+
     override fun handleEvent(event: AddContactsContract.Event) {
         when (event) {
+            is AddContactsContract.Event.OnHideSearchButtonClicked -> hideSearchBar()
             is AddContactsContract.Event.LoadUserList -> loadUsers()
-            is AddContactsContract.Event.OnSearchButtonClicked -> onSearchButtonClicked()
+            is AddContactsContract.Event.OnSearchButtonClicked -> showSearchBar()
             is AddContactsContract.Event.OnArrowBackButtonClicked -> navigateToPreviousScreen()
+            is AddContactsContract.Event.OnSearchBarTextChanged -> searchBy(event.input)
             is AddContactsContract.Event.OnUserItemClicked -> navigateToDetailsScreen(
                 event.userItem
             )
@@ -40,8 +47,24 @@ class AddContactsViewModel @Inject constructor(
         }
     }
 
+    private fun searchBy(input: String) {
+        val filteredContactList = mutableListOf<UserItem>()
+        state.value.userList.forEach { user ->
+            if (user.name.isContainsOrderedSequence(input)) {
+                filteredContactList.add(user)
+            }
+        }
+        _filteredUserList.value = filteredContactList
+    }
 
-    private fun onSearchButtonClicked() {}
+    private fun showSearchBar() {
+        setEffect(AddContactsContract.Effect.ShowSearchBar)
+    }
+
+    private fun hideSearchBar() {
+        setEffect(AddContactsContract.Effect.HideSearchBar)
+    }
+
     private fun navigateToPreviousScreen() {
         setEffect(AddContactsContract.Effect.NavigateToContactListScreen(state.value.isContactListChanged))
     }

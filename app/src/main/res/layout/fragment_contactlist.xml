@@ -193,7 +193,7 @@
         android:id="@+id/textViewAdvice"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/contact_list_advice_margin_top"
+        android:layout_marginTop="@dimen/items_list_advice_margin_top"
         android:fontFamily="@font/open_sans"
         android:gravity="center"
         android:text="@string/you_can_see_more_contacts_on_the_users_page"

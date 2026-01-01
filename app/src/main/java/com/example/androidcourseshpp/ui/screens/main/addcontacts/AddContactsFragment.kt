@@ -16,6 +16,7 @@ import com.example.androidcourseshpp.ui.BaseFragment
 import com.example.androidcourseshpp.ui.screens.main.addcontacts.adapter.UserItemActions
 import com.example.androidcourseshpp.ui.screens.main.addcontacts.adapter.UserItemDecorations
 import com.example.androidcourseshpp.ui.screens.main.addcontacts.adapter.UsersAdapter
+import com.example.androidcourseshpp.ui.utils.onChangeTextListener
 import dagger.hilt.android.AndroidEntryPoint
 
 const val TO_RELOAD_CONTACT_LIST = "reloadContactList"
@@ -63,25 +64,58 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
     }
 
     override fun setObservers() = with(binding) {
+        collectFlow(viewModel.filteredUserList) { filteredUserList ->
+            if (filteredUserList.isEmpty()) {
+                textViewNoResultsFound.isVisible = true
+                textViewAdvice.isVisible = true
+            } else {
+                textViewNoResultsFound.isVisible = false
+                textViewAdvice.isVisible = false
+            }
+
+            adapter.submitList(filteredUserList) {
+                recyclerViewUsers.scrollToPosition(0)
+            }
+        }
+
         collectFlow(viewModel.state) { state ->
             val userList = state.userList
+
             adapter.submitList(userList)
+
             progressBarRequest.isVisible = state.isProgressBarShowed
             buttonTryAgain.isVisible = state.isTryAgainButtonShowed
+            textViewNoResultsFound.isVisible = false
+            textViewAdvice.isVisible = false
         }
 
         collectFlow(viewModel.effect) { effect ->
             when (effect) {
+                is AddContactsContract.Effect.ShowToast -> makeToast(effect.toastMessageResId)
+                is AddContactsContract.Effect.ShowSearchBar -> showSearchBar()
+                is AddContactsContract.Effect.HideSearchBar -> hideSearchBar()
                 is AddContactsContract.Effect.NavigateToContactListScreen -> moveToContactList(
                     effect.isContactListChanged
                 )
 
-                is AddContactsContract.Effect.ShowToast -> makeToast(effect.toastMessageResId)
                 is AddContactsContract.Effect.NavigateToDetailsScreen -> moveToDetailsScreen(
                     effect.userItem
                 )
             }
         }
+    }
+
+    private fun hideSearchBar() = with(binding) {
+        editTextSearch.setText("")
+        textInputLayoutSearch.isVisible = false
+        imageButtonSearch.isVisible = true
+        imageButtonHideSearch.isVisible = false
+    }
+
+    private fun showSearchBar() = with(binding) {
+        textInputLayoutSearch.isVisible = true
+        imageButtonSearch.isVisible = false
+        imageButtonHideSearch.isVisible = true
     }
 
     override fun setListeners() = with(binding) {
@@ -91,6 +125,16 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
         buttonTryAgain.setOnClickListener {
             viewModel.setEvent(AddContactsContract.Event.LoadUserList)
         }
+        imageButtonSearch.setOnClickListener {
+            viewModel.setEvent(AddContactsContract.Event.OnSearchButtonClicked)
+        }
+        imageButtonHideSearch.setOnClickListener {
+            viewModel.setEvent(AddContactsContract.Event.OnHideSearchButtonClicked)
+        }
+        editTextSearch.onChangeTextListener { sequence, _, _, _ ->
+            viewModel.setEvent(AddContactsContract.Event.OnSearchBarTextChanged(sequence.toString()))
+        }
+
     }
 
     private fun moveToDetailsScreen(userItem: UserItem) {

@@ -9,6 +9,7 @@ class AddContactsContract {
     sealed interface Event : ViewEvent {
         data object OnArrowBackButtonClicked : Event
         data object OnSearchButtonClicked : Event
+        data object OnHideSearchButtonClicked : Event
         data class OnUserItemClicked(val userItem: UserItem) : Event
         data class OnAddContactClicked(
             val userItem: UserItem,
@@ -16,6 +17,7 @@ class AddContactsContract {
         ) : Event
 
         data object LoadUserList : Event
+        data class OnSearchBarTextChanged(val input: String) : Event
     }
 
     sealed interface Effect : ViewEffect {
@@ -25,6 +27,8 @@ class AddContactsContract {
 
         data class NavigateToContactListScreen(val isContactListChanged: Boolean) : Effect
         data class ShowToast(val toastMessageResId: Int) : Effect
+        data object ShowSearchBar : Effect
+        data object HideSearchBar : Effect
     }
 
     data class UIState(
