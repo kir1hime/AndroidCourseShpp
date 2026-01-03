@@ -42,7 +42,7 @@ class ContactListViewModel @Inject constructor(
             is ContactListContract.Event.OnArrowBackButtonClicked -> navigateToPreviousScreen()
             is ContactListContract.Event.LoadContactList -> loadContacts()
             is ContactListContract.Event.OnAddContactClicked -> navigateToAddContactsScreen()
-            is ContactListContract.Event.OnSearchBarTextChanged -> searchContactBy(event.input)
+            is ContactListContract.Event.OnSearchBarTextChanged -> updateFilteredContactListBy(event.input)
             is ContactListContract.Event.ContactItemDeleted -> deleteContactItem(event.contactItem)
             is ContactListContract.Event.ContactItemAdded -> addContactItem(
                 event.contactItem
@@ -70,7 +70,7 @@ class ContactListViewModel @Inject constructor(
         setEffect(ContactListContract.Effect.ShowSearchBar)
     }
 
-    private fun searchContactBy(input: String) {
+    private fun updateFilteredContactListBy(input: String) {
         val filteredContactList = mutableListOf<ContactItem>()
         state.value.contactList.forEach { contact ->
             if (contact.name.isContainsOrderedSequence(input)) {

@@ -38,7 +38,7 @@ class AddContactsViewModel @Inject constructor(
             is AddContactsContract.Event.LoadUserList -> loadUsers()
             is AddContactsContract.Event.OnSearchButtonClicked -> showSearchBar()
             is AddContactsContract.Event.OnArrowBackButtonClicked -> navigateToPreviousScreen()
-            is AddContactsContract.Event.OnSearchBarTextChanged -> searchBy(event.input)
+            is AddContactsContract.Event.OnSearchBarTextChanged -> updateFilteredUserListBy(event.input)
             is AddContactsContract.Event.OnUserItemClicked -> navigateToDetailsScreen(
                 event.userItem
             )
@@ -58,7 +58,7 @@ class AddContactsViewModel @Inject constructor(
         setState { copy(isSearchMode = isSearchMode) }
     }
 
-    private fun searchBy(input: String) {
+    private fun updateFilteredUserListBy(input: String) {
         val filteredContactList = mutableListOf<UserItem>()
         state.value.userList.forEach { user ->
             if (user.name.isContainsOrderedSequence(input)) {
