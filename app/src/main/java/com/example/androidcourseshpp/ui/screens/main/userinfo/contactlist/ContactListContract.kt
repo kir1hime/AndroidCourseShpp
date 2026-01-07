@@ -41,6 +41,8 @@ class ContactListContract {
         data class NavigateToDetailsScreen(
             val contact: ContactItem
         ) : Effect
+
+        data class ShowUndoDeletingItemSnackBar(val deletedItem: ContactItem) : Effect
     }
 
     data class UIState(

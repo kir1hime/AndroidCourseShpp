@@ -143,6 +143,11 @@ class ContactListViewModel @Inject constructor(
             },
             finally = { setState { copy(isProgressBarShowed = false) } }
         )
+        deletedItems.pop()
+        if (!deletedItems.isEmpty()) {
+            val deletedItem = deletedItems.peek()
+            setEffect(ContactListContract.Effect.ShowUndoDeletingItemSnackBar(deletedItem))
+        }
     }
 
     private fun loadContacts() {

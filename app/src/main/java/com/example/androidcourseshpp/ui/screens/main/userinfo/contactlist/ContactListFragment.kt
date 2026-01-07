@@ -175,6 +175,10 @@ class ContactListFragment :
                 is ContactListContract.Effect.NavigateToDetailsScreen -> moveToDetailsScreen(
                     effect.contact
                 )
+
+                is ContactListContract.Effect.ShowUndoDeletingItemSnackBar -> showUndoDeletingItemSnackBar(
+                    effect.deletedItem
+                )
             }
         }
     }
@@ -239,12 +243,6 @@ class ContactListFragment :
 
         undoDeletingSnackBar.setAction(R.string.snackbar_action_text) {
             viewModel.setEvent(ContactListContract.Event.ContactItemAdded(contactItem))
-            viewModel.deletedItems.pop()
-
-            if (!viewModel.deletedItems.isEmpty()) {
-                val deletedItem = viewModel.deletedItems.peek()
-                showUndoDeletingItemSnackBar(deletedItem)
-            }
 
         }.setActionTextColor(ContextCompat.getColor(requireContext(), R.color.custom_primary_color))
 
