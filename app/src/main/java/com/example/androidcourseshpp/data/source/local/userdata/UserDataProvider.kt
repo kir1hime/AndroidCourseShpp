@@ -1,0 +1,12 @@
+package com.example.androidcourseshpp.data.source.local.userdata
+
+interface UserDataProvider {
+    fun saveUserServerId(userServerId: Int)
+    fun getUserServerId(): Int
+    fun clearUserServerId()
+    fun saveUserAvatarUrl(avatar: String)
+    fun getUserAvatarUrl(): String
+    fun clearUserAvatarUrl()
+    fun saveUserGalleryPhotos(photoURLs: Set<String>)
+    fun getUserGalleryPhotos(): Set<String>
+}

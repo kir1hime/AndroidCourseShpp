@@ -1,6 +1,6 @@
 package com.example.androidcourseshpp.ui.screens.main.chooseprofilephotodialog
 
-import com.example.androidcourseshpp.data.models.gallery.GalleryItem
+import com.example.androidcourseshpp.domain.entity.GalleryItem
 import com.example.androidcourseshpp.ui.ViewEffect
 import com.example.androidcourseshpp.ui.ViewEvent
 import com.example.androidcourseshpp.ui.ViewState

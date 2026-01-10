@@ -1,6 +1,6 @@
 package com.example.androidcourseshpp.ui.screens.main.editprofile
 
-import com.example.androidcourseshpp.data.network.entity.user.UpdateUserData
+import com.example.androidcourseshpp.data.source.network.entity.user.UpdateUserData
 import com.example.androidcourseshpp.ui.ViewEffect
 import com.example.androidcourseshpp.ui.ViewEvent
 import com.example.androidcourseshpp.ui.ViewState

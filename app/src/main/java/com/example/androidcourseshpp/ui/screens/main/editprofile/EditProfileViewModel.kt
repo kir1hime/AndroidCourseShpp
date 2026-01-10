@@ -2,10 +2,10 @@ package com.example.androidcourseshpp.ui.screens.main.editprofile
 
 
 import com.example.androidcourseshpp.R
-import com.example.androidcourseshpp.data.userdata.DEFAULT_AVATAR_VALUE
-import com.example.androidcourseshpp.data.userdata.UserDataProvider
-import com.example.androidcourseshpp.data.network.ServicesProvider
-import com.example.androidcourseshpp.data.network.entity.user.UpdateUserData
+import com.example.androidcourseshpp.data.source.local.userdata.DEFAULT_AVATAR_VALUE
+import com.example.androidcourseshpp.data.source.local.userdata.UserDataProvider
+import com.example.androidcourseshpp.data.source.network.service.ServicesProvider
+import com.example.androidcourseshpp.data.source.network.entity.user.UpdateUserData
 import com.example.androidcourseshpp.ui.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.util.Date

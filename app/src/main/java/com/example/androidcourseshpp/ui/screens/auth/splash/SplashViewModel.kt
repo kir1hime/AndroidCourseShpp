@@ -1,8 +1,8 @@
 package com.example.androidcourseshpp.ui.screens.auth.splash
 
-import com.example.androidcourseshpp.data.userdata.DEFAULT_ID_VALUE
-import com.example.androidcourseshpp.data.userdata.UserDataProvider
-import com.example.androidcourseshpp.data.network.ServicesProvider
+import com.example.androidcourseshpp.data.source.local.userdata.DEFAULT_ID_VALUE
+import com.example.androidcourseshpp.data.source.local.userdata.UserDataProvider
+import com.example.androidcourseshpp.data.source.network.service.ServicesProvider
 import com.example.androidcourseshpp.ui.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject

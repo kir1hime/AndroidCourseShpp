@@ -1,17 +1,17 @@
 package com.example.androidcourseshpp.di
 
-import com.example.androidcourseshpp.data.network.BASE_URL
-import com.example.androidcourseshpp.data.network.RetrofitServicesProvider
-import com.example.androidcourseshpp.data.network.ServicesProvider
-import com.example.androidcourseshpp.data.network.jwt.JWTManager
-import com.example.androidcourseshpp.data.network.jwt.TokenAuthenticator
-import com.example.androidcourseshpp.data.network.service.auth.AuthService
-import com.example.androidcourseshpp.data.network.service.auth.AuthServiceImpl
-import com.example.androidcourseshpp.data.network.service.user.UserService
-import com.example.androidcourseshpp.data.network.service.user.UserServiceImpl
-import com.example.androidcourseshpp.data.network.api.token.TokenRefreshAPI
-import com.example.androidcourseshpp.data.network.service.contacts.ContactsService
-import com.example.androidcourseshpp.data.network.service.contacts.ContactsServiceImpl
+import com.example.androidcourseshpp.data.source.network.service.BASE_URL
+import com.example.androidcourseshpp.data.source.network.service.RetrofitServicesProvider
+import com.example.androidcourseshpp.data.source.network.service.ServicesProvider
+import com.example.androidcourseshpp.data.source.network.jwt.JWTManager
+import com.example.androidcourseshpp.data.source.network.jwt.TokenAuthenticator
+import com.example.androidcourseshpp.data.source.network.service.auth.AuthService
+import com.example.androidcourseshpp.data.source.network.service.auth.AuthServiceImpl
+import com.example.androidcourseshpp.data.source.network.service.user.UserService
+import com.example.androidcourseshpp.data.source.network.service.user.UserServiceImpl
+import com.example.androidcourseshpp.data.source.network.api.auth.TokenRefreshAPI
+import com.example.androidcourseshpp.data.source.network.service.contacts.ContactsService
+import com.example.androidcourseshpp.data.source.network.service.contacts.ContactsServiceImpl
 import com.google.gson.Gson
 import dagger.Binds
 import dagger.Module
@@ -22,7 +22,6 @@ import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody.Companion.toResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
-import okhttp3.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton

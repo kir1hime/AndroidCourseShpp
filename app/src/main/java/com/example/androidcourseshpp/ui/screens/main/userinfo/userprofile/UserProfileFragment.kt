@@ -8,8 +8,8 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.androidcourseshpp.R
-import com.example.androidcourseshpp.data.userdata.DEFAULT_ID_VALUE
-import com.example.androidcourseshpp.data.userdata.USER_SERVER_ID
+import com.example.androidcourseshpp.data.source.local.userdata.DEFAULT_ID_VALUE
+import com.example.androidcourseshpp.data.source.local.userdata.USER_SERVER_ID
 import com.example.androidcourseshpp.databinding.FragmentUserProfileBinding
 import com.example.androidcourseshpp.ui.BaseFragment
 import com.example.androidcourseshpp.ui.utils.loadImageFromURLCircled

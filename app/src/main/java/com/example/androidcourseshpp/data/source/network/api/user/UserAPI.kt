@@ -1,0 +1,25 @@
+package com.example.androidcourseshpp.data.source.network.api.user
+
+import com.example.androidcourseshpp.data.source.network.dto.user.GetUserResponseDTO
+import com.example.androidcourseshpp.data.source.network.dto.user.GetUsersResponseDTO
+import com.example.androidcourseshpp.data.source.network.dto.user.UpdateUserRequestDTO
+import com.example.androidcourseshpp.data.source.network.dto.user.UpdateUserResponseDTO
+import retrofit2.http.Body
+import retrofit2.http.GET
+import retrofit2.http.PUT
+import retrofit2.http.Path
+
+interface UserAPI {
+
+    @PUT("users/{userId}")
+    suspend fun updateUserInfo(
+        @Path("userId") userId: Int,
+        @Body updateUserRequestDTO: UpdateUserRequestDTO
+    ): UpdateUserResponseDTO
+
+    @GET("users/{userId}")
+    suspend fun getUser(@Path("userId") userId: Int): GetUserResponseDTO
+
+    @GET("users")
+    suspend fun getUsers() : GetUsersResponseDTO
+}

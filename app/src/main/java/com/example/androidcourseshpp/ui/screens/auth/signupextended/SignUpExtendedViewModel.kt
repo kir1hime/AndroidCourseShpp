@@ -2,10 +2,10 @@ package com.example.androidcourseshpp.ui.screens.auth.signupextended
 
 import android.graphics.Bitmap
 import com.example.androidcourseshpp.R
-import com.example.androidcourseshpp.data.userdata.UserDataProvider
-import com.example.androidcourseshpp.data.network.RetrofitServiceProviderHolder
-import com.example.androidcourseshpp.data.network.jwt.JWTManager
-import com.example.androidcourseshpp.data.network.entity.signup.SignUpData
+import com.example.androidcourseshpp.data.source.local.userdata.UserDataProvider
+import com.example.androidcourseshpp.data.source.network.service.RetrofitServiceProviderHolder
+import com.example.androidcourseshpp.data.source.network.jwt.JWTManager
+import com.example.androidcourseshpp.data.source.network.entity.auth.SignUpData
 import com.example.androidcourseshpp.ui.BaseViewModel
 import com.example.androidcourseshpp.ui.screens.auth.signup.entity.SignUpUserInfoEntity
 import com.example.androidcourseshpp.ui.utils.ImageConvertor

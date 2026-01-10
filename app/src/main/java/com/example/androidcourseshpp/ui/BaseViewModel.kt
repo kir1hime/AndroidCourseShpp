@@ -2,9 +2,9 @@ package com.example.androidcourseshpp.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.androidcourseshpp.data.network.service.BackendException
-import com.example.androidcourseshpp.data.network.service.ConnectionException
-import com.example.androidcourseshpp.data.network.service.ResponseProcessingException
+import com.example.androidcourseshpp.data.source.network.service.BackendException
+import com.example.androidcourseshpp.data.source.network.service.ConnectionException
+import com.example.androidcourseshpp.data.source.network.service.ResponseProcessingException
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow

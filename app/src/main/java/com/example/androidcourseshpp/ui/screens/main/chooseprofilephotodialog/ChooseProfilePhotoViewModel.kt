@@ -1,7 +1,7 @@
 package com.example.androidcourseshpp.ui.screens.main.chooseprofilephotodialog
 
 import androidx.lifecycle.viewModelScope
-import com.example.androidcourseshpp.data.models.gallery.GalleryRepository
+import com.example.androidcourseshpp.domain.repository.GalleryRepository
 import com.example.androidcourseshpp.ui.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch

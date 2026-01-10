@@ -2,10 +2,10 @@ package com.example.androidcourseshpp.ui.screens.auth.signin
 
 
 import com.example.androidcourseshpp.R
-import com.example.androidcourseshpp.data.userdata.UserDataProvider
-import com.example.androidcourseshpp.data.network.RetrofitServiceProviderHolder
-import com.example.androidcourseshpp.data.network.jwt.JWTManager
-import com.example.androidcourseshpp.data.network.entity.signin.SignInData
+import com.example.androidcourseshpp.data.source.local.userdata.UserDataProvider
+import com.example.androidcourseshpp.data.source.network.service.RetrofitServiceProviderHolder
+import com.example.androidcourseshpp.data.source.network.jwt.JWTManager
+import com.example.androidcourseshpp.data.source.network.entity.auth.SignInData
 import com.example.androidcourseshpp.ui.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -45,8 +45,10 @@ class SignInViewModel @Inject constructor(
                 val response = serviceProviderHolder.serviceProvider.getAuthService()
                     .singIn(SignInData(email = email, password = password))
 
-                jwtManager.saveAccessToken(response.accessToken)
-                jwtManager.saveRefreshToken(response.refreshToken)
+                jwtManager.saveTokens(
+                    accessToken = response.accessToken,
+                    refreshToken = response.refreshToken
+                )
 
                 val userServerId = response.user.id
 
