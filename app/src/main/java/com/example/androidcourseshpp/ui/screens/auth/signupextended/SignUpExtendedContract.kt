@@ -1,6 +1,7 @@
 package com.example.androidcourseshpp.ui.screens.auth.signupextended
 
 import android.graphics.Bitmap
+import com.example.androidcourseshpp.domain.entity.UserInfo
 import com.example.androidcourseshpp.ui.ViewEffect
 import com.example.androidcourseshpp.ui.ViewEvent
 import com.example.androidcourseshpp.ui.ViewState
@@ -22,7 +23,7 @@ class SignUpExtendedContract {
         data object NavigateToPreviousScreen : Effect
         data object NavigateToChooseProfilePhotoDialog : Effect
         data class ShowToast(val toastMessageResId: Int) : Effect
-        data class NavigateToUserProfileScreen(val userServerId: Int) : Effect
+        data class NavigateToUserProfileScreen(val userInfo: UserInfo) : Effect
     }
 
     data class UIState(

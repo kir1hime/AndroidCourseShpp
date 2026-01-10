@@ -11,8 +11,8 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.androidcourseshpp.R
-import com.example.androidcourseshpp.data.source.network.entity.user.UpdateUserData
 import com.example.androidcourseshpp.databinding.FragmentEditProfileBinding
+import com.example.androidcourseshpp.domain.entity.UserInfo
 import com.example.androidcourseshpp.ui.BaseFragment
 import com.example.androidcourseshpp.ui.utils.loadImageFromURLCircled
 import com.example.androidcourseshpp.ui.utils.onChangeTextListener
@@ -22,8 +22,11 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
+const val TO_UPDATE_USER_PROFILE = "updateUserProfile"
+
 @AndroidEntryPoint
-class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(FragmentEditProfileBinding::inflate) {
+class EditProfileFragment :
+    BaseFragment<FragmentEditProfileBinding>(FragmentEditProfileBinding::inflate) {
     private val viewModel by viewModels<EditProfileViewModel>()
     private val args: EditProfileFragmentArgs by navArgs()
 
@@ -42,7 +45,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(FragmentEdi
     }
 
     private fun setUserInfo() = with(binding) {
-        viewModel.setEvent(EditProfileContract.Event.SetUserInfo(args.userServerId))
+        viewModel.setEvent(EditProfileContract.Event.SetUserInfo(args.userInfo))
     }
 
 
@@ -50,7 +53,8 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(FragmentEdi
     override fun setListeners() = with(binding) {
 
         buttonSave.setOnClickListener {
-            onSaveButtonClick()
+            defocusAllEditTexts()
+            viewModel.setEvent(EditProfileContract.Event.OnSaveButtonClicked)
         }
 
         imageButtonAddProfilePhoto.setOnClickListener { onAddProfilePhotoButtonClick() }
@@ -113,25 +117,6 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(FragmentEdi
         }
     }
 
-    private fun onSaveButtonClick() = with(binding) {
-        defocusAllEditTexts()
-        viewModel.setEvent(
-            EditProfileContract.Event.OnSaveButtonClicked(
-                userServerId = args.userServerId,
-                updateUserData =
-                    UpdateUserData(
-                        name = getTextFromEditText(editTextUsername),
-                        career = getTextFromEditText(editTextCareer),
-                        address = getTextFromEditText(editTextAddress),
-                        phone = getTextFromEditText(editTextMobilePhone),
-                        birthday =  reversDateFormatting(
-                            getTextFromEditText(editTextDateOfBirthday)
-                        )
-                    )
-            )
-        )
-    }
-
     private fun onAddProfilePhotoButtonClick() {
         defocusAllEditTexts()
         viewModel.setEvent(EditProfileContract.Event.OnAddProfilePhotoImageViewClicked)
@@ -139,19 +124,19 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(FragmentEdi
 
     override fun setObservers() = with(binding) {
         collectFlow(viewModel.state) { state ->
+            val userInfo = state.userInfo
+            editTextUsername.setText(userInfo.name)
+            editTextCareer.setText(userInfo.career)
+            editTextAddress.setText(userInfo.address)
+            editTextMobilePhone.setText(userInfo.mobilePhone)
 
-            editTextUsername.setText(state.userName)
-            editTextCareer.setText(state.career)
-            editTextAddress.setText(state.address)
-            editTextMobilePhone.setText(state.mobilePhone)
-
-            state.dateOfBirthday?.let { date ->
+            userInfo.dateOfBirthday?.let { date ->
                 editTextDateOfBirthday.setText(dateFormating(date))
             }
 
             circleImageViewProfilePhoto.loadImageFromURLCircled(
                 requireContext(),
-                state.avatar,
+                userInfo.avatar,
                 R.drawable.avatar
             )
             buttonSave.isEnabled = state.isSaveButtonEnabled
@@ -164,13 +149,19 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(FragmentEdi
                 is EditProfileContract.Effect.ShowToast -> makeToast(effect.toastMessageResId)
                 is EditProfileContract.Effect.NavigateToChooseProfilePhotoDialog -> moveToChooseProfilePhotoDialog()
                 is EditProfileContract.Effect.NavigateToUserProfileScreen -> {
-                    moveBackToUserProfileScreen()
+                    moveBackToUserProfileScreen(effect.isUserDataChanged, effect.userInfo)
                 }
             }
         }
     }
 
-    fun moveBackToUserProfileScreen() {
+    fun moveBackToUserProfileScreen(isUserDataChanged: Boolean, userInfo: UserInfo) {
+        if (isUserDataChanged) {
+            findNavController().previousBackStackEntry?.savedStateHandle?.set(
+                TO_UPDATE_USER_PROFILE,
+                userInfo
+            )
+        }
         findNavController().navigateUp()
     }
 
@@ -186,7 +177,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(FragmentEdi
     }
 
     private fun reversDateFormatting(date: String): Date? {
-        if(date.isBlank() || date.isEmpty()){
+        if (date.isBlank() || date.isEmpty()) {
             return null
         }
         val simpleDateFormat = SimpleDateFormat(DATE_FORMAT, Locale.getDefault())

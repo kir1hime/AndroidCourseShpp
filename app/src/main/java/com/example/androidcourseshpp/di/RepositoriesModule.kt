@@ -9,6 +9,7 @@ import com.example.androidcourseshpp.data.source.network.repository.AuthReposito
 import com.example.androidcourseshpp.domain.repository.UsersRepository
 import com.example.androidcourseshpp.data.source.network.repository.UsersRepositoryImpl
 import com.example.androidcourseshpp.domain.repository.AuthRepository
+import com.example.androidcourseshpp.domain.repository.UserRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -37,6 +38,6 @@ interface RepositoriesModule {
 
     @Binds
     @Singleton
-    fun bindUserRepository(userRepositoryImpl: UserRepositoryImpl): UsersRepository
+    fun bindUserRepository(userRepositoryImpl: UserRepositoryImpl): UserRepository
 
 }

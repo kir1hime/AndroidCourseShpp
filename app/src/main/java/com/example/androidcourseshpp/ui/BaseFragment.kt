@@ -19,6 +19,7 @@ import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.databinding.FragmentEditProfileBinding
 import com.example.androidcourseshpp.databinding.FragmentSignInBinding
 import com.example.androidcourseshpp.databinding.FragmentSignUpExtendedBinding
+import com.example.androidcourseshpp.domain.entity.UserInfo
 import com.example.androidcourseshpp.ui.utils.loadImageFromURL
 import com.example.androidcourseshpp.ui.screens.main.MainActivity
 import com.example.androidcourseshpp.ui.screens.main.chooseprofilephotodialog.ChooseProfilePhotoDialog
@@ -27,7 +28,7 @@ import com.example.androidcourseshpp.ui.utils.onChangeTextListener
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
-const val USER_SERVER_ID = "userServerId"
+const val USER_INFO = "userInfo"
 
 
 abstract class BaseFragment<VBinding : ViewBinding>(
@@ -74,10 +75,10 @@ abstract class BaseFragment<VBinding : ViewBinding>(
         }
     }
 
-    protected fun moveToUserProfileScreen(userServerId: Int) {
+    protected fun moveToUserProfileScreen(userInfo: UserInfo) {
         val intent = Intent(requireContext(), MainActivity::class.java)
 
-        intent.putExtra(USER_SERVER_ID, userServerId)
+        intent.putExtra(USER_INFO, userInfo)
 
         val options = ActivityOptions.makeCustomAnimation(
             requireContext(),

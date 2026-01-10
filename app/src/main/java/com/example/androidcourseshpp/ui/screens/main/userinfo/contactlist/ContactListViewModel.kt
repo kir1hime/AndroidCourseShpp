@@ -41,9 +41,13 @@ class ContactListViewModel @Inject constructor(
             is ContactListContract.Event.OnSearchButtonClicked -> showSearchBar()
             is ContactListContract.Event.OnArrowBackButtonClicked -> navigateToPreviousScreen()
             is ContactListContract.Event.LoadContactList -> loadContacts()
-            is ContactListContract.Event.OnAddContactClicked -> navigateToAddContactsScreen()
             is ContactListContract.Event.OnSearchBarTextChanged -> updateFilteredContactListBy(event.input)
             is ContactListContract.Event.ContactItemDeleted -> deleteContactItem(event.contactItem)
+            is ContactListContract.Event.OnAddContactClicked -> {
+                switchSearchMode(false)
+                navigateToAddContactsScreen()
+            }
+
             is ContactListContract.Event.ContactItemAdded -> addContactItem(
                 event.contactItem
             )
@@ -188,6 +192,7 @@ class ContactListViewModel @Inject constructor(
     }
 
     private fun navigateToAddContactsScreen() {
+        setEffect(ContactListContract.Effect.HideSearchBar)
         setEffect(ContactListContract.Effect.NavigateToAddContactsScreen)
     }
 

@@ -8,6 +8,7 @@ import com.example.androidcourseshpp.data.source.local.userdata.DEFAULT_ID_VALUE
 import com.example.androidcourseshpp.data.source.local.userdata.UserDataProvider
 import com.example.androidcourseshpp.data.source.network.service.ServicesProvider
 import com.example.androidcourseshpp.data.source.network.jwt.JWTManager
+import com.example.androidcourseshpp.domain.entity.UserInfo
 import com.example.androidcourseshpp.ui.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
@@ -22,11 +23,8 @@ class UserProfileViewModel @Inject constructor(
     BaseViewModel<UserProfileContract.Event, UserProfileContract.Effect, UserProfileContract.UIState>() {
 
     override fun initState() = UserProfileContract.UIState(
-        userName = "",
-        career = "",
-        address = "",
-        avatar = "",
-        userServerId = DEFAULT_ID_VALUE
+        UserInfo(-1, "", "", "", "", null, "")
+
     )
 
     override fun handleEvent(event: UserProfileContract.Event) {
@@ -34,31 +32,26 @@ class UserProfileViewModel @Inject constructor(
             is UserProfileContract.Event.OnViewMyContactsButtonClicked -> navigateToMyContacts()
             is UserProfileContract.Event.OnLogOutButtonClicked -> logOut()
             is UserProfileContract.Event.OnEditProfileClicked -> navigateToEditProfileScreen()
-            is UserProfileContract.Event.UpdateUserInfo -> updateUserInfo(event.userServerId)
+            is UserProfileContract.Event.SetUserInfo -> setUserInfo(event.userInfo)
         }
 
     }
 
-    private fun updateUserInfo(userServerId: Int) {
+    private fun setUserInfo(userInfo: UserInfo) {
         viewModelScope.launch {
             processNetworkExceptions(
                 toExecute = {
-                    val response = serviceProvider.getUserService().getUser(userServerId)
-                    val userInfo = response.user
-
                     val savedAvatarUrl = userDataProvider.getUserAvatarUrl()
 
                     setState {
                         copy(
-                            userName = userInfo.name ?: "",
-                            career = userInfo.career ?: "",
-                            address = userInfo.address ?: "",
-                            avatar = if (savedAvatarUrl != DEFAULT_AVATAR_VALUE) {
-                                savedAvatarUrl
-                            } else {
-                                userInfo.image ?: ""
-                            },
-                            userServerId = userServerId
+                            userInfo = userInfo.copy(
+                                avatar = if (savedAvatarUrl != "") {
+                                    savedAvatarUrl
+                                } else {
+                                    userInfo.avatar
+                                }
+                            )
                         )
                     }
                 },
@@ -77,7 +70,7 @@ class UserProfileViewModel @Inject constructor(
     }
 
     private fun navigateToEditProfileScreen() {
-        setEffect(UserProfileContract.Effect.NavigateToEditProfileScreen(state.value.userServerId))
+        setEffect(UserProfileContract.Effect.NavigateToEditProfileScreen(state.value.userInfo))
     }
 
 
@@ -85,6 +78,7 @@ class UserProfileViewModel @Inject constructor(
         jwtManager.clearTokens()
         userDataProvider.clearUserServerId()
         userDataProvider.clearUserAvatarUrl()
+        userDataProvider.clearGalleryPhotos()
         setEffect(UserProfileContract.Effect.NavigateToSignInScreen)
     }
 

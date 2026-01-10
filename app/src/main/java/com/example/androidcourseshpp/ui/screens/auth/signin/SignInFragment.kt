@@ -27,8 +27,10 @@ class SignInFragment : BaseFragment<FragmentSignInBinding>
         collectFlow(viewModel.effect) { effect ->
             when (effect) {
                 is SignInContract.Effect.NavigateToSignUpScreen -> moveToSignUpScreen()
-                is SignInContract.Effect.NavigateToUserProfileScreen -> moveToUserProfileScreen(effect.userServerId)
                 is SignInContract.Effect.ShowToast -> makeToast(effect.toastMessageResId)
+                is SignInContract.Effect.NavigateToUserProfileScreen -> moveToUserProfileScreen(
+                    effect.userInfo
+                )
             }
         }
 

@@ -1,5 +1,6 @@
 package com.example.androidcourseshpp.data.source.network.entity
 
+import com.example.androidcourseshpp.domain.entity.UserInfo
 import java.util.Date
 
 data class User(
@@ -15,4 +16,15 @@ data class User(
     val twitter: String?,
     val linkedin: String?,
     val image: String?
-)
+) {
+    fun toUserInfo() =
+        UserInfo(
+            id = id,
+            name = name ?: "",
+            mobilePhone = phone ?: "",
+            address = address ?: "",
+            career = career ?: "",
+            avatar = image ?: "",
+            dateOfBirthday = birthday
+        )
+}

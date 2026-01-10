@@ -49,8 +49,8 @@
             android:id="@+id/action_editProfileFragment_to_chooseProfilePhotoDialog"
             app:destination="@id/chooseProfilePhotoDialog" />
         <argument
-            android:name="userServerId"
-            app:argType="integer" />
+            android:name="userInfo"
+            app:argType="com.example.androidcourseshpp.domain.entity.UserInfo" />
     </fragment>
     <dialog
         android:id="@+id/chooseProfilePhotoDialog"

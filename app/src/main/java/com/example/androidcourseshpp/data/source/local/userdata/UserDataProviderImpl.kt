@@ -46,5 +46,9 @@ class UserDataProviderImpl @Inject constructor(@DataProviderPref private val sha
     override fun getUserGalleryPhotos() =
         sharedPref.getStringSet(USER_PHOTOS, emptySet<String>()) ?: emptySet<String>()
 
+    override fun clearGalleryPhotos() {
+        editor.putStringSet(USER_PHOTOS, emptySet<String>())
+    }
+
 
 }

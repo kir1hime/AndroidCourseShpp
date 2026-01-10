@@ -4,12 +4,16 @@ import com.example.androidcourseshpp.data.source.network.entity.auth.SignInData
 import com.example.androidcourseshpp.data.source.network.entity.auth.SignUpData
 import com.example.androidcourseshpp.data.source.network.jwt.JWTManager
 import com.example.androidcourseshpp.data.source.network.service.RetrofitServiceProviderHolder
+import com.example.androidcourseshpp.domain.entity.UserInfo
 import com.example.androidcourseshpp.domain.entity.auth.SignInInfo
 import com.example.androidcourseshpp.domain.entity.auth.SignUpInfo
 import com.example.androidcourseshpp.domain.repository.AuthRepository
 import com.example.androidcourseshpp.ui.utils.ImageConvertor
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class AuthRepositoryImpl(
+@Singleton
+class AuthRepositoryImpl @Inject constructor(
     private val jwtManager: JWTManager,
     private val serviceProviderHolder: RetrofitServiceProviderHolder,
     private val imageConvertor: ImageConvertor
@@ -26,7 +30,7 @@ class AuthRepositoryImpl(
         jwtManager.clearTokens()
     }
 
-    override suspend fun signIn(signInInfo: SignInInfo): Int {
+    override suspend fun signIn(signInInfo: SignInInfo): UserInfo {
         val data = SignInData(email = signInInfo.email, password = signInInfo.password)
 
         val response = serviceProviderHolder.serviceProvider.getAuthService()
@@ -37,10 +41,10 @@ class AuthRepositoryImpl(
             refreshToken = response.refreshToken
         )
 
-        return response.user.id
+        return response.user.toUserInfo()
     }
 
-    override suspend fun singUp(signUpInfo: SignUpInfo): Int {
+    override suspend fun singUp(signUpInfo: SignUpInfo): UserInfo {
         val data = SignUpData(
             userName = signUpInfo.userName,
             mobilePhone = signUpInfo.mobilePhone,
@@ -52,6 +56,6 @@ class AuthRepositoryImpl(
 
         jwtManager.saveTokens(response.accessToken, response.refreshToken)
 
-        return response.user.id
+        return response.user.toUserInfo()
     }
 }

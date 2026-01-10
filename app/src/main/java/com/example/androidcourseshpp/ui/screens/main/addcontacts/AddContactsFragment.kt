@@ -76,9 +76,8 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
 
             progressBarRequest.isVisible = state.isProgressBarShowed
             buttonTryAgain.isVisible = state.isTryAgainButtonShowed
-            imageButtonSearch.isClickable = !buttonTryAgain.isVisible
-            textViewNoResultsFound.isVisible = false
-            textViewAdvice.isVisible = false
+            imageButtonSearch.isClickable = !progressBarRequest.isVisible
+            floatingButtonArrowTop.isVisible = !progressBarRequest.isVisible
         }
 
         collectFlow(viewModel.filteredUserList) { filteredUserList ->
@@ -145,7 +144,7 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
             viewModel.setEvent(AddContactsContract.Event.SearchModeSwitched(false))
             viewModel.setEvent(AddContactsContract.Event.OnHideSearchButtonClicked)
         }
-        floatingButtonDeleteSelectedItems.setOnClickListener {
+        floatingButtonArrowTop.setOnClickListener {
             viewModel.setEvent(AddContactsContract.Event.OnArrowTopFloatingButtonClicked)
         }
         editTextSearch.onChangeTextListener { sequence, _, _, _ ->

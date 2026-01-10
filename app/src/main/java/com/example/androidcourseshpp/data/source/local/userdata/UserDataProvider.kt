@@ -9,4 +9,5 @@ interface UserDataProvider {
     fun clearUserAvatarUrl()
     fun saveUserGalleryPhotos(photoURLs: Set<String>)
     fun getUserGalleryPhotos(): Set<String>
+    fun clearGalleryPhotos()
 }

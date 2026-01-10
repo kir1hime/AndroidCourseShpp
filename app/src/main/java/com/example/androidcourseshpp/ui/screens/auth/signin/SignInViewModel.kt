@@ -4,7 +4,6 @@ package com.example.androidcourseshpp.ui.screens.auth.signin
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.domain.entity.auth.SignInInfo
 import com.example.androidcourseshpp.domain.usecase.auth.SignInUseCase
-import com.example.androidcourseshpp.domain.usecase.user.GetUserServerIdUseCase
 import com.example.androidcourseshpp.domain.usecase.user.SaveUserServerIdUseCase
 import com.example.androidcourseshpp.ui.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,7 +12,6 @@ import javax.inject.Inject
 @HiltViewModel
 class SignInViewModel @Inject constructor(
     private val signInUseCase: SignInUseCase,
-    private val getUserServerIdUseCase: GetUserServerIdUseCase,
     private val saveUserServerIdUseCase: SaveUserServerIdUseCase,
 ) :
     BaseViewModel<SignInContract.Event, SignInContract.Effect, SignInContract.UIState>() {
@@ -41,13 +39,13 @@ class SignInViewModel @Inject constructor(
         processNetworkExceptions(
             toExecute = {
                 setState { copy(isProgressBarShowed = true) }
-                val userServerId = signInUseCase(SignInInfo(email, password))
+                val userInfo = signInUseCase(SignInInfo(email, password))
 
                 if (toRememberUser) {
-                    saveUserServerIdUseCase(userServerId)
+                    saveUserServerIdUseCase(userInfo.id)
                 }
 
-                setEffect(SignInContract.Effect.NavigateToUserProfileScreen(getUserServerIdUseCase()))
+                setEffect(SignInContract.Effect.NavigateToUserProfileScreen(userInfo))
             },
             processBackendException = {
                 setState { copy(eMailHelperTextResId = R.string.incorrect_email_or_password_error) }

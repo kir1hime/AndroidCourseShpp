@@ -66,7 +66,7 @@ class SignUpExtendedFragment : BaseFragment<FragmentSignUpExtendedBinding>(
                 }
 
                 is SignUpExtendedContract.Effect.NavigateToUserProfileScreen -> moveToUserProfileScreen(
-                    effect.userServerId
+                    effect.userInfo
                 )
             }
         }

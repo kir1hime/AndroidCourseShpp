@@ -56,7 +56,7 @@ class SignUpExtendedViewModel @Inject constructor(
                 toExecute = {
                     setState { copy(isProgressBarShowed = true) }
 
-                    val userServerId = signUpUseCase(
+                    val userInfo = signUpUseCase(
                         SignUpInfo(
                             userName = userName,
                             mobilePhone = mobilePhone,
@@ -67,12 +67,12 @@ class SignUpExtendedViewModel @Inject constructor(
                     )
 
                     if (signUpUserInfo.toRememberUser) {
-                        saveUserServerIdUseCase(userServerId)
+                        saveUserServerIdUseCase(userInfo.id)
                     }
 
                     setEffect(
                         SignUpExtendedContract.Effect.NavigateToUserProfileScreen(
-                            getUserServerIdUseCase()
+                            userInfo
                         )
                     )
                 },
