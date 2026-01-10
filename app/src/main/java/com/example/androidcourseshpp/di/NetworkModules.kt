@@ -32,19 +32,19 @@ interface RetrofitServicesModules {
 
     @Binds
     @Singleton
-    fun provideAuthService(authServiceImpl: AuthServiceImpl): AuthService
+    fun bindAuthService(authServiceImpl: AuthServiceImpl): AuthService
 
     @Binds
     @Singleton
-    fun provideUserService(userServiceImpl: UserServiceImpl): UserService
+    fun bindUserService(userServiceImpl: UserServiceImpl): UserService
 
     @Binds
     @Singleton
-    fun provideContactsService(contactsServiceImpl: ContactsServiceImpl): ContactsService
+    fun bindContactsService(contactsServiceImpl: ContactsServiceImpl): ContactsService
 
     @Binds
     @Singleton
-    fun providerServiceProvider(retrofitServicesProvider: RetrofitServicesProvider): ServicesProvider
+    fun bindServiceProvider(retrofitServicesProvider: RetrofitServicesProvider): ServicesProvider
 }
 
 @Module

@@ -14,5 +14,5 @@ interface JWTManagerModule {
 
     @Binds
     @Singleton
-    fun provideJWTManager(jwtManagerImpl: JWTManagerImpl): JWTManager
+    fun bindJWTManager(jwtManagerImpl: JWTManagerImpl): JWTManager
 }

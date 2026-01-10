@@ -6,15 +6,19 @@ import com.example.androidcourseshpp.data.source.local.userdata.UserDataProvider
 import com.example.androidcourseshpp.data.source.network.service.RetrofitServiceProviderHolder
 import com.example.androidcourseshpp.data.source.network.jwt.JWTManager
 import com.example.androidcourseshpp.data.source.network.entity.auth.SignInData
+import com.example.androidcourseshpp.domain.entity.auth.SignInInfo
+import com.example.androidcourseshpp.domain.usecase.auth.SignInUseCase
+import com.example.androidcourseshpp.domain.usecase.user.GetUserServerIdUseCase
+import com.example.androidcourseshpp.domain.usecase.user.SaveUserServerIdUseCase
 import com.example.androidcourseshpp.ui.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class SignInViewModel @Inject constructor(
-    private val jwtManager: JWTManager,
-    private val serviceProviderHolder: RetrofitServiceProviderHolder,
-    private val userDataProvider: UserDataProvider,
+    private val signInUseCase: SignInUseCase,
+    private val getUserServerIdUseCase: GetUserServerIdUseCase,
+    private val saveUserServerIdUseCase: SaveUserServerIdUseCase,
 ) :
     BaseViewModel<SignInContract.Event, SignInContract.Effect, SignInContract.UIState>() {
 
@@ -41,23 +45,13 @@ class SignInViewModel @Inject constructor(
         processNetworkExceptions(
             toExecute = {
                 setState { copy(isProgressBarShowed = true) }
-
-                val response = serviceProviderHolder.serviceProvider.getAuthService()
-                    .singIn(SignInData(email = email, password = password))
-
-                jwtManager.saveTokens(
-                    accessToken = response.accessToken,
-                    refreshToken = response.refreshToken
-                )
-
-                val userServerId = response.user.id
+                val userServerId = signInUseCase(SignInInfo(email, password))
 
                 if (toRememberUser) {
-                    userDataProvider.saveUserServerId(userServerId)
+                    saveUserServerIdUseCase(userServerId)
                 }
 
-                setEffect(SignInContract.Effect.NavigateToUserProfileScreen(userServerId))
-
+                setEffect(SignInContract.Effect.NavigateToUserProfileScreen(getUserServerIdUseCase()))
             },
             processBackendException = {
                 setState { copy(eMailHelperTextResId = R.string.incorrect_email_or_password_error) }

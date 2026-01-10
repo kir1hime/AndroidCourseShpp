@@ -15,5 +15,5 @@ interface UserDataProviderModule {
 
     @Binds
     @Singleton
-    fun provideDataProvider(dataProviderImpl: UserDataProviderImpl): UserDataProvider
+    fun bindDataProvider(dataProviderImpl: UserDataProviderImpl): UserDataProvider
 }
