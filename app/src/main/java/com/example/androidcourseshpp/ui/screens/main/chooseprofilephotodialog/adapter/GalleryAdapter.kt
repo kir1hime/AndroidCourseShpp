@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidcourseshpp.R
-import com.example.androidcourseshpp.domain.entity.GalleryItem
+import com.example.androidcourseshpp.ui.screens.main.chooseprofilephotodialog.entity.GalleryItem
 import com.example.androidcourseshpp.databinding.GalleryItemBinding
 import com.example.androidcourseshpp.ui.utils.loadImageFromURL
 

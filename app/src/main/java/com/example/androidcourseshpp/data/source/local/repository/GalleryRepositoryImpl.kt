@@ -1,7 +1,7 @@
 package com.example.androidcourseshpp.data.source.local.repository
 
 import com.example.androidcourseshpp.data.source.local.userdata.UserDataProvider
-import com.example.androidcourseshpp.domain.entity.GalleryItem
+import com.example.androidcourseshpp.ui.screens.main.chooseprofilephotodialog.entity.GalleryItem
 import com.example.androidcourseshpp.domain.repository.GalleryRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

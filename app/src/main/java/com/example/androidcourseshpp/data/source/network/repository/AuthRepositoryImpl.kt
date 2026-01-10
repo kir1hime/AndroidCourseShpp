@@ -1,14 +1,18 @@
 package com.example.androidcourseshpp.data.source.network.repository
 
 import com.example.androidcourseshpp.data.source.network.entity.auth.SignInData
+import com.example.androidcourseshpp.data.source.network.entity.auth.SignUpData
 import com.example.androidcourseshpp.data.source.network.jwt.JWTManager
 import com.example.androidcourseshpp.data.source.network.service.RetrofitServiceProviderHolder
 import com.example.androidcourseshpp.domain.entity.auth.SignInInfo
+import com.example.androidcourseshpp.domain.entity.auth.SignUpInfo
 import com.example.androidcourseshpp.domain.repository.AuthRepository
+import com.example.androidcourseshpp.ui.utils.ImageConvertor
 
 class AuthRepositoryImpl(
     private val jwtManager: JWTManager,
-    private val serviceProviderHolder: RetrofitServiceProviderHolder
+    private val serviceProviderHolder: RetrofitServiceProviderHolder,
+    private val imageConvertor: ImageConvertor
 ) : AuthRepository {
     override fun getAccessToken(): String? {
         return jwtManager.getAccessToken()
@@ -32,6 +36,21 @@ class AuthRepositoryImpl(
             accessToken = response.accessToken,
             refreshToken = response.refreshToken
         )
+
+        return response.user.id
+    }
+
+    override suspend fun singUp(signUpInfo: SignUpInfo): Int {
+        val data = SignUpData(
+            userName = signUpInfo.userName,
+            mobilePhone = signUpInfo.mobilePhone,
+            email = signUpInfo.email,
+            password = signUpInfo.password,
+            image = imageConvertor.convertBitmapToMultipartBody(signUpInfo.avatar)
+        )
+        val response = serviceProviderHolder.serviceProvider.getAuthService().signUp(data)
+
+        jwtManager.saveTokens(response.accessToken, response.refreshToken)
 
         return response.user.id
     }

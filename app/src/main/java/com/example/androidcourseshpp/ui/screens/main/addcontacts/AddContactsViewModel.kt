@@ -1,7 +1,7 @@
 package com.example.androidcourseshpp.ui.screens.main.addcontacts
 
 import com.example.androidcourseshpp.R
-import com.example.androidcourseshpp.domain.entity.UserItem
+import com.example.androidcourseshpp.ui.screens.main.addcontacts.entity.UserItem
 import com.example.androidcourseshpp.domain.repository.UsersRepository
 import com.example.androidcourseshpp.ui.BaseViewModel
 import com.example.androidcourseshpp.ui.utils.isContainsOrderedSequence

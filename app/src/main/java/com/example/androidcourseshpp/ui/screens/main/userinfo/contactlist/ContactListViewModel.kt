@@ -3,7 +3,7 @@ package com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist
 
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.domain.repository.ContactsRepository
-import com.example.androidcourseshpp.domain.entity.ContactItem
+import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.entity.ContactItem
 import com.example.androidcourseshpp.ui.BaseViewModel
 import com.example.androidcourseshpp.ui.utils.isContainsOrderedSequence
 import dagger.hilt.android.lifecycle.HiltViewModel

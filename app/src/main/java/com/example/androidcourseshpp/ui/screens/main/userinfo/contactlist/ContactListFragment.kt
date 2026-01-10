@@ -13,8 +13,8 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidcourseshpp.R
-import com.example.androidcourseshpp.domain.entity.ContactItem
-import com.example.androidcourseshpp.domain.entity.SelectableContactItem
+import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.entity.ContactItem
+import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.entity.SelectableContactItem
 import com.example.androidcourseshpp.databinding.FragmentContactlistBinding
 import com.example.androidcourseshpp.ui.BaseFragment
 import com.example.androidcourseshpp.ui.screens.main.addcontacts.TO_RELOAD_CONTACT_LIST

@@ -2,10 +2,6 @@ package com.example.androidcourseshpp.ui.screens.auth.signin
 
 
 import com.example.androidcourseshpp.R
-import com.example.androidcourseshpp.data.source.local.userdata.UserDataProvider
-import com.example.androidcourseshpp.data.source.network.service.RetrofitServiceProviderHolder
-import com.example.androidcourseshpp.data.source.network.jwt.JWTManager
-import com.example.androidcourseshpp.data.source.network.entity.auth.SignInData
 import com.example.androidcourseshpp.domain.entity.auth.SignInInfo
 import com.example.androidcourseshpp.domain.usecase.auth.SignInUseCase
 import com.example.androidcourseshpp.domain.usecase.user.GetUserServerIdUseCase
@@ -75,6 +71,6 @@ class SignInViewModel @Inject constructor(
     }
 
     private fun navigateToSignUpScreen() {
-        setEffect(SignInContract.Effect.NavigateToSingUpScreen)
+        setEffect(SignInContract.Effect.NavigateToSignUpScreen)
     }
 }

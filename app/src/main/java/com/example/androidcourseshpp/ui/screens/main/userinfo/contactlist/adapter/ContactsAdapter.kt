@@ -6,8 +6,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidcourseshpp.R
-import com.example.androidcourseshpp.domain.entity.ContactItem
-import com.example.androidcourseshpp.domain.entity.SelectableContactItem
+import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.entity.ContactItem
+import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.entity.SelectableContactItem
 import com.example.androidcourseshpp.databinding.ContactItemBinding
 import com.example.androidcourseshpp.ui.utils.loadImageFromURLCircled
 

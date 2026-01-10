@@ -3,7 +3,7 @@ package com.example.androidcourseshpp.data.source.network.repository
 import com.example.androidcourseshpp.data.source.local.userdata.UserDataProvider
 import com.example.androidcourseshpp.data.source.network.entity.contacts.ContactData
 import com.example.androidcourseshpp.data.source.network.service.RetrofitServiceProviderHolder
-import com.example.androidcourseshpp.domain.entity.ContactItem
+import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.entity.ContactItem
 import com.example.androidcourseshpp.domain.repository.ContactsRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async

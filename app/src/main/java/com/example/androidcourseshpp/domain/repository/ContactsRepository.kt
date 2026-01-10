@@ -1,6 +1,6 @@
 package com.example.androidcourseshpp.domain.repository
 
-import com.example.androidcourseshpp.domain.entity.ContactItem
+import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.entity.ContactItem
 
 interface ContactsRepository {
 

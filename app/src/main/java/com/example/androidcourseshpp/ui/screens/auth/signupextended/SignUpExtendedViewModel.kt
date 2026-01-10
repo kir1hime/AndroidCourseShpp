@@ -5,9 +5,13 @@ import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.source.local.userdata.UserDataProvider
 import com.example.androidcourseshpp.data.source.network.service.RetrofitServiceProviderHolder
 import com.example.androidcourseshpp.data.source.network.jwt.JWTManager
-import com.example.androidcourseshpp.data.source.network.entity.auth.SignUpData
+import com.example.androidcourseshpp.domain.entity.auth.SignUpInfo
+import com.example.androidcourseshpp.domain.usecase.auth.SignUpUseCase
+import com.example.androidcourseshpp.domain.usecase.user.GetUserServerIdUseCase
+import com.example.androidcourseshpp.domain.usecase.user.SaveUserServerIdUseCase
 import com.example.androidcourseshpp.ui.BaseViewModel
-import com.example.androidcourseshpp.ui.screens.auth.signup.entity.SignUpUserInfoEntity
+import com.example.androidcourseshpp.ui.screens.auth.signin.SignInContract
+import com.example.androidcourseshpp.ui.screens.auth.signupextended.entity.SignUpUserInfoEntity
 import com.example.androidcourseshpp.ui.utils.ImageConvertor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -16,10 +20,9 @@ private const val PHONE_NUMBER_LENGTH = 15
 
 @HiltViewModel
 class SignUpExtendedViewModel @Inject constructor(
-    private val serviceProviderHolder: RetrofitServiceProviderHolder,
-    private val jwtManager: JWTManager,
-    private val userDataProvider: UserDataProvider,
-    private val imageConvertor: ImageConvertor
+    private val signUpUseCase: SignUpUseCase,
+    private val getUserServerIdUseCase: GetUserServerIdUseCase,
+    private val saveUserServerIdUseCase: SaveUserServerIdUseCase,
 ) :
     BaseViewModel<SignUpExtendedContract.Event, SignUpExtendedContract.Effect, SignUpExtendedContract.UIState>() {
 
@@ -33,7 +36,7 @@ class SignUpExtendedViewModel @Inject constructor(
         when (event) {
             is SignUpExtendedContract.Event.OnAddProfilePhotoImageViewClicked -> navigateToChooseProfilePhotoDialog()
             is SignUpExtendedContract.Event.OnCancelButtonClicked -> navigateToPreviousScreen()
-            is SignUpExtendedContract.Event.OnForwardButtonClicked -> processInputData(
+            is SignUpExtendedContract.Event.OnForwardButtonClicked -> signUp(
                 userName = event.userName,
                 mobilePhone = event.mobilePhone,
                 event.signUpUserInfo,
@@ -42,12 +45,57 @@ class SignUpExtendedViewModel @Inject constructor(
         }
     }
 
-    private fun processInputData(
+    private fun signUp(
         userName: String,
         mobilePhone: String,
         signUpUserInfo: SignUpUserInfoEntity,
         avatar: Bitmap
     ) {
+        if (isInputDataCorrect(userName, mobilePhone)) {
+            processNetworkExceptions(
+                toExecute = {
+                    setState { copy(isProgressBarShowed = true) }
+
+                    val userServerId = signUpUseCase(
+                        SignUpInfo(
+                            userName = userName,
+                            mobilePhone = mobilePhone,
+                            email = signUpUserInfo.email,
+                            password = signUpUserInfo.password,
+                            avatar = avatar
+                        )
+                    )
+
+                    if (signUpUserInfo.toRememberUser) {
+                        saveUserServerIdUseCase(userServerId)
+                    }
+
+                    setEffect(
+                        SignUpExtendedContract.Effect.NavigateToUserProfileScreen(
+                            getUserServerIdUseCase()
+                        )
+                    )
+                },
+                processBackendException = {
+                    setEffect(SignUpExtendedContract.Effect.ShowToast(R.string.email_already_registered_error))
+                },
+                processResponseProcessingException = {
+                    setEffect(SignUpExtendedContract.Effect.ShowToast(R.string.server_response_error))
+                },
+                processConnectionException = {
+                    setEffect(SignUpExtendedContract.Effect.ShowToast(R.string.connection_error))
+                },
+                finally = {
+                    setState { copy(isProgressBarShowed = false) }
+                }
+            )
+        }
+    }
+
+    private fun isInputDataCorrect(
+        userName: String,
+        mobilePhone: String,
+    ): Boolean {
         var isMobilePhoneCorrect: Boolean
         var isUserNameCorrect: Boolean
 
@@ -67,45 +115,7 @@ class SignUpExtendedViewModel @Inject constructor(
             setState { copy(mobilePhoneHelperResId = R.string.no_error) }
         }
 
-
-        if (isMobilePhoneCorrect && isUserNameCorrect) {
-            processNetworkExceptions(
-                toExecute = {
-                    setState { copy(isProgressBarShowed = true) }
-
-                    val response = serviceProviderHolder.serviceProvider.getAuthService().signUp(
-                        SignUpData(
-                            userName = userName,
-                            mobilePhone = mobilePhone,
-                            email = signUpUserInfo.email,
-                            password = signUpUserInfo.password,
-                            image = imageConvertor.convertBitmapToMultipartBody(avatar)
-                        )
-                    )
-
-                    jwtManager.saveTokens(response.accessToken, response.refreshToken)
-
-                    val userServerId = response.user.id
-                    if (signUpUserInfo.toRememberUser) {
-                        userDataProvider.saveUserServerId(userServerId)
-                    }
-                    setEffect(SignUpExtendedContract.Effect.NavigateToUserProfileScreen(userServerId))
-
-                },
-                processBackendException = {
-                    setEffect(SignUpExtendedContract.Effect.ShowToast(R.string.email_already_registered_error))
-                },
-                processResponseProcessingException = {
-                    setEffect(SignUpExtendedContract.Effect.ShowToast(R.string.server_response_error))
-                },
-                processConnectionException = {
-                    setEffect(SignUpExtendedContract.Effect.ShowToast(R.string.connection_error))
-                },
-                finally = {
-                    setState { copy(isProgressBarShowed = false) }
-                }
-            )
-        }
+        return isMobilePhoneCorrect && isUserNameCorrect
     }
 
     private fun navigateToChooseProfilePhotoDialog() {

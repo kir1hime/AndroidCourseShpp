@@ -4,7 +4,7 @@ import android.graphics.Bitmap
 import com.example.androidcourseshpp.ui.ViewEffect
 import com.example.androidcourseshpp.ui.ViewEvent
 import com.example.androidcourseshpp.ui.ViewState
-import com.example.androidcourseshpp.ui.screens.auth.signup.entity.SignUpUserInfoEntity
+import com.example.androidcourseshpp.ui.screens.auth.signupextended.entity.SignUpUserInfoEntity
 
 class SignUpExtendedContract {
     sealed interface Event : ViewEvent {

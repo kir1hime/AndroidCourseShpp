@@ -1,6 +1,5 @@
 package com.example.androidcourseshpp.data.source.network.service
 
-import com.example.androidcourseshpp.data.source.network.service.ServicesProvider
 import javax.inject.Inject
 import javax.inject.Singleton
 

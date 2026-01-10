@@ -26,7 +26,7 @@ class SignInFragment : BaseFragment<FragmentSignInBinding>
     override fun setObservers() = with(binding) {
         collectFlow(viewModel.effect) { effect ->
             when (effect) {
-                is SignInContract.Effect.NavigateToSingUpScreen -> moveToSignUpScreen()
+                is SignInContract.Effect.NavigateToSignUpScreen -> moveToSignUpScreen()
                 is SignInContract.Effect.NavigateToUserProfileScreen -> moveToUserProfileScreen(effect.userServerId)
                 is SignInContract.Effect.ShowToast -> makeToast(effect.toastMessageResId)
             }

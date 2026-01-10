@@ -1,7 +1,7 @@
 package com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.adapter
 
 import androidx.recyclerview.widget.DiffUtil
-import com.example.androidcourseshpp.domain.entity.SelectableContactItem
+import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.entity.SelectableContactItem
 
 object ContactItemDiffUtilCallback : DiffUtil.ItemCallback<SelectableContactItem>() {
     override fun areItemsTheSame(
