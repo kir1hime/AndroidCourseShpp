@@ -48,7 +48,26 @@ class ContactListFragment : BaseFragment() {
             }
         }
 
-    private lateinit var adapter: ContactsAdapter
+    private val adapter by lazy {
+        ContactsAdapter(object : ItemActions {
+            override fun deleteContactItem(contactItem: ContactItem, position: Int) {
+                viewModel.deleteContactItem(contactItem, position)
+                showUndoDeletingSnackBarItem(contactItem, position)
+            }
+
+            override fun showContactItemDetails(contactItem: ContactItem, avatar: ImageView) {
+                moveToDetailsScreen(contactItem, avatar)
+            }
+
+            override fun showFloatingDeleteButton() {
+                binding.floatingButtonDeleteSelectedItems.visibility = View.VISIBLE
+            }
+
+            override fun hideFloatingDeleteButton() {
+                binding.floatingButtonDeleteSelectedItems.visibility = View.GONE
+            }
+        })
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -62,11 +81,9 @@ class ContactListFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         checkPermissions()
         requestPermissionsLauncher.launch(Manifest.permission.READ_CONTACTS)
 
-        createContactListAdapter()
         initRecyclerView()
         initSwipeToDeleteOfContactItem()
 
@@ -74,31 +91,6 @@ class ContactListFragment : BaseFragment() {
         setObservers()
         setAddContactDialogListener()
         setOnBackPressedListener()
-    }
-
-    private fun createContactListAdapter() {
-        adapter = ContactsAdapter(getItemActions())
-    }
-
-    private fun getItemActions(): ItemActions = with(binding) {
-        return object : ItemActions {
-            override fun deleteContactItem(contactItem: ContactItem, position: Int) {
-                viewModel.deleteContactItem(contactItem, position)
-                showUndoDeletingSnackBarItem(contactItem, position)
-            }
-
-            override fun showContactItemDetails(contactItem: ContactItem, avatar: ImageView) {
-                moveToDetailsScreen(contactItem, avatar)
-            }
-
-            override fun showFloatingDeleteButton() {
-                floatingButtonDeleteSelectedItems.visibility = View.VISIBLE
-            }
-
-            override fun hideFloatingDeleteButton() {
-                floatingButtonDeleteSelectedItems.visibility = View.GONE
-            }
-        }
     }
 
     private fun setOnBackPressedListener() {
@@ -120,16 +112,10 @@ class ContactListFragment : BaseFragment() {
     }
 
     private fun setObservers() {
-        collectFlow(viewModel.contactList) { contactList ->
-            adapter.submitList(contactList.map { contactItem ->
-                SelectableContactItem(
-                    contactItem,
-                    false
-                )
-            })
+        collectFlow(viewModel.selectableContactItems) { contactList ->
+            adapter.submitList(contactList)
         }
     }
-
     private fun setListeners() = with(binding) {
         imageButtonArrowBack.setOnClickListener {
             moveToMyProfileScreen()
@@ -230,6 +216,14 @@ class ContactListFragment : BaseFragment() {
             UserInfoFragmentDirections.actionUserInfoFragmentToContactDetailsFragment(contact)
 
         findNavController().navigate(direction, extras)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        viewModel.resetContactItemsSelection()
+        collectFlow(viewModel.selectableContactItems) { contactList ->
+            adapter.submitList(contactList)
+        }
     }
 
 }

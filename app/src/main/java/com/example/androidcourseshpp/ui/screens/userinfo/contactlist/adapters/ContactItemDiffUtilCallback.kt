@@ -11,7 +11,7 @@ object ContactItemDiffUtilCallback : DiffUtil.ItemCallback<SelectableContactItem
 
     @SuppressLint("DiffUtilEquals")
     override fun areContentsTheSame(oldItem: SelectableContactItem, newItem: SelectableContactItem): Boolean {
-        return oldItem == newItem
-    }
+        return oldItem== newItem
+        }
 
 }

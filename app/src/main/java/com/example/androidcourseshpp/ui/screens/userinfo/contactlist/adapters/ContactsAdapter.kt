@@ -15,9 +15,7 @@ import com.example.androidcourseshpp.ui.extensions.loadImageFromURL
 class ContactsAdapter(private val actions: ItemActions) :
     ListAdapter<SelectableContactItem, ContactsAdapter.ViewHolder>(ContactItemDiffUtilCallback) {
 
-    var selectedItems: MutableList<ContactItem> = mutableListOf()
-        private set
-
+    val selectedItems: MutableList<ContactItem> = mutableListOf()
     inner class ViewHolder(
         private val binding: ContactsRecyclerviewItemBinding,
         private val actions: ItemActions
