@@ -142,7 +142,6 @@ class ContactListFragment : BaseFragment() {
 
         undoDeletingSnackBar.setAction(R.string.snackbar_action_text) {
             viewModel.addContactItem(contactItem, position)
-            viewModel.deletedItems.pop()
 
             if (!viewModel.deletedItems.isEmpty()) {
                 val deletedItem = viewModel.deletedItems.peek()

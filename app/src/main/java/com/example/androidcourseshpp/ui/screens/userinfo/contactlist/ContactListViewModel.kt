@@ -37,6 +37,10 @@ class ContactListViewModel @Inject constructor(
 
     val deletedItems = Stack<Pair<ContactItem, Int>>()
 
+    private var _toShowUndoPreviousDeleting: Boolean = false
+    val toShowUndoPreviousDeleting get() = _toShowUndoPreviousDeleting
+
+
     fun resetContactItemsSelection() {
         mutableContactList.value = mutableContactList.value.map { item -> item.copy() }
     }
@@ -88,6 +92,7 @@ class ContactListViewModel @Inject constructor(
 
     fun addContactItem(contactItem: ContactItem, position: Int) {
         updateContactList { it.add(position, contactItem) }
+        deletedItems.pop()
     }
 
     private fun isNewContactDataIsBlank(contactItem: ContactItem): Boolean {
