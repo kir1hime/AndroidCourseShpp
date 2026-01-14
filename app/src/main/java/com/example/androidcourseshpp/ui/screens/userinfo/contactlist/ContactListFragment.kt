@@ -98,9 +98,7 @@ class ContactListFragment :
     }
 
     private fun setObservers() {
-        collectFlow(viewModel.selectableContactItems) { contactList ->
-            adapter.submitList(contactList)
-        }
+        collectAndSubmitContacts()
     }
 
     private fun setListeners() = with(binding) {
@@ -207,6 +205,10 @@ class ContactListFragment :
     override fun onPause() {
         super.onPause()
         viewModel.resetContactItemsSelection()
+        collectAndSubmitContacts()
+    }
+
+    private fun collectAndSubmitContacts(){
         collectFlow(viewModel.selectableContactItems) { contactList ->
             adapter.submitList(contactList)
         }
