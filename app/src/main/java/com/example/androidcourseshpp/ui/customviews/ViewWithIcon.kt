@@ -70,26 +70,29 @@ class ViewWithIcon @JvmOverloads constructor(
         textPaint.fontMetrics
     }
 
-    private val iconPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        if (iconColor != DEFAULT_INT_VALUE) {
-            colorFilter = PorterDuffColorFilter(iconColor, PorterDuff.Mode.SRC_IN)
+    private val iconPaint by lazy {
+        Paint(Paint.ANTI_ALIAS_FLAG).apply {
+            if (iconColor != DEFAULT_INT_VALUE) {
+                colorFilter = PorterDuffColorFilter(iconColor, PorterDuff.Mode.SRC_IN)
+            }
         }
     }
-    private val textPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        textSize = this@ViewWithIcon.textSize
-        color = this@ViewWithIcon.textColor
-        letterSpacing = textLetterSpacing
+    private val textPaint by lazy {
+        Paint(Paint.ANTI_ALIAS_FLAG).apply {
+            textSize = this@ViewWithIcon.textSize
+            color = this@ViewWithIcon.textColor
+            letterSpacing = textLetterSpacing
 
-        typeface = if (textFontFamily is Int) {
-            Typeface.create(
-                ResourcesCompat.getFont(context, (textFontFamily as Int)),
-                textStyle
-            )
-        } else {
-            Typeface.create(textFontFamily.toString(), Typeface.NORMAL)
+            typeface = if (textFontFamily is Int) {
+                Typeface.create(
+                    ResourcesCompat.getFont(context, (textFontFamily as Int)),
+                    textStyle
+                )
+            } else {
+                Typeface.create(textFontFamily.toString(), Typeface.NORMAL)
+            }
         }
     }
-
     private lateinit var iconSpace: RectF
 
     init {
@@ -251,7 +254,7 @@ class ViewWithIcon @JvmOverloads constructor(
 
             val textFontFamilyRes = getResourceId(2, DEFAULT_INT_VALUE)
             textFontFamily =
-                if (textFontFamilyRes != -1) textFontFamilyRes
+                if (textFontFamilyRes != DEFAULT_INT_VALUE) textFontFamilyRes
                 else getString(2).toString()
 
             textLetterSpacing = getFloat(3, DEFAULT_FLOAT_VALUE)
@@ -324,6 +327,7 @@ class ViewWithIcon @JvmOverloads constructor(
 
         }
     }
+
     companion object {
         const val DEFAULT_FLOAT_VALUE = -1f
         const val DEFAULT_INT_VALUE = -1

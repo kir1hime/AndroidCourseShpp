@@ -58,9 +58,11 @@ class ButtonWithIcon @JvmOverloads constructor(
         paint.fontMetrics
     }
 
-    private val iconPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        if (iconColor != DEFAULT_COLOR_VALUE) {
-            colorFilter = PorterDuffColorFilter(iconColor, PorterDuff.Mode.SRC_IN)
+    private val iconPaint by lazy {
+        Paint(Paint.ANTI_ALIAS_FLAG).apply {
+            if (iconColor != DEFAULT_COLOR_VALUE) {
+                colorFilter = PorterDuffColorFilter(iconColor, PorterDuff.Mode.SRC_IN)
+            }
         }
     }
 

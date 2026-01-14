@@ -1,9 +1,7 @@
 package com.example.androidcourseshpp.ui.screens.userinfo
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.Tab
 import com.example.androidcourseshpp.databinding.FragmentUserinfoBinding
@@ -13,20 +11,9 @@ import com.example.androidcourseshpp.ui.screens.userinfo.contactlist.ContactList
 import com.example.androidcourseshpp.ui.screens.userinfo.myprofile.MyProfileFragment
 import com.google.android.material.tabs.TabLayoutMediator
 
-class UserInfoFragment : BaseFragment(), TabSwitchable {
-
-    private lateinit var binding: FragmentUserinfoBinding
+class UserInfoFragment : BaseFragment<FragmentUserinfoBinding>(FragmentUserinfoBinding::inflate),
+    TabSwitchable {
     private val tabFragments = listOf(MyProfileFragment(), ContactListFragment())
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentUserinfoBinding.inflate(inflater, container, false)
-
-        return binding.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -38,10 +25,10 @@ class UserInfoFragment : BaseFragment(), TabSwitchable {
         viewPagerUserInformation.adapter = adapter
         TabLayoutMediator(tabLayoutUserInfo, viewPagerUserInformation) { tabItem, position ->
 
-            tabItem.text = when(Tab.entries[position]){
+            tabItem.text = when (Tab.entries[position]) {
 
                 Tab.MYPROFILE -> getString(R.string.my_profile)
-                Tab.CONTACTS ->getString(R.string.contacts)
+                Tab.CONTACTS -> getString(R.string.contacts)
             }
 
         }.attach()

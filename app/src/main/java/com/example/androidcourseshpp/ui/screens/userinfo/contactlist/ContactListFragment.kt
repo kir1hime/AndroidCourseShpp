@@ -3,9 +3,7 @@ package com.example.androidcourseshpp.ui.screens.userinfo.contactlist
 import android.Manifest
 import android.app.AlertDialog
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultLauncher
@@ -19,25 +17,23 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.contactlistdata.ContactItem
-import com.example.androidcourseshpp.data.contactlistdata.SelectableContactItem
 import com.example.androidcourseshpp.databinding.FragmentContactlistBinding
 import com.example.androidcourseshpp.ui.BaseFragment
+import com.example.androidcourseshpp.ui.screens.userinfo.TabSwitchable
+import com.example.androidcourseshpp.ui.screens.userinfo.UserInfoFragmentDirections
 import com.example.androidcourseshpp.ui.screens.userinfo.contactlist.AddContactDialog.Companion.CAREER_KEY
 import com.example.androidcourseshpp.ui.screens.userinfo.contactlist.AddContactDialog.Companion.NAME_KEY
 import com.example.androidcourseshpp.ui.screens.userinfo.contactlist.AddContactDialog.Companion.RESPONSE_KEY
 import com.example.androidcourseshpp.ui.screens.userinfo.contactlist.adapters.ContactItemDecoration
 import com.example.androidcourseshpp.ui.screens.userinfo.contactlist.adapters.ContactsAdapter
 import com.example.androidcourseshpp.ui.screens.userinfo.contactlist.adapters.ItemActions
-import com.example.androidcourseshpp.ui.screens.userinfo.TabSwitchable
-import com.example.androidcourseshpp.ui.screens.userinfo.UserInfoFragmentDirections
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
-class ContactListFragment : BaseFragment() {
-
-    private lateinit var binding: FragmentContactlistBinding
+class ContactListFragment :
+    BaseFragment<FragmentContactlistBinding>(FragmentContactlistBinding::inflate) {
     private val viewModel by viewModels<ContactListViewModel>()
     private lateinit var requestPermissionsLauncher: ActivityResultLauncher<String>
 
@@ -67,16 +63,6 @@ class ContactListFragment : BaseFragment() {
                 binding.floatingButtonDeleteSelectedItems.visibility = View.GONE
             }
         })
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentContactlistBinding.inflate(inflater, container, false)
-
-        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -116,6 +102,7 @@ class ContactListFragment : BaseFragment() {
             adapter.submitList(contactList)
         }
     }
+
     private fun setListeners() = with(binding) {
         imageButtonArrowBack.setOnClickListener {
             moveToMyProfileScreen()
