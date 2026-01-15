@@ -1,0 +1,15 @@
+package com.example.androidcourseshpp.domain.usecase.user
+
+import com.example.androidcourseshpp.domain.entity.UserInfo
+import com.example.androidcourseshpp.domain.repository.UserRepository
+import javax.inject.Inject
+import javax.inject.Singleton
+
+@Singleton
+class GetUserInfoUseCase @Inject constructor(private val userRepository: UserRepository) {
+
+    suspend operator fun invoke(userServerId: Int): UserInfo {
+        val userInfo = userRepository.getUser(userServerId)
+        return userInfo
+    }
+}

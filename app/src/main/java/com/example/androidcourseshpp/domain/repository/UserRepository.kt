@@ -1,13 +1,11 @@
 package com.example.androidcourseshpp.domain.repository
 
-interface UserRepository {
-    fun saveUserServerId(userServerId: Int)
-    fun getUserServerId(): Int
-    fun clearUserServerId()
-    fun saveUserAvatarUrl(avatar: String)
-    fun getUserAvatarUrl(): String
-    fun clearUserAvatarUrl()
+import com.example.androidcourseshpp.domain.entity.UserInfo
+import com.example.androidcourseshpp.ui.screens.main.addcontacts.entity.UserItem
 
-    fun saveUserGalleryPhotos(photoURLs: Set<String>)
-    fun getUserGalleryPhotos(): Set<String>
+interface UserRepository {
+    suspend fun addContact(userItem: UserItem)
+    suspend fun loadUsers(): List<UserItem>
+
+    suspend fun getUser(userServerId: Int): UserInfo
 }

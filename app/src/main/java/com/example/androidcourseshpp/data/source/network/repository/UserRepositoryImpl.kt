@@ -4,17 +4,18 @@ import com.example.androidcourseshpp.data.source.local.userdata.UserDataProvider
 import com.example.androidcourseshpp.data.source.network.entity.User
 import com.example.androidcourseshpp.data.source.network.entity.contacts.ContactData
 import com.example.androidcourseshpp.data.source.network.service.RetrofitServiceProviderHolder
+import com.example.androidcourseshpp.domain.entity.UserInfo
 import com.example.androidcourseshpp.ui.screens.main.addcontacts.entity.UserItem
-import com.example.androidcourseshpp.domain.repository.UsersRepository
+import com.example.androidcourseshpp.domain.repository.UserRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class UsersRepositoryImpl @Inject constructor(
+class UserRepositoryImpl @Inject constructor(
     private val serviceProviderHolder: RetrofitServiceProviderHolder,
     private val userDataProvider: UserDataProvider
-) : UsersRepository {
+) : UserRepository {
 
 
     override suspend fun addContact(userItem: UserItem) {
@@ -51,5 +52,15 @@ class UsersRepositoryImpl @Inject constructor(
         }
 
         return userItemList
+    }
+
+    override suspend fun getUser(userServerId: Int): UserInfo {
+        val userInfo: UserInfo
+
+        withContext(Dispatchers.IO) {
+            userInfo = serviceProviderHolder.serviceProvider.getUserService()
+                .getUser(userServerId).user.toUserInfo()
+        }
+        return userInfo
     }
 }

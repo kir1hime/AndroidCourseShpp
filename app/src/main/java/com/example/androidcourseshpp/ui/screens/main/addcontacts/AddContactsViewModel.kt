@@ -2,7 +2,7 @@ package com.example.androidcourseshpp.ui.screens.main.addcontacts
 
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.ui.screens.main.addcontacts.entity.UserItem
-import com.example.androidcourseshpp.domain.repository.UsersRepository
+import com.example.androidcourseshpp.domain.repository.UserRepository
 import com.example.androidcourseshpp.ui.BaseViewModel
 import com.example.androidcourseshpp.ui.utils.isContainsOrderedSequence
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -11,7 +11,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddContactsViewModel @Inject constructor(
-    private val usersRepository: UsersRepository
+    private val usersRepository: UserRepository
 ) :
     BaseViewModel<AddContactsContract.Event, AddContactsContract.Effect, AddContactsContract.UIState>() {
 
