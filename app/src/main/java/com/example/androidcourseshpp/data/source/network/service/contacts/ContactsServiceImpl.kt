@@ -17,13 +17,13 @@ class ContactsServiceImpl @Inject constructor(config: RetrofitConfig) :
 
     override suspend fun addContact(contactData: ContactData) {
         processRetrofitExceptions {
-            contactsApi.addContact(contactData.userId, AddContactRequestDTO(contactData.contactId))
+            contactsApi.addContact(contactData.userId, AddContactRequestDTO(contactData.newContactId))
         }
     }
 
     override suspend fun deleteContact(contactData: ContactData) {
         processRetrofitExceptions {
-            contactsApi.deleteContact(contactData.userId, contactData.contactId)
+            contactsApi.deleteContact(contactData.userId, contactData.newContactId)
         }
     }
 

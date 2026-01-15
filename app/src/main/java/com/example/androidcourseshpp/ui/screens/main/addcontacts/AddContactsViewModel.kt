@@ -3,6 +3,7 @@ package com.example.androidcourseshpp.ui.screens.main.addcontacts
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.ui.screens.main.addcontacts.entity.UserItem
 import com.example.androidcourseshpp.domain.repository.UserRepository
+import com.example.androidcourseshpp.domain.usecase.user.AddContactUseCase
 import com.example.androidcourseshpp.ui.BaseViewModel
 import com.example.androidcourseshpp.ui.utils.isContainsOrderedSequence
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -11,7 +12,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddContactsViewModel @Inject constructor(
-    private val usersRepository: UserRepository
+    private val usersRepository: UserRepository,
+    private val addContactUseCase: AddContactUseCase
 ) :
     BaseViewModel<AddContactsContract.Event, AddContactsContract.Effect, AddContactsContract.UIState>() {
 
@@ -44,7 +46,7 @@ class AddContactsViewModel @Inject constructor(
             )
 
             is AddContactsContract.Event.OnAddContactClicked -> addContact(
-                event.userItem,
+                event.userId,
                 event.interruptProgressBar
             )
         }
@@ -81,11 +83,11 @@ class AddContactsViewModel @Inject constructor(
     }
 
 
-    private fun addContact(userItem: UserItem, interruptLoading: () -> Unit) {
+    private fun addContact(userId: Int, interruptLoading: () -> Unit) {
 
         processNetworkExceptions(
             toExecute = {
-                usersRepository.addContact(userItem)
+                addContactUseCase(userId)
                 setState { copy(isContactListChanged = true) }
             },
             processBackendException = {
@@ -115,7 +117,7 @@ class AddContactsViewModel @Inject constructor(
                         userList = emptyList()
                     )
                 }
-                val userList = usersRepository.loadUsers()
+                val userList = usersRepository.getUsers()
                 setState { copy(userList = userList) }
             },
             processBackendException = {

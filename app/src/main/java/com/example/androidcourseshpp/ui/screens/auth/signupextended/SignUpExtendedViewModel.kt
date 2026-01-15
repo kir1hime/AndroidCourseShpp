@@ -7,8 +7,8 @@ import com.example.androidcourseshpp.data.source.network.service.RetrofitService
 import com.example.androidcourseshpp.data.source.network.jwt.JWTManager
 import com.example.androidcourseshpp.domain.entity.auth.SignUpInfo
 import com.example.androidcourseshpp.domain.usecase.auth.SignUpUseCase
-import com.example.androidcourseshpp.domain.usecase.user.GetUserServerIdUseCase
-import com.example.androidcourseshpp.domain.usecase.user.SaveUserServerIdUseCase
+import com.example.androidcourseshpp.domain.usecase.userlocal.GetUserServerIdUseCase
+import com.example.androidcourseshpp.domain.usecase.userlocal.SaveUserServerIdUseCase
 import com.example.androidcourseshpp.ui.BaseViewModel
 import com.example.androidcourseshpp.ui.screens.auth.signin.SignInContract
 import com.example.androidcourseshpp.ui.screens.auth.signupextended.entity.SignUpUserInfoEntity
@@ -21,7 +21,6 @@ private const val PHONE_NUMBER_LENGTH = 15
 @HiltViewModel
 class SignUpExtendedViewModel @Inject constructor(
     private val signUpUseCase: SignUpUseCase,
-    private val getUserServerIdUseCase: GetUserServerIdUseCase,
     private val saveUserServerIdUseCase: SaveUserServerIdUseCase,
 ) :
     BaseViewModel<SignUpExtendedContract.Event, SignUpExtendedContract.Effect, SignUpExtendedContract.UIState>() {

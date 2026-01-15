@@ -4,7 +4,7 @@ package com.example.androidcourseshpp.ui.screens.auth.signin
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.domain.entity.auth.SignInInfo
 import com.example.androidcourseshpp.domain.usecase.auth.SignInUseCase
-import com.example.androidcourseshpp.domain.usecase.user.SaveUserServerIdUseCase
+import com.example.androidcourseshpp.domain.usecase.userlocal.SaveUserServerIdUseCase
 import com.example.androidcourseshpp.ui.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject

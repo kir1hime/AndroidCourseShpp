@@ -16,7 +16,7 @@ class AddContactsContract {
         data class OnSearchBarTextChanged(val input: String) : Event
         data class SearchModeSwitched(val isSearchModeEnabled: Boolean) : Event
         data class OnAddContactClicked(
-            val userItem: UserItem,
+            val userId: Int,
             val interruptProgressBar: () -> Unit
         ) : Event
     }

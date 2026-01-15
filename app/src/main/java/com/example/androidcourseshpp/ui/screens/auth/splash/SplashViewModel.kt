@@ -1,9 +1,8 @@
 package com.example.androidcourseshpp.ui.screens.auth.splash
 
 import com.example.androidcourseshpp.data.source.local.userdata.DEFAULT_ID_VALUE
-import com.example.androidcourseshpp.data.source.network.service.ServicesProvider
-import com.example.androidcourseshpp.domain.usecase.user.GetUserInfoUseCase
-import com.example.androidcourseshpp.domain.usecase.user.GetUserServerIdUseCase
+import com.example.androidcourseshpp.domain.usecase.user.GetUserUseCase
+import com.example.androidcourseshpp.domain.usecase.userlocal.GetUserServerIdUseCase
 import com.example.androidcourseshpp.ui.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
@@ -11,7 +10,7 @@ import jakarta.inject.Inject
 @HiltViewModel
 class SplashViewModel @Inject constructor(
     private val getUserServerIdUseCase: GetUserServerIdUseCase,
-    private val getUserInfoUseCase: GetUserInfoUseCase
+    private val getUserInfoUseCase: GetUserUseCase
 ) :
     BaseViewModel<SplashContract.Event, SplashContract.Effect, SplashContract.Sate>() {
 

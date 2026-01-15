@@ -61,7 +61,7 @@ class UsersAdapter(
             textViewAddContact.isVisible = false
             progressBarAddContact.isVisible = true
 
-            actions.addToContacts(userItem) {
+            actions.addToContacts(userItem.id) {
                 progressBarAddContact.isVisible = false
                 imageButtonContactAdded.isVisible = true
             }

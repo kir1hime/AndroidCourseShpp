@@ -18,14 +18,14 @@ class UserRepositoryImpl @Inject constructor(
 ) : UserRepository {
 
 
-    override suspend fun addContact(userItem: UserItem) {
+    override suspend fun addContact(newContactId: Int) {
         withContext(Dispatchers.IO) {
             serviceProviderHolder.serviceProvider.getContactsService()
-                .addContact(ContactData(userDataProvider.getUserServerId(), userItem.id))
+                .addContact(ContactData(userDataProvider.getUserServerId(), newContactId))
         }
     }
 
-    override suspend fun loadUsers(): List<UserItem> {
+    override suspend fun getUsers(): List<UserInfo> {
         var userList = emptyList<User>()
         var contactList = emptyList<User>()
 

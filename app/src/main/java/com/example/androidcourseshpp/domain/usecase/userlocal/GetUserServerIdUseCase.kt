@@ -1,4 +1,4 @@
-package com.example.androidcourseshpp.domain.usecase.user
+package com.example.androidcourseshpp.domain.usecase.userlocal
 
 import com.example.androidcourseshpp.domain.repository.UserLocalRepository
 import javax.inject.Inject
