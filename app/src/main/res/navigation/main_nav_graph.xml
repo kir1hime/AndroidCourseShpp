@@ -50,7 +50,7 @@
             app:destination="@id/chooseProfilePhotoDialog" />
         <argument
             android:name="userInfo"
-            app:argType="com.example.androidcourseshpp.domain.entity.UserInfo" />
+            app:argType="com.example.androidcourseshpp.domain.entity.user.UserInfo" />
     </fragment>
     <dialog
         android:id="@+id/chooseProfilePhotoDialog"

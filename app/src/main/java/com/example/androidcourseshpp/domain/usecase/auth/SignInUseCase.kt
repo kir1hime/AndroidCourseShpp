@@ -1,6 +1,6 @@
 package com.example.androidcourseshpp.domain.usecase.auth
 
-import com.example.androidcourseshpp.domain.entity.UserInfo
+import com.example.androidcourseshpp.domain.entity.user.UserInfo
 import com.example.androidcourseshpp.domain.entity.auth.SignInInfo
 import com.example.androidcourseshpp.domain.repository.AuthRepository
 import javax.inject.Inject

@@ -2,8 +2,8 @@ package com.example.androidcourseshpp.ui.screens.main.addcontacts
 
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.ui.screens.main.addcontacts.entity.UserItem
-import com.example.androidcourseshpp.domain.repository.UserRepository
 import com.example.androidcourseshpp.domain.usecase.user.AddContactUseCase
+import com.example.androidcourseshpp.domain.usecase.user.GetUsersUseCase
 import com.example.androidcourseshpp.ui.BaseViewModel
 import com.example.androidcourseshpp.ui.utils.isContainsOrderedSequence
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -12,8 +12,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddContactsViewModel @Inject constructor(
-    private val usersRepository: UserRepository,
-    private val addContactUseCase: AddContactUseCase
+    private val addContactUseCase: AddContactUseCase,
+    private val getUsersUseCase: GetUsersUseCase
 ) :
     BaseViewModel<AddContactsContract.Event, AddContactsContract.Effect, AddContactsContract.UIState>() {
 
@@ -117,22 +117,35 @@ class AddContactsViewModel @Inject constructor(
                         userList = emptyList()
                     )
                 }
-                val userList = usersRepository.getUsers()
+                val userList = getUsersUseCase().map { item ->
+                    UserItem(
+                        id = item.id,
+                        name = item.name,
+                        career = item.career,
+                        avatarURL = item.avatarURL,
+                        isContact = item.isContact
+                    )
+                }
+
                 setState { copy(userList = userList) }
             },
-            processBackendException = {
-                setState { copy(isTryAgainButtonShowed = true) }
-                setEffect(AddContactsContract.Effect.ShowToast(R.string.generic_error))
-            },
-            processConnectionException = {
-                setState { copy(isTryAgainButtonShowed = true) }
-                setEffect(AddContactsContract.Effect.ShowToast(R.string.generic_error))
-            },
-            processResponseProcessingException = {
-                setState { copy(isTryAgainButtonShowed = true) }
-                setEffect(AddContactsContract.Effect.ShowToast(R.string.connection_error))
-            },
-            finally = { setState { copy(isProgressBarShowed = false) } }
+            processBackendException =
+                {
+                    setState { copy(isTryAgainButtonShowed = true) }
+                    setEffect(AddContactsContract.Effect.ShowToast(R.string.generic_error))
+                },
+            processConnectionException =
+                {
+                    setState { copy(isTryAgainButtonShowed = true) }
+                    setEffect(AddContactsContract.Effect.ShowToast(R.string.generic_error))
+                },
+            processResponseProcessingException =
+                {
+                    setState { copy(isTryAgainButtonShowed = true) }
+                    setEffect(AddContactsContract.Effect.ShowToast(R.string.connection_error))
+                },
+            finally =
+                { setState { copy(isProgressBarShowed = false) } }
         )
     }
 }

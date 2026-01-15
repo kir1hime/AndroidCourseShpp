@@ -1,4 +1,4 @@
-package com.example.androidcourseshpp.domain.entity
+package com.example.androidcourseshpp.domain.entity.user
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

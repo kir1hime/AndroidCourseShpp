@@ -4,7 +4,8 @@ import com.example.androidcourseshpp.data.source.local.userdata.UserDataProvider
 import com.example.androidcourseshpp.data.source.network.entity.User
 import com.example.androidcourseshpp.data.source.network.entity.contacts.ContactData
 import com.example.androidcourseshpp.data.source.network.service.RetrofitServiceProviderHolder
-import com.example.androidcourseshpp.domain.entity.UserInfo
+import com.example.androidcourseshpp.domain.entity.user.UserInfo
+import com.example.androidcourseshpp.domain.entity.user.UserItemInfo
 import com.example.androidcourseshpp.ui.screens.main.addcontacts.entity.UserItem
 import com.example.androidcourseshpp.domain.repository.UserRepository
 import kotlinx.coroutines.Dispatchers
@@ -25,7 +26,7 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getUsers(): List<UserInfo> {
+    override suspend fun getUsers(): List<UserItemInfo> {
         var userList = emptyList<User>()
         var contactList = emptyList<User>()
 
@@ -42,13 +43,7 @@ class UserRepositoryImpl @Inject constructor(
         }
 
         val userItemList = userList.map { user ->
-            UserItem(
-                id = user.id,
-                name = user.name ?: "",
-                career = user.career ?: "",
-                avatarURL = user.image ?: "",
-                isContact = contactList.contains(user)
-            )
+            user.toUserItemInfo(contactList.contains(user))
         }
 
         return userItemList

@@ -19,7 +19,7 @@ import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.databinding.FragmentEditProfileBinding
 import com.example.androidcourseshpp.databinding.FragmentSignInBinding
 import com.example.androidcourseshpp.databinding.FragmentSignUpExtendedBinding
-import com.example.androidcourseshpp.domain.entity.UserInfo
+import com.example.androidcourseshpp.domain.entity.user.UserInfo
 import com.example.androidcourseshpp.ui.utils.loadImageFromURL
 import com.example.androidcourseshpp.ui.screens.main.MainActivity
 import com.example.androidcourseshpp.ui.screens.main.chooseprofilephotodialog.ChooseProfilePhotoDialog

@@ -5,7 +5,7 @@ import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.source.local.userdata.UserDataProvider
 import com.example.androidcourseshpp.data.source.network.service.ServicesProvider
 import com.example.androidcourseshpp.data.source.network.entity.user.UpdateUserData
-import com.example.androidcourseshpp.domain.entity.UserInfo
+import com.example.androidcourseshpp.domain.entity.user.UserInfo
 import com.example.androidcourseshpp.ui.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.util.Date

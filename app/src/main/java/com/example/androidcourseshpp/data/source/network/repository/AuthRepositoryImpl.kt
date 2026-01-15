@@ -4,7 +4,7 @@ import com.example.androidcourseshpp.data.source.network.entity.auth.SignInData
 import com.example.androidcourseshpp.data.source.network.entity.auth.SignUpData
 import com.example.androidcourseshpp.data.source.network.jwt.JWTManager
 import com.example.androidcourseshpp.data.source.network.service.RetrofitServiceProviderHolder
-import com.example.androidcourseshpp.domain.entity.UserInfo
+import com.example.androidcourseshpp.domain.entity.user.UserInfo
 import com.example.androidcourseshpp.domain.entity.auth.SignInInfo
 import com.example.androidcourseshpp.domain.entity.auth.SignUpInfo
 import com.example.androidcourseshpp.domain.repository.AuthRepository

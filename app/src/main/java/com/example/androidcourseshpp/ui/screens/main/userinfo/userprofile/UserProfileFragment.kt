@@ -9,7 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.databinding.FragmentUserProfileBinding
-import com.example.androidcourseshpp.domain.entity.UserInfo
+import com.example.androidcourseshpp.domain.entity.user.UserInfo
 import com.example.androidcourseshpp.ui.BaseFragment
 import com.example.androidcourseshpp.ui.USER_INFO
 import com.example.androidcourseshpp.ui.utils.loadImageFromURLCircled
