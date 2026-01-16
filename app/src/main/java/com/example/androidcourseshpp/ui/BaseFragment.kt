@@ -19,12 +19,11 @@ import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.databinding.FragmentEditProfileBinding
 import com.example.androidcourseshpp.databinding.FragmentSignInBinding
 import com.example.androidcourseshpp.databinding.FragmentSignUpExtendedBinding
-import com.example.androidcourseshpp.domain.entity.user.UserInfo
-import com.example.androidcourseshpp.ui.utils.loadImageFromURL
 import com.example.androidcourseshpp.ui.screens.main.MainActivity
 import com.example.androidcourseshpp.ui.screens.main.chooseprofilephotodialog.ChooseProfilePhotoDialog
 import com.example.androidcourseshpp.ui.screens.main.chooseprofilephotodialog.ChooseProfilePhotoDialog.Companion.PHOTO
 import com.example.androidcourseshpp.ui.screens.model.UserUIModel
+import com.example.androidcourseshpp.ui.utils.loadImageFromURL
 import com.example.androidcourseshpp.ui.utils.onChangeTextListener
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch

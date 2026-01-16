@@ -45,11 +45,21 @@ class SignInViewModel @Inject constructor(
                 if (toRememberUser) {
                     saveUserServerIdUseCase(userInfo.id)
                 }
-
+                setState {
+                    copy(
+                        eMailHelperTextResId = R.string.no_error,
+                        passwordHelperTextResId = R.string.no_error
+                    )
+                }
                 setEffect(SignInContract.Effect.NavigateToUserProfileScreen(userInfo))
             },
             processBackendException = {
-                setState { copy(eMailHelperTextResId = R.string.incorrect_email_or_password_error) }
+                setState {
+                    copy(
+                        eMailHelperTextResId = R.string.incorrect_input_data,
+                        passwordHelperTextResId = R.string.incorrect_input_data
+                    )
+                }
                 setEffect(SignInContract.Effect.ShowToast(R.string.backend_error))
             },
             processResponseProcessingException = {
@@ -60,10 +70,7 @@ class SignInViewModel @Inject constructor(
             },
             finally = {
                 setState {
-                    copy(
-                        isProgressBarShowed = false,
-                        eMailHelperTextResId = R.string.no_error
-                    )
+                    copy(isProgressBarShowed = false)
                 }
             }
         )

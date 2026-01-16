@@ -1,7 +1,8 @@
 package com.example.androidcourseshpp.data.source.network.dto.user
 
-import com.example.androidcourseshpp.data.source.network.entity.user.GetUsersResponseEntity
+import com.example.androidcourseshpp.data.source.network.model.user.GetUsersResponseModel
+
 
 data class GetUsersResponseDTO(
-    val data: GetUsersResponseEntity
+    val data: GetUsersResponseModel
 )

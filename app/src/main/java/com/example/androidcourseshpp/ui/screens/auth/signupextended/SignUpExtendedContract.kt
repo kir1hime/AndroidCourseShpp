@@ -1,7 +1,6 @@
 package com.example.androidcourseshpp.ui.screens.auth.signupextended
 
 import android.graphics.Bitmap
-import com.example.androidcourseshpp.domain.entity.user.UserInfo
 import com.example.androidcourseshpp.ui.ViewEffect
 import com.example.androidcourseshpp.ui.ViewEvent
 import com.example.androidcourseshpp.ui.ViewState

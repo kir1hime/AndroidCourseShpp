@@ -1,6 +1,7 @@
 package com.example.androidcourseshpp.ui.screens.auth.signin
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
@@ -35,8 +36,7 @@ class SignInFragment : BaseFragment<FragmentSignInBinding>
         }
 
         collectFlow(viewModel.state) { state ->
-            textInputLayoutPassword.helperText =
-                getString(state.passwordHelperTextResId, MIN_NUM_OF_CHARS_IN_PASSWORD)
+            textInputLayoutPassword.helperText = getString(state.passwordHelperTextResId)
 
             textInputLayoutEMail.helperText = getString(state.eMailHelperTextResId)
 
