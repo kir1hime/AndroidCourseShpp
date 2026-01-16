@@ -5,9 +5,9 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class SaveUserServerIdUseCase @Inject constructor(private val userRepository: UserLocalRepository) {
+class SaveUserServerIdUseCase @Inject constructor(private val userLocalRepository: UserLocalRepository) {
 
     operator fun invoke(userServerId: Int) {
-        userRepository.saveUserServerId(userServerId)
+        userLocalRepository.saveUserServerId(userServerId)
     }
 }

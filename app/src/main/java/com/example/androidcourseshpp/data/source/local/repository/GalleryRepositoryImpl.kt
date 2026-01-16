@@ -1,7 +1,7 @@
 package com.example.androidcourseshpp.data.source.local.repository
 
 import com.example.androidcourseshpp.data.source.local.userdata.UserDataProvider
-import com.example.androidcourseshpp.ui.screens.main.chooseprofilephotodialog.entity.GalleryItem
+import com.example.androidcourseshpp.domain.entity.gallery.GalleryItemInfo
 import com.example.androidcourseshpp.domain.repository.GalleryRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -9,7 +9,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlin.collections.forEach
 
 @Singleton
 class GalleryRepositoryImpl @Inject constructor(private val userDataProvider: UserDataProvider) :
@@ -24,11 +23,11 @@ class GalleryRepositoryImpl @Inject constructor(private val userDataProvider: Us
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbF6SxQ2IiXHTlGCONXbt4G1HVovKvEOxCCrt93hOXUNwq_kfP9d4l24K9uPhjRoWxzO4&usqp=CAU",
         "https://i.pinimg.com/736x/b6/a6/d5/b6a6d50de7eb36065b98ebd254d46cd5.jpg"
     )
-    private val _galleryPhotos = MutableStateFlow(getDefaultGalleryItems())
-    override val galleryPhotos: StateFlow<List<GalleryItem>> get() = _galleryPhotos.asStateFlow()
+    private val _galleryPhotos = MutableStateFlow(getPhotos())
+    override val galleryPhotos: StateFlow<List<GalleryItemInfo>> = _galleryPhotos.asStateFlow()
 
     override fun addPhoto(photoURL: String) {
-        val newItem = GalleryItem(id = _galleryPhotos.value.size + 1, photoURL = photoURL)
+        val newItem = GalleryItemInfo(id = _galleryPhotos.value.size + 1, photoURL = photoURL)
 
         _galleryPhotos.update { photoList ->
             val newList = photoList.toMutableList()
@@ -49,16 +48,16 @@ class GalleryRepositoryImpl @Inject constructor(private val userDataProvider: Us
         userDataProvider.saveUserGalleryPhotos(photoURLSet)
     }
 
-    private fun getDefaultGalleryItems(): List<GalleryItem> {
-        val galleryItemList = mutableListOf<GalleryItem>()
+    private fun getPhotos(): List<GalleryItemInfo> {
+        val galleryItemList = mutableListOf<GalleryItemInfo>()
 
         if (userDataProvider.getUserGalleryPhotos().isEmpty()) {
             repeat(defaultStringPhotos.size) { index ->
-                galleryItemList.add(GalleryItem(index, defaultStringPhotos[index]))
+                galleryItemList.add(GalleryItemInfo(index, defaultStringPhotos[index]))
             }
         } else {
             userDataProvider.getUserGalleryPhotos().mapIndexed { index, photoURL ->
-                galleryItemList.add(GalleryItem(index, photoURL))
+                galleryItemList.add(GalleryItemInfo(index, photoURL))
             }
         }
 

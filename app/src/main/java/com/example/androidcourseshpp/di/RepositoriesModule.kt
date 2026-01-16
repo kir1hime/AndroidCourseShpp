@@ -26,7 +26,7 @@ interface RepositoriesModule {
 
     @Binds
     @Singleton
-    fun bindUsersRepository(usersRepositoryImpl: UserRepositoryImpl): UserRepository
+    fun bindUserRepository(usersRepositoryImpl: UserRepositoryImpl): UserRepository
 
     @Binds
     @Singleton
@@ -38,6 +38,6 @@ interface RepositoriesModule {
 
     @Binds
     @Singleton
-    fun bindUserRepository(userRepositoryImpl: UserLocalRepositoryImpl): UserLocalRepository
+    fun bindUserLocalRepository(userRepositoryImpl: UserLocalRepositoryImpl): UserLocalRepository
 
 }
