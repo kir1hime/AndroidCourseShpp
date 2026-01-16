@@ -3,6 +3,7 @@ package com.example.androidcourseshpp.data.source.network.repository
 import com.example.androidcourseshpp.data.source.local.userdata.UserDataProvider
 import com.example.androidcourseshpp.data.source.network.entity.User
 import com.example.androidcourseshpp.data.source.network.entity.contacts.ContactData
+import com.example.androidcourseshpp.data.source.network.entity.user.UpdateUserData
 import com.example.androidcourseshpp.data.source.network.service.RetrofitServiceProviderHolder
 import com.example.androidcourseshpp.domain.entity.user.UserInfo
 import com.example.androidcourseshpp.domain.entity.user.UserItemInfo
@@ -56,5 +57,24 @@ class UserRepositoryImpl @Inject constructor(
                 .getUser(userServerId).user.toUserInfo()
         }
         return userInfo
+    }
+
+    override suspend fun updateUserInfo(userInfo: UserInfo) {
+        withContext(Dispatchers.IO) {
+
+            with(userInfo) {
+                serviceProviderHolder.serviceProvider.getUserService()
+                    .updateUserInfo(
+                        id, UpdateUserData(
+                            name = name,
+                            career = career,
+                            phone = mobilePhone,
+                            address = address,
+                            birthday = dateOfBirthday,
+                            image = avatar
+                        )
+                    )
+            }
+        }
     }
 }

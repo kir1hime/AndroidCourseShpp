@@ -2,10 +2,10 @@ package com.example.androidcourseshpp.ui.screens.main.editprofile
 
 
 import com.example.androidcourseshpp.R
-import com.example.androidcourseshpp.data.source.local.userdata.UserDataProvider
-import com.example.androidcourseshpp.data.source.network.service.ServicesProvider
-import com.example.androidcourseshpp.data.source.network.entity.user.UpdateUserData
 import com.example.androidcourseshpp.domain.entity.user.UserInfo
+import com.example.androidcourseshpp.domain.usecase.user.UpdateUserInfoUseCase
+import com.example.androidcourseshpp.domain.usecase.userlocal.GetUserAvatarUseCase
+import com.example.androidcourseshpp.domain.usecase.userlocal.SaveUserAvatarUseCase
 import com.example.androidcourseshpp.ui.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.util.Date
@@ -13,8 +13,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class EditProfileViewModel @Inject constructor(
-    private val servicesProvider: ServicesProvider,
-    private val userDataProvider: UserDataProvider
+    private val updateUserInfoUseCase: UpdateUserInfoUseCase,
+    private val getUserAvatarUseCase: GetUserAvatarUseCase,
+    private val saveUserAvatarUseCase: SaveUserAvatarUseCase
 ) :
     BaseViewModel<EditProfileContract.Event, EditProfileContract.Effect, EditProfileContract.UIState>() {
 
@@ -75,7 +76,7 @@ class EditProfileViewModel @Inject constructor(
     }
 
     private fun updateProfilePhoto(profilePhotoUrl: String) {
-        userDataProvider.saveUserAvatarUrl(profilePhotoUrl)
+        saveUserAvatarUseCase(profilePhotoUrl)
         setState {
             copy(
                 state.value.userInfo.copy(avatar = profilePhotoUrl),
@@ -91,7 +92,7 @@ class EditProfileViewModel @Inject constructor(
                     copy(isProgressBarShowed = true)
                 }
 
-                val savedAvatarUrl = userDataProvider.getUserAvatarUrl()
+                val savedAvatarUrl = getUserAvatarUseCase()
 
                 with(userInfo) {
                     setState {
@@ -127,21 +128,8 @@ class EditProfileViewModel @Inject constructor(
         processNetworkExceptions(
             toExecute = {
                 setState { copy(isProgressBarShowed = true) }
-
                 if (state.value.isUserDataChanged) {
-                    with(state.value.userInfo) {
-                        servicesProvider.getUserService()
-                            .updateUserInfo(
-                                id, UpdateUserData(
-                                    name = name,
-                                    career = career,
-                                    phone = mobilePhone,
-                                    address = address,
-                                    birthday = dateOfBirthday,
-                                    image = avatar
-                                )
-                            )
-                    }
+                    updateUserInfoUseCase(state.value.userInfo)
                 }
             },
             processBackendException = {

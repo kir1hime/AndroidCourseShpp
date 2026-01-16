@@ -1,7 +1,6 @@
 package com.example.androidcourseshpp.ui.screens.main.chooseprofilephotodialog
 
 import androidx.lifecycle.viewModelScope
-import com.example.androidcourseshpp.domain.repository.GalleryRepository
 import com.example.androidcourseshpp.domain.usecase.gallery.AddGalleryPhotoUseCase
 import com.example.androidcourseshpp.domain.usecase.gallery.GetGalleryPhotosUseCase
 import com.example.androidcourseshpp.ui.BaseViewModel
