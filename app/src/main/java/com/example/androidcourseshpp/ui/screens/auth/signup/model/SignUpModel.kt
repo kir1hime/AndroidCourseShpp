@@ -1,10 +1,10 @@
-package com.example.androidcourseshpp.ui.screens.auth.signupextended.entity
+package com.example.androidcourseshpp.ui.screens.auth.signup.model
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class SignUpUserInfoEntity(
+data class SignUpModel(
     val email: String,
     val password: String,
     val toRememberUser: Boolean

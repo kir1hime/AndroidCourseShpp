@@ -1,4 +1,4 @@
-package com.example.androidcourseshpp.ui.screens.main.addcontacts.entity
+package com.example.androidcourseshpp.ui.screens.main.addcontacts.model
 
 import com.example.androidcourseshpp.ui.screens.main.contactdetails.entity.ContactDetailsEntity
 

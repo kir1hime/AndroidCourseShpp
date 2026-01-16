@@ -2,17 +2,11 @@ package com.example.androidcourseshpp.ui.screens.auth.signupextended
 
 import android.graphics.Bitmap
 import com.example.androidcourseshpp.R
-import com.example.androidcourseshpp.data.source.local.userdata.UserDataProvider
-import com.example.androidcourseshpp.data.source.network.service.RetrofitServiceProviderHolder
-import com.example.androidcourseshpp.data.source.network.jwt.JWTManager
 import com.example.androidcourseshpp.domain.entity.auth.SignUpInfo
 import com.example.androidcourseshpp.domain.usecase.auth.SignUpUseCase
-import com.example.androidcourseshpp.domain.usecase.userlocal.GetUserServerIdUseCase
 import com.example.androidcourseshpp.domain.usecase.userlocal.SaveUserServerIdUseCase
 import com.example.androidcourseshpp.ui.BaseViewModel
-import com.example.androidcourseshpp.ui.screens.auth.signin.SignInContract
-import com.example.androidcourseshpp.ui.screens.auth.signupextended.entity.SignUpUserInfoEntity
-import com.example.androidcourseshpp.ui.utils.ImageConvertor
+import com.example.androidcourseshpp.ui.screens.auth.signup.model.SignUpModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -47,7 +41,7 @@ class SignUpExtendedViewModel @Inject constructor(
     private fun signUp(
         userName: String,
         mobilePhone: String,
-        signUpUserInfo: SignUpUserInfoEntity,
+        signUpUserInfo: SignUpModel,
         avatar: Bitmap
     ) {
         if (isInputDataCorrect(userName, mobilePhone)) {

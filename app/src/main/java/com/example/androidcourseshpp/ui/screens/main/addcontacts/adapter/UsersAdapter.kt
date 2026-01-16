@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.androidcourseshpp.ui.screens.main.addcontacts.entity.UserItem
+import com.example.androidcourseshpp.ui.screens.main.addcontacts.model.UserItem
 import com.example.androidcourseshpp.databinding.AddContactItemBinding
 import com.example.androidcourseshpp.ui.utils.loadImageFromURLCircled
 

@@ -2,11 +2,11 @@ package com.example.androidcourseshpp.ui.screens.main.editprofile
 
 
 import com.example.androidcourseshpp.R
-import com.example.androidcourseshpp.domain.entity.user.UserInfo
 import com.example.androidcourseshpp.domain.usecase.user.UpdateUserInfoUseCase
 import com.example.androidcourseshpp.domain.usecase.userlocal.GetUserAvatarUseCase
 import com.example.androidcourseshpp.domain.usecase.userlocal.SaveUserAvatarUseCase
 import com.example.androidcourseshpp.ui.BaseViewModel
+import com.example.androidcourseshpp.ui.screens.model.UserUIModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.util.Date
 import javax.inject.Inject
@@ -21,7 +21,7 @@ class EditProfileViewModel @Inject constructor(
 
     override fun initState(): EditProfileContract.UIState {
         return (EditProfileContract.UIState(
-            UserInfo(-1, "", "", "", "", null, ""),
+            UserUIModel(-1, "", "", "", "", null, ""),
             isProgressBarShowed = false,
             isSaveButtonEnabled = true,
             isUserDataChanged = false
@@ -85,7 +85,7 @@ class EditProfileViewModel @Inject constructor(
         }
     }
 
-    private fun setUserInfo(userInfo: UserInfo) {
+    private fun setUserInfo(userInfo: UserUIModel) {
         processNetworkExceptions(
             toExecute = {
                 setState {
@@ -129,7 +129,7 @@ class EditProfileViewModel @Inject constructor(
             toExecute = {
                 setState { copy(isProgressBarShowed = true) }
                 if (state.value.isUserDataChanged) {
-                    updateUserInfoUseCase(state.value.userInfo)
+                    updateUserInfoUseCase(state.value.userInfo.toUserInfo())
                 }
             },
             processBackendException = {

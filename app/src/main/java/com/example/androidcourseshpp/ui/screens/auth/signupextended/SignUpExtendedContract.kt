@@ -5,7 +5,7 @@ import com.example.androidcourseshpp.domain.entity.user.UserInfo
 import com.example.androidcourseshpp.ui.ViewEffect
 import com.example.androidcourseshpp.ui.ViewEvent
 import com.example.androidcourseshpp.ui.ViewState
-import com.example.androidcourseshpp.ui.screens.auth.signupextended.entity.SignUpUserInfoEntity
+import com.example.androidcourseshpp.ui.screens.auth.signup.model.SignUpModel
 
 class SignUpExtendedContract {
     sealed interface Event : ViewEvent {
@@ -14,7 +14,7 @@ class SignUpExtendedContract {
         data class OnForwardButtonClicked(
             val userName: String,
             val mobilePhone: String,
-            val signUpUserInfo: SignUpUserInfoEntity,
+            val signUpUserInfo: SignUpModel,
             val avatar: Bitmap
         ) : Event
     }

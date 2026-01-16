@@ -1,7 +1,7 @@
 package com.example.androidcourseshpp.ui.screens.main.addcontacts.adapter
 
 import android.widget.ImageView
-import com.example.androidcourseshpp.ui.screens.main.addcontacts.entity.UserItem
+import com.example.androidcourseshpp.ui.screens.main.addcontacts.model.UserItem
 
 interface UserItemActions {
     fun addToContacts(userId: Int, interruptLoading: () -> Unit)

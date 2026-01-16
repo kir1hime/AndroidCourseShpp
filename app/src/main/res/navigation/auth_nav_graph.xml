@@ -25,7 +25,7 @@
         tools:layout="@layout/fragment_sign_up_extended">
         <argument
             android:name="signUpInfo"
-            app:argType="com.example.androidcourseshpp.ui.screens.auth.signupextended.entity.SignUpUserInfoEntity" />
+            app:argType="com.example.androidcourseshpp.ui.screens.auth.signup.model.SignUpModel" />
         <action
             android:id="@+id/action_signUpExtendedFragment_to_chooseProfilePhotoDialog"
             app:destination="@id/chooseProfilePhotoDialog" />
