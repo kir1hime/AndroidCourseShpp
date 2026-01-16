@@ -1,6 +1,6 @@
 package com.example.androidcourseshpp.ui.screens.main.addcontacts.model
 
-import com.example.androidcourseshpp.ui.screens.main.contactdetails.entity.ContactDetailsEntity
+import com.example.androidcourseshpp.ui.screens.main.contactdetails.model.ContactDetailsModel
 
 data class UserItem(
     val id: Int,
@@ -10,7 +10,7 @@ data class UserItem(
     var isContact: Boolean
 ) {
     fun toContactDetailsEntity() =
-        ContactDetailsEntity(
+        ContactDetailsModel(
             id = id,
             name = name,
             career = career,

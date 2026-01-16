@@ -12,7 +12,7 @@
         tools:layout="@layout/fragment_detailview">
         <argument
             android:name="contactDetails"
-            app:argType="com.example.androidcourseshpp.ui.screens.main.contactdetails.entity.ContactDetailsEntity" />
+            app:argType="com.example.androidcourseshpp.ui.screens.main.contactdetails.model.ContactDetailsModel" />
 
     </fragment>
     <fragment

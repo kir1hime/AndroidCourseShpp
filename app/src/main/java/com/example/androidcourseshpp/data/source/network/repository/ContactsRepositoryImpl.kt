@@ -2,8 +2,9 @@ package com.example.androidcourseshpp.data.source.network.repository
 
 import com.example.androidcourseshpp.data.source.local.userdata.UserDataProvider
 import com.example.androidcourseshpp.data.source.network.entity.contacts.ContactData
+import com.example.androidcourseshpp.data.source.network.entity.contacts.GetUserContactsEntity
 import com.example.androidcourseshpp.data.source.network.service.RetrofitServiceProviderHolder
-import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.entity.ContactItem
+import com.example.androidcourseshpp.domain.entity.contact.ContactInfo
 import com.example.androidcourseshpp.domain.repository.ContactsRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -17,25 +18,25 @@ class ContactsRepositoryImpl @Inject constructor(
 ) : ContactsRepository {
 
 
-    override suspend fun addContactItem(contactItem: ContactItem) {
+    override suspend fun addContact(contact: ContactInfo) {
         withContext(Dispatchers.IO) {
             serviceProviderHolder.serviceProvider.getContactsService().addContact(
-                ContactData(userDataProvider.getUserServerId(), contactItem.id)
+                ContactData(userDataProvider.getUserServerId(), contact.id)
             )
         }
     }
 
-    override suspend fun deleteContactItem(contactItem: ContactItem) {
+    override suspend fun deleteContact(contact: ContactInfo) {
         withContext(Dispatchers.IO) {
             serviceProviderHolder.serviceProvider.getContactsService().deleteContact(
-                ContactData(userDataProvider.getUserServerId(), contactItem.id)
+                ContactData(userDataProvider.getUserServerId(), contact.id)
             )
         }
     }
 
-    override suspend fun deleteContactItems(contactItems: List<ContactItem>) {
+    override suspend fun deleteContacts(contacts: List<ContactInfo>) {
         withContext(Dispatchers.IO) {
-            contactItems.map { contactItem ->
+            contacts.map { contactItem ->
                 async {
                     serviceProviderHolder.serviceProvider.getContactsService()
                         .deleteContact(
@@ -46,12 +47,16 @@ class ContactsRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun loadContacts(): List<ContactItem> {
-        val response = serviceProviderHolder.serviceProvider.getContactsService()
-            .getUserContacts(userDataProvider.getUserServerId())
+    override suspend fun loadContacts(): List<ContactInfo> {
+        val response: GetUserContactsEntity
+
+        withContext(Dispatchers.IO) {
+            response = serviceProviderHolder.serviceProvider.getContactsService()
+                .getUserContacts(userDataProvider.getUserServerId())
+        }
 
         val contactItemList = response.contacts.map { contact ->
-            ContactItem(
+            ContactInfo(
                 id = contact.id,
                 name = contact.name ?: "",
                 career = contact.career ?: "",

@@ -1,6 +1,6 @@
 package com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist
 
-import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.entity.ContactItem
+import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.model.ContactItem
 import com.example.androidcourseshpp.ui.ViewEffect
 import com.example.androidcourseshpp.ui.ViewEvent
 import com.example.androidcourseshpp.ui.ViewState

@@ -1,7 +1,7 @@
 package com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.adapter
 
 import android.widget.ImageView
-import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.entity.ContactItem
+import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.model.ContactItem
 
 interface ContactItemActions {
 

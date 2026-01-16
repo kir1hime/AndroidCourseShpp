@@ -4,7 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.androidcourseshpp.domain.usecase.gallery.AddGalleryPhotoUseCase
 import com.example.androidcourseshpp.domain.usecase.gallery.GetGalleryPhotosUseCase
 import com.example.androidcourseshpp.ui.BaseViewModel
-import com.example.androidcourseshpp.ui.screens.main.chooseprofilephotodialog.entity.GalleryItem
+import com.example.androidcourseshpp.ui.screens.main.chooseprofilephotodialog.model.GalleryItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

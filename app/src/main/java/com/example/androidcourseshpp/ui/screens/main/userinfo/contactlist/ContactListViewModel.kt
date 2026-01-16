@@ -2,9 +2,13 @@ package com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist
 
 
 import com.example.androidcourseshpp.R
-import com.example.androidcourseshpp.domain.repository.ContactsRepository
-import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.entity.ContactItem
+import com.example.androidcourseshpp.domain.usecase.contacts.AddContactUseCase
+import com.example.androidcourseshpp.domain.usecase.contacts.DeleteContactUseCase
+import com.example.androidcourseshpp.domain.usecase.contacts.DeleteContactsUseCase
+import com.example.androidcourseshpp.domain.usecase.contacts.GetContactsUseCase
+import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.model.ContactItem
 import com.example.androidcourseshpp.ui.BaseViewModel
+import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.model.toContactItem
 import com.example.androidcourseshpp.ui.utils.isContainsOrderedSequence
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,7 +19,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ContactListViewModel @Inject constructor(
-    private val contactsRepository: ContactsRepository
+    private val addContactUseCase: AddContactUseCase,
+    private val deleteContactUseCase: DeleteContactUseCase,
+    private val deleteContactsUseCase: DeleteContactsUseCase,
+    private val getContactsUseCase: GetContactsUseCase
 ) : BaseViewModel<ContactListContract.Event, ContactListContract.Effect, ContactListContract.UIState>() {
 
     override fun initState() = ContactListContract.UIState(
@@ -88,8 +95,10 @@ class ContactListViewModel @Inject constructor(
         processNetworkExceptions(
             toExecute = {
                 setState { copy(isProgressBarShowed = true) }
-                contactsRepository.deleteContactItem(contactItem)
-                val contactList = contactsRepository.loadContacts()
+
+                deleteContactUseCase(contactItem.toContactInfo())
+                val contactList = getContactsUseCase().map { it.toContactItem() }
+
                 setState { copy(contactList = contactList) }
             },
             processBackendException = {
@@ -111,8 +120,10 @@ class ContactListViewModel @Inject constructor(
         processNetworkExceptions(
             toExecute = {
                 setState { copy(isProgressBarShowed = true) }
-                contactsRepository.deleteContactItems(contactItems)
-                val contactList = contactsRepository.loadContacts()
+
+                deleteContactsUseCase(contactItems.map { it.toContactInfo() })
+                val contactList = getContactsUseCase().map { it.toContactItem() }
+
                 setState { copy(contactList = contactList) }
             },
             processBackendException = {
@@ -132,8 +143,10 @@ class ContactListViewModel @Inject constructor(
         processNetworkExceptions(
             toExecute = {
                 setState { copy(isProgressBarShowed = true) }
-                contactsRepository.addContactItem(contactItem)
-                val contactList = contactsRepository.loadContacts()
+
+                addContactUseCase(contactItem.toContactInfo())
+                val contactList = getContactsUseCase().map { it.toContactItem() }
+
                 setState { copy(contactList = contactList) }
             },
             processBackendException = {
@@ -164,7 +177,7 @@ class ContactListViewModel @Inject constructor(
                         contactList = emptyList()
                     )
                 }
-                val contactList = contactsRepository.loadContacts()
+                val contactList = getContactsUseCase().map { it.toContactItem() }
                 setState { copy(contactList = contactList) }
             },
             processBackendException = {

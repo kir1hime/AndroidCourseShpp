@@ -1,13 +1,13 @@
 package com.example.androidcourseshpp.domain.repository
 
-import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.entity.ContactItem
+import com.example.androidcourseshpp.domain.entity.contact.ContactInfo
 
 interface ContactsRepository {
 
-    suspend fun addContactItem(contactItem: ContactItem)
+    suspend fun addContact(contact: ContactInfo)
 
-    suspend fun deleteContactItem(contactItem: ContactItem)
+    suspend fun deleteContact(contact: ContactInfo)
 
-    suspend fun deleteContactItems(contactItems: List<ContactItem>)
-    suspend fun loadContacts(): List<ContactItem>
+    suspend fun deleteContacts(contacts: List<ContactInfo>)
+    suspend fun loadContacts(): List<ContactInfo>
 }
