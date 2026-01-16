@@ -3,7 +3,7 @@ package com.example.androidcourseshpp.data.source.network.entity.user
 import com.example.androidcourseshpp.data.source.network.dto.user.UpdateUserRequestDTO
 import java.util.Date
 
-data class UpdateUserData(
+data class UpdateUserDataModel(
     val name: String? = null,
     val phone: String? = null,
     val address: String? = null,

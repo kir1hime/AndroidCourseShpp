@@ -4,7 +4,7 @@ import com.example.androidcourseshpp.domain.entity.user.UserInfo
 import com.example.androidcourseshpp.domain.entity.user.UserItemInfo
 import java.util.Date
 
-data class User(
+data class UserModel(
     val id: Int,
     val email: String,
     val name: String?,

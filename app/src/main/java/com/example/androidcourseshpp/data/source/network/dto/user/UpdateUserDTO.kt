@@ -1,6 +1,6 @@
 package com.example.androidcourseshpp.data.source.network.dto.user
 
-import com.example.androidcourseshpp.data.source.network.entity.User
+import com.example.androidcourseshpp.data.source.network.entity.UserModel
 import java.util.Date
 
 data class UpdateUserRequestDTO(
@@ -15,5 +15,5 @@ data class UpdateUserRequestDTO(
     val linkedin: String?
 )
 
-data class UpdateUserResponseDTO(val user: User)
+data class UpdateUserResponseDTO(val user: UserModel)
 

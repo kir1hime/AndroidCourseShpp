@@ -1,8 +1,8 @@
 package com.example.androidcourseshpp.data.source.network.repository
 
 import com.example.androidcourseshpp.data.source.local.userdata.UserDataProvider
-import com.example.androidcourseshpp.data.source.network.entity.contacts.ContactData
-import com.example.androidcourseshpp.data.source.network.entity.contacts.GetUserContactsEntity
+import com.example.androidcourseshpp.data.source.network.entity.contacts.ContactDataModel
+import com.example.androidcourseshpp.data.source.network.entity.contacts.GetUserContactsModel
 import com.example.androidcourseshpp.data.source.network.service.RetrofitServiceProviderHolder
 import com.example.androidcourseshpp.domain.entity.contact.ContactInfo
 import com.example.androidcourseshpp.domain.repository.ContactsRepository
@@ -21,7 +21,7 @@ class ContactsRepositoryImpl @Inject constructor(
     override suspend fun addContact(contact: ContactInfo) {
         withContext(Dispatchers.IO) {
             serviceProviderHolder.serviceProvider.getContactsService().addContact(
-                ContactData(userDataProvider.getUserServerId(), contact.id)
+                ContactDataModel(userDataProvider.getUserServerId(), contact.id)
             )
         }
     }
@@ -29,7 +29,7 @@ class ContactsRepositoryImpl @Inject constructor(
     override suspend fun deleteContact(contact: ContactInfo) {
         withContext(Dispatchers.IO) {
             serviceProviderHolder.serviceProvider.getContactsService().deleteContact(
-                ContactData(userDataProvider.getUserServerId(), contact.id)
+                ContactDataModel(userDataProvider.getUserServerId(), contact.id)
             )
         }
     }
@@ -40,7 +40,7 @@ class ContactsRepositoryImpl @Inject constructor(
                 async {
                     serviceProviderHolder.serviceProvider.getContactsService()
                         .deleteContact(
-                            ContactData(userDataProvider.getUserServerId(), contactItem.id)
+                            ContactDataModel(userDataProvider.getUserServerId(), contactItem.id)
                         )
                 }
             }.awaitAll()
@@ -48,7 +48,7 @@ class ContactsRepositoryImpl @Inject constructor(
     }
 
     override suspend fun loadContacts(): List<ContactInfo> {
-        val response: GetUserContactsEntity
+        val response: GetUserContactsModel
 
         withContext(Dispatchers.IO) {
             response = serviceProviderHolder.serviceProvider.getContactsService()

@@ -1,9 +1,9 @@
 package com.example.androidcourseshpp.data.source.network.entity.auth
 
-import com.example.androidcourseshpp.data.source.network.entity.User
+import com.example.androidcourseshpp.data.source.network.entity.UserModel
 
-data class SignInResponseEntity(
-    val user: User,
+data class SignUpResponseModel(
+    val user: UserModel,
     val accessToken: String,
     val refreshToken: String
 )

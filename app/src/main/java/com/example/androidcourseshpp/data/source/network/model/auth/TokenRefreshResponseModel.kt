@@ -1,6 +1,6 @@
 package com.example.androidcourseshpp.data.source.network.entity.auth
 
-data class TokenRefreshResponseEntity(
+data class TokenRefreshResponseModel(
     val accessToken: String,
     val refreshToken: String
 )

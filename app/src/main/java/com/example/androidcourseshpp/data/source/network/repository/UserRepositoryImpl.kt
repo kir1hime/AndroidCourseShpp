@@ -1,9 +1,9 @@
 package com.example.androidcourseshpp.data.source.network.repository
 
 import com.example.androidcourseshpp.data.source.local.userdata.UserDataProvider
-import com.example.androidcourseshpp.data.source.network.entity.User
-import com.example.androidcourseshpp.data.source.network.entity.contacts.ContactData
-import com.example.androidcourseshpp.data.source.network.entity.user.UpdateUserData
+import com.example.androidcourseshpp.data.source.network.entity.UserModel
+import com.example.androidcourseshpp.data.source.network.entity.contacts.ContactDataModel
+import com.example.androidcourseshpp.data.source.network.entity.user.UpdateUserDataModel
 import com.example.androidcourseshpp.data.source.network.service.RetrofitServiceProviderHolder
 import com.example.androidcourseshpp.domain.entity.user.UserInfo
 import com.example.androidcourseshpp.domain.entity.user.UserItemInfo
@@ -22,13 +22,13 @@ class UserRepositoryImpl @Inject constructor(
     override suspend fun addContact(newContactId: Int) {
         withContext(Dispatchers.IO) {
             serviceProviderHolder.serviceProvider.getContactsService()
-                .addContact(ContactData(userDataProvider.getUserServerId(), newContactId))
+                .addContact(ContactDataModel(userDataProvider.getUserServerId(), newContactId))
         }
     }
 
     override suspend fun getUsers(): List<UserItemInfo> {
-        var userList = emptyList<User>()
-        var contactList = emptyList<User>()
+        var userList = emptyList<UserModel>()
+        var contactList = emptyList<UserModel>()
 
         withContext(Dispatchers.IO) {
             val usersResponse = async {
@@ -65,7 +65,7 @@ class UserRepositoryImpl @Inject constructor(
             with(userInfo) {
                 serviceProviderHolder.serviceProvider.getUserService()
                     .updateUserInfo(
-                        id, UpdateUserData(
+                        id, UpdateUserDataModel(
                             name = name,
                             career = career,
                             phone = mobilePhone,
