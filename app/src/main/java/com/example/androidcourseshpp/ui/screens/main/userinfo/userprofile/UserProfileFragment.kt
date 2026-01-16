@@ -9,7 +9,6 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.databinding.FragmentUserProfileBinding
-import com.example.androidcourseshpp.domain.entity.user.UserInfo
 import com.example.androidcourseshpp.ui.BaseFragment
 import com.example.androidcourseshpp.ui.USER_INFO
 import com.example.androidcourseshpp.ui.utils.loadImageFromURLCircled
@@ -17,6 +16,7 @@ import com.example.androidcourseshpp.ui.screens.auth.AuthActivity
 import com.example.androidcourseshpp.ui.screens.main.editprofile.TO_UPDATE_USER_PROFILE
 import com.example.androidcourseshpp.ui.screens.main.userinfo.TabSwitchable
 import com.example.androidcourseshpp.ui.screens.main.userinfo.UserInfoFragmentDirections
+import com.example.androidcourseshpp.ui.screens.model.UserUIModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.getValue
 
@@ -52,7 +52,7 @@ class UserProfileFragment :
     }
 
     private fun setUserInfo() {
-        val userInfo = requireActivity().intent.getParcelableExtra<UserInfo>(USER_INFO)
+        val userInfo = requireActivity().intent.getParcelableExtra<UserUIModel>(USER_INFO)
 
         userInfo?.let {
             viewModel.setEvent(UserProfileContract.Event.SetUserInfo(userInfo))
@@ -62,7 +62,7 @@ class UserProfileFragment :
     private fun updateUserProfile() {
         val savedStateHandle = findNavController().currentBackStackEntry?.savedStateHandle
 
-        val userInfoLiveData = savedStateHandle?.getLiveData<UserInfo>(TO_UPDATE_USER_PROFILE)
+        val userInfoLiveData = savedStateHandle?.getLiveData<UserUIModel>(TO_UPDATE_USER_PROFILE)
 
         userInfoLiveData?.observe(viewLifecycleOwner) { userInfo ->
             viewModel.setEvent(UserProfileContract.Event.SetUserInfo(userInfo))
@@ -125,7 +125,7 @@ class UserProfileFragment :
         parentFragment?.moveToContactsTab()
     }
 
-    private fun moveToEditProfileScreen(userInfo: UserInfo) {
+    private fun moveToEditProfileScreen(userInfo: UserUIModel) {
         val direction =
             UserInfoFragmentDirections.actionUserInfoFragmentToEditProfileFragment(userInfo)
         findNavController().navigate(direction)

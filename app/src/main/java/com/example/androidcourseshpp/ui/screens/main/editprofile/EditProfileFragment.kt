@@ -14,6 +14,7 @@ import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.databinding.FragmentEditProfileBinding
 import com.example.androidcourseshpp.domain.entity.user.UserInfo
 import com.example.androidcourseshpp.ui.BaseFragment
+import com.example.androidcourseshpp.ui.screens.model.UserUIModel
 import com.example.androidcourseshpp.ui.utils.loadImageFromURLCircled
 import com.example.androidcourseshpp.ui.utils.onChangeTextListener
 import dagger.hilt.android.AndroidEntryPoint
@@ -155,7 +156,7 @@ class EditProfileFragment :
         }
     }
 
-    fun moveBackToUserProfileScreen(isUserDataChanged: Boolean, userInfo: UserInfo) {
+    fun moveBackToUserProfileScreen(isUserDataChanged: Boolean, userInfo: UserUIModel) {
         if (isUserDataChanged) {
             findNavController().previousBackStackEntry?.savedStateHandle?.set(
                 TO_UPDATE_USER_PROFILE,

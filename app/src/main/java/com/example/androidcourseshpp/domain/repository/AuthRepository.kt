@@ -8,7 +8,6 @@ interface AuthRepository {
     fun getAccessToken(): String?
     fun getRefreshToken(): String?
     fun clearTokens()
-
     suspend fun signIn(signInInfo: SignInInfo): UserInfo
     suspend fun singUp(signUpInfo: SignUpInfo): UserInfo
 }

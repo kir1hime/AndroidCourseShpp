@@ -21,7 +21,15 @@ class EditProfileViewModel @Inject constructor(
 
     override fun initState(): EditProfileContract.UIState {
         return (EditProfileContract.UIState(
-            UserUIModel(-1, "", "", "", "", null, ""),
+            UserUIModel(
+                id = -1,
+                name = "",
+                mobilePhone = "",
+                address = "",
+                career = "",
+                dateOfBirthday = null,
+                avatar = ""
+            ),
             isProgressBarShowed = false,
             isSaveButtonEnabled = true,
             isUserDataChanged = false

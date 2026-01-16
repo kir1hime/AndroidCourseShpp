@@ -4,6 +4,7 @@ import com.example.androidcourseshpp.domain.entity.user.UserInfo
 import com.example.androidcourseshpp.ui.ViewEffect
 import com.example.androidcourseshpp.ui.ViewEvent
 import com.example.androidcourseshpp.ui.ViewState
+import com.example.androidcourseshpp.ui.screens.model.UserUIModel
 
 class SplashContract {
 
@@ -13,7 +14,7 @@ class SplashContract {
 
     sealed interface Effect : ViewEffect {
 
-        data class NavigateToUserProfileScreen(val userInfo: UserInfo) : Effect
+        data class NavigateToUserProfileScreen(val userInfo: UserUIModel) : Effect
         data object NavigateToSignInScreen : Effect
     }
 

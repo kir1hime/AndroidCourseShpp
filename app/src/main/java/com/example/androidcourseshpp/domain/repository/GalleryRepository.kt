@@ -7,4 +7,5 @@ interface GalleryRepository {
     val galleryPhotos: StateFlow<List<GalleryItemInfo>>
 
     fun addPhoto(photoURL: String)
+    fun clearGalleryPhotos()
 }

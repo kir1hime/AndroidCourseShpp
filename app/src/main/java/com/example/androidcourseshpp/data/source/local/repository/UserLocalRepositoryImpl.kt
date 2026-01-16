@@ -30,12 +30,4 @@ class UserLocalRepositoryImpl @Inject constructor(private val userDataProvider: 
     override fun clearUserAvatarUrl() {
         userDataProvider.clearUserAvatarUrl()
     }
-
-    override fun saveUserGalleryPhotos(photoURLs: Set<String>) {
-        userDataProvider.saveUserGalleryPhotos(photoURLs)
-    }
-
-    override fun getUserGalleryPhotos(): Set<String> {
-        return userDataProvider.getUserGalleryPhotos()
-    }
 }

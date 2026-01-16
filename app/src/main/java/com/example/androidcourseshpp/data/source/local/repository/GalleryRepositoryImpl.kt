@@ -48,6 +48,10 @@ class GalleryRepositoryImpl @Inject constructor(private val userDataProvider: Us
         userDataProvider.saveUserGalleryPhotos(photoURLSet)
     }
 
+    override fun clearGalleryPhotos() {
+        userDataProvider.clearGalleryPhotos()
+    }
+
     private fun getPhotos(): List<GalleryItemInfo> {
         val galleryItemList = mutableListOf<GalleryItemInfo>()
 

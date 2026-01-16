@@ -6,6 +6,7 @@ import com.example.androidcourseshpp.ui.ViewEffect
 import com.example.androidcourseshpp.ui.ViewEvent
 import com.example.androidcourseshpp.ui.ViewState
 import com.example.androidcourseshpp.ui.screens.auth.signup.model.SignUpModel
+import com.example.androidcourseshpp.ui.screens.model.UserUIModel
 
 class SignUpExtendedContract {
     sealed interface Event : ViewEvent {
@@ -23,7 +24,7 @@ class SignUpExtendedContract {
         data object NavigateToPreviousScreen : Effect
         data object NavigateToChooseProfilePhotoDialog : Effect
         data class ShowToast(val toastMessageResId: Int) : Effect
-        data class NavigateToUserProfileScreen(val userInfo: UserInfo) : Effect
+        data class NavigateToUserProfileScreen(val userInfo: UserUIModel) : Effect
     }
 
     data class UIState(

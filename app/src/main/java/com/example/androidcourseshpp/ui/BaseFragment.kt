@@ -24,6 +24,7 @@ import com.example.androidcourseshpp.ui.utils.loadImageFromURL
 import com.example.androidcourseshpp.ui.screens.main.MainActivity
 import com.example.androidcourseshpp.ui.screens.main.chooseprofilephotodialog.ChooseProfilePhotoDialog
 import com.example.androidcourseshpp.ui.screens.main.chooseprofilephotodialog.ChooseProfilePhotoDialog.Companion.PHOTO
+import com.example.androidcourseshpp.ui.screens.model.UserUIModel
 import com.example.androidcourseshpp.ui.utils.onChangeTextListener
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
@@ -51,9 +52,9 @@ abstract class BaseFragment<VBinding : ViewBinding>(
         super.onDestroyView()
     }
 
-     open fun setObservers(){}
+    open fun setObservers() {}
 
-     open fun setListeners(){}
+    open fun setListeners() {}
 
     protected fun <T> BaseFragment<VBinding>.collectFlow(flow: Flow<T>, onCollect: (T) -> Unit) {
         lifecycleScope.launch {
@@ -75,7 +76,7 @@ abstract class BaseFragment<VBinding : ViewBinding>(
         }
     }
 
-    protected fun moveToUserProfileScreen(userInfo: UserInfo) {
+    protected fun moveToUserProfileScreen(userInfo: UserUIModel) {
         val intent = Intent(requireContext(), MainActivity::class.java)
 
         intent.putExtra(USER_INFO, userInfo)
