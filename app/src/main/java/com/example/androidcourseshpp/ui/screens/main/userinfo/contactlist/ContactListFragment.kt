@@ -23,7 +23,6 @@ import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.adapte
 import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.adapter.ContactItemActions
 import com.example.androidcourseshpp.ui.screens.main.userinfo.TabSwitchable
 import com.example.androidcourseshpp.ui.screens.main.userinfo.UserInfoFragmentDirections
-import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.Searchable
 import com.example.androidcourseshpp.ui.utils.onChangeTextListener
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
