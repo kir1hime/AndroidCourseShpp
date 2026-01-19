@@ -7,7 +7,7 @@ import com.example.androidcourseshpp.domain.usecase.auth.SignUpUseCase
 import com.example.androidcourseshpp.domain.usecase.userlocal.SaveUserServerIdUseCase
 import com.example.androidcourseshpp.ui.BaseViewModel
 import com.example.androidcourseshpp.ui.screens.auth.signup.model.SignUpModel
-import com.example.androidcourseshpp.ui.screens.model.toUserUIModel
+import com.example.androidcourseshpp.ui.screens.model.toUserModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -58,7 +58,7 @@ class SignUpExtendedViewModel @Inject constructor(
                             password = signUpUserInfo.password,
                             avatar = avatar
                         )
-                    ).toUserUIModel()
+                    ).toUserModel()
 
                     if (signUpUserInfo.toRememberUser) {
                         saveUserServerIdUseCase(userInfo.id)

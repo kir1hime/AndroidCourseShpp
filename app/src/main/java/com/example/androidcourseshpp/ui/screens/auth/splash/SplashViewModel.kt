@@ -4,7 +4,7 @@ import com.example.androidcourseshpp.data.source.local.userdata.DEFAULT_ID_VALUE
 import com.example.androidcourseshpp.domain.usecase.user.GetUserUseCase
 import com.example.androidcourseshpp.domain.usecase.userlocal.GetUserServerIdUseCase
 import com.example.androidcourseshpp.ui.BaseViewModel
-import com.example.androidcourseshpp.ui.screens.model.toUserUIModel
+import com.example.androidcourseshpp.ui.screens.model.toUserModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 
@@ -34,7 +34,7 @@ class SplashViewModel @Inject constructor(
     private fun enterToAccount(userServerId: Int) {
         processNetworkExceptions(
             toExecute = {
-                val userInfo = getUserInfoUseCase(userServerId).toUserUIModel()
+                val userInfo = getUserInfoUseCase(userServerId).toUserModel()
 
                 setEffect(
                     SplashContract.Effect.NavigateToUserProfileScreen(userInfo)

@@ -16,13 +16,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewbinding.ViewBinding
 import com.example.androidcourseshpp.R
-import com.example.androidcourseshpp.databinding.FragmentEditProfileBinding
-import com.example.androidcourseshpp.databinding.FragmentSignInBinding
-import com.example.androidcourseshpp.databinding.FragmentSignUpExtendedBinding
 import com.example.androidcourseshpp.ui.screens.main.MainActivity
 import com.example.androidcourseshpp.ui.screens.main.chooseprofilephotodialog.ChooseProfilePhotoDialog
 import com.example.androidcourseshpp.ui.screens.main.chooseprofilephotodialog.ChooseProfilePhotoDialog.Companion.PHOTO
-import com.example.androidcourseshpp.ui.screens.model.UserUIModel
+import com.example.androidcourseshpp.ui.screens.model.UserModel
 import com.example.androidcourseshpp.ui.utils.loadImageFromURL
 import com.example.androidcourseshpp.ui.utils.onChangeTextListener
 import kotlinx.coroutines.flow.Flow
@@ -75,7 +72,7 @@ abstract class BaseFragment<VBinding : ViewBinding>(
         }
     }
 
-    protected fun moveToUserProfileScreen(userInfo: UserUIModel) {
+    protected fun moveToUserProfileScreen(userInfo: UserModel) {
         val intent = Intent(requireContext(), MainActivity::class.java)
 
         intent.putExtra(USER_INFO, userInfo)
@@ -124,34 +121,7 @@ abstract class BaseFragment<VBinding : ViewBinding>(
         }
     }
 
-    protected fun <T : ViewBinding> setLoadingState(isLoaded: Boolean, binding: T) {
-        val isEnabled = !isLoaded
-
-        when (binding) {
-            is FragmentSignInBinding -> with(binding) {
-                enableEditText(editTextEMail)
-                enableEditText(editTextPassword)
-                comboBoxRememberMe.isClickable = isEnabled
-            }
-
-            is FragmentEditProfileBinding -> with(binding) {
-                enableEditText(editTextUsername)
-                enableEditText(editTextCareer)
-                enableEditText(editTextMobilePhone)
-                enableEditText(editTextAddress)
-                enableEditText(editTextDateOfBirthday)
-                imageButtonAddProfilePhoto.isClickable = isEnabled
-            }
-
-            is FragmentSignUpExtendedBinding -> with(binding) {
-                enableEditText(editTextUserName)
-                enableEditText(editTextMobilePhone)
-                imageButtonAddProfilePhoto.isClickable = isEnabled
-            }
-        }
-    }
-
-    private fun enableEditText(editText: EditText) {
+    protected fun enableEditText(editText: EditText) {
         editText.apply {
             isFocusable = isEnabled
             isFocusableInTouchMode = isEnabled

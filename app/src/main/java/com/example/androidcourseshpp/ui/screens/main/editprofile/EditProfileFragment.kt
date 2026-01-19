@@ -13,7 +13,7 @@ import androidx.navigation.fragment.navArgs
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.databinding.FragmentEditProfileBinding
 import com.example.androidcourseshpp.ui.BaseFragment
-import com.example.androidcourseshpp.ui.screens.model.UserUIModel
+import com.example.androidcourseshpp.ui.screens.model.UserModel
 import com.example.androidcourseshpp.ui.utils.loadImageFromURLCircled
 import com.example.androidcourseshpp.ui.utils.onChangeTextListener
 import dagger.hilt.android.AndroidEntryPoint
@@ -141,7 +141,7 @@ class EditProfileFragment :
             )
             buttonSave.isEnabled = state.isSaveButtonEnabled
             progressBarRequest.isVisible = state.isProgressBarShowed
-            setLoadingState(state.isProgressBarShowed, binding)
+            setLoadingState(state.isProgressBarShowed)
         }
 
         collectFlow(viewModel.effect) { effect ->
@@ -155,7 +155,7 @@ class EditProfileFragment :
         }
     }
 
-    fun moveBackToUserProfileScreen(isUserDataChanged: Boolean, userInfo: UserUIModel) {
+    fun moveBackToUserProfileScreen(isUserDataChanged: Boolean, userInfo: UserModel) {
         if (isUserDataChanged) {
             findNavController().previousBackStackEntry?.savedStateHandle?.set(
                 TO_UPDATE_USER_PROFILE,
@@ -210,6 +210,16 @@ class EditProfileFragment :
             calendar.get(Calendar.MONTH),
             calendar.get(Calendar.DAY_OF_MONTH)
         ).show()
+    }
+
+    private fun setLoadingState(isLoading: Boolean) = with(binding) {
+        val isEnabled = !isLoading
+        enableEditText(editTextUsername)
+        enableEditText(editTextCareer)
+        enableEditText(editTextMobilePhone)
+        enableEditText(editTextAddress)
+        enableEditText(editTextDateOfBirthday)
+        imageButtonAddProfilePhoto.isClickable = isEnabled
     }
 
     companion object {

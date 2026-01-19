@@ -4,6 +4,11 @@ import android.widget.ImageView
 import com.example.androidcourseshpp.ui.screens.main.addcontacts.model.UserItem
 
 interface UserItemActions {
-    fun addToContacts(userId: Int, interruptLoading: () -> Unit)
+    fun addToContacts(
+        userId: Int,
+        interruptSuccessLoading: () -> Unit,
+        interruptFailureLoading: () -> Unit
+    )
+
     fun showUserItemDetails(userItem: UserItem, avatar: ImageView)
 }

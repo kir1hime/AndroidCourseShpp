@@ -23,7 +23,7 @@ import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.adapte
 import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.adapter.ContactItemActions
 import com.example.androidcourseshpp.ui.screens.main.userinfo.TabSwitchable
 import com.example.androidcourseshpp.ui.screens.main.userinfo.UserInfoFragmentDirections
-import com.example.androidcourseshpp.ui.screens.main.userinfo.Searchable
+import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.Searchable
 import com.example.androidcourseshpp.ui.utils.onChangeTextListener
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -125,12 +125,27 @@ class ContactListFragment :
     override fun setObservers() = with(binding) {
 
         collectFlow(viewModel.state) { state ->
+            val contactList = state.contactList
+
             if (state.isSearchMode) {
                 showSearchBar()
-            }
+                collectFlow(viewModel.filteredContactList) { filteredContactList ->
+                    if (filteredContactList.isEmpty() && textInputLayoutSearch.isVisible) {
+                        textViewNoResultsFound.isVisible = true
+                        textViewAdvice.isVisible = true
+                    } else {
+                        textViewNoResultsFound.isVisible = false
+                        textViewAdvice.isVisible = false
+                    }
 
-            if (!state.isSearchMode) {
-                val contactList = state.contactList
+                    adapter.submitList(filteredContactList.map { contactItem ->
+                        SelectableContactItem(
+                            contactItem,
+                            false
+                        )
+                    })
+                }
+            } else {
                 adapter.submitList(contactList.map { contactItem ->
                     SelectableContactItem(
                         contactItem,
@@ -145,25 +160,6 @@ class ContactListFragment :
             textViewNoResultsFound.isVisible = false
             textViewAdvice.isVisible = false
         }
-
-
-        collectFlow(viewModel.filteredContactList) { filteredContactList ->
-            if (filteredContactList.isEmpty() && textInputLayoutSearch.isVisible) {
-                textViewNoResultsFound.isVisible = true
-                textViewAdvice.isVisible = true
-            } else {
-                textViewNoResultsFound.isVisible = false
-                textViewAdvice.isVisible = false
-            }
-
-            adapter.submitList(filteredContactList.map { contactItem ->
-                SelectableContactItem(
-                    contactItem,
-                    false
-                )
-            })
-        }
-
 
         collectFlow(viewModel.effect) { effect ->
             when (effect) {

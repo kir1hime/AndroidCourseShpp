@@ -1,6 +1,5 @@
 package com.example.androidcourseshpp.di
 
-import com.example.androidcourseshpp.data.source.network.service.BASE_URL
 import com.example.androidcourseshpp.data.source.network.service.RetrofitServicesProvider
 import com.example.androidcourseshpp.data.source.network.service.ServicesProvider
 import com.example.androidcourseshpp.data.source.network.jwt.JWTManager
@@ -25,6 +24,8 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
+
+const val BASE_URL = "http://178.63.9.114:7777/api/"
 
 @Module
 @InstallIn(SingletonComponent::class)

@@ -3,8 +3,8 @@ package com.example.androidcourseshpp.data.source.network.service.auth
 import com.example.androidcourseshpp.data.source.network.RetrofitConfig
 import com.example.androidcourseshpp.data.source.network.dto.auth.SignInRequestDTO
 import com.example.androidcourseshpp.data.source.network.service.BaseRetrofitService
-import com.example.androidcourseshpp.data.source.network.entity.auth.SignInData
-import com.example.androidcourseshpp.data.source.network.entity.auth.SignUpData
+import com.example.androidcourseshpp.data.source.network.model.auth.SignInData
+import com.example.androidcourseshpp.data.source.network.model.auth.SignUpData
 import com.example.androidcourseshpp.data.source.network.api.auth.AuthAPI
 import okhttp3.RequestBody.Companion.toRequestBody
 import javax.inject.Inject

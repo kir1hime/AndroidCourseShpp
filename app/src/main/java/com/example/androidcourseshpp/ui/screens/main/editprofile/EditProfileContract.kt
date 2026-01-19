@@ -1,17 +1,16 @@
 package com.example.androidcourseshpp.ui.screens.main.editprofile
 
-import com.example.androidcourseshpp.domain.entity.user.UserInfo
 import com.example.androidcourseshpp.ui.ViewEffect
 import com.example.androidcourseshpp.ui.ViewEvent
 import com.example.androidcourseshpp.ui.ViewState
-import com.example.androidcourseshpp.ui.screens.model.UserUIModel
+import com.example.androidcourseshpp.ui.screens.model.UserModel
 import java.util.Date
 
 class EditProfileContract {
 
     sealed interface Event : ViewEvent {
         data object OnAddProfilePhotoImageViewClicked : Event
-        data class SetUserInfo(val userInfo: UserUIModel) : Event
+        data class SetUserInfo(val userInfo: UserModel) : Event
         data class ProfilePhotoUpdated(val profilePhotoUrl: String) : Event
         data class UserNameUpdated(val userName: String) : Event
         data class CareerUpdated(val career: String) : Event
@@ -25,14 +24,14 @@ class EditProfileContract {
         data object NavigateToChooseProfilePhotoDialog : Effect
         data class NavigateToUserProfileScreen(
             val isUserDataChanged: Boolean,
-            val userInfo: UserUIModel
+            val userInfo: UserModel
         ) : Effect
 
         data class ShowToast(val toastMessageResId: Int) : Effect
     }
 
     data class UIState(
-        val userInfo: UserUIModel,
+        val userInfo: UserModel,
         val isProgressBarShowed: Boolean,
         val isSaveButtonEnabled: Boolean,
         val isUserDataChanged: Boolean

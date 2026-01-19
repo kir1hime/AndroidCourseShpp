@@ -13,6 +13,7 @@ import com.example.androidcourseshpp.ui.utils.isContainsOrderedSequence
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import java.util.Stack
 import javax.inject.Inject
 
@@ -100,6 +101,11 @@ class ContactListViewModel @Inject constructor(
                 val contactList = getContactsUseCase().map { it.toContactItem() }
 
                 setState { copy(contactList = contactList) }
+
+                updateFilteredContactList { list ->
+                    list.remove(contactItem)
+                }
+
             },
             processBackendException = {
                 setEffect(ContactListContract.Effect.ShowToast(R.string.generic_error))
@@ -125,6 +131,9 @@ class ContactListViewModel @Inject constructor(
                 val contactList = getContactsUseCase().map { it.toContactItem() }
 
                 setState { copy(contactList = contactList) }
+                updateFilteredContactList { list ->
+                    list.removeAll(contactItems)
+                }
             },
             processBackendException = {
                 setEffect(ContactListContract.Effect.ShowToast(R.string.generic_error))
@@ -148,6 +157,9 @@ class ContactListViewModel @Inject constructor(
                 val contactList = getContactsUseCase().map { it.toContactItem() }
 
                 setState { copy(contactList = contactList) }
+                updateFilteredContactList { list ->
+                    list.add(contactItem)
+                }
             },
             processBackendException = {
                 setEffect(ContactListContract.Effect.ShowToast(R.string.generic_error))
@@ -179,6 +191,10 @@ class ContactListViewModel @Inject constructor(
                 }
                 val contactList = getContactsUseCase().map { it.toContactItem() }
                 setState { copy(contactList = contactList) }
+                updateFilteredContactList { list ->
+                    list.clear()
+                    list.addAll(contactList)
+                }
             },
             processBackendException = {
                 setState { copy(isTryAgainButtonShowed = true) }
@@ -207,6 +223,14 @@ class ContactListViewModel @Inject constructor(
     private fun navigateToAddContactsScreen() {
         setEffect(ContactListContract.Effect.HideSearchBar)
         setEffect(ContactListContract.Effect.NavigateToAddContactsScreen)
+    }
+
+    private fun updateFilteredContactList(toUpdate: (MutableList<ContactItem>) -> Unit) {
+        _filteredContactList.update {
+            val newFilteredList = _filteredContactList.value.toMutableList()
+            toUpdate(newFilteredList)
+            newFilteredList
+        }
     }
 
 }

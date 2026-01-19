@@ -9,7 +9,7 @@ import com.example.androidcourseshpp.domain.usecase.userlocal.ClearUserAvatarUse
 import com.example.androidcourseshpp.domain.usecase.userlocal.ClearUserServerIdUseCase
 import com.example.androidcourseshpp.domain.usecase.userlocal.GetUserAvatarUseCase
 import com.example.androidcourseshpp.ui.BaseViewModel
-import com.example.androidcourseshpp.ui.screens.model.UserUIModel
+import com.example.androidcourseshpp.ui.screens.model.UserModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.launch
@@ -25,7 +25,7 @@ class UserProfileViewModel @Inject constructor(
     BaseViewModel<UserProfileContract.Event, UserProfileContract.Effect, UserProfileContract.UIState>() {
 
     override fun initState() = UserProfileContract.UIState(
-        UserUIModel(
+        UserModel(
             id = -1,
             name = "",
             mobilePhone = "",
@@ -46,7 +46,7 @@ class UserProfileViewModel @Inject constructor(
 
     }
 
-    private fun setUserInfo(userInfo: UserUIModel) {
+    private fun setUserInfo(userInfo: UserModel) {
         viewModelScope.launch {
             processNetworkExceptions(
                 toExecute = {

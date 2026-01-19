@@ -6,7 +6,7 @@ import com.example.androidcourseshpp.domain.usecase.user.UpdateUserInfoUseCase
 import com.example.androidcourseshpp.domain.usecase.userlocal.GetUserAvatarUseCase
 import com.example.androidcourseshpp.domain.usecase.userlocal.SaveUserAvatarUseCase
 import com.example.androidcourseshpp.ui.BaseViewModel
-import com.example.androidcourseshpp.ui.screens.model.UserUIModel
+import com.example.androidcourseshpp.ui.screens.model.UserModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.util.Date
 import javax.inject.Inject
@@ -21,7 +21,7 @@ class EditProfileViewModel @Inject constructor(
 
     override fun initState(): EditProfileContract.UIState {
         return (EditProfileContract.UIState(
-            UserUIModel(
+            UserModel(
                 id = -1,
                 name = "",
                 mobilePhone = "",
@@ -93,7 +93,7 @@ class EditProfileViewModel @Inject constructor(
         }
     }
 
-    private fun setUserInfo(userInfo: UserUIModel) {
+    private fun setUserInfo(userInfo: UserModel) {
         processNetworkExceptions(
             toExecute = {
                 setState {

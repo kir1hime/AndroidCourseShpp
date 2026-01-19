@@ -6,7 +6,7 @@ import kotlinx.parcelize.Parcelize
 import java.util.Date
 
 @Parcelize
-data class UserUIModel(
+data class UserModel(
     val id: Int,
     val name: String,
     val mobilePhone: String,
@@ -27,8 +27,8 @@ data class UserUIModel(
         )
 }
 
-fun UserInfo.toUserUIModel() =
-    UserUIModel(
+fun UserInfo.toUserModel() =
+    UserModel(
         id = id,
         name = name,
         career = career,

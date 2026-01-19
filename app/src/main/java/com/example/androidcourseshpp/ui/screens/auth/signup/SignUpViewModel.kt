@@ -1,12 +1,12 @@
 package com.example.androidcourseshpp.ui.screens.auth.signup
 
-import com.example.androidcourseshpp.data.utils.SignUpValidator
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import com.example.androidcourseshpp.R
-import com.example.androidcourseshpp.data.utils.PasswordErrorMessagesContainer
 import com.example.androidcourseshpp.ui.BaseViewModel
 import com.example.androidcourseshpp.ui.screens.auth.signup.model.SignUpModel
+import com.example.androidcourseshpp.ui.utils.PasswordErrorMessagesContainer
+import com.example.androidcourseshpp.ui.utils.SignUpValidator
 
 
 @HiltViewModel

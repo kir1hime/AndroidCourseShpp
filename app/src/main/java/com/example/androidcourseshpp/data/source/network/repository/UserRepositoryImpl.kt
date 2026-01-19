@@ -1,10 +1,10 @@
 package com.example.androidcourseshpp.data.source.network.repository
 
 import com.example.androidcourseshpp.data.source.local.userdata.UserDataProvider
-import com.example.androidcourseshpp.data.source.network.entity.UserModel
-import com.example.androidcourseshpp.data.source.network.entity.contacts.ContactDataModel
-import com.example.androidcourseshpp.data.source.network.entity.user.UpdateUserDataModel
-import com.example.androidcourseshpp.data.source.network.service.RetrofitServiceProviderHolder
+import com.example.androidcourseshpp.data.source.network.model.UserModel
+import com.example.androidcourseshpp.data.source.network.model.contacts.ContactDataModel
+import com.example.androidcourseshpp.data.source.network.model.user.toUpdateUserDataModel
+import com.example.androidcourseshpp.data.source.network.service.ServicesProvider
 import com.example.androidcourseshpp.domain.entity.user.UserInfo
 import com.example.androidcourseshpp.domain.entity.user.UserItemInfo
 import com.example.androidcourseshpp.domain.repository.UserRepository
@@ -14,14 +14,14 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
-    private val serviceProviderHolder: RetrofitServiceProviderHolder,
+    private val servicesProvider: ServicesProvider,
     private val userDataProvider: UserDataProvider
 ) : UserRepository {
 
 
     override suspend fun addContact(newContactId: Int) {
         withContext(Dispatchers.IO) {
-            serviceProviderHolder.serviceProvider.getContactsService()
+            servicesProvider.getContactsService()
                 .addContact(ContactDataModel(userDataProvider.getUserServerId(), newContactId))
         }
     }
@@ -32,10 +32,10 @@ class UserRepositoryImpl @Inject constructor(
 
         withContext(Dispatchers.IO) {
             val usersResponse = async {
-                serviceProviderHolder.serviceProvider.getUserService().getUsers()
+                servicesProvider.getUserService().getUsers()
             }
             val contactsResponse = async {
-                serviceProviderHolder.serviceProvider.getContactsService()
+                servicesProvider.getContactsService()
                     .getUserContacts(userDataProvider.getUserServerId())
             }
             userList = usersResponse.await().users
@@ -53,7 +53,7 @@ class UserRepositoryImpl @Inject constructor(
         val userInfo: UserInfo
 
         withContext(Dispatchers.IO) {
-            userInfo = serviceProviderHolder.serviceProvider.getUserService()
+            userInfo = servicesProvider.getUserService()
                 .getUser(userServerId).user.toUserInfo()
         }
         return userInfo
@@ -61,19 +61,9 @@ class UserRepositoryImpl @Inject constructor(
 
     override suspend fun updateUserInfo(userInfo: UserInfo) {
         withContext(Dispatchers.IO) {
-
             with(userInfo) {
-                serviceProviderHolder.serviceProvider.getUserService()
-                    .updateUserInfo(
-                        id, UpdateUserDataModel(
-                            name = name,
-                            career = career,
-                            phone = mobilePhone,
-                            address = address,
-                            birthday = dateOfBirthday,
-                            image = avatar
-                        )
-                    )
+                servicesProvider.getUserService()
+                    .updateUserInfo(userInfo.toUpdateUserDataModel())
             }
         }
     }

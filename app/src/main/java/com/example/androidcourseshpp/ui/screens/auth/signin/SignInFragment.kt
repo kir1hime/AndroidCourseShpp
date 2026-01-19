@@ -1,12 +1,10 @@
 package com.example.androidcourseshpp.ui.screens.auth.signin
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.example.androidcourseshpp.data.utils.MIN_NUM_OF_CHARS_IN_PASSWORD
 import com.example.androidcourseshpp.databinding.FragmentSignInBinding
 import com.example.androidcourseshpp.ui.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -41,7 +39,7 @@ class SignInFragment : BaseFragment<FragmentSignInBinding>
             textInputLayoutEMail.helperText = getString(state.eMailHelperTextResId)
 
             progressBarRequest.isVisible = state.isProgressBarShowed
-            setLoadingState(state.isProgressBarShowed, binding)
+            setLoadingState(state.isProgressBarShowed)
         }
     }
 
@@ -58,6 +56,14 @@ class SignInFragment : BaseFragment<FragmentSignInBinding>
         textViewSignUp.setOnClickListener {
             viewModel.setEvent(SignInContract.Event.OnSignUpLabelClicked)
         }
+    }
+
+    private fun setLoadingState(isLoading: Boolean) = with(binding) {
+        val isEnabled = !isLoading
+
+        enableEditText(editTextEMail)
+        enableEditText(editTextPassword)
+        comboBoxRememberMe.isClickable = isEnabled
     }
 
     private fun moveToSignUpScreen() {

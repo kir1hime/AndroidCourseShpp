@@ -4,10 +4,10 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.example.androidcourseshpp.data.utils.MIN_NUM_OF_CHARS_IN_PASSWORD
 import com.example.androidcourseshpp.databinding.FragmentSignUpBinding
 import com.example.androidcourseshpp.ui.BaseFragment
 import com.example.androidcourseshpp.ui.screens.auth.signup.model.SignUpModel
+import com.example.androidcourseshpp.ui.utils.MIN_NUM_OF_CHARS_IN_PASSWORD
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

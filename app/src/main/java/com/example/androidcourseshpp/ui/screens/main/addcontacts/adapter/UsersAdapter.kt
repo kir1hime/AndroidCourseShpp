@@ -1,5 +1,6 @@
 package com.example.androidcourseshpp.ui.screens.main.addcontacts.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,7 +21,8 @@ class UsersAdapter(
 
         fun bind(userItem: UserItem) = with(binding) {
             imageViewAvatar.loadImageFromURLCircled(
-                root.context, userItem.avatarURL)
+                root.context, userItem.avatarURL
+            )
 
             imageViewAvatar.transitionName = userItem.id.toString()
             textViewName.text = userItem.name
@@ -55,16 +57,25 @@ class UsersAdapter(
         }
 
         private fun addContact(userItem: UserItem) = with(binding) {
-            userItem.isContact = true
-
             imageButtonAddContact.isVisible = false
             textViewAddContact.isVisible = false
             progressBarAddContact.isVisible = true
 
-            actions.addToContacts(userItem.id) {
-                progressBarAddContact.isVisible = false
-                imageButtonContactAdded.isVisible = true
-            }
+
+            actions.addToContacts(
+                userId = userItem.id,
+                interruptSuccessLoading = {
+                    userItem.isContact = true
+                    progressBarAddContact.isVisible = false
+                    imageButtonContactAdded.isVisible = true
+                },
+                interruptFailureLoading = {
+                    progressBarAddContact.isVisible = false
+                    imageButtonContactAdded.isVisible = false
+                    imageButtonAddContact.isVisible = true
+                    textViewAddContact.isVisible = true
+
+                })
         }
     }
 

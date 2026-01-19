@@ -12,8 +12,8 @@ const val DEFAULT_ID_VALUE: Int = -1
 const val DEFAULT_AVATAR_VALUE = ""
 
 
-class UserDataProviderImpl @Inject constructor(@DataProviderPref private val sharedPref: SharedPreferences) :
-    UserDataProvider {
+class LocalDataProvider @Inject constructor(@DataProviderPref private val sharedPref: SharedPreferences) :
+    UserDataProvider, GalleryDataProvider {
 
     private val editor = sharedPref.edit()
 

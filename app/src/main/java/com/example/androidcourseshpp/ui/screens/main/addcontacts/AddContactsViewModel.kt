@@ -5,6 +5,7 @@ import com.example.androidcourseshpp.ui.screens.main.addcontacts.model.UserItem
 import com.example.androidcourseshpp.domain.usecase.user.AddContactUseCase
 import com.example.androidcourseshpp.domain.usecase.user.GetUsersUseCase
 import com.example.androidcourseshpp.ui.BaseViewModel
+import com.example.androidcourseshpp.ui.screens.main.addcontacts.model.toUserItem
 import com.example.androidcourseshpp.ui.utils.isContainsOrderedSequence
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -46,8 +47,9 @@ class AddContactsViewModel @Inject constructor(
             )
 
             is AddContactsContract.Event.OnAddContactClicked -> addContact(
-                event.userId,
-                event.interruptProgressBar
+                userId = event.userId,
+                interruptSuccessLoading = event.interruptSuccessLoading,
+                interruptFailureLoading = event.interruptFailureLoading
             )
         }
     }
@@ -83,23 +85,31 @@ class AddContactsViewModel @Inject constructor(
     }
 
 
-    private fun addContact(userId: Int, interruptLoading: () -> Unit) {
+    private fun addContact(
+        userId: Int,
+        interruptSuccessLoading: () -> Unit,
+        interruptFailureLoading: () -> Unit
+    ) {
 
         processNetworkExceptions(
             toExecute = {
                 addContactUseCase(userId)
                 setState { copy(isContactListChanged = true) }
+                interruptSuccessLoading()
             },
             processBackendException = {
                 setEffect(AddContactsContract.Effect.ShowToast(R.string.generic_error))
+                interruptFailureLoading()
             },
             processConnectionException = {
                 setEffect(AddContactsContract.Effect.ShowToast(R.string.generic_error))
+                interruptFailureLoading()
             },
             processResponseProcessingException = {
                 setEffect(AddContactsContract.Effect.ShowToast(R.string.connection_error))
+                interruptFailureLoading()
             },
-            finally = { interruptLoading() }
+            finally = { }
         )
     }
 
@@ -117,15 +127,7 @@ class AddContactsViewModel @Inject constructor(
                         userList = emptyList()
                     )
                 }
-                val userList = getUsersUseCase().map { item ->
-                    UserItem(
-                        id = item.id,
-                        name = item.name,
-                        career = item.career,
-                        avatarURL = item.avatarURL,
-                        isContact = item.isContact
-                    )
-                }
+                val userList = getUsersUseCase().map { it.toUserItem() }
 
                 setState { copy(userList = userList) }
             },

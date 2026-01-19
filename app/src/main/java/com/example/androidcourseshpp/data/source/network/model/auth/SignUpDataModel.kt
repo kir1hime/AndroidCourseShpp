@@ -1,4 +1,4 @@
-package com.example.androidcourseshpp.data.source.network.entity.auth
+package com.example.androidcourseshpp.data.source.network.model.auth
 
 import okhttp3.MultipartBody
 

@@ -1,5 +1,6 @@
 package com.example.androidcourseshpp.ui.screens.main.addcontacts.model
 
+import com.example.androidcourseshpp.domain.entity.user.UserItemInfo
 import com.example.androidcourseshpp.ui.screens.main.contactdetails.model.ContactDetailsModel
 
 data class UserItem(
@@ -17,3 +18,12 @@ data class UserItem(
             avatarURL = avatarURL
         )
 }
+
+fun UserItemInfo.toUserItem() =
+    UserItem(
+        id = id,
+        name = name,
+        career = career,
+        avatarURL = avatarURL,
+        isContact = isContact
+    )

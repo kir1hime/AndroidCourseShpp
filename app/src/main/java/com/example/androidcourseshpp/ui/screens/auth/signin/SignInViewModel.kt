@@ -6,7 +6,7 @@ import com.example.androidcourseshpp.domain.entity.auth.SignInInfo
 import com.example.androidcourseshpp.domain.usecase.auth.SignInUseCase
 import com.example.androidcourseshpp.domain.usecase.userlocal.SaveUserServerIdUseCase
 import com.example.androidcourseshpp.ui.BaseViewModel
-import com.example.androidcourseshpp.ui.screens.model.toUserUIModel
+import com.example.androidcourseshpp.ui.screens.model.toUserModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -40,7 +40,7 @@ class SignInViewModel @Inject constructor(
         processNetworkExceptions(
             toExecute = {
                 setState { copy(isProgressBarShowed = true) }
-                val userInfo = signInUseCase(SignInInfo(email, password)).toUserUIModel()
+                val userInfo = signInUseCase(SignInInfo(email, password)).toUserModel()
 
                 if (toRememberUser) {
                     saveUserServerIdUseCase(userInfo.id)

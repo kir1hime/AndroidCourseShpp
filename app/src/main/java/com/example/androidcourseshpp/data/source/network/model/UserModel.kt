@@ -1,5 +1,6 @@
-package com.example.androidcourseshpp.data.source.network.entity
+package com.example.androidcourseshpp.data.source.network.model
 
+import com.example.androidcourseshpp.domain.entity.contact.ContactInfo
 import com.example.androidcourseshpp.domain.entity.user.UserInfo
 import com.example.androidcourseshpp.domain.entity.user.UserItemInfo
 import java.util.Date
@@ -36,5 +37,13 @@ data class UserModel(
             career = career ?: "",
             avatarURL = image ?: "",
             isContact = isContact
+        )
+
+    fun toContactInfo() =
+        ContactInfo(
+            id = id,
+            name = name ?: "",
+            career = career ?: "",
+            avatarURL = image ?: ""
         )
 }

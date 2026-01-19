@@ -53,7 +53,7 @@ fun EditText.onChangeTextListener(onTextChanged: (CharSequence, Int, Int, Int) -
 }
 
 fun Int.toUri(context: Context): Uri {
-    return "android.resource://${context.packageName}/${R.drawable.profile_mockup}".toUri()
+    return "android.resource://${context.packageName}/${this}".toUri()
 }
 
 fun String.isContainsOrderedSequence(searched: String): Boolean {

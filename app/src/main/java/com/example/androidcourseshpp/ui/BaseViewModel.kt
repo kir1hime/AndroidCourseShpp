@@ -70,11 +70,11 @@ abstract class BaseViewModel<UIEvent : ViewEvent, UIEffect : ViewEffect, UIState
         viewModelScope.launch {
             try {
                 toExecute.invoke()
-            } catch (e: BackendException) {
+            } catch (_: BackendException) {
                 processBackendException.invoke()
-            } catch (e: ResponseProcessingException) {
+            } catch (_: ResponseProcessingException) {
                 processResponseProcessingException.invoke()
-            } catch (e: ConnectionException) {
+            } catch (_: ConnectionException) {
                 processConnectionException.invoke()
             } finally {
                 finally.invoke()

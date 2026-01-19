@@ -1,4 +1,4 @@
-package com.example.androidcourseshpp.data.utils
+package com.example.androidcourseshpp.ui.utils
 
 import android.util.Patterns
 

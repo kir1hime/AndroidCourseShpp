@@ -1,7 +1,7 @@
 package com.example.androidcourseshpp.data.source.network.service.contacts
 
-import com.example.androidcourseshpp.data.source.network.entity.contacts.ContactDataModel
-import com.example.androidcourseshpp.data.source.network.entity.contacts.GetUserContactsModel
+import com.example.androidcourseshpp.data.source.network.model.contacts.ContactDataModel
+import com.example.androidcourseshpp.data.source.network.model.contacts.GetUserContactsModel
 
 interface ContactsService {
 

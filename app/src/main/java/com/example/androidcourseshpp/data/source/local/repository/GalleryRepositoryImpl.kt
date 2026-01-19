@@ -1,6 +1,6 @@
 package com.example.androidcourseshpp.data.source.local.repository
 
-import com.example.androidcourseshpp.data.source.local.userdata.UserDataProvider
+import com.example.androidcourseshpp.data.source.local.userdata.GalleryDataProvider
 import com.example.androidcourseshpp.domain.entity.gallery.GalleryItemInfo
 import com.example.androidcourseshpp.domain.repository.GalleryRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -11,7 +11,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class GalleryRepositoryImpl @Inject constructor(private val userDataProvider: UserDataProvider) :
+class GalleryRepositoryImpl @Inject constructor(private val galleryDataProvider: GalleryDataProvider) :
     GalleryRepository {
 
     private val defaultStringPhotos: List<String> = listOf(
@@ -45,22 +45,22 @@ class GalleryRepositoryImpl @Inject constructor(private val userDataProvider: Us
         val photoURLSet = mutableSetOf<String>()
         _galleryPhotos.value.map { photo -> photoURLSet.add(photo.photoURL) }
 
-        userDataProvider.saveUserGalleryPhotos(photoURLSet)
+        galleryDataProvider.saveUserGalleryPhotos(photoURLSet)
     }
 
     override fun clearGalleryPhotos() {
-        userDataProvider.clearGalleryPhotos()
+        galleryDataProvider.clearGalleryPhotos()
     }
 
     private fun getPhotos(): List<GalleryItemInfo> {
         val galleryItemList = mutableListOf<GalleryItemInfo>()
 
-        if (userDataProvider.getUserGalleryPhotos().isEmpty()) {
+        if (galleryDataProvider.getUserGalleryPhotos().isEmpty()) {
             repeat(defaultStringPhotos.size) { index ->
                 galleryItemList.add(GalleryItemInfo(index, defaultStringPhotos[index]))
             }
         } else {
-            userDataProvider.getUserGalleryPhotos().mapIndexed { index, photoURL ->
+            galleryDataProvider.getUserGalleryPhotos().mapIndexed { index, photoURL ->
                 galleryItemList.add(GalleryItemInfo(index, photoURL))
             }
         }

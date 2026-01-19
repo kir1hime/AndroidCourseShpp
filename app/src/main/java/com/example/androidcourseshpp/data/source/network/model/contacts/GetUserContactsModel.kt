@@ -1,5 +1,5 @@
-package com.example.androidcourseshpp.data.source.network.entity.contacts
+package com.example.androidcourseshpp.data.source.network.model.contacts
 
-import com.example.androidcourseshpp.data.source.network.entity.UserModel
+import com.example.androidcourseshpp.data.source.network.model.UserModel
 
 data class GetUserContactsModel(val contacts: List<UserModel>)
