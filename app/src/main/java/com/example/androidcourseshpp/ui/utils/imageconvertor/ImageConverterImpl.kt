@@ -1,4 +1,4 @@
-package com.example.androidcourseshpp.ui.utils
+package com.example.androidcourseshpp.ui.utils.imageconvertor
 
 
 import android.content.Context
@@ -15,9 +15,10 @@ import javax.inject.Singleton
 const val QUALITY_OF_JPEG_FILE = 90
 
 @Singleton
-class ImageConvertor @Inject constructor(@ApplicationContext private val context: Context) {
+class ImageConvertorImpl @Inject constructor(@ApplicationContext private val context: Context) :
+    ImageConverter {
 
-    fun convertBitmapToMultipartBody(bitmap: Bitmap): MultipartBody.Part {
+    override fun convertBitmapToMultipartBody(bitmap: Bitmap): MultipartBody.Part {
         val file = convertBitmapToFile(bitmap)
         return convertFileToMultipartBody(file)
     }
