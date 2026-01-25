@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">AndroidCourseShpp</string>
+    <string name="channel_description">Used to view information about deleted or added contacts</string>
 
     <!-- Error -->
     <string name="backend_error">Server error</string>
