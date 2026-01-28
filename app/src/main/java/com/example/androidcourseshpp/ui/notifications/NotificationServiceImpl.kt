@@ -13,16 +13,20 @@ import javax.inject.Singleton
 class NotificationServiceImpl @Inject constructor(@ApplicationContext private val context: Context) :
     NotificationService {
 
-    override fun showContactAddedNotification() {
+    override fun showContactAddedNotification(newUserName: String) {
         createNotification(
-            "Add Contact",
-            "New contact was added",
-            R.drawable.ic_contact_added_notification
+            title = context.getString(R.string.add_contact_notif_title),
+            content = context.getString(R.string.add_contact_notif_content, newUserName),
+            icon = R.drawable.ic_contact_added_notification
         )
     }
 
-    override fun showContactRemovedNotification() {
-
+    override fun showContactRemovedNotification(deletedUserName: String) {
+        createNotification(
+            title = context.getString(R.string.delete_contact_notif_title),
+            content = context.getString(R.string.delete_contact_notif_content, deletedUserName),
+            icon = R.drawable.ic_contact_removed_notification
+        )
     }
 
     private fun createNotification(title: String, content: String, @DrawableRes icon: Int) {

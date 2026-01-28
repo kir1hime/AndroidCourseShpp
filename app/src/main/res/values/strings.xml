@@ -3,6 +3,13 @@
     <string name="channel_description">Used to view information about deleted or added contacts</string>
     <string name="view_contact_details" translatable="false">VIEW CONTACT DETAILS</string>
 
+    <!-- Notifications -->
+    <string name="add_contact_notif_title">New Contact</string>
+    <string name="add_contact_notif_content">%1$s was added to contacts</string>
+    <string name="delete_contact_notif_title">Delete Contact</string>
+    <string name="delete_contact_notif_content">%1$s was deleted from contacts</string>
+
+
     <!-- Error -->
     <string name="backend_error">Server error</string>
     <string name="server_response_error">Something went wrong. Please try again</string>
@@ -103,5 +110,6 @@
     <string name="you_can_see_more_contacts_on_the_users_page">You can see more contacts on the users page</string>
     <string name="oops_there_are_no_users_with_this_name">Oops! There are no users with this name</string>
     <string name="arrow_top_description">move to top of user list</string>
+    <string name="message_bt_text">Message</string>
 
 </resources>
