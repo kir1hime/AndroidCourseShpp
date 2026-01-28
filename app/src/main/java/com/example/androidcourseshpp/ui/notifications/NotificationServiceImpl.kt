@@ -1,5 +1,6 @@
 package com.example.androidcourseshpp.ui.notifications
 
+import android.app.NotificationManager
 import android.content.Context
 import androidx.annotation.DrawableRes
 import androidx.core.app.NotificationCompat
@@ -12,6 +13,9 @@ import javax.inject.Singleton
 @Singleton
 class NotificationServiceImpl @Inject constructor(@ApplicationContext private val context: Context) :
     NotificationService {
+
+    private val notificationManager =
+        context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
     override fun showContactAddedNotification() {
         createNotification(
@@ -32,7 +36,8 @@ class NotificationServiceImpl @Inject constructor(@ApplicationContext private va
             .setContentText(content)
             .build()
 
+        notificationManager.notify(
+            1, notification
+        )
     }
-
-
 }
