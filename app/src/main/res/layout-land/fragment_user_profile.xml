@@ -5,7 +5,7 @@
     android:id="@+id/userProfile"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.screens.main.MainActivity">
+    tools:context="com.example.androidcourseshpp.ui.screens.main.userinfo.userprofile.UserProfileFragment">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/textViewTopPartOfScreen"

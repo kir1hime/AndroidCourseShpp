@@ -4,7 +4,7 @@
     android:id="@+id/detailViewNotification"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.androidcourseshpp.ui.screens.main.contactdetails.ContactDetailsFragment">
+    tools:context="com.example.androidcourseshpp.ui.screens.main.contactdetailsnotif.ContactDetailsNotificationFragment">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/textViewTopPartOfScreen"
