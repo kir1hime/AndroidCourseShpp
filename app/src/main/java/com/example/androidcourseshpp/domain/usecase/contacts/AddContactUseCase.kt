@@ -1,6 +1,5 @@
 package com.example.androidcourseshpp.domain.usecase.contacts
 
-import com.example.androidcourseshpp.domain.entity.contact.ContactInfo
 import com.example.androidcourseshpp.domain.repository.ContactsRepository
 import javax.inject.Inject
 import javax.inject.Singleton
