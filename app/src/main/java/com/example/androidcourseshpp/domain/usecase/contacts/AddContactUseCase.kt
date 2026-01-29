@@ -9,6 +9,5 @@ import javax.inject.Singleton
 class AddContactUseCase @Inject constructor(private val contactsRepository: ContactsRepository) {
     suspend operator fun invoke(contact: ContactInfo) {
         contactsRepository.addContact(contact)
-
     }
 }

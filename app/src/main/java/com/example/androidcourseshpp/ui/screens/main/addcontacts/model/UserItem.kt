@@ -1,7 +1,7 @@
 package com.example.androidcourseshpp.ui.screens.main.addcontacts.model
 
 import com.example.androidcourseshpp.domain.entity.user.UserItemInfo
-import com.example.androidcourseshpp.ui.screens.main.contactdetails.model.ContactDetailsModel
+import com.example.androidcourseshpp.ui.screens.model.ContactDetailsModel
 
 data class UserItem(
     val id: Int,

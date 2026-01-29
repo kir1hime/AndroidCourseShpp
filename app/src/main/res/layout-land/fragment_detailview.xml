@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/detailView"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context="com.example.androidcourseshpp.ui.screens.main.contactdetails.ContactDetailsFragment">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/textViewTopPartOfScreen"
@@ -139,7 +141,7 @@
         app:layout_constraintTop_toTopOf="@id/textViewWhitePartOfScreen" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/buttonViewMyContacts"
+        android:id="@+id/buttonMessage"
         android:layout_width="0dp"
         android:layout_height="@dimen/view_my_contacts_bt_h"
         android:layout_marginHorizontal="@dimen/main_margin_side"

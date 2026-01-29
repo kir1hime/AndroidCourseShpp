@@ -1,7 +1,7 @@
 package com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.model
 
 import com.example.androidcourseshpp.domain.entity.contact.ContactInfo
-import com.example.androidcourseshpp.ui.screens.main.contactdetails.model.ContactDetailsModel
+import com.example.androidcourseshpp.ui.screens.model.ContactDetailsModel
 
 
 data class ContactItem(

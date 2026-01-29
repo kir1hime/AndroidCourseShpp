@@ -65,6 +65,7 @@
     <string name="open_gallery">Відкрити галерею</string>
     <string name="empty_name_error">Не вкзано ім\'я, повинно бути щонайменше одна літера</string>
     <string name="channel_description">Використовується для перегляду інформації про видалені або додані контакти</string>
+    <string name="delete_contact_notif_content">%1$s був видалений з списку контактів</string>
     <string name="backend_error">Помилка сервера</string>
     <string name="server_response_error">Щось пішло не так. Будь ласка, спробуйте знову</string>
     <string name="connection_error">Перевірте ваше інтернет з\'єднання</string>
@@ -91,5 +92,11 @@
     <string name="you_can_see_more_contacts_on_the_users_page">Ви можете побачити більше контактів на сторінці користувачів</string>
     <string name="oops_there_are_no_users_with_this_name">Упс! Немає користувачів з таким ім\'ям</string>
     <string name="arrow_top_description">move to top of user list</string>
+    <string name="add_contact_notif_title">Новий Контакт</string>
+    <string name="add_contact_notif_content">%1$s був доданий до списку контактів</string>
+    <string name="delete_contact_notif_title">Контакт Видалено</string>
+    <string name="message_bt_text">Повідомлення</string>
+    <string name="add_to_my_contacts">ДОДАТИ ДО КОНТАКТІВ</string>
+    <string name="delete_from_my_contacts">ВИДАЛИТИ З КОНТАКТІВ</string>
 
 </resources>

@@ -141,4 +141,8 @@
     <color name="add_contact_background_color">#FFFFFF</color>
     <color name="floating_arrow_top_button_color">#FB5E06</color>
 
+    <!-- Notification detail view -->
+    <color name="main_action_button_text_color">#FFFFFFFF</color>
+    <color name="outlined_message_button_text_color">@color/edit_profile_text_color</color>
+
 </resources>
