@@ -97,7 +97,7 @@ class ContactListViewModel @Inject constructor(
             toExecute = {
                 setState { copy(isProgressBarShowed = true) }
 
-                deleteContactUseCase(contactItem.toContactInfo())
+                deleteContactUseCase(contactItem.id)
                 val contactList = getContactsUseCase().map { it.toContactItem() }
 
                 setState { copy(contactList = contactList) }
@@ -153,7 +153,7 @@ class ContactListViewModel @Inject constructor(
             toExecute = {
                 setState { copy(isProgressBarShowed = true) }
 
-                addContactUseCase(contactItem.toContactInfo())
+                addContactUseCase(newContactId = contactItem.id)
                 val contactList = getContactsUseCase().map { it.toContactItem() }
 
                 setState { copy(contactList = contactList) }

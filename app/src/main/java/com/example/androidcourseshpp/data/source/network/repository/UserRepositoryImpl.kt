@@ -2,7 +2,6 @@ package com.example.androidcourseshpp.data.source.network.repository
 
 import com.example.androidcourseshpp.data.source.local.userdata.UserDataProvider
 import com.example.androidcourseshpp.data.source.network.model.UserModel
-import com.example.androidcourseshpp.data.source.network.model.contacts.ContactDataModel
 import com.example.androidcourseshpp.data.source.network.model.user.toUpdateUserDataModel
 import com.example.androidcourseshpp.data.source.network.service.ServicesProvider
 import com.example.androidcourseshpp.domain.entity.user.UserInfo
@@ -17,14 +16,6 @@ class UserRepositoryImpl @Inject constructor(
     private val servicesProvider: ServicesProvider,
     private val userDataProvider: UserDataProvider
 ) : UserRepository {
-
-
-    override suspend fun addContact(newContactId: Int) {
-        withContext(Dispatchers.IO) {
-            servicesProvider.getContactsService()
-                .addContact(ContactDataModel(userDataProvider.getUserServerId(), newContactId))
-        }
-    }
 
     override suspend fun getUsers(): List<UserItemInfo> {
         var userList = emptyList<UserModel>()
