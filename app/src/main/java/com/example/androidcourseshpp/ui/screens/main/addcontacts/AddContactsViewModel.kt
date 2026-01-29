@@ -1,8 +1,8 @@
 package com.example.androidcourseshpp.ui.screens.main.addcontacts
 
 import com.example.androidcourseshpp.R
+import com.example.androidcourseshpp.domain.usecase.contacts.AddContactUseCase
 import com.example.androidcourseshpp.ui.screens.main.addcontacts.model.UserItem
-import com.example.androidcourseshpp.domain.usecase.user.AddContactUseCase
 import com.example.androidcourseshpp.domain.usecase.user.GetUsersUseCase
 import com.example.androidcourseshpp.ui.BaseViewModel
 import com.example.androidcourseshpp.ui.screens.main.addcontacts.model.toUserItem

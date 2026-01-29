@@ -18,18 +18,18 @@ class ContactsRepositoryImpl @Inject constructor(
 ) : ContactsRepository {
 
 
-    override suspend fun addContact(contact: ContactInfo) {
+    override suspend fun addContact(contactId: Int) {
         withContext(Dispatchers.IO) {
             servicesProvider.getContactsService().addContact(
-                ContactDataModel(userDataProvider.getUserServerId(), contact.id)
+                ContactDataModel(userDataProvider.getUserServerId(), contactId)
             )
         }
     }
 
-    override suspend fun deleteContact(contact: ContactInfo) {
+    override suspend fun deleteContact(contactId: Int) {
         withContext(Dispatchers.IO) {
             servicesProvider.getContactsService().deleteContact(
-                ContactDataModel(userDataProvider.getUserServerId(), contact.id)
+                ContactDataModel(userDataProvider.getUserServerId(), contactId)
             )
         }
     }

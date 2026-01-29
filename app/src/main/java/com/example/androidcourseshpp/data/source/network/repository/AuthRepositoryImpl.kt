@@ -8,7 +8,7 @@ import com.example.androidcourseshpp.domain.entity.user.UserInfo
 import com.example.androidcourseshpp.domain.entity.auth.SignInInfo
 import com.example.androidcourseshpp.domain.entity.auth.SignUpInfo
 import com.example.androidcourseshpp.domain.repository.AuthRepository
-import com.example.androidcourseshpp.ui.utils.ImageConvertor
+import com.example.androidcourseshpp.ui.utils.imageconvertor.ImageConverter
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -16,7 +16,7 @@ import javax.inject.Singleton
 class AuthRepositoryImpl @Inject constructor(
     private val jwtManager: JWTManager,
     private val servicesProvider: ServicesProvider,
-    private val imageConvertor: ImageConvertor
+    private val imageConvertor: ImageConverter
 ) : AuthRepository {
     override fun getAccessToken(): String? {
         return jwtManager.getAccessToken()
