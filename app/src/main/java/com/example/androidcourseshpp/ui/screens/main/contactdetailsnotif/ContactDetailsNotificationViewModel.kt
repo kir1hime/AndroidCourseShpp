@@ -1,17 +1,16 @@
 package com.example.androidcourseshpp.ui.screens.main.contactdetailsnotif
 
 import com.example.androidcourseshpp.R
-import com.example.androidcourseshpp.domain.usecase.user.AddContactUseCase
+import com.example.androidcourseshpp.domain.usecase.contacts.AddContactUseCase
+import com.example.androidcourseshpp.domain.usecase.contacts.DeleteContactUseCase
 import com.example.androidcourseshpp.ui.BaseViewModel
-import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.ContactListContract
-import com.example.androidcourseshpp.ui.screens.model.ContactDetailsModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class ContactDetailsNotificationViewModel @Inject constructor(
     private val addContactUseCase: AddContactUseCase,
-    private val deleteContactUseCase: AddContactUseCase
+    private val deleteContactUseCase: DeleteContactUseCase
 ) : BaseViewModel<ContactDetailsNotificationContract.Event, ContactDetailsNotificationContract.Effect, ContactDetailsNotificationContract.UIState>() {
 
 
@@ -21,38 +20,36 @@ class ContactDetailsNotificationViewModel @Inject constructor(
         when (event) {
             is ContactDetailsNotificationContract.Event.MainActionButtonClicked -> executeMainAction(
                 action = event.action,
-                contactDetails = event.contactDetails
+                contactId = event.contactId
             )
         }
     }
 
-    private fun executeMainAction(action: NotificationAction, contactDetails: ContactDetailsModel) {
-        when (action) {
-            NotificationAction.ADD_CONTACT -> addContact(contactDetails)
-            NotificationAction.DELETE_CONTACT -> deleteContact(contactDetails)
-        }
-    }
-
-    private fun addContact(contactDetails: ContactDetailsModel) {
+    private fun executeMainAction(action: NotificationAction, contactId: Int) {
         processNetworkExceptions(
             toExecute = {
+                when (action) {
+                    NotificationAction.ADD_CONTACT -> {
+                        addContactUseCase(contactId)
+                        setEffect(ContactDetailsNotificationContract.Effect.ShowToast(R.string.add_contact_toast_message))
+                    }
 
-                addContactUseCase(contactDetails.toContactInfo())
+                    NotificationAction.DELETE_CONTACT -> {
+                        deleteContactUseCase(contactId)
+                        setEffect(ContactDetailsNotificationContract.Effect.ShowToast(R.string.delete_contact_toast_message))
+                    }
+                }
             },
             processBackendException = {
-                setEffect(ContactListContract.Effect.ShowToast(R.string.generic_error))
+                setEffect(ContactDetailsNotificationContract.Effect.ShowToast(R.string.generic_error))
             },
             processResponseProcessingException = {
-                setEffect(ContactListContract.Effect.ShowToast(R.string.generic_error))
+                setEffect(ContactDetailsNotificationContract.Effect.ShowToast(R.string.generic_error))
             },
             processConnectionException = {
-                setEffect(ContactListContract.Effect.ShowToast(R.string.connection_error))
+                setEffect(ContactDetailsNotificationContract.Effect.ShowToast(R.string.connection_error))
             },
             finally = { }
         )
-    }
-
-    private fun deleteContact(contactDetails: ContactDetailsModel) {
-
     }
 }
