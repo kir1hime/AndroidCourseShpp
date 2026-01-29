@@ -143,5 +143,6 @@
 
     <!-- Notification detail view -->
     <color name="main_action_button_text_color">#FFFFFFFF</color>
+    <color name="outlined_message_button_text_color">@color/edit_profile_text_color</color>
 
 </resources>
