@@ -2,6 +2,6 @@ package com.example.androidcourseshpp.ui.notifications
 
 
 interface NotificationService {
-    fun showContactAddedNotification(newUserName: String)
-    fun showContactDeletedNotification(deletedUserName: String)
+    fun showContactAddedNotification(contactName: String)
+    fun showContactDeletedNotification(contactName: String)
 }

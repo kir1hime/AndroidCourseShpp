@@ -8,6 +8,7 @@ import com.example.androidcourseshpp.domain.usecase.contacts.DeleteContactsUseCa
 import com.example.androidcourseshpp.domain.usecase.contacts.GetContactsUseCase
 import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.model.ContactItem
 import com.example.androidcourseshpp.ui.BaseViewModel
+import com.example.androidcourseshpp.ui.notifications.NotificationService
 import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.model.toContactItem
 import com.example.androidcourseshpp.ui.utils.isContainsOrderedSequence
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,7 +24,8 @@ class ContactListViewModel @Inject constructor(
     private val addContactUseCase: AddContactUseCase,
     private val deleteContactUseCase: DeleteContactUseCase,
     private val deleteContactsUseCase: DeleteContactsUseCase,
-    private val getContactsUseCase: GetContactsUseCase
+    private val getContactsUseCase: GetContactsUseCase,
+    private val notificationService: NotificationService
 ) : BaseViewModel<ContactListContract.Event, ContactListContract.Effect, ContactListContract.UIState>() {
 
     override fun initState() = ContactListContract.UIState(
@@ -105,6 +107,7 @@ class ContactListViewModel @Inject constructor(
                 updateFilteredContactList { list ->
                     list.remove(contactItem)
                 }
+                notificationService.showContactDeletedNotification(contactItem.name)
 
             },
             processBackendException = {
@@ -153,13 +156,14 @@ class ContactListViewModel @Inject constructor(
             toExecute = {
                 setState { copy(isProgressBarShowed = true) }
 
-                addContactUseCase(newContactId = contactItem.id)
+                addContactUseCase(contactId = contactItem.id)
                 val contactList = getContactsUseCase().map { it.toContactItem() }
 
                 setState { copy(contactList = contactList) }
                 updateFilteredContactList { list ->
                     list.add(contactItem)
                 }
+                notificationService.showContactAddedNotification(contactItem.name)
             },
             processBackendException = {
                 setEffect(ContactListContract.Effect.ShowToast(R.string.generic_error))

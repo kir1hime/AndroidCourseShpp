@@ -141,7 +141,7 @@
         app:layout_constraintTop_toTopOf="@id/textViewWhitePartOfScreen" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/buttonMessage"
+        android:id="@+id/buttonMainAction"
         android:layout_width="0dp"
         android:layout_height="@dimen/view_my_contacts_bt_h"
         android:layout_marginHorizontal="@dimen/main_margin_side"

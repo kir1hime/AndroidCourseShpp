@@ -32,12 +32,14 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
         UsersAdapter(object : UserItemActions {
             override fun addToContacts(
                 userId: Int,
+                contactName: String,
                 interruptSuccessLoading: () -> Unit,
                 interruptFailureLoading: () -> Unit
             ) {
                 viewModel.setEvent(
                     AddContactsContract.Event.OnAddContactClicked(
                         userId,
+                        contactName,
                         interruptSuccessLoading,
                         interruptFailureLoading
                     )

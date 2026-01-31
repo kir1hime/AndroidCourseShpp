@@ -5,6 +5,7 @@ import com.example.androidcourseshpp.domain.usecase.contacts.AddContactUseCase
 import com.example.androidcourseshpp.ui.screens.main.addcontacts.model.UserItem
 import com.example.androidcourseshpp.domain.usecase.user.GetUsersUseCase
 import com.example.androidcourseshpp.ui.BaseViewModel
+import com.example.androidcourseshpp.ui.notifications.NotificationService
 import com.example.androidcourseshpp.ui.screens.main.addcontacts.model.toUserItem
 import com.example.androidcourseshpp.ui.utils.isContainsOrderedSequence
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,7 +15,8 @@ import javax.inject.Inject
 @HiltViewModel
 class AddContactsViewModel @Inject constructor(
     private val addContactUseCase: AddContactUseCase,
-    private val getUsersUseCase: GetUsersUseCase
+    private val getUsersUseCase: GetUsersUseCase,
+    private val notificationService: NotificationService
 ) :
     BaseViewModel<AddContactsContract.Event, AddContactsContract.Effect, AddContactsContract.UIState>() {
 
@@ -48,6 +50,7 @@ class AddContactsViewModel @Inject constructor(
 
             is AddContactsContract.Event.OnAddContactClicked -> addContact(
                 userId = event.userId,
+                contactName = event.contactName,
                 interruptSuccessLoading = event.interruptSuccessLoading,
                 interruptFailureLoading = event.interruptFailureLoading
             )
@@ -87,6 +90,7 @@ class AddContactsViewModel @Inject constructor(
 
     private fun addContact(
         userId: Int,
+        contactName: String,
         interruptSuccessLoading: () -> Unit,
         interruptFailureLoading: () -> Unit
     ) {
@@ -96,6 +100,7 @@ class AddContactsViewModel @Inject constructor(
                 addContactUseCase(userId)
                 setState { copy(isContactListChanged = true) }
                 interruptSuccessLoading()
+                notificationService.showContactAddedNotification(contactName)
             },
             processBackendException = {
                 setEffect(AddContactsContract.Effect.ShowToast(R.string.generic_error))

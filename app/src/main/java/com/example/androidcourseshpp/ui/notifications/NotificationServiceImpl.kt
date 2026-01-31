@@ -17,19 +17,19 @@ class NotificationServiceImpl @Inject constructor(@ApplicationContext private va
     private val notificationManager =
         context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-    override fun showContactAddedNotification(newUserName: String) {
+    override fun showContactAddedNotification(contactName: String) {
         createNotification(
             title = context.getString(R.string.add_contact_notif_title),
-            content = context.getString(R.string.add_contact_notif_content, newUserName),
+            content = context.getString(R.string.add_contact_notif_content, contactName),
             icon = R.drawable.ic_contact_added_notification,
             notificationId = CONTACT_ADDED_NOTIFICATION_ID
         )
     }
 
-    override fun showContactDeletedNotification(deletedUserName: String) {
+    override fun showContactDeletedNotification(contactName: String) {
         createNotification(
             title = context.getString(R.string.delete_contact_notif_title),
-            content = context.getString(R.string.delete_contact_notif_content, deletedUserName),
+            content = context.getString(R.string.delete_contact_notif_content, contactName),
             icon = R.drawable.ic_contact_removed_notification,
             notificationId = CONTACT_DELETED_NOTIFICATION_ID
         )
