@@ -54,7 +54,7 @@ class NotificationServiceImpl @Inject constructor(@ApplicationContext private va
         content: String,
         @DrawableRes icon: Int,
         notificationId: Int,
-        link: String,
+        link: String
     ) {
         val activityIntent = Intent(Intent.ACTION_VIEW, link.toUri()).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK
