@@ -31,8 +31,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
 
                 <data android:scheme="notification" />
-                <data android:host="details_add" />
-                <data android:host="details_delete" />
+                <data android:host="user_details" />
             </intent-filter>
 
         </activity>

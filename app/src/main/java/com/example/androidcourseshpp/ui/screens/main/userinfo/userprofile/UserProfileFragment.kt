@@ -38,7 +38,7 @@ class UserProfileFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUserInfo()
-        updateUserProfile()
+       // updateUserProfile()
         setListeners()
         setObservers()
         setOnBackPressedListener()

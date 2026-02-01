@@ -20,10 +20,10 @@ class ContactDetailsNotificationFragment :
 
     private val viewModel by viewModels<ContactDetailsNotificationViewModel>()
 
-    private val contactDetails =
+  /*  private val contactDetails =
         requireArguments().getParcelable<ContactDetailsModel>(CONTACT_DETAILS)
     private val notificationAction =
-        requireArguments().getParcelable<NotificationAction>(NOTIFICATION_ACTION)
+        requireArguments().getParcelable<NotificationAction>(NOTIFICATION_ACTION)*/
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -32,17 +32,17 @@ class ContactDetailsNotificationFragment :
     }
 
     private fun setMainActionButtonText() = with(binding) {
-        notificationAction?.let {
+       /* notificationAction?.let {
             when (notificationAction) {
                 NotificationAction.ADD_CONTACT -> buttonMainAction.text =
                     getString(R.string.add_to_my_contacts)
 
                 NotificationAction.DELETE_CONTACT -> getString(R.string.delete_from_my_contacts)
             }
-        }
+        }*/
     }
 
-    override fun setListeners() = with(binding) {
+    /*override fun setListeners() = with(binding) {
         buttonMainAction.setOnClickListener {
             if (contactDetails != null && notificationAction != null) {
                 viewModel.setEvent(
@@ -56,10 +56,10 @@ class ContactDetailsNotificationFragment :
 
         imageButtonArrowBack.setOnClickListener {
         }
-    }
+    }*/
 
 
-    companion object {
+    /*companion object {
         fun newInstance(
             contactDetails: ContactDetailsModel,
             notificationAction: NotificationAction
@@ -75,6 +75,6 @@ class ContactDetailsNotificationFragment :
 
             return fragment
         }
-    }
+    }*/
 
 }

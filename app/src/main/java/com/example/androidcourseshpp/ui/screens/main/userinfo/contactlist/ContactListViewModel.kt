@@ -8,6 +8,7 @@ import com.example.androidcourseshpp.domain.usecase.contacts.DeleteContactsUseCa
 import com.example.androidcourseshpp.domain.usecase.contacts.GetContactsUseCase
 import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.model.ContactItem
 import com.example.androidcourseshpp.ui.BaseViewModel
+import com.example.androidcourseshpp.ui.notifications.NotificationAction
 import com.example.androidcourseshpp.ui.notifications.NotificationService
 import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.model.toContactItem
 import com.example.androidcourseshpp.ui.utils.isContainsOrderedSequence
@@ -107,7 +108,11 @@ class ContactListViewModel @Inject constructor(
                 updateFilteredContactList { list ->
                     list.remove(contactItem)
                 }
-                notificationService.showContactDeletedNotification(contactItem.name, contactItem.id)
+                notificationService.showContactDeletedNotification(
+                    contactName = contactItem.name,
+                    userId = contactItem.id,
+                    notificationActionId = NotificationAction.DELETE_CONTACT.ordinal
+                )
 
             },
             processBackendException = {
@@ -163,7 +168,11 @@ class ContactListViewModel @Inject constructor(
                 updateFilteredContactList { list ->
                     list.add(contactItem)
                 }
-                notificationService.showContactAddedNotification(contactItem.name, contactItem.id)
+                notificationService.showContactAddedNotification(
+                    contactName = contactItem.name,
+                    userId = contactItem.id,
+                    notificationActionId = NotificationAction.ADD_CONTACT.ordinal
+                )
             },
             processBackendException = {
                 setEffect(ContactListContract.Effect.ShowToast(R.string.generic_error))

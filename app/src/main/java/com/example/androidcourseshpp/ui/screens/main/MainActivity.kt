@@ -1,13 +1,19 @@
 package com.example.androidcourseshpp.ui.screens.main
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.navigation.NavDeepLinkRequest
+import androidx.navigation.NavOptions
+import androidx.navigation.findNavController
+import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.databinding.ActivityMainBinding
 import com.example.androidcourseshpp.ui.BaseActivity
+import com.example.androidcourseshpp.ui.screens.main.contactdetailsnotif.ContactDetailsNotificationFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -33,6 +39,30 @@ class MainActivity : BaseActivity<ActivityMainBinding>
             if (!isGranted) {
                 launcher.launch(Manifest.permission.POST_NOTIFICATIONS)
             }
+        }
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        handleDeepLink(intent)
+    }
+
+    private fun handleDeepLink(intent: Intent) {
+        val navController = findNavController(R.id.fragmentContainer)
+        val uri = intent.data
+
+        uri?.let {
+            val request = NavDeepLinkRequest.Builder
+                .fromUri(uri)
+                .build()
+
+            val navOptions = NavOptions.Builder()
+                .setLaunchSingleTop(true)
+                .setRestoreState(true)
+                .setPopUpTo(navController.graph.startDestinationId, false)
+                .build()
+
+            navController.navigate(request, navOptions)
         }
     }
 }

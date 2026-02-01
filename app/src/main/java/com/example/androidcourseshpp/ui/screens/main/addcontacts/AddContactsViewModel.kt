@@ -5,6 +5,7 @@ import com.example.androidcourseshpp.domain.usecase.contacts.AddContactUseCase
 import com.example.androidcourseshpp.ui.screens.main.addcontacts.model.UserItem
 import com.example.androidcourseshpp.domain.usecase.user.GetUsersUseCase
 import com.example.androidcourseshpp.ui.BaseViewModel
+import com.example.androidcourseshpp.ui.notifications.NotificationAction
 import com.example.androidcourseshpp.ui.notifications.NotificationService
 import com.example.androidcourseshpp.ui.screens.main.addcontacts.model.toUserItem
 import com.example.androidcourseshpp.ui.utils.isContainsOrderedSequence
@@ -98,9 +99,16 @@ class AddContactsViewModel @Inject constructor(
         processNetworkExceptions(
             toExecute = {
                 addContactUseCase(userId)
+
                 setState { copy(isContactListChanged = true) }
+
                 interruptSuccessLoading()
-                notificationService.showContactAddedNotification(contactName, userId)
+
+                notificationService.showContactAddedNotification(
+                    contactName = contactName,
+                    userId = userId,
+                    notificationActionId = NotificationAction.ADD_CONTACT.ordinal
+                )
             },
             processBackendException = {
                 setEffect(AddContactsContract.Effect.ShowToast(R.string.generic_error))

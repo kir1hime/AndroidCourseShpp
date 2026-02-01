@@ -1,4 +1,4 @@
-package com.example.androidcourseshpp.ui.screens.main.contactdetailsnotif
+package com.example.androidcourseshpp.ui.notifications
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

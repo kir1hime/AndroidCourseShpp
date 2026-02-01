@@ -4,6 +4,7 @@ import androidx.annotation.StringRes
 import com.example.androidcourseshpp.ui.ViewEffect
 import com.example.androidcourseshpp.ui.ViewEvent
 import com.example.androidcourseshpp.ui.ViewState
+import com.example.androidcourseshpp.ui.notifications.NotificationAction
 
 class ContactDetailsNotificationContract {
     sealed interface Event : ViewEvent {
