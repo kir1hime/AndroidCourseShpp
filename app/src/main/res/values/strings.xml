@@ -10,6 +10,7 @@
     <string name="delete_contact_notif_content">%1$s was deleted from contacts</string>
     <string name="add_contact_toast_message">New contact was added</string>
     <string name="delete_contact_toast_message">Contact was deleted</string>
+    <string name="view_details_label" translatable="false">VIEW DETAILS</string>
 
 
     <!-- Error -->

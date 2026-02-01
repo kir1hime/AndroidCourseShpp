@@ -100,7 +100,7 @@ class AddContactsViewModel @Inject constructor(
                 addContactUseCase(userId)
                 setState { copy(isContactListChanged = true) }
                 interruptSuccessLoading()
-                notificationService.showContactAddedNotification(contactName)
+                notificationService.showContactAddedNotification(contactName, userId)
             },
             processBackendException = {
                 setEffect(AddContactsContract.Effect.ShowToast(R.string.generic_error))

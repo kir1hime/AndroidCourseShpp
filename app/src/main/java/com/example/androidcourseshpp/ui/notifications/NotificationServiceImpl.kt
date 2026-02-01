@@ -1,9 +1,12 @@
 package com.example.androidcourseshpp.ui.notifications
 
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import androidx.annotation.DrawableRes
 import androidx.core.app.NotificationCompat
+import androidx.core.net.toUri
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.ui.NOTIFICATION_CONTACTS_CHANNEL_ID
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -17,21 +20,24 @@ class NotificationServiceImpl @Inject constructor(@ApplicationContext private va
     private val notificationManager =
         context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-    override fun showContactAddedNotification(contactName: String) {
+    override fun showContactAddedNotification(contactName: String, contactId: Int) {
         createNotification(
             title = context.getString(R.string.add_contact_notif_title),
             content = context.getString(R.string.add_contact_notif_content, contactName),
             icon = R.drawable.ic_contact_added_notification,
-            notificationId = CONTACT_ADDED_NOTIFICATION_ID
+            notificationId = CONTACT_ADDED_NOTIFICATION_ID,
+            link = "notification://details_add?id=$contactId"
+
         )
     }
 
-    override fun showContactDeletedNotification(contactName: String) {
+    override fun showContactDeletedNotification(contactName: String, contactId: Int) {
         createNotification(
             title = context.getString(R.string.delete_contact_notif_title),
             content = context.getString(R.string.delete_contact_notif_content, contactName),
             icon = R.drawable.ic_contact_removed_notification,
-            notificationId = CONTACT_DELETED_NOTIFICATION_ID
+            notificationId = CONTACT_DELETED_NOTIFICATION_ID,
+            link = "notification://details_delete?id=$contactId"
         )
     }
 
@@ -39,12 +45,29 @@ class NotificationServiceImpl @Inject constructor(@ApplicationContext private va
         title: String,
         content: String,
         @DrawableRes icon: Int,
-        notificationId: Int
+        notificationId: Int,
+        link: String,
     ) {
+        val activityIntent = Intent(Intent.ACTION_VIEW, link.toUri()).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+
+        val activityPendingIntent = PendingIntent.getActivity(
+            context,
+            PENDING_INTENT_REQUEST_CODE,
+            activityIntent,
+            PendingIntent.FLAG_IMMUTABLE
+        )
+
         val notification = NotificationCompat.Builder(context, NOTIFICATION_CONTACTS_CHANNEL_ID)
             .setSmallIcon(icon)
             .setContentTitle(title)
             .setContentText(content)
+            .addAction(
+                icon,
+                context.getString(R.string.view_details_label),
+                activityPendingIntent
+            )
             .build()
 
         notificationManager.notify(
@@ -52,9 +75,10 @@ class NotificationServiceImpl @Inject constructor(@ApplicationContext private va
         )
     }
 
-    companion object{
+    companion object {
         const val CONTACT_ADDED_NOTIFICATION_ID = 1
         const val CONTACT_DELETED_NOTIFICATION_ID = 2
+        const val PENDING_INTENT_REQUEST_CODE = 0
     }
 
 }

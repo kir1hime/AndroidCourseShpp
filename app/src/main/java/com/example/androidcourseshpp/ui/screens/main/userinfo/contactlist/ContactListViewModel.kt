@@ -107,7 +107,7 @@ class ContactListViewModel @Inject constructor(
                 updateFilteredContactList { list ->
                     list.remove(contactItem)
                 }
-                notificationService.showContactDeletedNotification(contactItem.name)
+                notificationService.showContactDeletedNotification(contactItem.name, contactItem.id)
 
             },
             processBackendException = {
@@ -163,7 +163,7 @@ class ContactListViewModel @Inject constructor(
                 updateFilteredContactList { list ->
                     list.add(contactItem)
                 }
-                notificationService.showContactAddedNotification(contactItem.name)
+                notificationService.showContactAddedNotification(contactItem.name, contactItem.id)
             },
             processBackendException = {
                 setEffect(ContactListContract.Effect.ShowToast(R.string.generic_error))
