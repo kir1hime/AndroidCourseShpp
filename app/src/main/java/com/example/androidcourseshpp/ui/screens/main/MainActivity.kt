@@ -19,6 +19,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding>
     (ActivityMainBinding::inflate) {
 
+    private var isAppActive = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,11 +44,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
+        isAppActive = true
         handleDeepLink(intent)
     }
 
     private fun handleDeepLink(intent: Intent) {
-        val navController = findNavController(R.id.fragmentContainer)
         val uri = intent.data
 
         uri?.let {
@@ -64,7 +65,16 @@ class MainActivity : BaseActivity<ActivityMainBinding>
                 .setRestoreState(true)
                 .build()
 
-            navController.navigate(request, navOptions)
+            findNavController(R.id.fragmentContainer).navigate(request, navOptions)
+        }
+    }
+
+    override fun onNavigateUp(): Boolean {
+        return if (isAppActive) {
+            findNavController(R.id.fragmentContainer).navigateUp()
+        } else {
+            finish()
+            true
         }
     }
 }

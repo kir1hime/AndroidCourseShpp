@@ -3,9 +3,7 @@ package com.example.androidcourseshpp.ui.screens.main.contactdetailsnotif
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.databinding.FragmentDetailviewNotificationBinding
@@ -53,7 +51,7 @@ class ContactDetailsNotificationFragment :
     override fun setObservers() = with(binding) {
         collectFlow(viewModel.effect) { effect ->
             when (effect) {
-                is ContactDetailsNotificationContract.Effect.NavigateToPreviousScreen -> findNavController().navigateUp()
+                is ContactDetailsNotificationContract.Effect.NavigateToPreviousScreen -> requireActivity().onNavigateUp()
                 is ContactDetailsNotificationContract.Effect.ShowToast -> Toast.makeText(
                     requireContext(), getString(effect.message),
                     Toast.LENGTH_LONG
