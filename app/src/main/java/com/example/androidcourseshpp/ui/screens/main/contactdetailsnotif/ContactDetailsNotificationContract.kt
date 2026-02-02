@@ -8,16 +8,18 @@ import com.example.androidcourseshpp.ui.notifications.NotificationAction
 
 class ContactDetailsNotificationContract {
     sealed interface Event : ViewEvent {
-        data class MainActionButtonClicked(
+        data class OnMainActionButtonClicked(
             val action: NotificationAction,
             val contactId: Int
         ) : Event
+
+        data object OnArrowBackButtonClicked : Event
     }
 
     sealed interface Effect : ViewEffect {
-        data object NavigateUp : Effect
+        data object NavigateToPreviousScreen : Effect
         data class ShowToast(@StringRes val message: Int) : Effect
     }
 
-    object UIState : ViewState
+    data object UIState : ViewState
 }

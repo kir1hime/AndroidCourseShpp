@@ -75,12 +75,22 @@
         tools:layout="@layout/fragment_detailview_notification">
         <deepLink
             android:id="@+id/deepLink"
-            app:uri="notification://user_details?userId={userId}&amp;notifId={notifId}" />
+            app:uri="notification://user_details?name={name}&amp;career={career}&amp;address={address}&amp;avatarURL={avatarURL}&amp;notifId={notifId}" />
         <argument
-            android:name="userId"
-            app:argType="integer"/>
+            android:name="name"
+            app:argType="string" />
+        <argument
+            android:name="career"
+            app:argType="string" />
+        <argument
+            android:name="address"
+            app:argType="string" />
+        <argument
+            android:name="avatarURL"
+            app:argType="string" />
         <argument
             android:name="notifId"
             app:argType="integer" />
+
     </fragment>
 </navigation>

@@ -44,8 +44,11 @@ class ContactDetailsFragment :
             )
         }
 
-        textViewName.text = args.contactDetails.name
-        textViewCareer.text = args.contactDetails.career
+        args.contactDetails.apply {
+            textViewName.text = name
+            textViewCareer.text = career
+            textViewHomeAddress.text = address
+        }
     }
 
     override fun setListeners() {

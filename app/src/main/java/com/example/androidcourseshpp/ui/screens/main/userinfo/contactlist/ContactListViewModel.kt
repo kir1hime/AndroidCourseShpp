@@ -109,8 +109,7 @@ class ContactListViewModel @Inject constructor(
                     list.remove(contactItem)
                 }
                 notificationService.showContactDeletedNotification(
-                    contactName = contactItem.name,
-                    userId = contactItem.id,
+                    userInfo = contactItem.toContactDetails(),
                     notificationActionId = NotificationAction.DELETE_CONTACT.ordinal
                 )
 
@@ -169,8 +168,7 @@ class ContactListViewModel @Inject constructor(
                     list.add(contactItem)
                 }
                 notificationService.showContactAddedNotification(
-                    contactName = contactItem.name,
-                    userId = contactItem.id,
+                    userInfo = contactItem.toContactDetails(),
                     notificationActionId = NotificationAction.ADD_CONTACT.ordinal
                 )
             },

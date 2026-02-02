@@ -8,6 +8,7 @@ import com.example.androidcourseshpp.ui.BaseViewModel
 import com.example.androidcourseshpp.ui.notifications.NotificationAction
 import com.example.androidcourseshpp.ui.notifications.NotificationService
 import com.example.androidcourseshpp.ui.screens.main.addcontacts.model.toUserItem
+import com.example.androidcourseshpp.ui.screens.model.ContactDetailsModel
 import com.example.androidcourseshpp.ui.utils.isContainsOrderedSequence
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -50,8 +51,7 @@ class AddContactsViewModel @Inject constructor(
             )
 
             is AddContactsContract.Event.OnAddContactClicked -> addContact(
-                userId = event.userId,
-                contactName = event.contactName,
+                userInfo = event.contactInfo,
                 interruptSuccessLoading = event.interruptSuccessLoading,
                 interruptFailureLoading = event.interruptFailureLoading
             )
@@ -90,23 +90,21 @@ class AddContactsViewModel @Inject constructor(
 
 
     private fun addContact(
-        userId: Int,
-        contactName: String,
+        userInfo: ContactDetailsModel,
         interruptSuccessLoading: () -> Unit,
         interruptFailureLoading: () -> Unit
     ) {
 
         processNetworkExceptions(
             toExecute = {
-                addContactUseCase(userId)
+                addContactUseCase(userInfo.id)
 
                 setState { copy(isContactListChanged = true) }
 
                 interruptSuccessLoading()
 
                 notificationService.showContactAddedNotification(
-                    contactName = contactName,
-                    userId = userId,
+                    userInfo = userInfo,
                     notificationActionId = NotificationAction.ADD_CONTACT.ordinal
                 )
             },

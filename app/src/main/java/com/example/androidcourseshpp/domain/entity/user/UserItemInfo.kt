@@ -5,5 +5,6 @@ data class UserItemInfo(
     val name: String,
     val career: String,
     val avatarURL: String,
+    val address: String,
     var isContact: Boolean
 )

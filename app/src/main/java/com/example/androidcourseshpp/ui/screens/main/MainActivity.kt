@@ -13,7 +13,6 @@ import androidx.navigation.findNavController
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.databinding.ActivityMainBinding
 import com.example.androidcourseshpp.ui.BaseActivity
-import com.example.androidcourseshpp.ui.screens.main.contactdetailsnotif.ContactDetailsNotificationFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -57,9 +56,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>
                 .build()
 
             val navOptions = NavOptions.Builder()
+                .setExitAnim(R.anim.slide_out_from_top_to_bottom)
+                .setEnterAnim(R.anim.slide_in_from_top_to_bottom)
+                .setPopEnterAnim(R.anim.slide_in_from_left_to_right)
+                .setPopExitAnim(R.anim.slide_out_from_left_to_right)
                 .setLaunchSingleTop(true)
                 .setRestoreState(true)
-                .setPopUpTo(navController.graph.startDestinationId, false)
                 .build()
 
             navController.navigate(request, navOptions)

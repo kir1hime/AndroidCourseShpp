@@ -4,6 +4,7 @@ import com.example.androidcourseshpp.ui.screens.main.addcontacts.model.UserItem
 import com.example.androidcourseshpp.ui.ViewEffect
 import com.example.androidcourseshpp.ui.ViewEvent
 import com.example.androidcourseshpp.ui.ViewState
+import com.example.androidcourseshpp.ui.screens.model.ContactDetailsModel
 
 class AddContactsContract {
     sealed interface Event : ViewEvent {
@@ -16,8 +17,7 @@ class AddContactsContract {
         data class OnSearchBarTextChanged(val input: String) : Event
         data class SearchModeSwitched(val isSearchModeEnabled: Boolean) : Event
         data class OnAddContactClicked(
-            val userId: Int,
-            val contactName : String,
+            val contactInfo: ContactDetailsModel,
             val interruptSuccessLoading: () -> Unit,
             val interruptFailureLoading: () -> Unit
         ) : Event

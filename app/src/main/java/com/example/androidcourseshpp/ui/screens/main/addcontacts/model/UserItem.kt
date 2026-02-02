@@ -8,14 +8,16 @@ data class UserItem(
     val name: String,
     val career: String,
     val avatarURL: String,
+    val address: String,
     var isContact: Boolean
 ) {
-    fun toContactDetailsEntity() =
+    fun toContactDetails() =
         ContactDetailsModel(
             id = id,
             name = name,
             career = career,
-            avatarURL = avatarURL
+            avatarURL = avatarURL,
+            address = address
         )
 }
 
@@ -25,5 +27,6 @@ fun UserItemInfo.toUserItem() =
         name = name,
         career = career,
         avatarURL = avatarURL,
-        isContact = isContact
+        isContact = isContact,
+        address = address
     )

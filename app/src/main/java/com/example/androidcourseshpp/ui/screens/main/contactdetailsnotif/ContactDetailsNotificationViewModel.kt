@@ -19,11 +19,17 @@ class ContactDetailsNotificationViewModel @Inject constructor(
 
     override fun handleEvent(event: ContactDetailsNotificationContract.Event) {
         when (event) {
-            is ContactDetailsNotificationContract.Event.MainActionButtonClicked -> executeMainAction(
+            is ContactDetailsNotificationContract.Event.OnMainActionButtonClicked -> executeMainAction(
                 action = event.action,
                 contactId = event.contactId
             )
+
+            is ContactDetailsNotificationContract.Event.OnArrowBackButtonClicked -> navigateToPreviousScreen()
         }
+    }
+
+    private fun navigateToPreviousScreen() {
+        setEffect(ContactDetailsNotificationContract.Effect.NavigateToPreviousScreen)
     }
 
     private fun executeMainAction(action: NotificationAction, contactId: Int) {

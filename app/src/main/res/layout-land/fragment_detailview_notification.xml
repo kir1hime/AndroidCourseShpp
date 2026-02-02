@@ -47,13 +47,13 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/circleViewProfilePhoto"
+        android:id="@+id/circleImageViewProfilePhoto"
         android:layout_width="@dimen/profile_photo_size"
         android:layout_height="@dimen/profile_photo_size"
         android:layout_marginTop="@dimen/profile_photo_margin_top"
         android:layout_marginBottom="@dimen/profile_photo_margin_bottom"
         android:contentDescription="@string/profile_photo"
-        android:src="@drawable/profile_photo"
+        android:src="@drawable/profile_mockup"
         app:layout_constraintBottom_toBottomOf="@id/GuideLineMiddleVer"
         app:layout_constraintEnd_toEndOf="@id/textViewTopPartOfScreen"
         app:layout_constraintStart_toStartOf="@id/textViewTopPartOfScreen"

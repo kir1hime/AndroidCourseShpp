@@ -8,14 +8,16 @@ data class ContactItem(
     val id: Int,
     val name: String,
     val career: String,
+    val address: String,
     val avatarURL: String,
 ) {
-    fun toContactDetailsEntity() =
+    fun toContactDetails() =
         ContactDetailsModel(
             id = id,
             name = name,
             career = career,
-            avatarURL = avatarURL
+            avatarURL = avatarURL,
+            address = address
         )
 
     fun toContactInfo() =
@@ -23,6 +25,7 @@ data class ContactItem(
             id = id,
             name = name,
             career = career,
+            address = address,
             avatarURL = avatarURL
         )
 }
@@ -32,6 +35,7 @@ fun ContactInfo.toContactItem() =
         id = id,
         name = name,
         career = career,
+        address = address,
         avatarURL = avatarURL
     )
 
