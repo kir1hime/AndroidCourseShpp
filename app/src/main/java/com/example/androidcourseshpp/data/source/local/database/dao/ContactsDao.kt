@@ -19,7 +19,7 @@ interface ContactsDao {
     fun getContacts(): Flow<List<ContactDbEntity>>
 
     @Query("SELECT * FROM contacts WHERE id = :id")
-    suspend fun getContactsById(id: Int): ContactDbEntity?
+    suspend fun getContactById(id: Int): ContactDbEntity?
 
     @Query("DELETE FROM contacts WHERE id = :id")
     suspend fun deleteContactById(id: Int)
@@ -28,5 +28,5 @@ interface ContactsDao {
     suspend fun clearContacts()
 
     @Query("DELETE FROM contacts WHERE id IN (:ids)")
-    suspend fun deleteContactsByIds(ids: Int)
+    suspend fun deleteContactsByIds(ids: List<Int>)
 }
