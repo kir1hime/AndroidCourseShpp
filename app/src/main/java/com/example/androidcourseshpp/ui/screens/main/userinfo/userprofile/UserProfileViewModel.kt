@@ -1,26 +1,18 @@
 package com.example.androidcourseshpp.ui.screens.main.userinfo.userprofile
 
 
-import androidx.lifecycle.viewModelScope
-import com.example.androidcourseshpp.R
-import com.example.androidcourseshpp.domain.usecase.auth.ClearTokensUseCase
-import com.example.androidcourseshpp.domain.usecase.gallery.ClearGalleryPhotosUseCase
-import com.example.androidcourseshpp.domain.usecase.userlocal.ClearUserAvatarUseCase
-import com.example.androidcourseshpp.domain.usecase.userlocal.ClearUserServerIdUseCase
+import com.example.androidcourseshpp.domain.usecase.auth.LogOutUseCase
 import com.example.androidcourseshpp.domain.usecase.userlocal.GetUserAvatarUseCase
 import com.example.androidcourseshpp.ui.BaseViewModel
 import com.example.androidcourseshpp.ui.screens.model.UserModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
-import kotlinx.coroutines.launch
+
 
 @HiltViewModel
 class UserProfileViewModel @Inject constructor(
     private val getUserAvatarUseCase: GetUserAvatarUseCase,
-    private val clearUserAvatarUseCase: ClearUserAvatarUseCase,
-    private val clearUserServerIdUseCase: ClearUserServerIdUseCase,
-    private val clearGalleryPhotosUseCase: ClearGalleryPhotosUseCase,
-    private val clearTokensUseCase: ClearTokensUseCase
+    private val logOutUseCase: LogOutUseCase
 ) :
     BaseViewModel<UserProfileContract.Event, UserProfileContract.Effect, UserProfileContract.UIState>() {
 
@@ -47,33 +39,16 @@ class UserProfileViewModel @Inject constructor(
     }
 
     private fun setUserInfo(userInfo: UserModel) {
-        viewModelScope.launch {
-            processNetworkExceptions(
-                toExecute = {
-                    val savedAvatarUrl = getUserAvatarUseCase()
-
-                    setState {
-                        copy(
-                            userInfo = userInfo.copy(
-                                avatar = if (savedAvatarUrl != "") {
-                                    savedAvatarUrl
-                                } else {
-                                    userInfo.avatar
-                                }
-                            )
-                        )
+        val savedAvatarUrl = getUserAvatarUseCase()
+        setState {
+            copy(
+                userInfo = userInfo.copy(
+                    avatar = if (savedAvatarUrl != "") {
+                        savedAvatarUrl
+                    } else {
+                        userInfo.avatar
                     }
-                },
-                processBackendException = {
-                    setEffect(UserProfileContract.Effect.ShowToast(R.string.enter_error))
-                },
-                processResponseProcessingException = {
-                    setEffect(UserProfileContract.Effect.ShowToast(R.string.enter_error))
-                },
-                processConnectionException = {
-                    setEffect(UserProfileContract.Effect.ShowToast(R.string.connection_error))
-                },
-                finally = {}
+                )
             )
         }
     }
@@ -84,10 +59,7 @@ class UserProfileViewModel @Inject constructor(
 
 
     private fun logOut() {
-        clearTokensUseCase()
-        clearUserAvatarUseCase()
-        clearUserServerIdUseCase()
-        clearGalleryPhotosUseCase()
+        logOutUseCase()
         setEffect(UserProfileContract.Effect.NavigateToSignInScreen)
     }
 

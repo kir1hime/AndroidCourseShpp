@@ -3,8 +3,6 @@ package com.example.androidcourseshpp.ui.screens.main.editprofile
 
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.domain.usecase.user.UpdateUserInfoUseCase
-import com.example.androidcourseshpp.domain.usecase.userlocal.GetUserAvatarUseCase
-import com.example.androidcourseshpp.domain.usecase.userlocal.SaveUserAvatarUseCase
 import com.example.androidcourseshpp.ui.BaseViewModel
 import com.example.androidcourseshpp.ui.screens.model.UserModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,9 +11,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class EditProfileViewModel @Inject constructor(
-    private val updateUserInfoUseCase: UpdateUserInfoUseCase,
-    private val getUserAvatarUseCase: GetUserAvatarUseCase,
-    private val saveUserAvatarUseCase: SaveUserAvatarUseCase
+    private val updateUserInfoUseCase: UpdateUserInfoUseCase
 ) :
     BaseViewModel<EditProfileContract.Event, EditProfileContract.Effect, EditProfileContract.UIState>() {
 
@@ -54,82 +50,61 @@ class EditProfileViewModel @Inject constructor(
     }
 
     private fun updateUserName(userName: String) {
-        setState { copy(state.value.userInfo.copy(name = userName), isUserDataChanged = true) }
+        setState {
+            copy(
+                userInfo = state.value.userInfo.copy(name = userName),
+                isUserDataChanged = true
+            )
+        }
     }
 
     private fun updateCareer(career: String) {
-        setState { copy(state.value.userInfo.copy(career = career), isUserDataChanged = true) }
+        setState {
+            copy(
+                userInfo = state.value.userInfo.copy(career = career),
+                isUserDataChanged = true
+            )
+        }
     }
 
     private fun updateMobilePhone(mobilePhone: String) {
         setState {
             copy(
-                state.value.userInfo.copy(mobilePhone = mobilePhone),
+                userInfo = state.value.userInfo.copy(mobilePhone = mobilePhone),
                 isUserDataChanged = true
             )
         }
     }
 
     private fun updateAddress(address: String) {
-        setState { copy(state.value.userInfo.copy(address = address), isUserDataChanged = true) }
+        setState {
+            copy(
+                userInfo = state.value.userInfo.copy(address = address),
+                isUserDataChanged = true
+            )
+        }
     }
 
     private fun updateDateOfBirthday(dateOfBirthday: Date?) {
         setState {
             copy(
-                state.value.userInfo.copy(dateOfBirthday = dateOfBirthday),
+                userInfo = state.value.userInfo.copy(dateOfBirthday = dateOfBirthday),
                 isUserDataChanged = true
             )
         }
     }
 
     private fun updateProfilePhoto(profilePhotoUrl: String) {
-        saveUserAvatarUseCase(profilePhotoUrl)
         setState {
             copy(
-                state.value.userInfo.copy(avatar = profilePhotoUrl),
+                userInfo = state.value.userInfo.copy(avatar = profilePhotoUrl),
                 isUserDataChanged = true
             )
         }
     }
 
     private fun setUserInfo(userInfo: UserModel) {
-        processNetworkExceptions(
-            toExecute = {
-                setState {
-                    copy(isProgressBarShowed = true)
-                }
-
-                val savedAvatarUrl = getUserAvatarUseCase()
-
-                with(userInfo) {
-                    setState {
-                        copy(
-                            userInfo = userInfo.copy(
-                                avatar = if (savedAvatarUrl != "") {
-                                    savedAvatarUrl
-                                } else {
-                                    userInfo.avatar
-                                }
-                            )
-                        )
-                    }
-                }
-            },
-            processBackendException = {
-                setEffect(EditProfileContract.Effect.ShowToast(R.string.generic_error))
-                disableSaveButton()
-            },
-            processResponseProcessingException = {
-                setEffect(EditProfileContract.Effect.ShowToast(R.string.generic_error))
-                disableSaveButton()
-            },
-            processConnectionException = {
-                setEffect(EditProfileContract.Effect.ShowToast(R.string.connection_error))
-                disableSaveButton()
-            },
-            finally = { setState { copy(isProgressBarShowed = false) } }
-        )
+        setState { copy(userInfo = userInfo) }
     }
 
     private fun updateUserInfo() {
@@ -151,10 +126,6 @@ class EditProfileViewModel @Inject constructor(
             },
             finally = { setState { copy(isProgressBarShowed = false) } }
         )
-    }
-
-    private fun disableSaveButton() {
-        setState { copy(isSaveButtonEnabled = false) }
     }
 
     private fun navigateToUserProfileScreen() {

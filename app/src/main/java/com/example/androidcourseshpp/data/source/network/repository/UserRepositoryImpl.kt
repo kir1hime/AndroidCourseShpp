@@ -52,10 +52,8 @@ class UserRepositoryImpl @Inject constructor(
 
     override suspend fun updateUserInfo(userInfo: UserInfo) {
         withContext(Dispatchers.IO) {
-            with(userInfo) {
                 servicesProvider.getUserService()
                     .updateUserInfo(userInfo.toUpdateUserDataModel())
             }
-        }
     }
 }
