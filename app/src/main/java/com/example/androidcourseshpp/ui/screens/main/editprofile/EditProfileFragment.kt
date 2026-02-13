@@ -44,7 +44,7 @@ class EditProfileFragment :
         }
     }
 
-    private fun setUserInfo() = with(binding) {
+    private fun setUserInfo() {
         viewModel.setEvent(EditProfileContract.Event.SetUserInfo(args.userInfo))
     }
 
