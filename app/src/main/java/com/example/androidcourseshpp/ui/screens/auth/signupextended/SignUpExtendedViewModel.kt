@@ -4,7 +4,6 @@ import android.graphics.Bitmap
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.domain.entity.auth.SignUpInfo
 import com.example.androidcourseshpp.domain.usecase.auth.SignUpUseCase
-import com.example.androidcourseshpp.domain.usecase.userlocal.SaveUserServerIdUseCase
 import com.example.androidcourseshpp.ui.BaseViewModel
 import com.example.androidcourseshpp.ui.screens.auth.signup.model.SignUpModel
 import com.example.androidcourseshpp.ui.screens.model.toUserModel
@@ -15,8 +14,7 @@ private const val PHONE_NUMBER_LENGTH = 15
 
 @HiltViewModel
 class SignUpExtendedViewModel @Inject constructor(
-    private val signUpUseCase: SignUpUseCase,
-    private val saveUserServerIdUseCase: SaveUserServerIdUseCase,
+    private val signUpUseCase: SignUpUseCase
 ) :
     BaseViewModel<SignUpExtendedContract.Event, SignUpExtendedContract.Effect, SignUpExtendedContract.UIState>() {
 
@@ -57,12 +55,9 @@ class SignUpExtendedViewModel @Inject constructor(
                             email = signUpUserInfo.email,
                             password = signUpUserInfo.password,
                             avatar = avatar
-                        )
+                        ),
+                        toRememberUser = signUpUserInfo.toRememberUser
                     ).toUserModel()
-
-                    if (signUpUserInfo.toRememberUser) {
-                        saveUserServerIdUseCase(userInfo.id)
-                    }
 
                     setEffect(
                         SignUpExtendedContract.Effect.NavigateToUserProfileScreen(
