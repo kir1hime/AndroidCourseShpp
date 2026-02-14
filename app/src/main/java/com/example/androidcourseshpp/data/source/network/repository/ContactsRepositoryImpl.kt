@@ -2,14 +2,14 @@ package com.example.androidcourseshpp.data.source.network.repository
 
 import com.example.androidcourseshpp.data.source.local.userdata.UserDataProvider
 import com.example.androidcourseshpp.data.source.network.model.contacts.ContactDataModel
-import com.example.androidcourseshpp.data.source.network.model.contacts.GetUserContactsModel
 import com.example.androidcourseshpp.data.source.network.service.ServicesProvider
+import com.example.androidcourseshpp.data.source.network.utils.wrapNetworkExceptions
 import com.example.androidcourseshpp.domain.entity.contact.ContactInfo
 import com.example.androidcourseshpp.domain.repository.ContactsRepository
-import kotlinx.coroutines.Dispatchers
+import com.example.androidcourseshpp.domain.utils.Result
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.coroutineScope
 import javax.inject.Inject
 
 class ContactsRepositoryImpl @Inject constructor(
@@ -18,44 +18,39 @@ class ContactsRepositoryImpl @Inject constructor(
 ) : ContactsRepository {
 
 
-    override suspend fun addContact(contactId: Int) {
-        withContext(Dispatchers.IO) {
-            servicesProvider.getContactsService().addContact(
-                ContactDataModel(userDataProvider.getUserServerId(), contactId)
-            )
-        }
+    override suspend fun addContact(contactId: Int) = wrapNetworkExceptions {
+        servicesProvider.getContactsService().addContact(
+            ContactDataModel(userDataProvider.getUserServerId(), contactId)
+        )
     }
 
-    override suspend fun deleteContact(contactId: Int) {
-        withContext(Dispatchers.IO) {
-            servicesProvider.getContactsService().deleteContact(
-                ContactDataModel(userDataProvider.getUserServerId(), contactId)
-            )
-        }
+    override suspend fun deleteContact(contactId: Int) = wrapNetworkExceptions {
+        servicesProvider.getContactsService().deleteContact(
+            ContactDataModel(userDataProvider.getUserServerId(), contactId)
+        )
     }
 
-    override suspend fun deleteContacts(contacts: List<ContactInfo>) {
-        withContext(Dispatchers.IO) {
-            contacts.map { contactItem ->
-                async {
-                    servicesProvider.getContactsService()
-                        .deleteContact(
-                            ContactDataModel(userDataProvider.getUserServerId(), contactItem.id)
-                        )
-                }
-            }.awaitAll()
-        }
-    }
 
-    override suspend fun loadContacts(): List<ContactInfo> {
-        val response: GetUserContactsModel
+    override suspend fun deleteContacts(contacts: List<ContactInfo>): Result<Unit> =
+        wrapNetworkExceptions {
+            coroutineScope {
+                contacts.map { contactItem ->
+                    async {
+                        servicesProvider.getContactsService()
+                            .deleteContact(
+                                ContactDataModel(userDataProvider.getUserServerId(), contactItem.id)
+                            )
+                    }
 
-        withContext(Dispatchers.IO) {
-            response = servicesProvider.getContactsService()
-                .getUserContacts(userDataProvider.getUserServerId())
+                }.awaitAll()
+            }
         }
+
+    override suspend fun loadContacts(): Result<List<ContactInfo>> = wrapNetworkExceptions {
+        val response = servicesProvider.getContactsService()
+            .getUserContacts(userDataProvider.getUserServerId())
 
         val contactItemList = response.contacts.map { contact -> contact.toContactInfo() }
-        return contactItemList
+        contactItemList
     }
 }

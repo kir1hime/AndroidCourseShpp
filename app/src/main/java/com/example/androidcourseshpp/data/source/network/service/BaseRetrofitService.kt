@@ -3,7 +3,6 @@ package com.example.androidcourseshpp.data.source.network.service
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.source.network.RetrofitConfig
 import com.example.androidcourseshpp.data.source.network.dto.ErrorResponseDTO
-import com.example.androidcourseshpp.domain.exceptions.NetworkException
 import com.google.gson.JsonParseException
 import retrofit2.HttpException
 import java.io.IOException
@@ -19,11 +18,11 @@ open class BaseRetrofitService(retrofitConfig: RetrofitConfig) {
             request()
 
         } catch (e: JsonParseException) {
-            throw NetworkException.ResponseProcessingException(e)
+            throw ResponseProcessingException(e)
         } catch (e: HttpException) {
             throw createBackendException(e)
         } catch (e: IOException) {
-            throw NetworkException.ConnectionException(e)
+            throw ConnectionException(e)
         }
     }
 
@@ -32,12 +31,16 @@ open class BaseRetrofitService(retrofitConfig: RetrofitConfig) {
             val errorJson = e.response()?.errorBody()?.string().orEmpty()
             val errorDTO = errorAdapter.fromJson(errorJson)
 
-            NetworkException.BackendException(
+            BackendException(
                 errorDTO?.message ?: R.string.backend_error.toString()
             )
         } catch (e: Exception) {
-            throw NetworkException.ResponseProcessingException(e)
+            throw ResponseProcessingException(e)
         }
     }
 }
+
+class ConnectionException(e: Exception) : Exception(e)
+class BackendException(message: String) : Exception(message)
+class ResponseProcessingException(e: Exception) : Exception(e)
 

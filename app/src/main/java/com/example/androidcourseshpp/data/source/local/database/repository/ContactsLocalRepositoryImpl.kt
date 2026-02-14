@@ -5,10 +5,12 @@ import com.example.androidcourseshpp.data.source.local.database.dbentity.Contact
 import com.example.androidcourseshpp.data.source.local.database.utils.wrapSQLiteException
 import com.example.androidcourseshpp.domain.entity.contact.ContactInfo
 import com.example.androidcourseshpp.domain.repository.ContactsLocalRepository
+import com.example.androidcourseshpp.domain.utils.Result
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-class ContactsLocalRepositoryImpl(
+class ContactsLocalRepositoryImpl @Inject constructor(
     private val contactsDao: ContactsDao
 ) : ContactsLocalRepository {
 
@@ -33,9 +35,9 @@ class ContactsLocalRepositoryImpl(
             }
     }
 
-    override suspend fun getContactById(id: Int): ContactInfo? = wrapSQLiteException {
-        return@wrapSQLiteException contactsDao.getContactById(id)?.toContactInfo()
-    }
+    override suspend fun getContactById(id: Int): Result<ContactInfo?> = wrapSQLiteException {
+            return@wrapSQLiteException contactsDao.getContactById(id)?.toContactInfo()
+        }
 
     override suspend fun deleteContactById(id: Int) = wrapSQLiteException {
         contactsDao.deleteContactById(id)

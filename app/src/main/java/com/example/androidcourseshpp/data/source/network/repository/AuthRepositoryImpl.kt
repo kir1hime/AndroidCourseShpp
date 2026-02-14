@@ -1,13 +1,15 @@
 package com.example.androidcourseshpp.data.source.network.repository
 
+import com.example.androidcourseshpp.data.source.network.jwt.JWTManager
 import com.example.androidcourseshpp.data.source.network.model.auth.SignInData
 import com.example.androidcourseshpp.data.source.network.model.auth.SignUpData
-import com.example.androidcourseshpp.data.source.network.jwt.JWTManager
 import com.example.androidcourseshpp.data.source.network.service.ServicesProvider
-import com.example.androidcourseshpp.domain.entity.user.UserInfo
+import com.example.androidcourseshpp.data.source.network.utils.wrapNetworkExceptions
 import com.example.androidcourseshpp.domain.entity.auth.SignInInfo
 import com.example.androidcourseshpp.domain.entity.auth.SignUpInfo
+import com.example.androidcourseshpp.domain.entity.user.UserInfo
 import com.example.androidcourseshpp.domain.repository.AuthRepository
+import com.example.androidcourseshpp.domain.utils.Result
 import com.example.androidcourseshpp.ui.utils.imageconvertor.ImageConverter
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -30,7 +32,7 @@ class AuthRepositoryImpl @Inject constructor(
         jwtManager.clearTokens()
     }
 
-    override suspend fun signIn(signInInfo: SignInInfo): UserInfo {
+    override suspend fun signIn(signInInfo: SignInInfo): Result<UserInfo> = wrapNetworkExceptions {
         val data = SignInData(email = signInInfo.email, password = signInInfo.password)
 
         val response = servicesProvider.getAuthService()
@@ -41,10 +43,10 @@ class AuthRepositoryImpl @Inject constructor(
             refreshToken = response.refreshToken
         )
 
-        return response.user.toUserInfo()
+        response.user.toUserInfo()
     }
 
-    override suspend fun singUp(signUpInfo: SignUpInfo): UserInfo {
+    override suspend fun singUp(signUpInfo: SignUpInfo): Result<UserInfo> = wrapNetworkExceptions {
         val data = SignUpData(
             userName = signUpInfo.userName,
             mobilePhone = signUpInfo.mobilePhone,
@@ -56,6 +58,6 @@ class AuthRepositoryImpl @Inject constructor(
 
         jwtManager.saveTokens(response.accessToken, response.refreshToken)
 
-        return response.user.toUserInfo()
+        response.user.toUserInfo()
     }
 }

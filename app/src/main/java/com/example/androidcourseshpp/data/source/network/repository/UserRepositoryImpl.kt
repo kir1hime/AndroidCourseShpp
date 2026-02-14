@@ -4,12 +4,13 @@ import com.example.androidcourseshpp.data.source.local.userdata.UserDataProvider
 import com.example.androidcourseshpp.data.source.network.model.UserModel
 import com.example.androidcourseshpp.data.source.network.model.user.toUpdateUserDataModel
 import com.example.androidcourseshpp.data.source.network.service.ServicesProvider
+import com.example.androidcourseshpp.data.source.network.utils.wrapNetworkExceptions
 import com.example.androidcourseshpp.domain.entity.user.UserInfo
 import com.example.androidcourseshpp.domain.entity.user.UserItemInfo
 import com.example.androidcourseshpp.domain.repository.UserRepository
-import kotlinx.coroutines.Dispatchers
+import com.example.androidcourseshpp.domain.utils.Result
 import kotlinx.coroutines.async
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.coroutineScope
 import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
@@ -17,11 +18,11 @@ class UserRepositoryImpl @Inject constructor(
     private val userDataProvider: UserDataProvider
 ) : UserRepository {
 
-    override suspend fun getUsers(): List<UserItemInfo> {
+    override suspend fun getUsers(): Result<List<UserItemInfo>> = wrapNetworkExceptions {
         var userList = emptyList<UserModel>()
         var contactList = emptyList<UserModel>()
 
-        withContext(Dispatchers.IO) {
+        coroutineScope {
             val usersResponse = async {
                 servicesProvider.getUserService().getUsers()
             }
@@ -37,23 +38,14 @@ class UserRepositoryImpl @Inject constructor(
             user.toUserItemInfo(contactList.contains(user))
         }
 
-        return userItemList
+        userItemList
     }
 
-    override suspend fun getUser(userServerId: Int): UserInfo {
-        val userInfo: UserInfo
-
-        withContext(Dispatchers.IO) {
-            userInfo = servicesProvider.getUserService()
-                .getUser(userServerId).user.toUserInfo()
-        }
-        return userInfo
+    override suspend fun getUser(userServerId: Int): Result<UserInfo> = wrapNetworkExceptions {
+        servicesProvider.getUserService().getUser(userServerId).user.toUserInfo()
     }
 
-    override suspend fun updateUserInfo(userInfo: UserInfo) {
-        withContext(Dispatchers.IO) {
-                servicesProvider.getUserService()
-                    .updateUserInfo(userInfo.toUpdateUserDataModel())
-            }
+    override suspend fun updateUserInfo(userInfo: UserInfo)  = wrapNetworkExceptions{
+        servicesProvider.getUserService().updateUserInfo(userInfo.toUpdateUserDataModel())
     }
 }
