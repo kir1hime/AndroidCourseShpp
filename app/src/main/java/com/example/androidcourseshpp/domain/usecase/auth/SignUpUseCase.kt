@@ -4,6 +4,8 @@ import com.example.androidcourseshpp.domain.entity.auth.SignUpInfo
 import com.example.androidcourseshpp.domain.entity.user.UserInfo
 import com.example.androidcourseshpp.domain.repository.AuthRepository
 import com.example.androidcourseshpp.domain.repository.UserLocalRepository
+import com.example.androidcourseshpp.domain.utils.Result
+import com.example.androidcourseshpp.domain.utils.onSuccess
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -13,10 +15,11 @@ class SignUpUseCase @Inject constructor(
     private val userLocalRepository: UserLocalRepository
 ) {
 
-    suspend operator fun invoke(signUpInfo: SignUpInfo, toRememberUser: Boolean): UserInfo {
-        val userInfo = authRepository.singUp(signUpInfo)
-        if (toRememberUser) {
-            userLocalRepository.saveUserServerId(userInfo.id)
+    suspend operator fun invoke(signUpInfo: SignUpInfo, toRememberUser: Boolean): Result<UserInfo> {
+        val userInfo = authRepository.singUp(signUpInfo).onSuccess { data ->
+            if (toRememberUser) {
+                userLocalRepository.saveUserServerId(data.id)
+            }
         }
         return userInfo
     }

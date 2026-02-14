@@ -4,9 +4,8 @@ import com.example.androidcourseshpp.domain.entity.auth.SignInInfo
 import com.example.androidcourseshpp.domain.entity.user.UserInfo
 import com.example.androidcourseshpp.domain.repository.AuthRepository
 import com.example.androidcourseshpp.domain.repository.UserLocalRepository
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import com.example.androidcourseshpp.domain.utils.Result
+import com.example.androidcourseshpp.domain.utils.onSuccess
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -17,18 +16,16 @@ class SignInUseCase @Inject constructor(
     private val userLocalRepository: UserLocalRepository
 ) {
 
-    operator fun invoke(
+    suspend operator fun invoke(
         signInInfo: SignInInfo,
         toRememberUser: Boolean
-    ): Flow<Result<UserInfo>> = flow {
+    ): Result<UserInfo> {
 
-
-        val userInfo = authRepository.signIn(signInInfo)
-        if (toRememberUser) {
-            userLocalRepository.saveUserServerId(userInfo.id)
+        val userInfo = authRepository.signIn(signInInfo).onSuccess { data ->
+            if (toRememberUser) {
+                userLocalRepository.saveUserServerId(data.id)
+            }
         }
-        emit(Result.Success(userInfo))
-
-
+        return userInfo
     }
 }

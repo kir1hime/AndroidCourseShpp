@@ -12,3 +12,10 @@ sealed class AppError {
     data object ResponseProcessingError : AppError()
     data object LocalStorageError : AppError()
 }
+
+fun <T> Result<T>.onSuccess(toExecute: (T) -> Unit): Result<T> {
+    if (this is Result.Success) {
+        toExecute(this.data)
+    }
+    return this
+}
