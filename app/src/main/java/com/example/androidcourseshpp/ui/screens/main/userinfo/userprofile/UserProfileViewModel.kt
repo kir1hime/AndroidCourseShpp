@@ -2,7 +2,7 @@ package com.example.androidcourseshpp.ui.screens.main.userinfo.userprofile
 
 
 import com.example.androidcourseshpp.domain.usecase.auth.LogOutUseCase
-import com.example.androidcourseshpp.domain.usecase.userlocal.GetUserAvatarUseCase
+import com.example.androidcourseshpp.domain.usecase.user.GetUserAvatarUseCase
 import com.example.androidcourseshpp.ui.BaseViewModel
 import com.example.androidcourseshpp.ui.screens.model.UserModel
 import dagger.hilt.android.lifecycle.HiltViewModel

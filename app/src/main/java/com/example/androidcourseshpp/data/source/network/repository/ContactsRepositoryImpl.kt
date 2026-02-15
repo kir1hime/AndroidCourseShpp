@@ -10,6 +10,7 @@ import com.example.androidcourseshpp.domain.utils.Result
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class ContactsRepositoryImpl @Inject constructor(
@@ -31,18 +32,13 @@ class ContactsRepositoryImpl @Inject constructor(
     }
 
 
-    override suspend fun deleteContacts(contacts: List<ContactInfo>): Result<Unit> =
+    override suspend fun deleteContacts(contactIds: List<Int>): Result<Unit> =
         wrapNetworkExceptions {
-            coroutineScope {
-                contacts.map { contactItem ->
-                    async {
-                        servicesProvider.getContactsService()
-                            .deleteContact(
-                                ContactDataModel(userDataProvider.getUserServerId(), contactItem.id)
-                            )
-                    }
-
-                }.awaitAll()
+            contactIds.forEach { id ->
+                servicesProvider.getContactsService()
+                    .deleteContact(
+                        ContactDataModel(userDataProvider.getUserServerId(), id)
+                    )
             }
         }
 
