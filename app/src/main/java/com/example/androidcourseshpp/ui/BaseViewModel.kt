@@ -2,9 +2,6 @@ package com.example.androidcourseshpp.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.androidcourseshpp.data.source.network.service.BackendException
-import com.example.androidcourseshpp.data.source.network.service.ConnectionException
-import com.example.androidcourseshpp.data.source.network.service.ResponseProcessingException
 import com.example.androidcourseshpp.domain.utils.AppError
 import com.example.androidcourseshpp.domain.utils.Result
 import kotlinx.coroutines.channels.Channel
@@ -59,28 +56,6 @@ abstract class BaseViewModel<UIEvent : ViewEvent, UIEffect : ViewEffect, UIState
     protected fun setEffect(effect: UIEffect) {
         viewModelScope.launch {
             _effect.send(effect)
-        }
-    }
-
-    protected fun processNetworkExceptions(
-        toExecute: suspend () -> Unit,
-        processBackendException: () -> Unit,
-        processConnectionException: () -> Unit,
-        processResponseProcessingException: () -> Unit,
-        finally: () -> Unit
-    ) {
-        viewModelScope.launch {
-            try {
-                toExecute.invoke()
-            } catch (_: BackendException) {
-                processBackendException.invoke()
-            } catch (_: ResponseProcessingException) {
-                processResponseProcessingException.invoke()
-            } catch (_: ConnectionException) {
-                processConnectionException.invoke()
-            } finally {
-                finally.invoke()
-            }
         }
     }
 
