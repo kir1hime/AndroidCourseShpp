@@ -3,6 +3,7 @@ package com.example.androidcourseshpp.domain.usecase.contacts
 import com.example.androidcourseshpp.domain.entity.contact.ContactInfo
 import com.example.androidcourseshpp.domain.repository.ContactsLocalRepository
 import com.example.androidcourseshpp.domain.repository.ContactsRepository
+import com.example.androidcourseshpp.domain.utils.Result
 import com.example.androidcourseshpp.domain.utils.onError
 import com.example.androidcourseshpp.domain.utils.onSuccess
 import kotlinx.coroutines.flow.Flow
@@ -16,7 +17,7 @@ class GetContactsUseCase @Inject constructor(
     private val contactsRepository: ContactsRepository,
     private val contactsLocalRepository: ContactsLocalRepository
 ) {
-    operator fun invoke(): Flow<List<ContactInfo>> = flow {
+    operator fun invoke(): Flow<Result<List<ContactInfo>>> = flow {
         if (contactsLocalRepository.isDataValid()) {
             emitAll(contactsLocalRepository.getContacts())
 
@@ -28,7 +29,8 @@ class GetContactsUseCase @Inject constructor(
                 contactsLocalRepository.addContacts(data)
                 contactsLocalRepository.setDataValidity(true)
                 emitAll(contactsLocalRepository.getContacts())
-            }.onError { emit(emptyList()) }
+            }.onError { emit(serverResult) }
         }
+       /* emit(contactsRepository.loadContacts())*/
     }
 }

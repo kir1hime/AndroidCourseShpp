@@ -1,5 +1,6 @@
 package com.example.androidcourseshpp.di
 
+import com.example.androidcourseshpp.data.source.local.database.repository.ContactsLocalRepositoryImpl
 import com.example.androidcourseshpp.domain.repository.ContactsRepository
 import com.example.androidcourseshpp.data.source.network.repository.ContactsRepositoryImpl
 import com.example.androidcourseshpp.domain.repository.GalleryRepository
@@ -9,6 +10,7 @@ import com.example.androidcourseshpp.data.source.network.repository.AuthReposito
 import com.example.androidcourseshpp.domain.repository.UserRepository
 import com.example.androidcourseshpp.data.source.network.repository.UserRepositoryImpl
 import com.example.androidcourseshpp.domain.repository.AuthRepository
+import com.example.androidcourseshpp.domain.repository.ContactsLocalRepository
 import com.example.androidcourseshpp.domain.repository.UserLocalRepository
 import dagger.Binds
 import dagger.Module
@@ -39,5 +41,9 @@ interface RepositoriesModule {
     @Binds
     @Singleton
     fun bindUserLocalRepository(userRepositoryImpl: UserLocalRepositoryImpl): UserLocalRepository
+
+    @Binds
+    @Singleton
+    fun bindContactsLocalRepository(contactsLocalRepositoryImpl: ContactsLocalRepositoryImpl): ContactsLocalRepository
 
 }

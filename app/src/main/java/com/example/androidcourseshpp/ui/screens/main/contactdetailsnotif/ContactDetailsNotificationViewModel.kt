@@ -1,6 +1,7 @@
 package com.example.androidcourseshpp.ui.screens.main.contactdetailsnotif
 
 import com.example.androidcourseshpp.R
+import com.example.androidcourseshpp.domain.entity.contact.ContactInfo
 import com.example.androidcourseshpp.domain.usecase.contacts.AddContactUseCase
 import com.example.androidcourseshpp.domain.usecase.contacts.DeleteContactUseCase
 import com.example.androidcourseshpp.ui.BaseViewModel
@@ -21,7 +22,7 @@ class ContactDetailsNotificationViewModel @Inject constructor(
         when (event) {
             is ContactDetailsNotificationContract.Event.OnMainActionButtonClicked -> executeMainAction(
                 action = event.action,
-                contactId = event.contactId
+                contactInfo = event.contactInfo
             )
 
             is ContactDetailsNotificationContract.Event.OnArrowBackButtonClicked -> navigateToPreviousScreen()
@@ -32,28 +33,30 @@ class ContactDetailsNotificationViewModel @Inject constructor(
         setEffect(ContactDetailsNotificationContract.Effect.NavigateToPreviousScreen)
     }
 
-    private fun executeMainAction(action: NotificationAction, contactId: Int) {
-        processNetworkExceptions(
+    private fun executeMainAction(action: NotificationAction, contactInfo: ContactInfo) {
+        executeUseCase(
             toExecute = {
                 when (action) {
-                    NotificationAction.ADD_CONTACT -> {
-                        addContactUseCase(contactId)
-                        setEffect(ContactDetailsNotificationContract.Effect.ShowToast(R.string.add_contact_toast_message))
-                    }
-
-                    NotificationAction.DELETE_CONTACT -> {
-                        deleteContactUseCase(contactId)
-                        setEffect(ContactDetailsNotificationContract.Effect.ShowToast(R.string.delete_contact_toast_message))
-                    }
+                    NotificationAction.ADD_CONTACT -> addContactUseCase(contactInfo)
+                    NotificationAction.DELETE_CONTACT -> deleteContactUseCase(contactInfo.id)
                 }
             },
-            processBackendException = {
+            onSuccess = {
+                when (action) {
+                    NotificationAction.ADD_CONTACT ->
+                        setEffect(ContactDetailsNotificationContract.Effect.ShowToast(R.string.add_contact_toast_message))
+
+                    NotificationAction.DELETE_CONTACT ->
+                        setEffect(ContactDetailsNotificationContract.Effect.ShowToast(R.string.delete_contact_toast_message))
+                }
+            },
+            onBackendError = {
                 setEffect(ContactDetailsNotificationContract.Effect.ShowToast(R.string.generic_error))
             },
-            processResponseProcessingException = {
+            onResponseProcessingError = {
                 setEffect(ContactDetailsNotificationContract.Effect.ShowToast(R.string.generic_error))
             },
-            processConnectionException = {
+            onConnectionError = {
                 setEffect(ContactDetailsNotificationContract.Effect.ShowToast(R.string.connection_error))
             },
             finally = { }

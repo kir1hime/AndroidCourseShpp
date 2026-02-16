@@ -1,11 +1,15 @@
 package com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist
 
 
+import android.util.Log
+import androidx.lifecycle.viewModelScope
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.domain.usecase.contacts.AddContactUseCase
 import com.example.androidcourseshpp.domain.usecase.contacts.DeleteContactUseCase
 import com.example.androidcourseshpp.domain.usecase.contacts.DeleteContactsUseCase
 import com.example.androidcourseshpp.domain.usecase.contacts.GetContactsUseCase
+import com.example.androidcourseshpp.domain.usecase.contacts.RefreshContactsUseCase
+import com.example.androidcourseshpp.domain.utils.Result
 import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.model.ContactItem
 import com.example.androidcourseshpp.ui.BaseViewModel
 import com.example.androidcourseshpp.ui.notifications.NotificationAction
@@ -15,7 +19,10 @@ import com.example.androidcourseshpp.ui.utils.isContainsOrderedSequence
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import java.util.Stack
 import javax.inject.Inject
 
@@ -26,7 +33,8 @@ class ContactListViewModel @Inject constructor(
     private val deleteContactUseCase: DeleteContactUseCase,
     private val deleteContactsUseCase: DeleteContactsUseCase,
     private val getContactsUseCase: GetContactsUseCase,
-    private val notificationService: NotificationService
+    private val notificationService: NotificationService,
+    private val refreshContactsUseCase: RefreshContactsUseCase
 ) : BaseViewModel<ContactListContract.Event, ContactListContract.Effect, ContactListContract.UIState>() {
 
     override fun initState() = ContactListContract.UIState(
@@ -51,7 +59,7 @@ class ContactListViewModel @Inject constructor(
             is ContactListContract.Event.OnHideSearchButtonCLicked -> hideSearchBar()
             is ContactListContract.Event.OnSearchButtonClicked -> showSearchBar()
             is ContactListContract.Event.OnArrowBackButtonClicked -> navigateToPreviousScreen()
-            is ContactListContract.Event.LoadContactList -> loadContacts()
+            is ContactListContract.Event.LoadContactList -> refreshContactList()
             is ContactListContract.Event.OnSearchBarTextChanged -> updateFilteredContactListBy(event.input)
             is ContactListContract.Event.ContactItemDeleted -> deleteContactItem(event.contactItem)
             is ContactListContract.Event.OnAddContactClicked -> {
@@ -95,14 +103,20 @@ class ContactListViewModel @Inject constructor(
         _filteredContactList.value = filteredContactList
     }
 
+    private fun refreshContactList() {
+        viewModelScope.launch {
+            refreshContactsUseCase()
+        }
+    }
+
     private fun deleteContactItem(contactItem: ContactItem) {
-        processNetworkExceptions(
+        executeUseCase(
             toExecute = {
                 setState { copy(isProgressBarShowed = true) }
-
                 deleteContactUseCase(contactItem.id)
-                val contactList = getContactsUseCase().map { it.toContactItem() }
 
+            },
+            onSuccess = {
                 setState { copy(contactList = contactList) }
 
                 updateFilteredContactList { list ->
@@ -112,15 +126,14 @@ class ContactListViewModel @Inject constructor(
                     userInfo = contactItem.toContactDetails(),
                     notificationActionId = NotificationAction.DELETE_CONTACT.ordinal
                 )
-
             },
-            processBackendException = {
+            onBackendError = {
                 setEffect(ContactListContract.Effect.ShowToast(R.string.generic_error))
             },
-            processResponseProcessingException = {
+            onResponseProcessingError = {
                 setEffect(ContactListContract.Effect.ShowToast(R.string.generic_error))
             },
-            processConnectionException = {
+            onConnectionError = {
                 setEffect(ContactListContract.Effect.ShowToast(R.string.connection_error))
             },
             finally = { setState { copy(isProgressBarShowed = false) } }
@@ -130,25 +143,24 @@ class ContactListViewModel @Inject constructor(
     }
 
     private fun deleteListOfContactItems(contactItems: List<ContactItem>) {
-        processNetworkExceptions(
+        executeUseCase(
             toExecute = {
                 setState { copy(isProgressBarShowed = true) }
-
-                deleteContactsUseCase(contactItems.map { it.toContactInfo() })
-                val contactList = getContactsUseCase().map { it.toContactItem() }
-
+                deleteContactsUseCase(contactItems.map { it.id })
+            },
+            onSuccess = {
                 setState { copy(contactList = contactList) }
                 updateFilteredContactList { list ->
                     list.removeAll(contactItems)
                 }
             },
-            processBackendException = {
+            onBackendError = {
                 setEffect(ContactListContract.Effect.ShowToast(R.string.generic_error))
             },
-            processResponseProcessingException = {
+            onResponseProcessingError = {
                 setEffect(ContactListContract.Effect.ShowToast(R.string.generic_error))
             },
-            processConnectionException = {
+            onConnectionError = {
                 setEffect(ContactListContract.Effect.ShowToast(R.string.connection_error))
             },
             finally = { setState { copy(isProgressBarShowed = false) } }
@@ -156,13 +168,13 @@ class ContactListViewModel @Inject constructor(
     }
 
     private fun addContactItem(contactItem: ContactItem) {
-        processNetworkExceptions(
+        executeUseCase(
             toExecute = {
                 setState { copy(isProgressBarShowed = true) }
+                addContactUseCase(contactInfo = contactItem.toContactInfo())
 
-                addContactUseCase(contactId = contactItem.id)
-                val contactList = getContactsUseCase().map { it.toContactItem() }
-
+            },
+            onSuccess = {
                 setState { copy(contactList = contactList) }
                 updateFilteredContactList { list ->
                     list.add(contactItem)
@@ -171,56 +183,51 @@ class ContactListViewModel @Inject constructor(
                     userInfo = contactItem.toContactDetails(),
                     notificationActionId = NotificationAction.ADD_CONTACT.ordinal
                 )
+
+                deletedItems.pop()
+                if (!deletedItems.isEmpty()) {
+                    val deletedItem = deletedItems.peek()
+                    setEffect(ContactListContract.Effect.ShowUndoDeletingItemSnackBar(deletedItem))
+                }
             },
-            processBackendException = {
+            onBackendError = {
                 setEffect(ContactListContract.Effect.ShowToast(R.string.generic_error))
             },
-            processResponseProcessingException = {
+            onResponseProcessingError = {
                 setEffect(ContactListContract.Effect.ShowToast(R.string.generic_error))
             },
-            processConnectionException = {
+            onConnectionError = {
                 setEffect(ContactListContract.Effect.ShowToast(R.string.connection_error))
             },
             finally = { setState { copy(isProgressBarShowed = false) } }
         )
-        deletedItems.pop()
-        if (!deletedItems.isEmpty()) {
-            val deletedItem = deletedItems.peek()
-            setEffect(ContactListContract.Effect.ShowUndoDeletingItemSnackBar(deletedItem))
-        }
     }
 
     private fun loadContacts() {
-        processNetworkExceptions(
-            toExecute = {
-                setState {
-                    copy(
-                        isProgressBarShowed = true,
-                        isTryAgainButtonShowed = false,
-                        contactList = emptyList()
-                    )
+        viewModelScope.launch {
+            setState { copy(isProgressBarShowed = true) }
+            getContactsUseCase()
+                .collect { result ->
+                    when (result) {
+                        is Result.Success -> {
+                            val contactList = result.data.map { it.toContactItem() }
+                            setState { copy(contactList = contactList) }
+                            updateFilteredContactList { list ->
+                                list.clear()
+                                list.addAll(contactList)
+                            }
+                            setState { copy(isProgressBarShowed = false) }
+                        }
+
+                        is Result.Error -> {
+                            setState { copy(isTryAgainButtonShowed = true) }
+                            setState { copy(isProgressBarShowed = false) }
+                            setEffect(ContactListContract.Effect.ShowToast(R.string.connection_error))
+                        }
+                    }
                 }
-                val contactList = getContactsUseCase().map { it.toContactItem() }
-                setState { copy(contactList = contactList) }
-                updateFilteredContactList { list ->
-                    list.clear()
-                    list.addAll(contactList)
-                }
-            },
-            processBackendException = {
-                setState { copy(isTryAgainButtonShowed = true) }
-                setEffect(ContactListContract.Effect.ShowToast(R.string.generic_error))
-            },
-            processConnectionException = {
-                setState { copy(isTryAgainButtonShowed = true) }
-                setEffect(ContactListContract.Effect.ShowToast(R.string.generic_error))
-            },
-            processResponseProcessingException = {
-                setState { copy(isTryAgainButtonShowed = true) }
-                setEffect(ContactListContract.Effect.ShowToast(R.string.connection_error))
-            },
-            finally = { setState { copy(isProgressBarShowed = false) } }
-        )
+
+        }
     }
 
     private fun navigateToDetailsScreen(contact: ContactItem) {

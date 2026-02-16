@@ -32,25 +32,26 @@ class SplashViewModel @Inject constructor(
     }
 
     private fun enterToAccount(userServerId: Int) {
-        processNetworkExceptions(
+        executeUseCase(
             toExecute = {
-                val userInfo = getUserInfoUseCase(userServerId).toUserModel()
+                getUserInfoUseCase(userServerId)
 
+
+            },
+            onSuccess = { userInfo ->
                 setEffect(
-                    SplashContract.Effect.NavigateToUserProfileScreen(userInfo)
+                    SplashContract.Effect.NavigateToUserProfileScreen(userInfo.toUserModel())
                 )
-
             },
-            processBackendException = {
+            onBackendError = {
                 setEffect(SplashContract.Effect.NavigateToSignInScreen)
             },
-            processResponseProcessingException = {
+            onResponseProcessingError = {
                 setEffect(SplashContract.Effect.NavigateToSignInScreen)
             },
-            processConnectionException = {
+            onConnectionError = {
                 setEffect(SplashContract.Effect.NavigateToSignInScreen)
-            },
-            finally = { }
+            }
         )
     }
 }

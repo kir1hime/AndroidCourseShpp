@@ -5,6 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.androidcourseshpp.data.source.network.service.BackendException
 import com.example.androidcourseshpp.data.source.network.service.ConnectionException
 import com.example.androidcourseshpp.data.source.network.service.ResponseProcessingException
+import com.example.androidcourseshpp.domain.utils.AppError
+import com.example.androidcourseshpp.domain.utils.Result
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -79,6 +81,33 @@ abstract class BaseViewModel<UIEvent : ViewEvent, UIEffect : ViewEffect, UIState
             } finally {
                 finally.invoke()
             }
+        }
+    }
+
+    protected fun <T> executeUseCase(
+        toExecute: suspend () -> Result<T>,
+        onSuccess: (T) -> Unit,
+        onBackendError: () -> Unit,
+        onConnectionError: () -> Unit,
+        onResponseProcessingError: () -> Unit,
+        onLocalStorageError: () -> Unit = {},
+        finally: () -> Unit = {}
+    ) {
+        viewModelScope.launch {
+            when (val result = toExecute()) {
+                is Result.Success -> {
+                    onSuccess(result.data)
+                }
+
+                is Result.Error ->
+                    when (result.error) {
+                        is AppError.BackendError -> onBackendError()
+                        is AppError.ConnectionError -> onConnectionError()
+                        is AppError.LocalStorageError -> onLocalStorageError()
+                        is AppError.ResponseProcessingError -> onResponseProcessingError()
+                    }
+            }
+            finally()
         }
     }
 }

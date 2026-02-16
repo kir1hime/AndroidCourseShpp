@@ -7,11 +7,12 @@ import kotlinx.coroutines.flow.Flow
 interface ContactsLocalRepository {
     suspend fun addContact(contact: ContactInfo): Result<Unit>
     suspend fun addContacts(contacts: List<ContactInfo>): Result<Unit>
-    fun getContacts(): Flow<List<ContactInfo>>
+    fun getContacts(): Flow<Result<List<ContactInfo>>>
     suspend fun getContactById(id: Int): Result<ContactInfo?>
     suspend fun deleteContactById(id: Int): Result<Unit>
     suspend fun clearContacts(): Result<Unit>
     suspend fun deleteContactsByIds(ids: List<Int>): Result<Unit>
     fun isDataValid(): Boolean
     fun setDataValidity(isDataValid: Boolean)
+    suspend fun refreshContactList()
 }

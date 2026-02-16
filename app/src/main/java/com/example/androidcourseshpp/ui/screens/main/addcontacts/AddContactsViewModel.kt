@@ -94,33 +94,30 @@ class AddContactsViewModel @Inject constructor(
         interruptSuccessLoading: () -> Unit,
         interruptFailureLoading: () -> Unit
     ) {
-
-        processNetworkExceptions(
+        executeUseCase(
             toExecute = {
-                addContactUseCase(userInfo.id)
-
+                addContactUseCase(userInfo.toContactInfo())
+            },
+            onSuccess = {
                 setState { copy(isContactListChanged = true) }
-
                 interruptSuccessLoading()
-
                 notificationService.showContactAddedNotification(
                     userInfo = userInfo,
                     notificationActionId = NotificationAction.ADD_CONTACT.ordinal
                 )
             },
-            processBackendException = {
+            onBackendError = {
                 setEffect(AddContactsContract.Effect.ShowToast(R.string.generic_error))
                 interruptFailureLoading()
             },
-            processConnectionException = {
+            onConnectionError = {
                 setEffect(AddContactsContract.Effect.ShowToast(R.string.generic_error))
                 interruptFailureLoading()
             },
-            processResponseProcessingException = {
+            onResponseProcessingError = {
                 setEffect(AddContactsContract.Effect.ShowToast(R.string.connection_error))
                 interruptFailureLoading()
             },
-            finally = { }
         )
     }
 
@@ -129,7 +126,7 @@ class AddContactsViewModel @Inject constructor(
     }
 
     private fun loadUsers() {
-        processNetworkExceptions(
+        executeUseCase(
             toExecute = {
                 setState {
                     copy(
@@ -138,27 +135,25 @@ class AddContactsViewModel @Inject constructor(
                         userList = emptyList()
                     )
                 }
-                val userList = getUsersUseCase().map { it.toUserItem() }
-
-                setState { copy(userList = userList) }
+                getUsersUseCase()
             },
-            processBackendException =
-                {
-                    setState { copy(isTryAgainButtonShowed = true) }
-                    setEffect(AddContactsContract.Effect.ShowToast(R.string.generic_error))
-                },
-            processConnectionException =
-                {
-                    setState { copy(isTryAgainButtonShowed = true) }
-                    setEffect(AddContactsContract.Effect.ShowToast(R.string.generic_error))
-                },
-            processResponseProcessingException =
-                {
-                    setState { copy(isTryAgainButtonShowed = true) }
-                    setEffect(AddContactsContract.Effect.ShowToast(R.string.connection_error))
-                },
-            finally =
-                { setState { copy(isProgressBarShowed = false) } }
+            onSuccess = { userList ->
+                setState { copy(userList = userList.map { it.toUserItem() }) }
+            },
+            onBackendError = {
+                setState { copy(isTryAgainButtonShowed = true) }
+                setEffect(AddContactsContract.Effect.ShowToast(R.string.generic_error))
+            },
+            onConnectionError = {
+                setState { copy(isTryAgainButtonShowed = true) }
+                setEffect(AddContactsContract.Effect.ShowToast(R.string.generic_error))
+            },
+            onResponseProcessingError = {
+                setState { copy(isTryAgainButtonShowed = true) }
+                setEffect(AddContactsContract.Effect.ShowToast(R.string.connection_error))
+            },
+            finally = { setState { copy(isProgressBarShowed = false) } }
         )
+
     }
 }

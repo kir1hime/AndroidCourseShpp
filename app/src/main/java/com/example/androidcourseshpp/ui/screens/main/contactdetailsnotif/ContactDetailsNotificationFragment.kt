@@ -48,7 +48,7 @@ class ContactDetailsNotificationFragment :
         }
     }
 
-    override fun setObservers() = with(binding) {
+    override fun setObservers()  {
         collectFlow(viewModel.effect) { effect ->
             when (effect) {
                 is ContactDetailsNotificationContract.Effect.NavigateToPreviousScreen -> requireActivity().onNavigateUp()

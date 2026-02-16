@@ -9,11 +9,6 @@ import javax.inject.Singleton
 @Singleton
 class GetGalleryPhotosUseCase @Inject constructor(private val galleryRepository: GalleryRepository) {
 
-    operator fun invoke(): Flow<List<GalleryItemInfo>> {
-        val photos: Flow<List<GalleryItemInfo>> =
-            galleryRepository.galleryPhotos
-
-        return photos
-    }
+    operator fun invoke(): Flow<List<GalleryItemInfo>> = galleryRepository.galleryPhotos
 
 }
