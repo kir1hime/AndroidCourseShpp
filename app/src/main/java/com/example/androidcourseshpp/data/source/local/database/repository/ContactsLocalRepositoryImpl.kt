@@ -3,26 +3,22 @@ package com.example.androidcourseshpp.data.source.local.database.repository
 import com.example.androidcourseshpp.data.source.local.database.dao.ContactsDao
 import com.example.androidcourseshpp.data.source.local.database.dbentity.ContactDbEntity
 import com.example.androidcourseshpp.data.source.local.database.utils.wrapSQLiteException
-import com.example.androidcourseshpp.data.source.local.userdata.DatabaseValidityProvider
+import com.example.androidcourseshpp.data.source.local.userdata.DatabaseSyncProvider
 import com.example.androidcourseshpp.domain.entity.contact.ContactInfo
 import com.example.androidcourseshpp.domain.repository.ContactsLocalRepository
 import com.example.androidcourseshpp.domain.utils.AppError
 import com.example.androidcourseshpp.domain.utils.Result
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onStart
 import javax.inject.Inject
 
 class ContactsLocalRepositoryImpl @Inject constructor(
     private val contactsDao: ContactsDao,
-    private val databaseValidityProvider: DatabaseValidityProvider
+    private val databaseSyncProvider: DatabaseSyncProvider
 ) : ContactsLocalRepository {
 
-    private val contactListRefreshingTrigger = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
 
     override suspend fun addContact(contact: ContactInfo) = wrapSQLiteException {
         contactsDao.addContact(ContactDbEntity.fromContactInfo(contact))
@@ -36,15 +32,11 @@ class ContactsLocalRepositoryImpl @Inject constructor(
         )
     }
 
-
     @OptIn(ExperimentalCoroutinesApi::class)
     override fun getContacts(): Flow<Result<List<ContactInfo>>> =
-        contactListRefreshingTrigger.onStart { emit(Unit) }
-            .flatMapLatest {
-                contactsDao.getContacts()
-                    .map { list -> Result.Success(list.map { it.toContactInfo() }) }
-                    .catch { Result.Error(AppError.LocalStorageError) }
-            }
+        contactsDao.getContacts()
+            .map { list -> Result.Success(list.map { it.toContactInfo() }) }
+            .catch { Result.Error(AppError.LocalStorageError) }
 
 
     override suspend fun getContactById(id: Int): Result<ContactInfo?> = wrapSQLiteException {
@@ -63,13 +55,9 @@ class ContactsLocalRepositoryImpl @Inject constructor(
         contactsDao.deleteContactsByIds(ids)
     }
 
-    override fun isDataValid() = databaseValidityProvider.isDataValid()
+    override fun isDatabaseSynced() = databaseSyncProvider.isDatabaseSynced()
 
-    override fun setDataValidity(isDataValid: Boolean) {
-        databaseValidityProvider.setDataValidity(isDataValid())
-    }
-
-    override suspend fun refreshContactList() {
-        contactListRefreshingTrigger.emit(Unit)
+    override fun setDatabaseSynced(isSynced: Boolean) {
+        databaseSyncProvider.markDatabaseAsSynced(isSynced)
     }
 }

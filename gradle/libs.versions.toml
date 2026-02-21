@@ -1,44 +1,39 @@
 [versions]
-agp = "8.13.1"
+agp = "8.9.1"
 circleimageview = "3.1.0"
 coil = "2.7.0"
-fragmentKtx = "1.8.8"
+fragmentKtx = "1.8.9"
 # logical parts
-fragmentKtxVersion = "1.8.8"
-glide = "4.16.0" # image loader
+glide = "5.0.5" # image loader
 javafaker = "1.0.2" # test data
 # DI
 hilt = "2.56.2"
-ksp = "2.1.20-1.0.31"
+ksp = "2.2.0-2.0.2"
 # Network
 gson = "2.13.2"
-okhttp = "5.2.1"
+okhttp = "5.3.2"
 retrofit = "3.0.0"
 # BD
-room = "2.8.4"
+room = "2.7.1"
 # ________________
-kotlin = "2.1.20"
-coreKtx = "1.16.0"
+kotlin = "2.2.0"
+coreKtx = "1.17.0"
 junit = "4.13.2"
 junitVersion = "1.3.0"
 espressoCore = "3.7.0"
 appcompat = "1.7.1"
-material = "1.12.0"
-activity = "1.10.1"
+material = "1.13.0"
+activity = "1.12.4"
 constraintlayout = "2.2.1"
-navigationUiKtx = "2.9.0"
-roomCompilerProcessingTesting = "2.7.2"
-
-navigationFragmentKtx = "2.9.6"
-navigationUiKtxVersion = "2.9.6"
+navigationUiKtx = "2.9.7"
+roomCompilerProcessingTesting = "2.8.4"
+navigationUiKtxVersion = "2.9.7"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-fragment-ktx = { module = "androidx.fragment:fragment-ktx", version.ref = "fragmentKtx" }
-androidx-fragment-ktx-v188 = { module = "androidx.fragment:fragment-ktx", version.ref = "fragmentKtxVersion" }
 androidx-navigation-fragment-ktx = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigationUiKtx" }
 androidx-navigation-safe-args-gradle-plugin = { module = "androidx.navigation:navigation-safe-args-gradle-plugin", version.ref = "navigationUiKtx" }
-androidx-navigation-ui-ktx = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigationUiKtx" }
 circleimageview = { module = "de.hdodenhof:circleimageview", version.ref = "circleimageview" }
 coil = { module = "io.coil-kt:coil", version.ref = "coil" }
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
@@ -57,7 +52,6 @@ retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = 
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
 retrofit-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
-navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigationFragmentKtx" }
 navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigationUiKtxVersion" }
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 androidx-room-compiler-processing-testing = { group = "androidx.room", name = "room-compiler-processing-testing", version.ref = "roomCompilerProcessingTesting" }
@@ -71,6 +65,5 @@ android-navigation-safeargs = { id = "androidx.navigation.safeargs.kotlin", vers
 kotlin-parcelize = { id = "kotlin-parcelize" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
-kapt = { id = "kotlin-kapt" }
 
 

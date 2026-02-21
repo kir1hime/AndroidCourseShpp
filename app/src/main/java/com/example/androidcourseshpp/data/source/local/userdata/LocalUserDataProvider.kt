@@ -8,14 +8,13 @@ const val USER_INFO_STORE = "userInfo"
 const val USER_AVATAR_URL = "userAvatar"
 const val USER_SERVER_ID = "userServerId"
 const val USER_PHOTOS = "userPhotos"
-const val DB_DATA_VALIDITY = "databaseValidity"
+const val DATABASE_SYNC = "databaseSync"
 const val DEFAULT_ID_VALUE: Int = -1
 const val DEFAULT_AVATAR_VALUE = ""
-const val DEFAULT_DB_DATA_VALUE = false
 
 
 class LocalDataProvider @Inject constructor(@param:DataProviderPref private val sharedPref: SharedPreferences) :
-    UserDataProvider, GalleryDataProvider, DatabaseValidityProvider {
+    UserDataProvider, GalleryDataProvider, DatabaseSyncProvider {
 
     private val editor = sharedPref.edit()
 
@@ -52,11 +51,10 @@ class LocalDataProvider @Inject constructor(@param:DataProviderPref private val 
         editor.putStringSet(USER_PHOTOS, emptySet<String>())
     }
 
-    override fun isDataValid(): Boolean =
-        sharedPref.getBoolean(DB_DATA_VALIDITY, DEFAULT_DB_DATA_VALUE)
+    override fun isDatabaseSynced() =
+        sharedPref.getBoolean(DATABASE_SYNC, false)
 
-
-    override fun setDataValidity(isDataValid: Boolean) {
-      editor.putBoolean(DB_DATA_VALIDITY, isDataValid).apply()
+    override fun markDatabaseAsSynced(isSynced: Boolean) {
+        editor.putBoolean(DATABASE_SYNC, isSynced).apply()
     }
 }

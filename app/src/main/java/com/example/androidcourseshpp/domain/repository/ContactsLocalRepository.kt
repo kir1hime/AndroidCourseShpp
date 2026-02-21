@@ -12,7 +12,7 @@ interface ContactsLocalRepository {
     suspend fun deleteContactById(id: Int): Result<Unit>
     suspend fun clearContacts(): Result<Unit>
     suspend fun deleteContactsByIds(ids: List<Int>): Result<Unit>
-    fun isDataValid(): Boolean
-    fun setDataValidity(isDataValid: Boolean)
-    suspend fun refreshContactList()
+
+    fun isDatabaseSynced(): Boolean
+    fun setDatabaseSynced(isSynced: Boolean)
 }

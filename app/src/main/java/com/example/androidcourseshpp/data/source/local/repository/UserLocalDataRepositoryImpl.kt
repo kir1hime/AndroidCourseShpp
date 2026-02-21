@@ -1,12 +1,12 @@
 package com.example.androidcourseshpp.data.source.local.repository
 
 import com.example.androidcourseshpp.data.source.local.userdata.UserDataProvider
-import com.example.androidcourseshpp.domain.repository.UserLocalRepository
+import com.example.androidcourseshpp.domain.repository.UserLocalDataRepository
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class UserLocalRepositoryImpl @Inject constructor(private val userDataProvider: UserDataProvider) : UserLocalRepository {
+class UserLocalDataRepositoryImpl @Inject constructor(private val userDataProvider: UserDataProvider) : UserLocalDataRepository {
     override fun saveUserServerId(userServerId: Int) {
         userDataProvider.saveUserServerId(userServerId)
     }

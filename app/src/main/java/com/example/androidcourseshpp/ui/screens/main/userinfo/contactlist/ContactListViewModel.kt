@@ -7,7 +7,6 @@ import com.example.androidcourseshpp.domain.usecase.contacts.AddContactUseCase
 import com.example.androidcourseshpp.domain.usecase.contacts.DeleteContactUseCase
 import com.example.androidcourseshpp.domain.usecase.contacts.DeleteContactsUseCase
 import com.example.androidcourseshpp.domain.usecase.contacts.GetContactsUseCase
-import com.example.androidcourseshpp.domain.usecase.contacts.RefreshContactsUseCase
 import com.example.androidcourseshpp.domain.utils.Result
 import com.example.androidcourseshpp.ui.BaseViewModel
 import com.example.androidcourseshpp.ui.notifications.NotificationAction
@@ -30,8 +29,7 @@ class ContactListViewModel @Inject constructor(
     private val deleteContactUseCase: DeleteContactUseCase,
     private val deleteContactsUseCase: DeleteContactsUseCase,
     private val getContactsUseCase: GetContactsUseCase,
-    private val notificationService: NotificationService,
-    private val refreshContactsUseCase: RefreshContactsUseCase
+    private val notificationService: NotificationService
 ) : BaseViewModel<ContactListContract.Event, ContactListContract.Effect, ContactListContract.UIState>() {
 
     override fun initState() = ContactListContract.UIState(
@@ -56,7 +54,7 @@ class ContactListViewModel @Inject constructor(
             is ContactListContract.Event.OnHideSearchButtonCLicked -> hideSearchBar()
             is ContactListContract.Event.OnSearchButtonClicked -> showSearchBar()
             is ContactListContract.Event.OnArrowBackButtonClicked -> navigateToPreviousScreen()
-            is ContactListContract.Event.LoadContactList -> refreshContactList()
+            is ContactListContract.Event.LoadContactList -> loadContacts()
             is ContactListContract.Event.OnSearchBarTextChanged -> updateFilteredContactListBy(event.input)
             is ContactListContract.Event.ContactItemDeleted -> deleteContactItem(event.contactItem)
             is ContactListContract.Event.OnAddContactClicked -> {
@@ -98,12 +96,6 @@ class ContactListViewModel @Inject constructor(
             }
         }
         _filteredContactList.value = filteredContactList
-    }
-
-    private fun refreshContactList() {
-        viewModelScope.launch {
-            refreshContactsUseCase()
-        }
     }
 
     private fun deleteContactItem(contactItem: ContactItem) {

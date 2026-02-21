@@ -2,6 +2,7 @@ package com.example.androidcourseshpp.data.source.local.database.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.androidcourseshpp.data.source.local.database.dbentity.ContactDbEntity
 import kotlinx.coroutines.flow.Flow
@@ -12,7 +13,7 @@ interface ContactsDao {
     @Insert
     suspend fun addContact(contactDbEntity: ContactDbEntity)
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addContacts(contactDbEntities: List<ContactDbEntity>)
 
     @Query("SELECT * FROM contacts")

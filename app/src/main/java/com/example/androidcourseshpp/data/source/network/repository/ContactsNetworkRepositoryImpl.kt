@@ -5,18 +5,14 @@ import com.example.androidcourseshpp.data.source.network.model.contacts.ContactD
 import com.example.androidcourseshpp.data.source.network.service.ServicesProvider
 import com.example.androidcourseshpp.data.source.network.utils.wrapNetworkExceptions
 import com.example.androidcourseshpp.domain.entity.contact.ContactInfo
-import com.example.androidcourseshpp.domain.repository.ContactsRepository
+import com.example.androidcourseshpp.domain.repository.ContactsNetworkRepository
 import com.example.androidcourseshpp.domain.utils.Result
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class ContactsRepositoryImpl @Inject constructor(
+class ContactsNetworkRepositoryImpl @Inject constructor(
     private val servicesProvider: ServicesProvider,
     private val userDataProvider: UserDataProvider
-) : ContactsRepository {
+) : ContactsNetworkRepository {
 
 
     override suspend fun addContact(contactId: Int) = wrapNetworkExceptions {

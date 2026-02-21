@@ -1,6 +1,6 @@
 package com.example.androidcourseshpp.domain.repository
 
-interface UserLocalRepository {
+interface UserLocalDataRepository {
     fun saveUserServerId(userServerId: Int)
     fun getUserServerId(): Int
     fun clearUserServerId()
