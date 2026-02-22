@@ -10,6 +10,6 @@ class DeleteContactUseCase @Inject constructor(
     private val contactsLocalRepository: ContactsLocalRepository
 ) {
     suspend operator fun invoke(contactId: Int): Result<Unit> {
-        return contactsLocalRepository.deleteContactById(contactId)
+        return contactsLocalRepository.markContactAsDeleted(contactId)
     }
 }

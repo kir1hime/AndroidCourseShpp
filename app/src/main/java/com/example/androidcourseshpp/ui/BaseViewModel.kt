@@ -61,10 +61,10 @@ abstract class BaseViewModel<UIEvent : ViewEvent, UIEffect : ViewEffect, UIState
 
     protected fun <T> executeUseCase(
         toExecute: suspend () -> Result<T>,
-        onSuccess: (T) -> Unit,
-        onBackendError: () -> Unit,
-        onConnectionError: () -> Unit,
-        onResponseProcessingError: () -> Unit,
+        onSuccess: (T) -> Unit = {},
+        onBackendError: () -> Unit = {},
+        onConnectionError: () -> Unit = {},
+        onResponseProcessingError: () -> Unit = {},
         onLocalStorageError: () -> Unit = {},
         finally: () -> Unit = {}
     ) {

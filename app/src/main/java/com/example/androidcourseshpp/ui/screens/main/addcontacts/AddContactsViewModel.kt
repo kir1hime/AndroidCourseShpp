@@ -2,11 +2,11 @@ package com.example.androidcourseshpp.ui.screens.main.addcontacts
 
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.domain.usecase.contacts.AddContactUseCase
-import com.example.androidcourseshpp.ui.screens.main.addcontacts.model.UserItem
 import com.example.androidcourseshpp.domain.usecase.user.GetUsersUseCase
 import com.example.androidcourseshpp.ui.BaseViewModel
 import com.example.androidcourseshpp.ui.notifications.NotificationAction
 import com.example.androidcourseshpp.ui.notifications.NotificationService
+import com.example.androidcourseshpp.ui.screens.main.addcontacts.model.UserItem
 import com.example.androidcourseshpp.ui.screens.main.addcontacts.model.toUserItem
 import com.example.androidcourseshpp.ui.screens.model.ContactDetailsModel
 import com.example.androidcourseshpp.ui.utils.isContainsOrderedSequence
@@ -106,18 +106,10 @@ class AddContactsViewModel @Inject constructor(
                     notificationActionId = NotificationAction.ADD_CONTACT.ordinal
                 )
             },
-            onBackendError = {
+            onLocalStorageError = {
                 setEffect(AddContactsContract.Effect.ShowToast(R.string.generic_error))
                 interruptFailureLoading()
-            },
-            onConnectionError = {
-                setEffect(AddContactsContract.Effect.ShowToast(R.string.generic_error))
-                interruptFailureLoading()
-            },
-            onResponseProcessingError = {
-                setEffect(AddContactsContract.Effect.ShowToast(R.string.connection_error))
-                interruptFailureLoading()
-            },
+            }
         )
     }
 

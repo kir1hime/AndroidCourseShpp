@@ -2,6 +2,7 @@ package com.example.androidcourseshpp.data.source.local.database.repository
 
 import com.example.androidcourseshpp.data.source.local.database.dao.ContactsDao
 import com.example.androidcourseshpp.data.source.local.database.dbentity.ContactDbEntity
+import com.example.androidcourseshpp.data.source.local.database.utils.SyncState
 import com.example.androidcourseshpp.data.source.local.database.utils.wrapSQLiteException
 import com.example.androidcourseshpp.data.source.local.userdata.DatabaseSyncProvider
 import com.example.androidcourseshpp.domain.entity.contact.ContactInfo
@@ -62,7 +63,11 @@ class ContactsLocalRepositoryImpl @Inject constructor(
         databaseSyncProvider.markDatabaseAsSynced(isSynced)
     }
 
-    override suspend fun markContactAsDeleted(contact: ContactInfo) {
-        contactsDao.markContactAsDeleted(contactDbEntity = ContactDbEntity.fromContactInfo(contact))
+    override suspend fun markContactAsDeleted(contactId: Int) = wrapSQLiteException {
+        contactsDao.setContactSync(id = contactId, syncState = SyncState.DELETED)
+    }
+
+    override suspend fun markContactAsAdded(contactId: Int) = wrapSQLiteException {
+        contactsDao.setContactSync(id = contactId, syncState = SyncState.ADDED)
     }
 }

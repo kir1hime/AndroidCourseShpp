@@ -50,14 +50,8 @@ class ContactDetailsNotificationViewModel @Inject constructor(
                         setEffect(ContactDetailsNotificationContract.Effect.ShowToast(R.string.delete_contact_toast_message))
                 }
             },
-            onBackendError = {
+            onLocalStorageError = {
                 setEffect(ContactDetailsNotificationContract.Effect.ShowToast(R.string.generic_error))
-            },
-            onResponseProcessingError = {
-                setEffect(ContactDetailsNotificationContract.Effect.ShowToast(R.string.generic_error))
-            },
-            onConnectionError = {
-                setEffect(ContactDetailsNotificationContract.Effect.ShowToast(R.string.connection_error))
             },
             finally = { }
         )

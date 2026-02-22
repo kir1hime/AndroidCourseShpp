@@ -4,7 +4,6 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.androidcourseshpp.data.source.local.database.utils.SyncState
-import com.example.androidcourseshpp.data.source.local.database.utils.fromSyncAction
 import com.example.androidcourseshpp.data.source.local.database.utils.toSyncAction
 import com.example.androidcourseshpp.domain.entity.contact.ContactInfo
 import com.example.androidcourseshpp.domain.entity.contact.SyncContactInfo
@@ -35,18 +34,6 @@ data class ContactDbEntity(
     )
 
     companion object {
-        fun fromSyncContactInfo(contact: SyncContactInfo) =
-            with(contact.contactInfo) {
-                ContactDbEntity(
-                    id = id,
-                    name = name,
-                    career = career,
-                    avatarURL = avatarURL,
-                    address = address,
-                    syncState = contact.syncState.fromSyncAction()
-                )
-            }
-
         fun fromContactInfo(contact: ContactInfo) =
             ContactDbEntity(
                 id = contact.id,

@@ -11,6 +11,13 @@ class AddContactUseCase @Inject constructor(
     private val contactsLocalRepository: ContactsLocalRepository
 ) {
     suspend operator fun invoke(contactInfo: ContactInfo): Result<Unit> {
-        return contactsLocalRepository.addContact(contactInfo)
+
+        val result = contactsLocalRepository.getContactById(contactInfo.id)
+
+        return if (result is Result.Success && result.data != null) {
+            contactsLocalRepository.markContactAsAdded(contactInfo.id)
+        } else {
+            contactsLocalRepository.addContact(contactInfo)
+        }
     }
 }

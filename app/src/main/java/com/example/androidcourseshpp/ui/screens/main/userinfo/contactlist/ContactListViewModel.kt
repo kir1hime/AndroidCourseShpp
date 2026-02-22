@@ -3,6 +3,7 @@ package com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist
 
 import androidx.lifecycle.viewModelScope
 import com.example.androidcourseshpp.R
+import com.example.androidcourseshpp.domain.entity.contact.SyncAction
 import com.example.androidcourseshpp.domain.usecase.contacts.AddContactUseCase
 import com.example.androidcourseshpp.domain.usecase.contacts.DeleteContactUseCase
 import com.example.androidcourseshpp.domain.usecase.contacts.DeleteContactsUseCase
@@ -116,14 +117,8 @@ class ContactListViewModel @Inject constructor(
                     notificationActionId = NotificationAction.DELETE_CONTACT.ordinal
                 )
             },
-            onBackendError = {
+            onLocalStorageError = {
                 setEffect(ContactListContract.Effect.ShowToast(R.string.generic_error))
-            },
-            onResponseProcessingError = {
-                setEffect(ContactListContract.Effect.ShowToast(R.string.generic_error))
-            },
-            onConnectionError = {
-                setEffect(ContactListContract.Effect.ShowToast(R.string.connection_error))
             },
             finally = { setState { copy(isProgressBarShowed = false) } }
         )
@@ -143,14 +138,8 @@ class ContactListViewModel @Inject constructor(
                     list.removeAll(contactItems)
                 }
             },
-            onBackendError = {
+            onLocalStorageError = {
                 setEffect(ContactListContract.Effect.ShowToast(R.string.generic_error))
-            },
-            onResponseProcessingError = {
-                setEffect(ContactListContract.Effect.ShowToast(R.string.generic_error))
-            },
-            onConnectionError = {
-                setEffect(ContactListContract.Effect.ShowToast(R.string.connection_error))
             },
             finally = { setState { copy(isProgressBarShowed = false) } }
         )
@@ -179,14 +168,8 @@ class ContactListViewModel @Inject constructor(
                     setEffect(ContactListContract.Effect.ShowUndoDeletingItemSnackBar(deletedItem))
                 }
             },
-            onBackendError = {
+            onLocalStorageError = {
                 setEffect(ContactListContract.Effect.ShowToast(R.string.generic_error))
-            },
-            onResponseProcessingError = {
-                setEffect(ContactListContract.Effect.ShowToast(R.string.generic_error))
-            },
-            onConnectionError = {
-                setEffect(ContactListContract.Effect.ShowToast(R.string.connection_error))
             },
             finally = { setState { copy(isProgressBarShowed = false) } }
         )
@@ -200,21 +183,23 @@ class ContactListViewModel @Inject constructor(
                     when (result) {
                         is Result.Success -> {
                             val contactList =
-                                result.data.map { syncContact -> syncContact.contactInfo.toContactItem() }
+                                result.data.filter { syncContact -> syncContact.syncState != SyncAction.DELETED }
+                                    .map { syncContact -> syncContact.contactInfo.toContactItem() }
+
                             setState { copy(contactList = contactList) }
+
                             updateFilteredContactList { list ->
                                 list.clear()
                                 list.addAll(contactList)
                             }
-                            setState { copy(isProgressBarShowed = false) }
                         }
 
                         is Result.Error -> {
                             setState { copy(isTryAgainButtonShowed = true) }
-                            setState { copy(isProgressBarShowed = false) }
-                            setEffect(ContactListContract.Effect.ShowToast(R.string.connection_error))
+                            setEffect(ContactListContract.Effect.ShowToast(R.string.generic_error))
                         }
                     }
+                    setState { copy(isProgressBarShowed = false) }
                 }
 
         }
