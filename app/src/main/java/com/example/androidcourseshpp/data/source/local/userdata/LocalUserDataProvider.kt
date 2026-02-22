@@ -48,7 +48,7 @@ class LocalDataProvider @Inject constructor(@param:DataProviderPref private val 
         sharedPref.getStringSet(USER_PHOTOS, emptySet<String>()) ?: emptySet<String>()
 
     override fun clearGalleryPhotos() {
-        editor.putStringSet(USER_PHOTOS, emptySet<String>())
+        editor.putStringSet(USER_PHOTOS, emptySet<String>()).apply()
     }
 
     override fun isDatabaseSynced() =

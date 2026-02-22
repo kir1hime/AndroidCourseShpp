@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import com.example.androidcourseshpp.data.source.local.database.dbentity.ContactDbEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -30,4 +31,8 @@ interface ContactsDao {
 
     @Query("DELETE FROM contacts WHERE id IN (:ids)")
     suspend fun deleteContactsByIds(ids: List<Int>)
+
+    @Update
+    suspend fun markContactAsDeleted(contactDbEntity: ContactDbEntity)
+
 }

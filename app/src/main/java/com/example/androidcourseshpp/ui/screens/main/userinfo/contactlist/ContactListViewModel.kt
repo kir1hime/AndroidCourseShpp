@@ -199,7 +199,8 @@ class ContactListViewModel @Inject constructor(
                 .collect { result ->
                     when (result) {
                         is Result.Success -> {
-                            val contactList = result.data.map { it.toContactItem() }
+                            val contactList =
+                                result.data.map { syncContact -> syncContact.contactInfo.toContactItem() }
                             setState { copy(contactList = contactList) }
                             updateFilteredContactList { list ->
                                 list.clear()

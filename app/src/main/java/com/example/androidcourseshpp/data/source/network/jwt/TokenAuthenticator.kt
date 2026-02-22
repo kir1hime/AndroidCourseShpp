@@ -1,6 +1,10 @@
 package com.example.androidcourseshpp.data.source.network.jwt
 
 import com.example.androidcourseshpp.data.source.network.api.auth.TokenRefreshAPI
+import com.example.androidcourseshpp.domain.repository.ContactsLocalRepository
+import com.example.androidcourseshpp.domain.repository.GalleryRepository
+import com.example.androidcourseshpp.domain.repository.UserLocalDataRepository
+import kotlinx.coroutines.runBlocking
 import okhttp3.Authenticator
 import okhttp3.Request
 import okhttp3.Response
@@ -8,7 +12,10 @@ import okhttp3.Route
 
 class TokenAuthenticator(
     private val tokenRefreshAPI: TokenRefreshAPI,
-    private val jwtManager: JWTManager
+    private val jwtManager: JWTManager,
+    private val userLocalDataRepository: UserLocalDataRepository,
+    private val galleryRepository: GalleryRepository,
+    private val contactsLocalRepository: ContactsLocalRepository
 ) : Authenticator {
 
     private val lock = Any()
@@ -33,6 +40,13 @@ class TokenAuthenticator(
 
             if (!newTokensResponse.isSuccessful) {
                 jwtManager.clearTokens()
+                runBlocking {
+                    userLocalDataRepository.clearUserServerId()
+                    userLocalDataRepository.clearUserAvatarUrl()
+                    galleryRepository.clearGalleryPhotos()
+                    contactsLocalRepository.clearContacts()
+                }
+
                 return null
             }
             val newTokens = newTokensResponse.body()?.data ?: return null

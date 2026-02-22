@@ -3,7 +3,11 @@ package com.example.androidcourseshpp.data.source.local.database.dbentity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.androidcourseshpp.data.source.local.database.utils.SyncState
+import com.example.androidcourseshpp.data.source.local.database.utils.fromSyncAction
+import com.example.androidcourseshpp.data.source.local.database.utils.toSyncAction
 import com.example.androidcourseshpp.domain.entity.contact.ContactInfo
+import com.example.androidcourseshpp.domain.entity.contact.SyncContactInfo
 
 @Entity(
     tableName = "contacts"
@@ -13,25 +17,44 @@ data class ContactDbEntity(
     val name: String,
     val career: String,
     val address: String,
+    @ColumnInfo("sync_state") val syncState: SyncState = SyncState.SYNCED,
     @ColumnInfo("avatar_url") val avatarURL: String
 ) {
-    fun toContactInfo() =
-        ContactInfo(
-            id = id,
-            name = name,
-            career = career,
-            avatarURL = avatarURL,
-            address = address
+    fun toSyncContactInfo() =
+        SyncContactInfo(
+            contactInfo = this.toContactInfo(),
+            syncState = syncState.toSyncAction()
         )
 
+    fun toContactInfo() = ContactInfo(
+        id = id,
+        name = name,
+        career = career,
+        avatarURL = avatarURL,
+        address = address
+    )
+
     companion object {
+        fun fromSyncContactInfo(contact: SyncContactInfo) =
+            with(contact.contactInfo) {
+                ContactDbEntity(
+                    id = id,
+                    name = name,
+                    career = career,
+                    avatarURL = avatarURL,
+                    address = address,
+                    syncState = contact.syncState.fromSyncAction()
+                )
+            }
+
         fun fromContactInfo(contact: ContactInfo) =
             ContactDbEntity(
                 id = contact.id,
                 name = contact.name,
                 career = contact.career,
                 avatarURL = contact.avatarURL,
-                address = contact.address
+                address = contact.address,
+                syncState = SyncState.ADDED
             )
     }
 }

@@ -5,6 +5,7 @@ import com.example.androidcourseshpp.data.source.local.database.dbentity.Contact
 import com.example.androidcourseshpp.data.source.local.database.utils.wrapSQLiteException
 import com.example.androidcourseshpp.data.source.local.userdata.DatabaseSyncProvider
 import com.example.androidcourseshpp.domain.entity.contact.ContactInfo
+import com.example.androidcourseshpp.domain.entity.contact.SyncContactInfo
 import com.example.androidcourseshpp.domain.repository.ContactsLocalRepository
 import com.example.androidcourseshpp.domain.utils.AppError
 import com.example.androidcourseshpp.domain.utils.Result
@@ -33,9 +34,9 @@ class ContactsLocalRepositoryImpl @Inject constructor(
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    override fun getContacts(): Flow<Result<List<ContactInfo>>> =
+    override fun getContacts(): Flow<Result<List<SyncContactInfo>>> =
         contactsDao.getContacts()
-            .map { list -> Result.Success(list.map { it.toContactInfo() }) }
+            .map { list -> Result.Success(list.map { it.toSyncContactInfo() }) }
             .catch { Result.Error(AppError.LocalStorageError) }
 
 
@@ -59,5 +60,9 @@ class ContactsLocalRepositoryImpl @Inject constructor(
 
     override fun setDatabaseSynced(isSynced: Boolean) {
         databaseSyncProvider.markDatabaseAsSynced(isSynced)
+    }
+
+    override suspend fun markContactAsDeleted(contact: ContactInfo) {
+        contactsDao.markContactAsDeleted(contactDbEntity = ContactDbEntity.fromContactInfo(contact))
     }
 }

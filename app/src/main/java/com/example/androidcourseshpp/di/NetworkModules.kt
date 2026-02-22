@@ -1,16 +1,19 @@
 package com.example.androidcourseshpp.di
 
-import com.example.androidcourseshpp.data.source.network.service.RetrofitServicesProvider
-import com.example.androidcourseshpp.data.source.network.service.ServicesProvider
+import com.example.androidcourseshpp.data.source.network.api.auth.TokenRefreshAPI
 import com.example.androidcourseshpp.data.source.network.jwt.JWTManager
 import com.example.androidcourseshpp.data.source.network.jwt.TokenAuthenticator
+import com.example.androidcourseshpp.data.source.network.service.RetrofitServicesProvider
+import com.example.androidcourseshpp.data.source.network.service.ServicesProvider
 import com.example.androidcourseshpp.data.source.network.service.auth.AuthService
 import com.example.androidcourseshpp.data.source.network.service.auth.AuthServiceImpl
-import com.example.androidcourseshpp.data.source.network.service.user.UserService
-import com.example.androidcourseshpp.data.source.network.service.user.UserServiceImpl
-import com.example.androidcourseshpp.data.source.network.api.auth.TokenRefreshAPI
 import com.example.androidcourseshpp.data.source.network.service.contacts.ContactsService
 import com.example.androidcourseshpp.data.source.network.service.contacts.ContactsServiceImpl
+import com.example.androidcourseshpp.data.source.network.service.user.UserService
+import com.example.androidcourseshpp.data.source.network.service.user.UserServiceImpl
+import com.example.androidcourseshpp.domain.repository.ContactsLocalRepository
+import com.example.androidcourseshpp.domain.repository.GalleryRepository
+import com.example.androidcourseshpp.domain.repository.UserLocalDataRepository
 import com.google.gson.Gson
 import dagger.Binds
 import dagger.Module
@@ -68,7 +71,10 @@ class RetrofitConfigModule {
     @MainOkHttpClient
     fun provideMainOkHttpClient(
         @TokenRefreshRetrofit retrofit: Retrofit,
-        jwtManager: JWTManager
+        jwtManager: JWTManager,
+        userLocalDataRepository: UserLocalDataRepository,
+        contactsLocalRepository: ContactsLocalRepository,
+        galleryRepository: GalleryRepository
     ): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(createResponseInterceptor())
@@ -76,8 +82,11 @@ class RetrofitConfigModule {
             .addInterceptor(createAuthorizationInterceptor(jwtManager))
             .authenticator(
                 TokenAuthenticator(
-                    retrofit.create(TokenRefreshAPI::class.java),
-                    jwtManager
+                    tokenRefreshAPI = retrofit.create(TokenRefreshAPI::class.java),
+                    jwtManager = jwtManager,
+                    userLocalDataRepository = userLocalDataRepository,
+                    contactsLocalRepository = contactsLocalRepository,
+                    galleryRepository = galleryRepository
                 )
             )
             .build()
