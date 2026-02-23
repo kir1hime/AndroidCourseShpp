@@ -1,5 +1,6 @@
 package com.example.androidcourseshpp.di
 
+import com.example.androidcourseshpp.data.source.local.userdata.LocalDataProvider
 import com.example.androidcourseshpp.data.source.network.api.auth.TokenRefreshAPI
 import com.example.androidcourseshpp.data.source.network.jwt.JWTManager
 import com.example.androidcourseshpp.data.source.network.jwt.TokenAuthenticator
@@ -12,8 +13,6 @@ import com.example.androidcourseshpp.data.source.network.service.contacts.Contac
 import com.example.androidcourseshpp.data.source.network.service.user.UserService
 import com.example.androidcourseshpp.data.source.network.service.user.UserServiceImpl
 import com.example.androidcourseshpp.domain.repository.ContactsLocalRepository
-import com.example.androidcourseshpp.domain.repository.GalleryRepository
-import com.example.androidcourseshpp.domain.repository.UserLocalDataRepository
 import com.google.gson.Gson
 import dagger.Binds
 import dagger.Module
@@ -72,9 +71,8 @@ class RetrofitConfigModule {
     fun provideMainOkHttpClient(
         @TokenRefreshRetrofit retrofit: Retrofit,
         jwtManager: JWTManager,
-        userLocalDataRepository: UserLocalDataRepository,
         contactsLocalRepository: ContactsLocalRepository,
-        galleryRepository: GalleryRepository
+        localDataProvider: LocalDataProvider
     ): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(createResponseInterceptor())
@@ -84,9 +82,8 @@ class RetrofitConfigModule {
                 TokenAuthenticator(
                     tokenRefreshAPI = retrofit.create(TokenRefreshAPI::class.java),
                     jwtManager = jwtManager,
-                    userLocalDataRepository = userLocalDataRepository,
                     contactsLocalRepository = contactsLocalRepository,
-                    galleryRepository = galleryRepository
+                    localDataProvider = localDataProvider
                 )
             )
             .build()

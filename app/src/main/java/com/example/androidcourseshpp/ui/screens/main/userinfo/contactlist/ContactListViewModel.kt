@@ -57,17 +57,17 @@ class ContactListViewModel @Inject constructor(
             is ContactListContract.Event.OnArrowBackButtonClicked -> navigateToPreviousScreen()
             is ContactListContract.Event.LoadContactList -> loadContacts()
             is ContactListContract.Event.OnSearchBarTextChanged -> updateFilteredContactListBy(event.input)
-            is ContactListContract.Event.ContactItemDeleted -> deleteContactItem(event.contactItem)
+            is ContactListContract.Event.ContactItemDeleted -> deleteContact(event.contactItem)
             is ContactListContract.Event.OnAddContactClicked -> {
                 switchSearchMode(false)
                 navigateToAddContactsScreen()
             }
 
-            is ContactListContract.Event.ContactItemAdded -> addContactItem(
+            is ContactListContract.Event.ContactItemAdded -> addContact(
                 event.contactItem
             )
 
-            is ContactListContract.Event.OnDeleteSelectedItemsFloatingButtonClicked -> deleteListOfContactItems(
+            is ContactListContract.Event.OnDeleteSelectedItemsFloatingButtonClicked -> deleteListOfContacts(
                 event.contactItems
             )
 
@@ -99,7 +99,7 @@ class ContactListViewModel @Inject constructor(
         _filteredContactList.value = filteredContactList
     }
 
-    private fun deleteContactItem(contactItem: ContactItem) {
+    private fun deleteContact(contactItem: ContactItem) {
         executeUseCase(
             toExecute = {
                 setState { copy(isProgressBarShowed = true) }
@@ -126,7 +126,7 @@ class ContactListViewModel @Inject constructor(
         deletedItems.push(contactItem)
     }
 
-    private fun deleteListOfContactItems(contactItems: List<ContactItem>) {
+    private fun deleteListOfContacts(contactItems: List<ContactItem>) {
         executeUseCase(
             toExecute = {
                 setState { copy(isProgressBarShowed = true) }
@@ -145,7 +145,7 @@ class ContactListViewModel @Inject constructor(
         )
     }
 
-    private fun addContactItem(contactItem: ContactItem) {
+    private fun addContact(contactItem: ContactItem) {
         executeUseCase(
             toExecute = {
                 setState { copy(isProgressBarShowed = true) }
@@ -195,6 +195,7 @@ class ContactListViewModel @Inject constructor(
                         }
 
                         is Result.Error -> {
+                            /* TODO(process all kind of exceptions) */
                             setState { copy(isTryAgainButtonShowed = true) }
                             setEffect(ContactListContract.Effect.ShowToast(R.string.generic_error))
                         }

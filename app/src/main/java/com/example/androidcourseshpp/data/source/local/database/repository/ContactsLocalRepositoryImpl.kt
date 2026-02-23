@@ -2,10 +2,12 @@ package com.example.androidcourseshpp.data.source.local.database.repository
 
 import com.example.androidcourseshpp.data.source.local.database.dao.ContactsDao
 import com.example.androidcourseshpp.data.source.local.database.dbentity.ContactDbEntity
-import com.example.androidcourseshpp.data.source.local.database.utils.SyncState
+import com.example.androidcourseshpp.data.source.local.database.utils.toSyncState
 import com.example.androidcourseshpp.data.source.local.database.utils.wrapSQLiteException
 import com.example.androidcourseshpp.data.source.local.userdata.DatabaseSyncProvider
+import com.example.androidcourseshpp.data.source.network.utils.wrapNetworkExceptions
 import com.example.androidcourseshpp.domain.entity.contact.ContactInfo
+import com.example.androidcourseshpp.domain.entity.contact.SyncAction
 import com.example.androidcourseshpp.domain.entity.contact.SyncContactInfo
 import com.example.androidcourseshpp.domain.repository.ContactsLocalRepository
 import com.example.androidcourseshpp.domain.utils.AppError
@@ -41,8 +43,8 @@ class ContactsLocalRepositoryImpl @Inject constructor(
             .catch { Result.Error(AppError.LocalStorageError) }
 
 
-    override suspend fun getContactById(id: Int): Result<ContactInfo?> = wrapSQLiteException {
-        return@wrapSQLiteException contactsDao.getContactById(id)?.toContactInfo()
+    override suspend fun getContactById(id: Int): Result<SyncContactInfo?> = wrapSQLiteException {
+        return@wrapSQLiteException contactsDao.getContactById(id)?.toSyncContactInfo()
     }
 
     override suspend fun deleteContactById(id: Int) = wrapSQLiteException {
@@ -63,11 +65,9 @@ class ContactsLocalRepositoryImpl @Inject constructor(
         databaseSyncProvider.markDatabaseAsSynced(isSynced)
     }
 
-    override suspend fun markContactAsDeleted(contactId: Int) = wrapSQLiteException {
-        contactsDao.setContactSync(id = contactId, syncState = SyncState.DELETED)
-    }
 
-    override suspend fun markContactAsAdded(contactId: Int) = wrapSQLiteException {
-        contactsDao.setContactSync(id = contactId, syncState = SyncState.ADDED)
-    }
+    override suspend fun setSyncStateToContact(contactId: Int, syncAction: SyncAction) =
+        wrapNetworkExceptions {
+            contactsDao.setContactSync(id = contactId, syncState = syncAction.toSyncState())
+        }
 }
