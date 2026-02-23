@@ -16,17 +16,17 @@ class DeleteContactUseCase @Inject constructor(
 
         if (getContactResult is Result.Success && getContactResult.data != null) {
 
-            val resultData = getContactResult.data
+            val dataSyncState = getContactResult.data.syncState
 
-            if (resultData.syncState == SyncAction.SYNCED) {
-                return contactsLocalRepository.setSyncStateToContact(
+            return when (dataSyncState) {
+                SyncAction.SYNCED -> contactsLocalRepository.setSyncStateToContact(
                     contactId = contactId,
                     syncAction = SyncAction.DELETED
                 )
+                SyncAction.ADDED -> contactsLocalRepository.deleteContactById(contactId)
+                else -> Result.Error(AppError.LocalStorageError)
             }
-            if (resultData.syncState == SyncAction.ADDED) {
-                return contactsLocalRepository.deleteContactById(contactId)
-            }
+
         }
         return Result.Error(AppError.LocalStorageError)
     }
