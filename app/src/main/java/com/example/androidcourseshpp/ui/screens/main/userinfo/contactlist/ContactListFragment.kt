@@ -48,7 +48,7 @@ class ContactListFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        reloadContactList()
+        //reloadContactList()
 
         createContactListAdapter()
         initRecyclerView()
@@ -59,7 +59,7 @@ class ContactListFragment :
         setOnBackPressedListener()
     }
 
-    private fun reloadContactList() {
+    /*private fun reloadContactList() {
         val savedStateHandle = findNavController().currentBackStackEntry?.savedStateHandle
 
         val toReloadLiveData =
@@ -72,7 +72,7 @@ class ContactListFragment :
             )
 
         }
-    }
+    }*/
 
     private fun createContactListAdapter() {
         adapter = ContactsAdapter(getItemActions())

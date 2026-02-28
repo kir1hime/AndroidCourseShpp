@@ -60,6 +60,8 @@ android {
 dependencies {
     implementation(libs.room.ktx)
     implementation(libs.room.runtime)
+    implementation(libs.androidx.hilt.common)
+    implementation(libs.androidx.work.runtime.ktx)
     ksp(libs.room.compiler)
     implementation(libs.coil)
     implementation(libs.retrofit.gson)

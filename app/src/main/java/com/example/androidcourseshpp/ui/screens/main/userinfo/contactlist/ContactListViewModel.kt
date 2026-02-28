@@ -187,6 +187,7 @@ class ContactListViewModel @Inject constructor(
             getContactsUseCase().collect { result ->
                 when (result) {
                     is Result.Success -> {
+                        setState { copy(isProgressBarShowed = false) }
                         val contactList =
                             result.data.filter { syncContact -> syncContact.syncState != SyncAction.DELETED }
                                 .map { syncContact -> syncContact.contactInfo.toContactItem() }
@@ -200,7 +201,12 @@ class ContactListViewModel @Inject constructor(
                     }
 
                     is Result.Error -> {
-                        setState { copy(isTryAgainButtonShowed = true) }
+                        setState {
+                            copy(
+                                isTryAgainButtonShowed = true,
+                                isProgressBarShowed = false
+                            )
+                        }
                         when (result.error) {
                             AppError.ConnectionError -> setEffect(
                                 ContactListContract.Effect.ShowToast(
@@ -218,7 +224,6 @@ class ContactListViewModel @Inject constructor(
                 }
             }
         }
-        setState { copy(isProgressBarShowed = false) }
     }
 
     private fun navigateToDetailsScreen(contact: ContactItem) {
