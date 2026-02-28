@@ -138,11 +138,12 @@ class AddContactsViewModel @Inject constructor(
             },
             onConnectionError = {
                 setState { copy(isTryAgainButtonShowed = true) }
-                setEffect(AddContactsContract.Effect.ShowToast(R.string.generic_error))
+                setEffect(AddContactsContract.Effect.ShowToast(R.string.connection_error))
+
             },
             onResponseProcessingError = {
                 setState { copy(isTryAgainButtonShowed = true) }
-                setEffect(AddContactsContract.Effect.ShowToast(R.string.connection_error))
+                setEffect(AddContactsContract.Effect.ShowToast(R.string.generic_error))
             },
             finally = { setState { copy(isProgressBarShowed = false) } }
         )

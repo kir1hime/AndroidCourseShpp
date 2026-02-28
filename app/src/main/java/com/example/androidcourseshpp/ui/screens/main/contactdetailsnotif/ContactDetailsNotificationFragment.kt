@@ -48,14 +48,16 @@ class ContactDetailsNotificationFragment :
         }
     }
 
-    override fun setObservers()  {
+    override fun setObservers() {
+        var toast: Toast? = null
         collectFlow(viewModel.effect) { effect ->
             when (effect) {
                 is ContactDetailsNotificationContract.Effect.NavigateToPreviousScreen -> requireActivity().onNavigateUp()
-                is ContactDetailsNotificationContract.Effect.ShowToast -> Toast.makeText(
-                    requireContext(), getString(effect.message),
-                    Toast.LENGTH_LONG
-                ).show()
+                is ContactDetailsNotificationContract.Effect.ShowToast -> {
+                    toast?.cancel()
+                    toast = makeToast(effect.message)
+                    toast.show()
+                }
             }
         }
     }

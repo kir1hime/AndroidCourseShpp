@@ -3,6 +3,7 @@ package com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -160,13 +161,13 @@ class ContactListFragment :
             textViewAdvice.isVisible = false
         }
 
+        var toast: Toast? = null
         collectFlow(viewModel.effect) { effect ->
             when (effect) {
                 is ContactListContract.Effect.HideSearchBar -> hideSearchBar()
                 is ContactListContract.Effect.ShowSearchBar -> showSearchBar()
                 is ContactListContract.Effect.NavigateToUserProfileScreen -> moveBackToUserProfileScreen()
                 is ContactListContract.Effect.NavigateToAddContactsScreen -> moveToAddContactsScreen()
-                is ContactListContract.Effect.ShowToast -> makeToast(effect.toastMessageResId)
                 is ContactListContract.Effect.NavigateToDetailsScreen -> moveToDetailsScreen(
                     effect.contact
                 )
@@ -174,6 +175,12 @@ class ContactListFragment :
                 is ContactListContract.Effect.ShowUndoDeletingItemSnackBar -> showUndoDeletingItemSnackBar(
                     effect.deletedItem
                 )
+
+                is ContactListContract.Effect.ShowToast -> {
+                    toast?.cancel()
+                    toast = makeToast(effect.toastMessageResId)
+                    toast.show()
+                }
             }
         }
     }

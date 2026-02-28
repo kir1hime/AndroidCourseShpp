@@ -4,6 +4,7 @@ import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -82,6 +83,7 @@ class UserProfileFragment :
     }
 
     override fun setObservers() = with(binding) {
+        var toast: Toast? = null
         collectFlow(viewModel.effect) { effect ->
             when (effect) {
                 is UserProfileContract.Effect.NavigateToContactList -> moveToMyContactsScreen()
@@ -90,7 +92,11 @@ class UserProfileFragment :
                     effect.userInfo
                 )
 
-                is UserProfileContract.Effect.ShowToast -> makeToast(effect.toastMessageResId)
+                is UserProfileContract.Effect.ShowToast -> {
+                    toast?.cancel()
+                    toast = makeToast(effect.toastMessageResId)
+                    toast.show()
+                }
             }
         }
 

@@ -62,8 +62,8 @@ abstract class BaseFragment<VBinding : ViewBinding>(
         }
     }
 
-    protected fun makeToast(messageResId: Int) {
-        Toast.makeText(requireContext(), messageResId, Toast.LENGTH_LONG).show()
+    protected fun makeToast(messageResId: Int): Toast {
+        return Toast.makeText(requireContext(), messageResId, Toast.LENGTH_SHORT)
     }
 
     protected fun TextView.updateIfNotEmpty(newValue: String) {

@@ -3,6 +3,7 @@ package com.example.androidcourseshpp.ui.screens.auth.signupextended
 import android.os.Bundle
 
 import android.view.View
+import android.widget.Toast
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
@@ -55,9 +56,10 @@ class SignUpExtendedFragment : BaseFragment<FragmentSignUpExtendedBinding>(
     }
 
     override fun setObservers() = with(binding) {
+        var toast: Toast? = null
         collectFlow(viewModel.effect) { effect ->
             when (effect) {
-                is SignUpExtendedContract.Effect.ShowToast -> makeToast(effect.toastMessageResId)
+
                 is SignUpExtendedContract.Effect.NavigateToPreviousScreen -> findNavController().navigateUp()
                 is SignUpExtendedContract.Effect.NavigateToChooseProfilePhotoDialog -> {
                     val direction =
@@ -68,6 +70,12 @@ class SignUpExtendedFragment : BaseFragment<FragmentSignUpExtendedBinding>(
                 is SignUpExtendedContract.Effect.NavigateToUserProfileScreen -> moveToUserProfileScreen(
                     effect.userInfo
                 )
+
+                is SignUpExtendedContract.Effect.ShowToast -> {
+                    toast?.cancel()
+                    toast = makeToast(effect.toastMessageResId)
+                    toast.show()
+                }
             }
         }
 

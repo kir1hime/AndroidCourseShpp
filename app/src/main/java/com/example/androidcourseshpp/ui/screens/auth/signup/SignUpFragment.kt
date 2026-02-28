@@ -2,6 +2,7 @@ package com.example.androidcourseshpp.ui.screens.auth.signup
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.androidcourseshpp.databinding.FragmentSignUpBinding
@@ -16,10 +17,15 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
     private val viewModel by viewModels<SignUpViewModel>()
 
     override fun setObservers() = with(binding) {
+        var toast: Toast? = null
         collectFlow(viewModel.effect) { effect ->
             when (effect) {
                 is SignUpContract.Effect.NavigateToSignUpExtended -> moveToSignUpExtended(effect.signUpUserInfo)
-                is SignUpContract.Effect.ShowToast -> makeToast(effect.toastMessageResId)
+                is SignUpContract.Effect.ShowToast -> {
+                    toast?.cancel()
+                    toast = makeToast(effect.toastMessageResId)
+                    toast.show()
+                }
             }
         }
 

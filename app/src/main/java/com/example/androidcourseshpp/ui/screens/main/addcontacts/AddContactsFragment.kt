@@ -4,6 +4,7 @@ package com.example.androidcourseshpp.ui.screens.main.addcontacts
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.FragmentNavigatorExtras
@@ -98,10 +99,10 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
             }
         }
 
+        var toast: Toast? = null
         collectFlow(viewModel.effect) { effect ->
             when (effect) {
                 is AddContactsContract.Effect.ScrollUserListToTop -> scrollUserListToTop()
-                is AddContactsContract.Effect.ShowToast -> makeToast(effect.toastMessageResId)
                 is AddContactsContract.Effect.ShowSearchBar -> showSearchBar()
                 is AddContactsContract.Effect.HideSearchBar -> hideSearchBar()
                 is AddContactsContract.Effect.NavigateToContactListScreen -> moveToContactList(
@@ -111,6 +112,12 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
                 is AddContactsContract.Effect.NavigateToDetailsScreen -> moveToDetailsScreen(
                     effect.userItem
                 )
+
+                is AddContactsContract.Effect.ShowToast -> {
+                    toast?.cancel()
+                    toast = makeToast(effect.toastMessageResId)
+                    toast.show()
+                }
             }
         }
     }
