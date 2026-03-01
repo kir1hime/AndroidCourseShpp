@@ -269,7 +269,7 @@ class ContactListFragment :
                 }
 
                 override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                    val adapterPosition = viewHolder.adapterPosition
+                    val adapterPosition = viewHolder.absoluteAdapterPosition
 
                     val deletedItem = viewModel.state.value.contactList[adapterPosition]
                     showUndoDeletingItemSnackBar(deletedItem)

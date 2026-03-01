@@ -10,7 +10,6 @@ import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.ui.sync.ContactListSyncFactory
 import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
-import kotlin.coroutines.Continuation
 
 const val NOTIFICATION_CONTACTS_CHANNEL_ID = "contactsManagementChannel"
 const val NOTIFICATION_CONTACTS_CHANNEL_NAME = "Contacts"

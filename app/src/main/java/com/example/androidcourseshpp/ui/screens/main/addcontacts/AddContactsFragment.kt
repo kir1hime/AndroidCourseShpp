@@ -11,16 +11,15 @@ import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.androidcourseshpp.R
-import com.example.androidcourseshpp.ui.screens.main.addcontacts.model.UserItem
 import com.example.androidcourseshpp.databinding.FragmentAddContactsBinding
 import com.example.androidcourseshpp.ui.BaseFragment
 import com.example.androidcourseshpp.ui.screens.main.addcontacts.adapter.UserItemActions
 import com.example.androidcourseshpp.ui.screens.main.addcontacts.adapter.UserItemDecorations
 import com.example.androidcourseshpp.ui.screens.main.addcontacts.adapter.UsersAdapter
+import com.example.androidcourseshpp.ui.screens.main.addcontacts.model.UserItem
 import com.example.androidcourseshpp.ui.utils.onChangeTextListener
 import dagger.hilt.android.AndroidEntryPoint
 
-const val TO_RELOAD_CONTACT_LIST = "reloadContactList"
 
 @AndroidEntryPoint
 class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
