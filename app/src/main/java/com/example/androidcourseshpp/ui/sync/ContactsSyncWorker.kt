@@ -1,7 +1,6 @@
 package com.example.androidcourseshpp.ui.sync
 
 import android.content.Context
-import android.util.Log
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
@@ -18,9 +17,7 @@ class ContactsSyncWorker @AssistedInject constructor(
 
     override suspend fun doWork(): Result {
         return when (syncContactsUseCase()) {
-            is com.example.androidcourseshpp.domain.utils.Result.Success ->{
-                Log.d("myTag", "fjladsjf")
-                Result.success()}
+            is com.example.androidcourseshpp.domain.utils.Result.Success -> Result.success()
             is com.example.androidcourseshpp.domain.utils.Result.Error -> Result.failure()
         }
     }
