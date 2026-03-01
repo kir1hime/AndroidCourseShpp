@@ -7,7 +7,7 @@ import android.os.Build
 import android.util.Log
 import androidx.work.Configuration
 import com.example.androidcourseshpp.R
-import com.example.androidcourseshpp.ui.sync.ContactListSyncFactory
+import com.example.androidcourseshpp.ui.sync.ContactsSyncFactory
 import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
 
@@ -39,7 +39,7 @@ class App : Application(), Configuration.Provider {
     }
 
     @Inject
-    lateinit var contactListSyncFactory: ContactListSyncFactory
+    lateinit var contactListSyncFactory: ContactsSyncFactory
 
     override val workManagerConfiguration: Configuration
         get() = Configuration.Builder()

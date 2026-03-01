@@ -15,7 +15,7 @@ import com.example.androidcourseshpp.ui.notifications.NotificationAction
 import com.example.androidcourseshpp.ui.notifications.NotificationService
 import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.model.ContactItem
 import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.model.toContactItem
-import com.example.androidcourseshpp.ui.sync.ContactListSyncScheduler
+import com.example.androidcourseshpp.ui.sync.ContactsSyncScheduler
 import com.example.androidcourseshpp.ui.utils.isContainsOrderedSequence
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -36,7 +36,7 @@ class ContactListViewModel @Inject constructor(
     private val deleteContactsUseCase: DeleteContactsUseCase,
     private val getContactsUseCase: GetContactsUseCase,
     private val notificationService: NotificationService,
-    private val contactListSyncScheduler: ContactListSyncScheduler
+    private val contactListSyncScheduler: ContactsSyncScheduler
 ) : BaseViewModel<ContactListContract.Event, ContactListContract.Effect, ContactListContract.UIState>() {
 
     override fun initState() = ContactListContract.UIState(

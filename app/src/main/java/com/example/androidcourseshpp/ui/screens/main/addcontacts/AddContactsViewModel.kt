@@ -1,7 +1,10 @@
 package com.example.androidcourseshpp.ui.screens.main.addcontacts
 
+import androidx.lifecycle.viewModelScope
 import com.example.androidcourseshpp.R
+import com.example.androidcourseshpp.domain.entity.contact.ContactInfo
 import com.example.androidcourseshpp.domain.usecase.contacts.AddContactUseCase
+import com.example.androidcourseshpp.domain.usecase.contacts.GetContactsUseCase
 import com.example.androidcourseshpp.domain.usecase.user.GetUsersUseCase
 import com.example.androidcourseshpp.ui.BaseViewModel
 import com.example.androidcourseshpp.ui.notifications.NotificationAction
@@ -12,12 +15,15 @@ import com.example.androidcourseshpp.ui.screens.model.ContactDetailsModel
 import com.example.androidcourseshpp.ui.utils.isContainsOrderedSequence
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class AddContactsViewModel @Inject constructor(
     private val addContactUseCase: AddContactUseCase,
     private val getUsersUseCase: GetUsersUseCase,
+    private val getContactsUseCase: GetContactsUseCase,
     private val notificationService: NotificationService
 ) :
     BaseViewModel<AddContactsContract.Event, AddContactsContract.Effect, AddContactsContract.UIState>() {
@@ -145,6 +151,11 @@ class AddContactsViewModel @Inject constructor(
             },
             finally = { setState { copy(isProgressBarShowed = false) } }
         )
+    }
 
+    private fun getContactList(): List<ContactInfo> {
+        viewModelScope.launch {
+            val result = getContactsUseCase().first()
+        }
     }
 }

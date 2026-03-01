@@ -1,30 +1,25 @@
-package com.example.androidcourseshpp.ui.sync
+package com.example.androidcourseshpp.domain.usecase.sync
 
-import android.content.Context
-import androidx.hilt.work.HiltWorker
-import androidx.work.CoroutineWorker
-import androidx.work.WorkerParameters
 import com.example.androidcourseshpp.domain.entity.contact.SyncAction
 import com.example.androidcourseshpp.domain.repository.ContactsLocalRepository
 import com.example.androidcourseshpp.domain.repository.ContactsNetworkRepository
+import com.example.androidcourseshpp.domain.utils.AppError
+import com.example.androidcourseshpp.domain.utils.Result
 import com.example.androidcourseshpp.domain.utils.onError
 import com.example.androidcourseshpp.domain.utils.onSuccess
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.first
+import javax.inject.Inject
+import javax.inject.Singleton
 
-@HiltWorker
-class ContactListSyncWorker @AssistedInject constructor(
-    @Assisted context: Context,
-    @Assisted workerParameters: WorkerParameters,
-    private val contactsLocalRepository: ContactsLocalRepository,
-    private val contactsNetworkRepository: ContactsNetworkRepository
-) : CoroutineWorker(context, workerParameters) {
-
-    override suspend fun doWork(): Result {
+@Singleton
+class SyncContactsUseCase @Inject constructor(
+    private val contactsNetworkRepository: ContactsNetworkRepository,
+    private val contactsLocalRepository: ContactsLocalRepository
+) {
+    suspend operator fun invoke(): Result<Unit> {
         val result = contactsLocalRepository.getContacts().first()
 
-        if (result is com.example.androidcourseshpp.domain.utils.Result.Success) {
+        if (result is Result.Success) {
             val contacts = result.data
             var isAllContactsSynced = true
 
@@ -44,15 +39,15 @@ class ContactListSyncWorker @AssistedInject constructor(
                     SyncAction.DELETED -> {
                         contactsNetworkRepository.deleteContact(contactId).onSuccess {
                             contactsLocalRepository.deleteContactById(contactId)
-                        } .onError { isAllContactsSynced = false }
+                        }.onError { isAllContactsSynced = false }
                     }
 
                     else -> return@forEach
                 }
             }
-            return if (isAllContactsSynced) Result.success() else Result.failure()
+            return if (isAllContactsSynced) Result.Success(Unit) else Result.Error(AppError.SyncContactsError)
         } else {
-            return Result.failure()
+            return Result.Error(AppError.LocalStorageError)
         }
     }
 }

@@ -8,7 +8,7 @@ import com.example.androidcourseshpp.domain.repository.ContactsLocalRepository
 import com.example.androidcourseshpp.domain.repository.ContactsNetworkRepository
 import jakarta.inject.Inject
 
-class ContactListSyncFactory @Inject constructor(
+class ContactsSyncFactory @Inject constructor(
     private val contactsLocalRepository: ContactsLocalRepository,
     private val contactsNetworkRepository: ContactsNetworkRepository
 ) : WorkerFactory() {
@@ -16,7 +16,7 @@ class ContactListSyncFactory @Inject constructor(
         appContext: Context,
         workerClassName: String,
         workerParameters: WorkerParameters
-    ): ListenableWorker = ContactListSyncWorker(
+    ): ListenableWorker = ContactsSyncWorker(
         contactsLocalRepository = contactsLocalRepository,
         contactsNetworkRepository = contactsNetworkRepository,
         context = appContext,

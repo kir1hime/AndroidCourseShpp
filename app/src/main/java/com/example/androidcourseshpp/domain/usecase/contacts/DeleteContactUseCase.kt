@@ -23,8 +23,9 @@ class DeleteContactUseCase @Inject constructor(
                     contactId = contactId,
                     syncAction = SyncAction.DELETED
                 )
-                SyncAction.ADDED -> contactsLocalRepository.deleteContactById(contactId)
-                else -> Result.Error(AppError.LocalStorageError)
+
+                else -> contactsLocalRepository.deleteContactById(contactId)
+
             }
 
         }

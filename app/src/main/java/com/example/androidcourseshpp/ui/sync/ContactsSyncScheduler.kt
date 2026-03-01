@@ -13,7 +13,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class ContactListSyncScheduler @Inject constructor(
+class ContactsSyncScheduler @Inject constructor(
     @param:ApplicationContext private val context: Context
 ) {
 
@@ -26,7 +26,7 @@ class ContactListSyncScheduler @Inject constructor(
     }
 
     fun executePeriodicSync() {
-        val workRequest = PeriodicWorkRequestBuilder<ContactListSyncWorker>(
+        val workRequest = PeriodicWorkRequestBuilder<ContactsSyncWorker>(
             repeatInterval = 1,
             repeatIntervalTimeUnit = TimeUnit.HOURS
         ).setConstraints(networkConnectionConstraints).build()
@@ -39,7 +39,7 @@ class ContactListSyncScheduler @Inject constructor(
     }
 
     fun executeOnceSync() {
-        val workRequest = OneTimeWorkRequestBuilder<ContactListSyncWorker>()
+        val workRequest = OneTimeWorkRequestBuilder<ContactsSyncWorker>()
             .setConstraints(networkConnectionConstraints).build()
 
         WorkManager.getInstance(context).enqueue(workRequest)

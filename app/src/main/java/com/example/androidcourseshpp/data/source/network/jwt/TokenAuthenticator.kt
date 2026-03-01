@@ -41,6 +41,7 @@ class TokenAuthenticator(
                 localDataProvider.clearUserServerId()
                 localDataProvider.clearUserAvatarUrl()
                 localDataProvider.clearGalleryPhotos()
+                localDataProvider.markDatabaseAsSynced(false)
                 runBlocking {
                     contactsLocalRepository.clearContacts()
                 }
