@@ -14,15 +14,15 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidcourseshpp.R
-import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.model.ContactItem
-import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.model.SelectableContactItem
 import com.example.androidcourseshpp.databinding.FragmentContactlistBinding
 import com.example.androidcourseshpp.ui.BaseFragment
-import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.adapter.ContactItemDecoration
-import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.adapter.ContactsAdapter
-import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.adapter.ContactItemActions
 import com.example.androidcourseshpp.ui.screens.main.userinfo.TabSwitchable
 import com.example.androidcourseshpp.ui.screens.main.userinfo.UserInfoFragmentDirections
+import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.adapter.ContactItemActions
+import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.adapter.ContactItemDecoration
+import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.adapter.ContactsAdapter
+import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.model.ContactItem
+import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.model.SelectableContactItem
 import com.example.androidcourseshpp.ui.utils.onChangeTextListener
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -47,7 +47,6 @@ class ContactListFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //reloadContactList()
 
         createContactListAdapter()
         initRecyclerView()
@@ -57,21 +56,6 @@ class ContactListFragment :
         setObservers()
         setOnBackPressedListener()
     }
-
-    /*private fun reloadContactList() {
-        val savedStateHandle = findNavController().currentBackStackEntry?.savedStateHandle
-
-        val toReloadLiveData =
-            savedStateHandle?.getLiveData<Boolean>(TO_RELOAD_CONTACT_LIST)
-
-        toReloadLiveData?.observe(viewLifecycleOwner) {
-            viewModel.setEvent(ContactListContract.Event.LoadContactList)
-            savedStateHandle.remove<Boolean>(
-                TO_RELOAD_CONTACT_LIST
-            )
-
-        }
-    }*/
 
     private fun createContactListAdapter() {
         adapter = ContactsAdapter(getItemActions())
