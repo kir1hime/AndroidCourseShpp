@@ -11,3 +11,13 @@ data class UserInfo(
     val dateOfBirthday: Date?,
     val avatar: String
 )
+
+fun UserInfo.toUserItemInfo(isContact: Boolean) =
+    UserItemInfo(
+        id = id,
+        name = name,
+        career = career,
+        avatarURL = avatar,
+        address = address,
+        isContact = isContact
+    )
