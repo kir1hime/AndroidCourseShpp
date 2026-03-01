@@ -12,7 +12,6 @@ sealed class AppError {
     data object ConnectionError : AppError()
     data object ResponseProcessingError : AppError()
     data object LocalStorageError : AppError()
-    data object SyncContactsError : AppError()
 }
 
 suspend fun <T> Result<T>.onSuccess(toExecute: suspend (T) -> Unit): Result<T> {

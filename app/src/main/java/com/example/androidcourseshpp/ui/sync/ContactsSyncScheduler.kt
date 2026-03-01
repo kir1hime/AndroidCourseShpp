@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.work.Constraints
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.NetworkType
-import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -37,12 +36,4 @@ class ContactsSyncScheduler @Inject constructor(
             workRequest
         )
     }
-
-    fun executeOnceSync() {
-        val workRequest = OneTimeWorkRequestBuilder<ContactsSyncWorker>()
-            .setConstraints(networkConnectionConstraints).build()
-
-        WorkManager.getInstance(context).enqueue(workRequest)
-    }
-
 }

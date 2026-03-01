@@ -45,7 +45,7 @@ class SyncContactsUseCase @Inject constructor(
                     else -> return@forEach
                 }
             }
-            return if (isAllContactsSynced) Result.Success(Unit) else Result.Error(AppError.SyncContactsError)
+            return if (isAllContactsSynced) Result.Success(Unit) else Result.Error(AppError.BackendError)
         } else {
             return Result.Error(AppError.LocalStorageError)
         }

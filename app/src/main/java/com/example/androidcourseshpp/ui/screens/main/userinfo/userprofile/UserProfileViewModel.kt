@@ -6,7 +6,6 @@ import com.example.androidcourseshpp.domain.usecase.auth.LogOutUseCase
 import com.example.androidcourseshpp.domain.usecase.user.GetUserAvatarUseCase
 import com.example.androidcourseshpp.ui.BaseViewModel
 import com.example.androidcourseshpp.ui.screens.model.UserModel
-import com.example.androidcourseshpp.ui.sync.ContactsSyncScheduler
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.launch
@@ -15,8 +14,7 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class UserProfileViewModel @Inject constructor(
     private val getUserAvatarUseCase: GetUserAvatarUseCase,
-    private val logOutUseCase: LogOutUseCase,
-    private val contactListSyncScheduler: ContactsSyncScheduler
+    private val logOutUseCase: LogOutUseCase
 ) :
     BaseViewModel<UserProfileContract.Event, UserProfileContract.Effect, UserProfileContract.UIState>() {
 
@@ -64,7 +62,6 @@ class UserProfileViewModel @Inject constructor(
 
     private fun logOut() {
         viewModelScope.launch {
-            contactListSyncScheduler.executeOnceSync()
             logOutUseCase()
             setEffect(UserProfileContract.Effect.NavigateToSignInScreen)
         }
