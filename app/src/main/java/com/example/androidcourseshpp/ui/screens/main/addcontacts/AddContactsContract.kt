@@ -28,7 +28,7 @@ class AddContactsContract {
         data object HideSearchBar : Effect
         data object ScrollUserListToTop : Effect
         data class NavigateToDetailsScreen(val userItem: UserItem) : Effect
-        data class NavigateToContactListScreen(val isContactListChanged: Boolean) : Effect
+        data object NavigateToContactListScreen : Effect
         data class ShowToast(val toastMessageResId: Int) : Effect
     }
 
@@ -36,7 +36,6 @@ class AddContactsContract {
         val userList: List<UserItem>,
         val isProgressBarShowed: Boolean,
         val isTryAgainButtonShowed: Boolean,
-        val isContactListChanged: Boolean,
         val isSearchMode: Boolean
     ) : ViewState
 }

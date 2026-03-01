@@ -18,7 +18,6 @@ import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.model.
 import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.model.SelectableContactItem
 import com.example.androidcourseshpp.databinding.FragmentContactlistBinding
 import com.example.androidcourseshpp.ui.BaseFragment
-import com.example.androidcourseshpp.ui.screens.main.addcontacts.TO_RELOAD_CONTACT_LIST
 import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.adapter.ContactItemDecoration
 import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.adapter.ContactsAdapter
 import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.adapter.ContactItemActions
@@ -122,8 +121,37 @@ class ContactListFragment :
         )
     }
 
-    override fun setObservers() = with(binding) {
+    override fun setObservers() {
+        collectState()
+        collectEffects()
+    }
 
+    private fun collectEffects() {
+        var toast: Toast? = null
+        collectFlow(viewModel.effect) { effect ->
+            when (effect) {
+                is ContactListContract.Effect.HideSearchBar -> hideSearchBar()
+                is ContactListContract.Effect.ShowSearchBar -> showSearchBar()
+                is ContactListContract.Effect.NavigateToUserProfileScreen -> moveBackToUserProfileScreen()
+                is ContactListContract.Effect.NavigateToAddContactsScreen -> moveToAddContactsScreen()
+                is ContactListContract.Effect.NavigateToDetailsScreen -> moveToDetailsScreen(
+                    effect.contact
+                )
+
+                is ContactListContract.Effect.ShowUndoDeletingItemSnackBar -> showUndoDeletingItemSnackBar(
+                    effect.deletedItem
+                )
+
+                is ContactListContract.Effect.ShowToast -> {
+                    toast?.cancel()
+                    toast = makeToast(effect.toastMessageResId)
+                    toast.show()
+                }
+            }
+        }
+    }
+
+    private fun collectState() = with(binding) {
         collectFlow(viewModel.state) { state ->
             val contactList = state.contactList
 
@@ -160,29 +188,6 @@ class ContactListFragment :
             textViewNoResultsFound.isVisible = false
             textViewAdvice.isVisible = false
         }
-
-        var toast: Toast? = null
-        collectFlow(viewModel.effect) { effect ->
-            when (effect) {
-                is ContactListContract.Effect.HideSearchBar -> hideSearchBar()
-                is ContactListContract.Effect.ShowSearchBar -> showSearchBar()
-                is ContactListContract.Effect.NavigateToUserProfileScreen -> moveBackToUserProfileScreen()
-                is ContactListContract.Effect.NavigateToAddContactsScreen -> moveToAddContactsScreen()
-                is ContactListContract.Effect.NavigateToDetailsScreen -> moveToDetailsScreen(
-                    effect.contact
-                )
-
-                is ContactListContract.Effect.ShowUndoDeletingItemSnackBar -> showUndoDeletingItemSnackBar(
-                    effect.deletedItem
-                )
-
-                is ContactListContract.Effect.ShowToast -> {
-                    toast?.cancel()
-                    toast = makeToast(effect.toastMessageResId)
-                    toast.show()
-                }
-            }
-        }
     }
 
     override fun setListeners() = with(binding) {
@@ -202,7 +207,7 @@ class ContactListFragment :
         }
 
         buttonTryAgain.setOnClickListener {
-            viewModel.setEvent(ContactListContract.Event.LoadContactList)
+            viewModel.setEvent(ContactListContract.Event.OnTryAgainButtonClicked)
         }
 
         imageButtonSearch.setOnClickListener {
@@ -211,7 +216,7 @@ class ContactListFragment :
         }
         imageButtonHideSearch.setOnClickListener {
             viewModel.setEvent(ContactListContract.Event.SearchModeSwitched(false))
-            viewModel.setEvent(ContactListContract.Event.OnHideSearchButtonCLicked)
+            viewModel.setEvent(ContactListContract.Event.OnHideSearchButtonClicked)
         }
 
         editTextSearch.onChangeTextListener { sequence, _, _, _ ->

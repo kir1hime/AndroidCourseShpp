@@ -4,13 +4,19 @@ import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.os.Build
+import android.util.Log
+import androidx.work.Configuration
 import com.example.androidcourseshpp.R
+import com.example.androidcourseshpp.ui.sync.ContactListSyncFactory
 import dagger.hilt.android.HiltAndroidApp
+import javax.inject.Inject
+import kotlin.coroutines.Continuation
 
 const val NOTIFICATION_CONTACTS_CHANNEL_ID = "contactsManagementChannel"
 const val NOTIFICATION_CONTACTS_CHANNEL_NAME = "Contacts"
+
 @HiltAndroidApp
-class App : Application() {
+class App : Application(), Configuration.Provider {
 
     override fun onCreate() {
         super.onCreate()
@@ -32,4 +38,15 @@ class App : Application() {
             notificationManager.createNotificationChannel(channel)
         }
     }
+
+    @Inject
+    lateinit var contactListSyncFactory: ContactListSyncFactory
+
+    override val workManagerConfiguration: Configuration
+        get() = Configuration.Builder()
+            .setMinimumLoggingLevel(Log.DEBUG)
+            .setWorkerFactory(contactListSyncFactory)
+            .build()
+
+
 }

@@ -26,7 +26,6 @@ class AddContactsViewModel @Inject constructor(
         userList = emptyList(),
         isProgressBarShowed = false,
         isTryAgainButtonShowed = false,
-        isContactListChanged = false,
         isSearchMode = false
     )
 
@@ -85,7 +84,7 @@ class AddContactsViewModel @Inject constructor(
     }
 
     private fun navigateToPreviousScreen() {
-        setEffect(AddContactsContract.Effect.NavigateToContactListScreen(state.value.isContactListChanged))
+        setEffect(AddContactsContract.Effect.NavigateToContactListScreen)
     }
 
 
@@ -99,7 +98,6 @@ class AddContactsViewModel @Inject constructor(
                 addContactUseCase(userInfo.toContactInfo())
             },
             onSuccess = {
-                setState { copy(isContactListChanged = true) }
                 interruptSuccessLoading()
                 notificationService.showContactAddedNotification(
                     userInfo = userInfo,

@@ -11,8 +11,8 @@ class ContactListContract {
         data object OnArrowBackButtonClicked : Event
         data object OnAddContactClicked : Event
         data object OnSearchButtonClicked : Event
-        data object OnHideSearchButtonCLicked : Event
-        data object LoadContactList : Event
+        data object OnHideSearchButtonClicked : Event
+        data object OnTryAgainButtonClicked : Event
         data class OnSearchBarTextChanged(val input: String) : Event
 
         data class SearchModeSwitched(val isSearchModeEnabled: Boolean) : Event

@@ -105,9 +105,7 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
                 is AddContactsContract.Effect.ScrollUserListToTop -> scrollUserListToTop()
                 is AddContactsContract.Effect.ShowSearchBar -> showSearchBar()
                 is AddContactsContract.Effect.HideSearchBar -> hideSearchBar()
-                is AddContactsContract.Effect.NavigateToContactListScreen -> moveToContactList(
-                    effect.isContactListChanged
-                )
+                is AddContactsContract.Effect.NavigateToContactListScreen -> moveToContactList()
 
                 is AddContactsContract.Effect.NavigateToDetailsScreen -> moveToDetailsScreen(
                     effect.userItem
@@ -176,13 +174,7 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
         findNavController().navigate(direction, extras)
     }
 
-    private fun moveToContactList(isContactListChanged: Boolean) {
-        if (isContactListChanged) {
-            findNavController().previousBackStackEntry?.savedStateHandle?.set(
-                TO_RELOAD_CONTACT_LIST,
-                true
-            )
-        }
+    private fun moveToContactList() {
         findNavController().navigateUp()
     }
 }

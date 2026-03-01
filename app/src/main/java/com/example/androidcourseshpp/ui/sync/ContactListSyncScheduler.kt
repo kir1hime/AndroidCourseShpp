@@ -19,7 +19,6 @@ class ContactListSyncScheduler @Inject constructor(
 
     private val networkConnectionConstraints = Constraints.Builder()
         .setRequiredNetworkType(NetworkType.CONNECTED)
-        .setRequiresCharging(true)
         .build()
 
     companion object {

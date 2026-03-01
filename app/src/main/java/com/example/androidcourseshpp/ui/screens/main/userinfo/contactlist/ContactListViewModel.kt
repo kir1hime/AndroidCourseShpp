@@ -15,10 +15,14 @@ import com.example.androidcourseshpp.ui.notifications.NotificationAction
 import com.example.androidcourseshpp.ui.notifications.NotificationService
 import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.model.ContactItem
 import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.model.toContactItem
+import com.example.androidcourseshpp.ui.sync.ContactListSyncScheduler
 import com.example.androidcourseshpp.ui.utils.isContainsOrderedSequence
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.Stack
@@ -31,7 +35,8 @@ class ContactListViewModel @Inject constructor(
     private val deleteContactUseCase: DeleteContactUseCase,
     private val deleteContactsUseCase: DeleteContactsUseCase,
     private val getContactsUseCase: GetContactsUseCase,
-    private val notificationService: NotificationService
+    private val notificationService: NotificationService,
+    private val contactListSyncScheduler: ContactListSyncScheduler
 ) : BaseViewModel<ContactListContract.Event, ContactListContract.Effect, ContactListContract.UIState>() {
 
     override fun initState() = ContactListContract.UIState(
@@ -45,18 +50,22 @@ class ContactListViewModel @Inject constructor(
     private val _filteredContactList = MutableStateFlow(emptyList<ContactItem>())
     val filteredContactList: StateFlow<List<ContactItem>> get() = _filteredContactList
 
+    private val contactsLoadingTrigger = MutableSharedFlow<Unit>(replay = 1)
+
     init {
         loadContacts()
+        triggerContactsLoading()
+        contactListSyncScheduler.executePeriodicSync()
     }
 
 
     override fun handleEvent(event: ContactListContract.Event) {
         when (event) {
             is ContactListContract.Event.SearchModeSwitched -> switchSearchMode(event.isSearchModeEnabled)
-            is ContactListContract.Event.OnHideSearchButtonCLicked -> hideSearchBar()
+            is ContactListContract.Event.OnHideSearchButtonClicked -> hideSearchBar()
             is ContactListContract.Event.OnSearchButtonClicked -> showSearchBar()
             is ContactListContract.Event.OnArrowBackButtonClicked -> navigateToPreviousScreen()
-            is ContactListContract.Event.LoadContactList -> loadContacts()
+            is ContactListContract.Event.OnTryAgainButtonClicked -> triggerContactsLoading()
             is ContactListContract.Event.OnSearchBarTextChanged -> updateFilteredContactListBy(event.input)
             is ContactListContract.Event.ContactItemDeleted -> deleteContact(event.contactItem)
             is ContactListContract.Event.OnAddContactClicked -> {
@@ -176,6 +185,7 @@ class ContactListViewModel @Inject constructor(
         )
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     private fun loadContacts() {
         setState {
             copy(
@@ -184,10 +194,14 @@ class ContactListViewModel @Inject constructor(
             )
         }
         viewModelScope.launch {
-            getContactsUseCase().collect { result ->
+            contactsLoadingTrigger.flatMapLatest {
+                getContactsUseCase()
+            }.collect { result ->
+
                 when (result) {
                     is Result.Success -> {
                         setState { copy(isProgressBarShowed = false) }
+
                         val contactList =
                             result.data.filter { syncContact -> syncContact.syncState != SyncAction.DELETED }
                                 .map { syncContact -> syncContact.contactInfo.toContactItem() }
@@ -225,6 +239,13 @@ class ContactListViewModel @Inject constructor(
             }
         }
     }
+
+    private fun triggerContactsLoading() {
+        viewModelScope.launch {
+            contactsLoadingTrigger.emit(Unit)
+        }
+    }
+
 
     private fun navigateToDetailsScreen(contact: ContactItem) {
         setEffect(ContactListContract.Effect.NavigateToDetailsScreen(contact))

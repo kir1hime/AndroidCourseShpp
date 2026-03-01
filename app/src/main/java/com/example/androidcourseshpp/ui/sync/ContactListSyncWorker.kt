@@ -31,18 +31,24 @@ class ContactListSyncWorker @AssistedInject constructor(
             contacts.filter { it.syncState != SyncAction.SYNCED }.forEach { contact ->
                 val contactId = contact.contactInfo.id
 
-                val networkResult = when (contact.syncState) {
-                    SyncAction.ADDED -> contactsNetworkRepository.addContact(contactId)
-                    SyncAction.DELETED -> contactsNetworkRepository.deleteContact(contactId)
+                when (contact.syncState) {
+                    SyncAction.ADDED -> {
+                        contactsNetworkRepository.addContact(contactId).onSuccess {
+                            contactsLocalRepository.setSyncStateToContact(
+                                contactId,
+                                SyncAction.SYNCED
+                            )
+                        }.onError { isAllContactsSynced = false }
+                    }
+
+                    SyncAction.DELETED -> {
+                        contactsNetworkRepository.deleteContact(contactId).onSuccess {
+                            contactsLocalRepository.deleteContactById(contactId)
+                        } .onError { isAllContactsSynced = false }
+                    }
+
                     else -> return@forEach
                 }
-                networkResult.onSuccess {
-                    contactsLocalRepository.setSyncStateToContact(contactId, SyncAction.SYNCED)
-                }.onError {
-                    isAllContactsSynced = false
-                }
-
-
             }
             return if (isAllContactsSynced) Result.success() else Result.failure()
         } else {
