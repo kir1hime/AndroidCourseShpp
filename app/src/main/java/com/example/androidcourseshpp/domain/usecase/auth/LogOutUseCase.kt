@@ -4,7 +4,6 @@ import com.example.androidcourseshpp.domain.repository.AuthRepository
 import com.example.androidcourseshpp.domain.repository.ContactsLocalRepository
 import com.example.androidcourseshpp.domain.repository.GalleryRepository
 import com.example.androidcourseshpp.domain.repository.UserLocalDataRepository
-import com.example.androidcourseshpp.domain.usecase.sync.SyncContactsUseCase
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -13,11 +12,9 @@ class LogOutUseCase @Inject constructor(
     private val authRepository: AuthRepository,
     private val userLocalDataRepository: UserLocalDataRepository,
     private val galleryRepository: GalleryRepository,
-    private val contactsLocalRepository: ContactsLocalRepository,
-    private val syncContactsUseCase: SyncContactsUseCase
+    private val contactsLocalRepository: ContactsLocalRepository
 ) {
     suspend operator fun invoke() {
-        syncContactsUseCase()
         authRepository.clearTokens()
         userLocalDataRepository.clearUserServerId()
         userLocalDataRepository.clearUserAvatarUrl()

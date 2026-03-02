@@ -3,6 +3,7 @@ package com.example.androidcourseshpp.ui.screens.main.userinfo.userprofile
 
 import androidx.lifecycle.viewModelScope
 import com.example.androidcourseshpp.domain.usecase.auth.LogOutUseCase
+import com.example.androidcourseshpp.domain.usecase.sync.SyncContactsUseCase
 import com.example.androidcourseshpp.domain.usecase.user.GetUserAvatarUseCase
 import com.example.androidcourseshpp.ui.BaseViewModel
 import com.example.androidcourseshpp.ui.screens.model.UserModel
@@ -14,7 +15,8 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class UserProfileViewModel @Inject constructor(
     private val getUserAvatarUseCase: GetUserAvatarUseCase,
-    private val logOutUseCase: LogOutUseCase
+    private val logOutUseCase: LogOutUseCase,
+    private val syncContactsUseCase: SyncContactsUseCase
 ) :
     BaseViewModel<UserProfileContract.Event, UserProfileContract.Effect, UserProfileContract.UIState>() {
 
@@ -62,6 +64,7 @@ class UserProfileViewModel @Inject constructor(
 
     private fun logOut() {
         viewModelScope.launch {
+            syncContactsUseCase()
             logOutUseCase()
             setEffect(UserProfileContract.Effect.NavigateToSignInScreen)
         }
