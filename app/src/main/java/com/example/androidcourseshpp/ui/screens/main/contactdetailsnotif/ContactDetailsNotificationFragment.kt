@@ -7,6 +7,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.databinding.FragmentDetailviewNotificationBinding
+import com.example.androidcourseshpp.domain.entity.contact.ContactInfo
 import com.example.androidcourseshpp.ui.BaseFragment
 import com.example.androidcourseshpp.ui.notifications.NotificationAction
 import com.example.androidcourseshpp.ui.utils.loadImageFromURLCircled
@@ -41,10 +42,10 @@ class ContactDetailsNotificationFragment :
         val notificationAction = NotificationAction.entries[args.notifId]
         when (notificationAction) {
             NotificationAction.ADD_CONTACT -> buttonMainAction.text =
-                getString(R.string.add_to_my_contacts)
+                getString(R.string.delete_from_my_contacts)
 
             NotificationAction.DELETE_CONTACT -> buttonMainAction.text =
-                getString(R.string.delete_from_my_contacts)
+                getString(R.string.add_to_my_contacts)
         }
     }
 
@@ -67,7 +68,21 @@ class ContactDetailsNotificationFragment :
         imageButtonArrowBack.setOnClickListener {
             viewModel.setEvent(ContactDetailsNotificationContract.Event.OnArrowBackButtonClicked)
         }
+        buttonMainAction.setOnClickListener {
+            args.apply {
+                viewModel.setEvent(
+                    ContactDetailsNotificationContract.Event.OnMainActionButtonClicked(
+                        contactInfo = ContactInfo(
+                            id = id,
+                            name = name,
+                            career = career,
+                            address = address,
+                            avatarURL = avatarURL
+                        ),
+                        action = NotificationAction.entries[notifId]
+                    )
+                )
+            }
+        }
     }
-
-
 }

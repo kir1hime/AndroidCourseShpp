@@ -37,23 +37,31 @@ class ContactDetailsNotificationViewModel @Inject constructor(
         executeUseCase(
             toExecute = {
                 when (action) {
-                    NotificationAction.ADD_CONTACT -> addContactUseCase(contactInfo)
-                    NotificationAction.DELETE_CONTACT -> deleteContactUseCase(contactInfo.id)
+                    NotificationAction.ADD_CONTACT -> deleteContactUseCase(contactInfo.id)
+                    NotificationAction.DELETE_CONTACT -> addContactUseCase(contactInfo)
                 }
             },
             onSuccess = {
                 when (action) {
                     NotificationAction.ADD_CONTACT ->
-                        setEffect(ContactDetailsNotificationContract.Effect.ShowToast(R.string.add_contact_toast_message))
+                        setEffect(
+                            ContactDetailsNotificationContract.Effect
+                                .ShowToast(R.string.delete_contact_toast_message)
+                        )
 
                     NotificationAction.DELETE_CONTACT ->
-                        setEffect(ContactDetailsNotificationContract.Effect.ShowToast(R.string.delete_contact_toast_message))
+                        setEffect(
+                            ContactDetailsNotificationContract.Effect
+                                .ShowToast(R.string.add_contact_toast_message)
+                        )
                 }
             },
             onLocalStorageError = {
-                setEffect(ContactDetailsNotificationContract.Effect.ShowToast(R.string.generic_error))
-            },
-            finally = { }
+                setEffect(
+                    ContactDetailsNotificationContract.Effect
+                        .ShowToast(R.string.generic_error)
+                )
+            }
         )
     }
 }
