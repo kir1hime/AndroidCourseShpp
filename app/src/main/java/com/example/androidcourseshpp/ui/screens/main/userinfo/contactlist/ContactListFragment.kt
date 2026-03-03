@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
@@ -36,13 +35,6 @@ class ContactListFragment :
 
     private lateinit var sharedContactProfilePhoto: ImageView
 
-    private val onBackPressedCallback: OnBackPressedCallback =
-        object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                moveBackToUserProfileScreen()
-            }
-        }
-
     private lateinit var adapter: ContactsAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -54,7 +46,7 @@ class ContactListFragment :
 
         setListeners()
         setObservers()
-        setOnBackPressedListener()
+
     }
 
     private fun createContactListAdapter() {
@@ -85,13 +77,6 @@ class ContactListFragment :
                 floatingButtonDeleteSelectedItems.visibility = View.GONE
             }
         }
-    }
-
-    private fun setOnBackPressedListener() {
-        requireActivity().onBackPressedDispatcher.addCallback(
-            viewLifecycleOwner,
-            onBackPressedCallback
-        )
     }
 
     private fun initRecyclerView() = with(binding.recyclerViewContacts) {

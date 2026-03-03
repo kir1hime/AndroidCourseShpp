@@ -2,6 +2,7 @@ package com.example.androidcourseshpp.ui.screens.main.userinfo
 
 import android.os.Bundle
 import android.view.View
+import androidx.activity.addCallback
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.databinding.FragmentUserinfoBinding
 import com.example.androidcourseshpp.ui.BaseFragment
@@ -22,8 +23,9 @@ class UserInfoFragment : BaseFragment<FragmentUserinfoBinding>(FragmentUserinfoB
         setListeners()
     }
 
-    override fun setListeners() = with(binding) {
-        tabLayoutUserInfo.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+    override fun setListeners() {
+        binding.tabLayoutUserInfo.addOnTabSelectedListener(object :
+            TabLayout.OnTabSelectedListener {
 
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 if (tab?.position == Tab.USER_PROFILE.ordinal) {
@@ -44,6 +46,13 @@ class UserInfoFragment : BaseFragment<FragmentUserinfoBinding>(FragmentUserinfoB
             override fun onTabReselected(tab: TabLayout.Tab?) {
             }
         })
+
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+            when (Tab.entries[binding.viewPagerUserInformation.currentItem]) {
+                Tab.USER_PROFILE -> requireActivity().finish()
+                Tab.CONTACTS -> moveToUserProfileTab()
+            }
+        }
     }
 
     private fun initViewPager() = with(binding) {
