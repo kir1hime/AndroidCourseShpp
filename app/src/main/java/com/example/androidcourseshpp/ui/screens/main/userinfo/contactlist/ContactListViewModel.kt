@@ -1,6 +1,7 @@
 package com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist
 
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.domain.entity.contact.SyncAction
@@ -100,13 +101,12 @@ class ContactListViewModel @Inject constructor(
     }
 
     private fun updateFilteredContactListBy(input: String) {
-        val filteredContactList = mutableListOf<ContactItem>()
+        updateFilteredContactList { list -> list.clear() }
         state.value.contactList.forEach { contact ->
             if (contact.name.isContainsOrderedSequence(input)) {
-                filteredContactList.add(contact)
+                updateFilteredContactList { list -> list.add(contact) }
             }
         }
-        _filteredContactList.value = filteredContactList
     }
 
     private fun deleteContact(contactItem: ContactItem) {
@@ -118,7 +118,7 @@ class ContactListViewModel @Inject constructor(
             },
             onSuccess = {
                 setState { copy(contactList = contactList) }
-
+                Log.d("tag", "fadfkj")
                 updateFilteredContactList { list ->
                     list.remove(contactItem)
                 }
@@ -207,11 +207,6 @@ class ContactListViewModel @Inject constructor(
                                 .map { syncContact -> syncContact.contactInfo.toContactItem() }
 
                         setState { copy(contactList = contactList) }
-
-                        updateFilteredContactList { list ->
-                            list.clear()
-                            list.addAll(contactList)
-                        }
                     }
 
                     is Result.Error -> {
@@ -261,8 +256,8 @@ class ContactListViewModel @Inject constructor(
     }
 
     private fun updateFilteredContactList(toUpdate: (MutableList<ContactItem>) -> Unit) {
-        _filteredContactList.update {
-            val newFilteredList = _filteredContactList.value.toMutableList()
+        _filteredContactList.update { currentList ->
+            val newFilteredList = currentList.toMutableList()
             toUpdate(newFilteredList)
             newFilteredList
         }

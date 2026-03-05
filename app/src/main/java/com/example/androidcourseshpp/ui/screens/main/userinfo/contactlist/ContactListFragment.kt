@@ -180,6 +180,7 @@ class ContactListFragment :
         }
 
         imageButtonSearch.setOnClickListener {
+            viewModel.setEvent(ContactListContract.Event.OnSearchBarTextChanged(""))
             viewModel.setEvent(ContactListContract.Event.SearchModeSwitched(true))
             viewModel.setEvent(ContactListContract.Event.OnSearchButtonClicked)
         }
@@ -240,7 +241,11 @@ class ContactListFragment :
                 override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                     val adapterPosition = viewHolder.absoluteAdapterPosition
 
-                    val deletedItem = viewModel.state.value.contactList[adapterPosition]
+                    val deletedItem = if (viewModel.state.value.isSearchMode) {
+                        viewModel.filteredContactList.value[adapterPosition]
+                    } else {
+                        viewModel.state.value.contactList[adapterPosition]
+                    }
                     showUndoDeletingItemSnackBar(deletedItem)
                     viewModel.setEvent(
                         ContactListContract.Event.ContactItemDeleted(
