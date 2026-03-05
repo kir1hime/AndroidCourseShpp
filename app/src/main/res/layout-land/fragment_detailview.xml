@@ -140,24 +140,6 @@
         app:layout_constraintEnd_toEndOf="@id/textViewWhitePartOfScreen"
         app:layout_constraintTop_toTopOf="@id/textViewWhitePartOfScreen" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/buttonMainAction"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/view_my_contacts_bt_h"
-        android:layout_marginHorizontal="@dimen/main_margin_side"
-        android:layout_marginBottom="@dimen/bt_margin_bottom"
-        android:background="@drawable/message_background"
-        android:fontFamily="@font/open_sans"
-        android:letterSpacing="0.15"
-        android:text="@string/message"
-        android:textColor="@color/message_button_text_color"
-        android:textSize="@dimen/middle_text_size"
-        android:textStyle="bold"
-        app:backgroundTint="@null"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/textViewWhitePartOfScreen"
-        app:layout_constraintStart_toStartOf="@id/textViewWhitePartOfScreen" />
-
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/imageButtonArrowBack"
         android:layout_width="wrap_content"
@@ -169,5 +151,85 @@
         android:src="@drawable/ic_arrow_back"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonOutlineMessage"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/message_outline_bt_h"
+        android:layout_marginHorizontal="@dimen/main_margin_side"
+        android:layout_marginBottom="@dimen/outline_message_bt_margin_bottom"
+        android:background="@drawable/message_outline_background"
+        android:fontFamily="@font/open_sans"
+        android:text="@string/message_bt_text"
+        android:textAllCaps="false"
+        android:textColor="@color/outlined_message_button_text_color"
+        android:textSize="@dimen/small_text_size"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:backgroundTint="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/textViewWhitePartOfScreen"
+        app:layout_constraintStart_toStartOf="@id/textViewWhitePartOfScreen"
+        tools:visibility="visible" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonAddToMyContacts"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/main_action_bt_h"
+        android:layout_marginHorizontal="@dimen/main_margin_side"
+        android:layout_marginBottom="@dimen/bt_margin_bottom"
+        android:background="@drawable/message_background"
+        android:fontFamily="@font/open_sans"
+        android:letterSpacing="0.15"
+        android:text="@string/add_to_my_contacts"
+        android:textColor="@color/message_button_text_color"
+        android:textSize="@dimen/middle_text_size"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:backgroundTint="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/textViewWhitePartOfScreen"
+        app:layout_constraintStart_toStartOf="@id/textViewWhitePartOfScreen"
+        tools:visibility="visible" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonDeleteFromMyContacts"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/main_action_bt_h"
+        android:layout_marginHorizontal="@dimen/main_margin_side"
+        android:layout_marginBottom="@dimen/bt_margin_bottom"
+        android:background="@drawable/message_background"
+        android:fontFamily="@font/open_sans"
+        android:letterSpacing="0.15"
+        android:text="@string/delete_from_my_contacts"
+        android:textColor="@color/message_button_text_color"
+        android:textSize="@dimen/middle_text_size"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:backgroundTint="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/textViewWhitePartOfScreen"
+        app:layout_constraintStart_toStartOf="@id/textViewWhitePartOfScreen"
+        tools:visibility="visible" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonFilledMessage"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/main_action_bt_h"
+        android:layout_marginHorizontal="@dimen/main_margin_side"
+        android:layout_marginBottom="@dimen/bt_margin_bottom"
+        android:background="@drawable/message_background"
+        android:fontFamily="@font/open_sans"
+        android:letterSpacing="0.15"
+        android:text="@string/message"
+        android:textColor="@color/message_button_text_color"
+        android:textSize="@dimen/middle_text_size"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:backgroundTint="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/textViewWhitePartOfScreen"
+        app:layout_constraintStart_toStartOf="@id/textViewWhitePartOfScreen"
+        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

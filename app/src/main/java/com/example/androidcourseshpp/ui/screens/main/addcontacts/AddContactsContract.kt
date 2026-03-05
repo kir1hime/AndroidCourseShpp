@@ -1,9 +1,10 @@
 package com.example.androidcourseshpp.ui.screens.main.addcontacts
 
-import com.example.androidcourseshpp.ui.screens.main.addcontacts.model.UserItem
+import androidx.annotation.StringRes
 import com.example.androidcourseshpp.ui.ViewEffect
 import com.example.androidcourseshpp.ui.ViewEvent
 import com.example.androidcourseshpp.ui.ViewState
+import com.example.androidcourseshpp.ui.screens.main.addcontacts.model.UserItem
 import com.example.androidcourseshpp.ui.screens.model.ContactDetailsModel
 
 class AddContactsContract {
@@ -29,7 +30,7 @@ class AddContactsContract {
         data object ScrollUserListToTop : Effect
         data class NavigateToDetailsScreen(val userItem: UserItem) : Effect
         data object NavigateToContactListScreen : Effect
-        data class ShowToast(val toastMessageResId: Int) : Effect
+        data class ShowToast(@param:StringRes val toastMessageResId: Int) : Effect
     }
 
     data class UIState(

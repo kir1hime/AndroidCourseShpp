@@ -1,18 +1,20 @@
 package com.example.androidcourseshpp.ui.screens.main.contactdetailsnotif
 
 import com.example.androidcourseshpp.R
-import com.example.androidcourseshpp.domain.entity.contact.ContactInfo
 import com.example.androidcourseshpp.domain.usecase.contacts.AddContactUseCase
 import com.example.androidcourseshpp.domain.usecase.contacts.DeleteContactUseCase
 import com.example.androidcourseshpp.ui.BaseViewModel
 import com.example.androidcourseshpp.ui.notifications.NotificationAction
+import com.example.androidcourseshpp.ui.notifications.NotificationService
+import com.example.androidcourseshpp.ui.screens.model.ContactDetailsModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class ContactDetailsNotificationViewModel @Inject constructor(
     private val addContactUseCase: AddContactUseCase,
-    private val deleteContactUseCase: DeleteContactUseCase
+    private val deleteContactUseCase: DeleteContactUseCase,
+    private val notificationService: NotificationService
 ) : BaseViewModel<ContactDetailsNotificationContract.Event, ContactDetailsNotificationContract.Effect, ContactDetailsNotificationContract.UIState>() {
 
 
@@ -20,12 +22,14 @@ class ContactDetailsNotificationViewModel @Inject constructor(
 
     override fun handleEvent(event: ContactDetailsNotificationContract.Event) {
         when (event) {
-            is ContactDetailsNotificationContract.Event.OnMainActionButtonClicked -> executeMainAction(
-                action = event.action,
-                contactInfo = event.contactInfo
+            is ContactDetailsNotificationContract.Event.OnArrowBackButtonClicked -> navigateToPreviousScreen()
+            is ContactDetailsNotificationContract.Event.OnAddContactButtonClicked -> addContact(
+                event.contactDetails
             )
 
-            is ContactDetailsNotificationContract.Event.OnArrowBackButtonClicked -> navigateToPreviousScreen()
+            is ContactDetailsNotificationContract.Event.OnDeleteContactButtonClicked -> deleteContact(
+                event.contactDetails
+            )
         }
     }
 
@@ -33,34 +37,42 @@ class ContactDetailsNotificationViewModel @Inject constructor(
         setEffect(ContactDetailsNotificationContract.Effect.NavigateToPreviousScreen)
     }
 
-    private fun executeMainAction(action: NotificationAction, contactInfo: ContactInfo) {
+    private fun addContact(contactDetails: ContactDetailsModel) {
         executeUseCase(
-            toExecute = {
-                when (action) {
-                    NotificationAction.ADD_CONTACT -> deleteContactUseCase(contactInfo.id)
-                    NotificationAction.DELETE_CONTACT -> addContactUseCase(contactInfo)
-                }
-            },
+            toExecute = { addContactUseCase(contactDetails.toContactInfo()) },
             onSuccess = {
-                when (action) {
-                    NotificationAction.ADD_CONTACT ->
-                        setEffect(
-                            ContactDetailsNotificationContract.Effect
-                                .ShowToast(R.string.delete_contact_toast_message)
-                        )
-
-                    NotificationAction.DELETE_CONTACT ->
-                        setEffect(
-                            ContactDetailsNotificationContract.Effect
-                                .ShowToast(R.string.add_contact_toast_message)
-                        )
-                }
+                setEffect(ContactDetailsNotificationContract.Effect.ShowToast(R.string.add_contact_toast_message))
+                setEffect(
+                    ContactDetailsNotificationContract.Effect.MainActionWasExecuted
+                )
+                notificationService.showContactAddedNotification(
+                    userInfo = contactDetails,
+                    notificationActionId = NotificationAction.ADD_CONTACT.ordinal
+                )
             },
             onLocalStorageError = {
+                setEffect(ContactDetailsNotificationContract.Effect.ShowToast(R.string.generic_error))
+            }
+        )
+    }
+
+    private fun deleteContact(contactDetails: ContactDetailsModel) {
+        executeUseCase(
+            toExecute = { deleteContactUseCase(contactDetails.id) },
+            onSuccess = {
                 setEffect(
-                    ContactDetailsNotificationContract.Effect
-                        .ShowToast(R.string.generic_error)
+                    ContactDetailsNotificationContract.Effect.ShowToast(R.string.delete_contact_toast_message)
                 )
+                setEffect(
+                    ContactDetailsNotificationContract.Effect.MainActionWasExecuted
+                )
+                notificationService.showContactAddedNotification(
+                    userInfo = contactDetails,
+                    notificationActionId = NotificationAction.ADD_CONTACT.ordinal
+                )
+            },
+            onLocalStorageError = {
+                setEffect(ContactDetailsNotificationContract.Effect.ShowToast(R.string.generic_error))
             }
         )
     }

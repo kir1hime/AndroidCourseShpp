@@ -120,6 +120,7 @@
     <dimen name="items_list_advice_margin_top">8dp</dimen>
 
     <dimen name="floating_arrow_top_button_margin">45dp</dimen>
+    <dimen name="outline_message_bt_margin_bottom">87dp</dimen>
 
 
     <!--paddings-->
@@ -138,20 +139,21 @@
     <dimen name="search_bar_padding_bottom">0dp</dimen>
 
     <!--button dimens-->
-    <dimen name="view_my_contacts_bt_h">55dp</dimen>
+    <dimen name="main_action_bt_h">55dp</dimen>
     <dimen name="edit_profile_bt_h">40dp</dimen>
+    <dimen name="message_outline_bt_h">@dimen/edit_profile_bt_h</dimen>
     <dimen name="social_network_bt_wh">60dp</dimen>
     <dimen name="log_out_bt_w">119dp</dimen>
     <dimen name="log_out_bt_h">40dp</dimen>
-    <dimen name="register_bt_h">@dimen/view_my_contacts_bt_h</dimen>
+    <dimen name="register_bt_h">@dimen/main_action_bt_h</dimen>
     <dimen name="google_bt_h">@dimen/edit_profile_bt_h</dimen>
     <dimen name="remember_me_size">18dp</dimen>
     <dimen name="is_selected_check_box_w">24dp</dimen>
     <dimen name="is_selected_check_box_h">20dp</dimen>
     <dimen name="floating_delete_button_size">60dp</dimen>
-    <dimen name="forward_bt_h">@dimen/view_my_contacts_bt_h</dimen>
+    <dimen name="forward_bt_h">@dimen/main_action_bt_h</dimen>
     <dimen name="cancel_bt_h">40dp</dimen>
-    <dimen name="save_bt_h">@dimen/view_my_contacts_bt_h</dimen>
+    <dimen name="save_bt_h">@dimen/main_action_bt_h</dimen>
     <dimen name="try_again_bt_h">40dp</dimen>
     <dimen name="floating_arrow_top_bt_size">@dimen/floating_delete_button_size</dimen>
 
