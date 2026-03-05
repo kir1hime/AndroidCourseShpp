@@ -17,8 +17,9 @@ class SignUpUseCase @Inject constructor(
 
     suspend operator fun invoke(signUpInfo: SignUpInfo, toRememberUser: Boolean): Result<UserInfo> {
         val userInfo = authRepository.singUp(signUpInfo).onSuccess { data ->
+            userLocalDataRepository.saveUserServerId(data.id)
             if (toRememberUser) {
-                userLocalDataRepository.saveUserServerId(data.id)
+                userLocalDataRepository.setUserRememberState(true)
             }
         }
         return userInfo

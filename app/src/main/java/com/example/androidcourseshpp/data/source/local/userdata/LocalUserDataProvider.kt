@@ -7,10 +7,12 @@ import javax.inject.Inject
 const val USER_INFO_STORE = "userInfo"
 const val USER_AVATAR_URL = "userAvatar"
 const val USER_SERVER_ID = "userServerId"
+const val USER_REMEMBER_STATE = "userSaveState"
 const val USER_PHOTOS = "userPhotos"
 const val DATABASE_SYNC = "databaseSync"
 const val DEFAULT_ID_VALUE: Int = -1
 const val DEFAULT_AVATAR_VALUE = ""
+const val DEFAULT_USER_REMEMBER_STATE_VALUE = false
 
 
 class LocalDataProvider @Inject constructor(@param:DataProviderPref private val sharedPref: SharedPreferences) :
@@ -38,6 +40,14 @@ class LocalDataProvider @Inject constructor(@param:DataProviderPref private val 
 
     override fun clearUserAvatarUrl() {
         editor.putString(USER_AVATAR_URL, DEFAULT_AVATAR_VALUE).apply()
+    }
+
+    override fun isUserRemembered(): Boolean =
+        sharedPref.getBoolean(USER_REMEMBER_STATE, DEFAULT_USER_REMEMBER_STATE_VALUE)
+
+
+    override fun setUserRememberState(toSaveUser: Boolean) {
+        editor.putBoolean(USER_REMEMBER_STATE, toSaveUser).apply()
     }
 
     override fun saveUserGalleryPhotos(photoURLs: Set<String>) {

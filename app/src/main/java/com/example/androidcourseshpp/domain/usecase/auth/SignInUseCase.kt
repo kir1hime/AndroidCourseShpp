@@ -22,8 +22,9 @@ class SignInUseCase @Inject constructor(
     ): Result<UserInfo> {
 
         val userInfo = authRepository.signIn(signInInfo).onSuccess { data ->
+            userLocalDataRepository.saveUserServerId(data.id)
             if (toRememberUser) {
-                userLocalDataRepository.saveUserServerId(data.id)
+                userLocalDataRepository.setUserRememberState(true)
             }
         }
         return userInfo

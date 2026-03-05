@@ -18,6 +18,7 @@ class LogOutUseCase @Inject constructor(
         authRepository.clearTokens()
         userLocalDataRepository.clearUserServerId()
         userLocalDataRepository.clearUserAvatarUrl()
+        userLocalDataRepository.setUserRememberState(false)
         galleryRepository.clearGalleryPhotos()
         contactsLocalRepository.clearContacts()
         contactsLocalRepository.setDatabaseSynced(false)

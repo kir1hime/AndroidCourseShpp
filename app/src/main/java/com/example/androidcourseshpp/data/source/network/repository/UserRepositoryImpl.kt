@@ -1,5 +1,6 @@
 package com.example.androidcourseshpp.data.source.network.repository
 
+import com.example.androidcourseshpp.data.source.local.userdata.UserDataProvider
 import com.example.androidcourseshpp.data.source.network.model.user.toUpdateUserDataModel
 import com.example.androidcourseshpp.data.source.network.service.ServicesProvider
 import com.example.androidcourseshpp.data.source.network.utils.wrapNetworkExceptions
@@ -9,7 +10,8 @@ import com.example.androidcourseshpp.domain.utils.Result
 import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
-    private val servicesProvider: ServicesProvider
+    private val servicesProvider: ServicesProvider,
+    private val userDataProvider: UserDataProvider
 ) : UserRepository {
 
     override suspend fun getUsers(): Result<List<UserInfo>> = wrapNetworkExceptions {
@@ -17,8 +19,9 @@ class UserRepositoryImpl @Inject constructor(
 
     }
 
-    override suspend fun getUser(userServerId: Int): Result<UserInfo> = wrapNetworkExceptions {
-        servicesProvider.getUserService().getUser(userServerId).user.toUserInfo()
+    override suspend fun getUser(): Result<UserInfo> = wrapNetworkExceptions {
+        servicesProvider.getUserService()
+            .getUser(userDataProvider.getUserServerId()).user.toUserInfo()
     }
 
     override suspend fun updateUserInfo(userInfo: UserInfo) = wrapNetworkExceptions {
