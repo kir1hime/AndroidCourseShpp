@@ -16,6 +16,7 @@ import com.example.androidcourseshpp.ui.notifications.NotificationService
 import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.model.ContactItem
 import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.model.toContactItem
 import com.example.androidcourseshpp.ui.sync.ContactsSyncScheduler
+import com.example.androidcourseshpp.ui.utils.executeUseCase
 import com.example.androidcourseshpp.ui.utils.isContainsOrderedSequence
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi

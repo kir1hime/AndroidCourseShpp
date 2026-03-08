@@ -58,32 +58,5 @@ abstract class BaseViewModel<UIEvent : ViewEvent, UIEffect : ViewEffect, UIState
             _effect.send(effect)
         }
     }
-
-    protected fun <T> executeUseCase(
-        toExecute: suspend () -> Result<T>,
-        onSuccess: (T) -> Unit = {},
-        onBackendError: () -> Unit = {},
-        onConnectionError: () -> Unit = {},
-        onResponseProcessingError: () -> Unit = {},
-        onLocalStorageError: () -> Unit = {},
-        finally: () -> Unit = {}
-    ) {
-        viewModelScope.launch {
-            when (val result = toExecute()) {
-                is Result.Success -> {
-                    onSuccess(result.data)
-                }
-
-                is Result.Error ->
-                    when (result.error) {
-                        is AppError.BackendError -> onBackendError()
-                        is AppError.ConnectionError -> onConnectionError()
-                        is AppError.LocalStorageError -> onLocalStorageError()
-                        is AppError.ResponseProcessingError -> onResponseProcessingError()
-                    }
-            }
-            finally()
-        }
-    }
 }
 
