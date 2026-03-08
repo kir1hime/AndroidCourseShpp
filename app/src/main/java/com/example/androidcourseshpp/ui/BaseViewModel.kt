@@ -2,8 +2,6 @@ package com.example.androidcourseshpp.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.androidcourseshpp.domain.utils.AppError
-import com.example.androidcourseshpp.domain.utils.Result
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow

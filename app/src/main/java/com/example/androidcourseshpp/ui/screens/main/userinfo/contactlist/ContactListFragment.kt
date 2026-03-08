@@ -73,18 +73,6 @@ class ContactListFragment :
                 setSelectModeViewsVisibility(isSelectMode)
                 viewModel.setEvent(ContactListContract.Event.OnSelectModeChange(isSelectMode))
             }
-
-            /*override fun showFloatingDeleteButton() {
-                floatingButtonDeleteSelectedItems.visibility = View.VISIBLE
-            }
-
-            override fun hideFloatingDeleteButton() {
-                floatingButtonDeleteSelectedItems.visibility = View.GONE
-            }
-
-            override fun showCancelSelectTextView() {
-                textViewCancelSelectMode.visibility = View.VISIBLE
-            }*/
         }
     }
 
