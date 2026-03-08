@@ -41,6 +41,7 @@
     <!--My contacts (activity_contacts.xml)-->
     <string name="contacts">Контакти</string>
     <string name="add_contact">Додати контакт</string>
+    <string name="cancel_select">Відмінити вибір</string>
     <string name="search_imagebutton">search_imagebutton</string>
     <string name="arrow_back_imagebutton">arrow_back_imagebutton</string>
 
