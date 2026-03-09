@@ -69,12 +69,9 @@ class ContactListFragment :
                 viewModel.setEvent(ContactListContract.Event.OnItemClicked(contactItem))
             }
 
-            override fun showFloatingDeleteButton() {
-                floatingButtonDeleteSelectedItems.visibility = View.VISIBLE
-            }
-
-            override fun hideFloatingDeleteButton() {
-                floatingButtonDeleteSelectedItems.visibility = View.GONE
+            override fun selectModeChangingListener(isSelectMode: Boolean) {
+                setSelectModeViewsVisibility(isSelectMode)
+                viewModel.setEvent(ContactListContract.Event.OnSelectModeChange(isSelectMode))
             }
         }
     }
@@ -138,7 +135,7 @@ class ContactListFragment :
                     adapter.submitList(filteredContactList.map { contactItem ->
                         SelectableContactItem(
                             contactItem,
-                            false
+                            state.isSelectMode
                         )
                     })
                 }
@@ -146,7 +143,7 @@ class ContactListFragment :
                 adapter.submitList(contactList.map { contactItem ->
                     SelectableContactItem(
                         contactItem,
-                        false
+                        state.isSelectMode
                     )
                 })
             }
@@ -172,7 +169,8 @@ class ContactListFragment :
                     adapter.selectedItems
                 )
             )
-            floatingButtonDeleteSelectedItems.visibility = View.GONE
+            viewModel.setEvent(ContactListContract.Event.OnSelectModeChange(false))
+            setSelectModeViewsVisibility(false)
         }
 
         buttonTryAgain.setOnClickListener {
@@ -192,6 +190,16 @@ class ContactListFragment :
         editTextSearch.onChangeTextListener { sequence, _, _, _ ->
             viewModel.setEvent(ContactListContract.Event.OnSearchBarTextChanged(sequence.toString()))
         }
+
+        textViewCancelSelectMode.setOnClickListener {
+            setSelectModeViewsVisibility(false)
+            viewModel.setEvent(ContactListContract.Event.OnSelectModeChange(false))
+        }
+    }
+
+    private fun setSelectModeViewsVisibility(isVisible: Boolean) = with(binding) {
+        floatingButtonDeleteSelectedItems.isVisible = isVisible
+        textViewCancelSelectMode.isVisible = isVisible
     }
 
     override fun hideSearchBar(): Unit = with(binding) {

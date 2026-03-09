@@ -7,8 +7,13 @@ import android.text.TextWatcher
 import android.widget.EditText
 import android.widget.ImageView
 import androidx.core.net.toUri
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.bumptech.glide.Glide
 import com.example.androidcourseshpp.R
+import com.example.androidcourseshpp.domain.utils.AppError
+import com.example.androidcourseshpp.domain.utils.Result
+import kotlinx.coroutines.launch
 
 fun ImageView.loadImageFromURLCircled(
     context: Context,
@@ -73,4 +78,29 @@ fun String.isContainsOrderedSequence(searched: String): Boolean {
     return lowerCaseSearched.length == searchedCounter
 }
 
+fun <T> ViewModel.executeUseCase(
+    toExecute: suspend () -> Result<T>,
+    onSuccess: (T) -> Unit = {},
+    onBackendError: () -> Unit = {},
+    onConnectionError: () -> Unit = {},
+    onResponseProcessingError: () -> Unit = {},
+    onLocalStorageError: () -> Unit = {},
+    finally: () -> Unit = {}
+) {
+    viewModelScope.launch {
+        when (val result = toExecute()) {
+            is Result.Success -> {
+                onSuccess(result.data)
+            }
 
+            is Result.Error ->
+                when (result.error) {
+                    is AppError.BackendError -> onBackendError()
+                    is AppError.ConnectionError -> onConnectionError()
+                    is AppError.LocalStorageError -> onLocalStorageError()
+                    is AppError.ResponseProcessingError -> onResponseProcessingError()
+                }
+        }
+        finally()
+    }
+}

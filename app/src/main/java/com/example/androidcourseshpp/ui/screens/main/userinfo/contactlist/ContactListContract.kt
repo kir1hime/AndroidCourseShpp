@@ -15,7 +15,7 @@ class ContactListContract {
         data object OnHideSearchButtonClicked : Event
         data object OnTryAgainButtonClicked : Event
         data class OnSearchBarTextChanged(val input: String) : Event
-
+        data class OnSelectModeChange(val isSelectMode: Boolean) : Event
         data class SearchModeSwitched(val isSearchModeEnabled: Boolean) : Event
         data class ContactItemAdded(val contactItem: ContactItem) :
             Event
@@ -50,6 +50,7 @@ class ContactListContract {
         val contactList: List<ContactItem>,
         val isProgressBarShowed: Boolean,
         val isTryAgainButtonShowed: Boolean,
-        val isSearchMode: Boolean
+        val isSearchMode: Boolean,
+        val isSelectMode: Boolean
     ) : ViewState
 }

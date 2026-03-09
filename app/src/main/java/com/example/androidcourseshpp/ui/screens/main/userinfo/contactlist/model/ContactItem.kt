@@ -40,4 +40,4 @@ fun ContactInfo.toContactItem() =
     )
 
 
-data class SelectableContactItem(val item: ContactItem, var isSelectionModeEnabled: Boolean)
+data class SelectableContactItem(val item: ContactItem, var isSelectMode: Boolean)

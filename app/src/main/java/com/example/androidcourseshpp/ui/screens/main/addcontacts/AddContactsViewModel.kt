@@ -9,6 +9,7 @@ import com.example.androidcourseshpp.ui.notifications.NotificationService
 import com.example.androidcourseshpp.ui.screens.main.addcontacts.model.UserItem
 import com.example.androidcourseshpp.ui.screens.main.addcontacts.model.toUserItem
 import com.example.androidcourseshpp.ui.screens.model.ContactDetailsModel
+import com.example.androidcourseshpp.ui.utils.executeUseCase
 import com.example.androidcourseshpp.ui.utils.isContainsOrderedSequence
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

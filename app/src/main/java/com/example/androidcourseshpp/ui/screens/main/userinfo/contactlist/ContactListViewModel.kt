@@ -17,6 +17,7 @@ import com.example.androidcourseshpp.ui.notifications.NotificationService
 import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.model.ContactItem
 import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.model.toContactItem
 import com.example.androidcourseshpp.ui.sync.ContactsSyncScheduler
+import com.example.androidcourseshpp.ui.utils.executeUseCase
 import com.example.androidcourseshpp.ui.utils.isContainsOrderedSequence
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -44,7 +45,8 @@ class ContactListViewModel @Inject constructor(
         contactList = emptyList(),
         isProgressBarShowed = false,
         isTryAgainButtonShowed = false,
-        isSearchMode = false
+        isSearchMode = false,
+        isSelectMode = false
     )
 
     val deletedItems = Stack<ContactItem>()
@@ -67,6 +69,7 @@ class ContactListViewModel @Inject constructor(
             is ContactListContract.Event.OnSearchButtonClicked -> showSearchBar()
             is ContactListContract.Event.OnArrowBackButtonClicked -> navigateToPreviousScreen()
             is ContactListContract.Event.OnTryAgainButtonClicked -> triggerContactsLoading()
+            is ContactListContract.Event.OnSelectModeChange -> changeSelectMode(event.isSelectMode)
             is ContactListContract.Event.OnSearchBarTextChanged -> updateFilteredContactListBy(event.input)
             is ContactListContract.Event.ContactItemDeleted -> deleteContact(event.contactItem)
             is ContactListContract.Event.OnAddContactClicked -> {
@@ -86,6 +89,10 @@ class ContactListViewModel @Inject constructor(
                 event.contact
             )
         }
+    }
+
+    private fun changeSelectMode(isSelectMode: Boolean) {
+        setState { copy(isSelectMode = isSelectMode) }
     }
 
     private fun switchSearchMode(isSearchMode: Boolean) {

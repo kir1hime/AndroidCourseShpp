@@ -7,6 +7,7 @@ import com.example.androidcourseshpp.domain.usecase.auth.SignUpUseCase
 import com.example.androidcourseshpp.ui.BaseViewModel
 import com.example.androidcourseshpp.ui.screens.auth.signup.model.SignUpModel
 import com.example.androidcourseshpp.ui.screens.model.toUserModel
+import com.example.androidcourseshpp.ui.utils.executeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
