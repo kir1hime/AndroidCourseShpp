@@ -24,7 +24,7 @@ class ContactsSyncScheduler @Inject constructor(
         private const val WORK_NAME = "contacts_sync"
     }
 
-    fun executePeriodicSync() {
+     fun executePeriodicSync() {
         val workRequest = PeriodicWorkRequestBuilder<ContactsSyncWorker>(
             repeatInterval = 1,
             repeatIntervalTimeUnit = TimeUnit.HOURS
