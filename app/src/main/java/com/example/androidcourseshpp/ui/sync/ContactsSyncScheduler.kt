@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.work.Constraints
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.NetworkType
+import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -24,8 +25,8 @@ class ContactsSyncScheduler @Inject constructor(
         private const val WORK_NAME = "contacts_sync"
     }
 
-    fun executePeriodicSync() {
-        val workRequest = PeriodicWorkRequestBuilder<ContactsSyncWorker>(
+    fun executePeriodicSyncToRemote() {
+        val workRequest = PeriodicWorkRequestBuilder<PushContactsWorker>(
             repeatInterval = 1,
             repeatIntervalTimeUnit = TimeUnit.HOURS
         ).setConstraints(networkConnectionConstraints).build()
@@ -35,5 +36,13 @@ class ContactsSyncScheduler @Inject constructor(
             ExistingPeriodicWorkPolicy.KEEP,
             workRequest
         )
+    }
+
+    fun executeOnceSyncToRemote() {
+        val workRequest = OneTimeWorkRequestBuilder<PushContactsWorker>().setConstraints(
+            networkConnectionConstraints
+        ).build()
+
+        WorkManager.getInstance(context).enqueue(workRequest)
     }
 }

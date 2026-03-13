@@ -12,7 +12,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class SyncContactsUseCase @Inject constructor(
+class SyncContactsToRemoteUseCase @Inject constructor(
     private val contactsNetworkRepository: ContactsNetworkRepository,
     private val contactsLocalRepository: ContactsLocalRepository
 ) {
