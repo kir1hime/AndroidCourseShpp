@@ -6,14 +6,14 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class UserLocalDataRepositoryImpl @Inject constructor(private val userDataProvider: UserDataProvider) : UserLocalDataRepository {
+class UserLocalDataRepositoryImpl @Inject constructor(private val userDataProvider: UserDataProvider) :
+    UserLocalDataRepository {
     override fun saveUserServerId(userServerId: Int) {
         userDataProvider.saveUserServerId(userServerId)
     }
 
-    override fun getUserServerId(): Int {
-        return userDataProvider.getUserServerId()
-    }
+    override fun getUserServerId() = userDataProvider.getUserServerId()
+
 
     override fun clearUserServerId() {
         userDataProvider.clearUserServerId()
@@ -23,11 +23,17 @@ class UserLocalDataRepositoryImpl @Inject constructor(private val userDataProvid
         userDataProvider.saveUserAvatarUrl(avatar)
     }
 
-    override fun getUserAvatarUrl(): String {
-        return userDataProvider.getUserAvatarUrl()
-    }
+    override fun getUserAvatarUrl() = userDataProvider.getUserAvatarUrl()
+
 
     override fun clearUserAvatarUrl() {
         userDataProvider.clearUserAvatarUrl()
+    }
+
+    override fun isUserRemembered() = userDataProvider.isUserRemembered()
+
+
+    override fun setUserRememberState(toSaveUser: Boolean) {
+        userDataProvider.setUserRememberState(toSaveUser)
     }
 }

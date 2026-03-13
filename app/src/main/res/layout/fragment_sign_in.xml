@@ -59,8 +59,8 @@
         app:helperTextTextColor="@color/error_text_color"
         app:hintTextAppearance="@style/hint_style"
         app:hintTextColor="@color/input_hint_color"
-        app:layout_constraintBottom_toTopOf="@id/buttonLogin"
-        app:layout_constraintTop_toBottomOf="@id/textEnterYourData"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         tools:ignore="RtlSymmetry">
 
         <com.google.android.material.textfield.TextInputEditText

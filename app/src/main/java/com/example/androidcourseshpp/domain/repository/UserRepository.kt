@@ -5,6 +5,6 @@ import com.example.androidcourseshpp.domain.utils.Result
 
 interface UserRepository {
     suspend fun getUsers(): Result<List<UserInfo>>
-    suspend fun getUser(userServerId: Int): Result<UserInfo>
+    suspend fun getUser(): Result<UserInfo>
     suspend fun updateUserInfo(userInfo: UserInfo): Result<Unit>
 }

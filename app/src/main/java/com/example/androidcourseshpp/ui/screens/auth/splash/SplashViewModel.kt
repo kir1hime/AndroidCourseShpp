@@ -1,8 +1,7 @@
 package com.example.androidcourseshpp.ui.screens.auth.splash
 
-import com.example.androidcourseshpp.data.source.local.userdata.DEFAULT_ID_VALUE
+import com.example.androidcourseshpp.domain.usecase.user.GetUserRememberStateUseCase
 import com.example.androidcourseshpp.domain.usecase.user.GetUserUseCase
-import com.example.androidcourseshpp.domain.usecase.user.GetUserServerIdUseCase
 import com.example.androidcourseshpp.ui.BaseViewModel
 import com.example.androidcourseshpp.ui.screens.model.toUserModel
 import com.example.androidcourseshpp.ui.utils.executeUseCase
@@ -11,7 +10,7 @@ import jakarta.inject.Inject
 
 @HiltViewModel
 class SplashViewModel @Inject constructor(
-    private val getUserServerIdUseCase: GetUserServerIdUseCase,
+    private val getUserRememberStateUseCase: GetUserRememberStateUseCase,
     private val getUserInfoUseCase: GetUserUseCase
 ) :
     BaseViewModel<SplashContract.Event, SplashContract.Effect, SplashContract.Sate>() {
@@ -23,19 +22,18 @@ class SplashViewModel @Inject constructor(
     }
 
     init {
-        val userServerId = getUserServerIdUseCase()
-
-        if (userServerId == DEFAULT_ID_VALUE) {
-            setEffect(SplashContract.Effect.NavigateToSignInScreen)
+        val isUserSaved = getUserRememberStateUseCase()
+        if (isUserSaved) {
+            enterToAccount()
         } else {
-            enterToAccount(userServerId)
+            setEffect(SplashContract.Effect.NavigateToSignInScreen)
         }
     }
 
-    private fun enterToAccount(userServerId: Int) {
+    private fun enterToAccount() {
         executeUseCase(
             toExecute = {
-                getUserInfoUseCase(userServerId)
+                getUserInfoUseCase()
             },
             onSuccess = { userInfo ->
                 setEffect(

@@ -7,4 +7,6 @@ interface UserLocalDataRepository {
     fun saveUserAvatarUrl(avatar: String)
     fun getUserAvatarUrl(): String
     fun clearUserAvatarUrl()
+    fun isUserRemembered(): Boolean
+    fun setUserRememberState(toSaveUser: Boolean)
 }

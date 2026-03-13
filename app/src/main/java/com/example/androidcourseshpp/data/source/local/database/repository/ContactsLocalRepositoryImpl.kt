@@ -5,7 +5,6 @@ import com.example.androidcourseshpp.data.source.local.database.dbentity.Contact
 import com.example.androidcourseshpp.data.source.local.database.utils.toSyncState
 import com.example.androidcourseshpp.data.source.local.database.utils.wrapSQLiteException
 import com.example.androidcourseshpp.data.source.local.userdata.DatabaseSyncProvider
-import com.example.androidcourseshpp.data.source.network.utils.wrapNetworkExceptions
 import com.example.androidcourseshpp.domain.entity.contact.ContactInfo
 import com.example.androidcourseshpp.domain.entity.contact.SyncAction
 import com.example.androidcourseshpp.domain.entity.contact.SyncContactInfo
@@ -39,8 +38,12 @@ class ContactsLocalRepositoryImpl @Inject constructor(
     @OptIn(ExperimentalCoroutinesApi::class)
     override fun getContacts(): Flow<Result<List<SyncContactInfo>>> =
         contactsDao.getContacts()
-            .map { list -> Result.Success(list.map { it.toSyncContactInfo() }) }
-            .catch { Result.Error(AppError.LocalStorageError) }
+            .map { list ->
+                val result: Result<List<SyncContactInfo>> =
+                    Result.Success(list.map { it.toSyncContactInfo() })
+                result
+            }
+            .catch { emit(Result.Error(AppError.LocalStorageError)) }
 
 
     override suspend fun getContactById(id: Int): Result<SyncContactInfo?> = wrapSQLiteException {
@@ -67,7 +70,7 @@ class ContactsLocalRepositoryImpl @Inject constructor(
 
 
     override suspend fun setSyncStateToContact(contactId: Int, syncAction: SyncAction) =
-        wrapNetworkExceptions {
+        wrapSQLiteException {
             contactsDao.setContactSync(id = contactId, syncState = syncAction.toSyncState())
         }
 }

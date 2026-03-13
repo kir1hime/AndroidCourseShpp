@@ -17,6 +17,8 @@ import com.example.androidcourseshpp.ui.screens.main.addcontacts.adapter.UserIte
 import com.example.androidcourseshpp.ui.screens.main.addcontacts.adapter.UserItemDecorations
 import com.example.androidcourseshpp.ui.screens.main.addcontacts.adapter.UsersAdapter
 import com.example.androidcourseshpp.ui.screens.main.addcontacts.model.UserItem
+import com.example.androidcourseshpp.ui.screens.main.contactdetails.REQUEST_CODE
+import com.example.androidcourseshpp.ui.screens.main.contactdetails.TO_RELOAD_USER_LIST
 import com.example.androidcourseshpp.ui.utils.onChangeTextListener
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -53,10 +55,26 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setUserListReloadListener()
         initRecyclerView()
-
         setObservers()
         setListeners()
+    }
+
+    private fun setUserListReloadListener() {
+        parentFragmentManager.setFragmentResultListener(
+            REQUEST_CODE,
+            viewLifecycleOwner
+        ) { _, data ->
+            val userId = data.getInt(TO_RELOAD_USER_LIST)
+            val updatedList = viewModel.state.value.userList.toMutableList()
+            updatedList.map { user ->
+                if (user.id == userId) {
+                    user.isContact = true
+                }
+            }
+            adapter.submitList(updatedList)
+        }
     }
 
     private fun initRecyclerView() = with(binding.recyclerViewUsers) {
@@ -167,7 +185,7 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
 
         val direction =
             AddContactsFragmentDirections.actionAddContactsFragmentToContactDetailsFragment(
-                userItem.toContactDetails()
+                userItem.toContactDetails(), true
             )
 
         findNavController().navigate(direction, extras)

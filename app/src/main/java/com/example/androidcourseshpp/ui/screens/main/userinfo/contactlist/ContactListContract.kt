@@ -1,9 +1,10 @@
 package com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist
 
-import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.model.ContactItem
+import androidx.annotation.StringRes
 import com.example.androidcourseshpp.ui.ViewEffect
 import com.example.androidcourseshpp.ui.ViewEvent
 import com.example.androidcourseshpp.ui.ViewState
+import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.model.ContactItem
 
 class ContactListContract {
 
@@ -37,7 +38,7 @@ class ContactListContract {
         data object HideSearchBar : Effect
         data object NavigateToUserProfileScreen : Effect
         data object NavigateToAddContactsScreen : Effect
-        data class ShowToast(val toastMessageResId: Int) : Effect
+        data class ShowToast(@param:StringRes val toastMessageResId: Int) : Effect
         data class NavigateToDetailsScreen(
             val contact: ContactItem
         ) : Effect

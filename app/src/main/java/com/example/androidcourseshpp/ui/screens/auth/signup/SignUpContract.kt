@@ -1,5 +1,6 @@
 package com.example.androidcourseshpp.ui.screens.auth.signup
 
+import androidx.annotation.StringRes
 import com.example.androidcourseshpp.ui.ViewEffect
 import com.example.androidcourseshpp.ui.ViewEvent
 import com.example.androidcourseshpp.ui.ViewState
@@ -20,7 +21,7 @@ class SignUpContract {
             val signUpUserInfo: SignUpModel
         ) : Effect
 
-        data class ShowToast(val toastMessageResId: Int) : Effect
+        data class ShowToast(@param:StringRes val toastMessageResId: Int) : Effect
     }
 
     data class UIState(

@@ -13,7 +13,9 @@
         <argument
             android:name="contactDetails"
             app:argType="com.example.androidcourseshpp.ui.screens.model.ContactDetailsModel" />
-
+        <argument
+            android:name="toShowAddContactButton"
+            app:argType="boolean" />
     </fragment>
     <fragment
         android:id="@+id/userInfoFragment"
@@ -71,8 +73,7 @@
     <fragment
         android:id="@+id/contactDetailsNotificationFragment"
         android:name="com.example.androidcourseshpp.ui.screens.main.contactdetailsnotif.ContactDetailsNotificationFragment"
-        android:label="fragment_detailview_notification"
-        tools:layout="@layout/fragment_detailview_notification">
+        android:label="fragment_detailview_notification">
         <deepLink
             android:id="@+id/deepLink"
             app:uri="notification://user_details?id={id}&amp;name={name}&amp;career={career}&amp;address={address}&amp;avatarURL={avatarURL}&amp;notifId={notifId}" />
