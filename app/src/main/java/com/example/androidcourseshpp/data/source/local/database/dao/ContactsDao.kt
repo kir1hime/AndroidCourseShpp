@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
 import com.example.androidcourseshpp.data.source.local.database.dbentity.ContactDbEntity
 import com.example.androidcourseshpp.data.source.local.database.utils.SyncState
 import kotlinx.coroutines.flow.Flow
@@ -32,8 +33,23 @@ interface ContactsDao {
     @Query("DELETE FROM contacts WHERE id IN (:ids)")
     suspend fun deleteContactsByIds(ids: List<Int>)
 
-
     @Query("UPDATE contacts SET sync_state = :syncState WHERE id = :id")
     suspend fun setContactSync(id: Int, syncState: SyncState)
+
+    @Transaction
+    suspend fun refreshContacts(
+        newContacts: List<ContactDbEntity>,
+        deletedContactIds: List<Int>
+    ) {
+        addContacts(newContacts)
+        deleteContactsByIds(deletedContactIds)
+
+        deletedContactIds.forEach { contactId ->
+            setContactSync(contactId, SyncState.SYNCED)
+        }
+        newContacts.forEach { contact ->
+            setContactSync(contact.id, SyncState.SYNCED)
+        }
+    }
 
 }

@@ -73,4 +73,16 @@ class ContactsLocalRepositoryImpl @Inject constructor(
         wrapSQLiteException {
             contactsDao.setContactSync(id = contactId, syncState = syncAction.toSyncState())
         }
+
+    override suspend fun refreshContacts(
+        newContacts: List<ContactInfo>,
+        deletedContactIds: List<Int>
+    ) = wrapSQLiteException {
+        val newDBEntities = newContacts.map { contact -> ContactDbEntity.fromContactInfo(contact) }
+
+        contactsDao.refreshContacts(
+            newContacts = newDBEntities,
+            deletedContactIds = deletedContactIds
+        )
+    }
 }

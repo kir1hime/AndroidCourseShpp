@@ -17,4 +17,8 @@ interface ContactsLocalRepository {
     fun isDatabaseSynced(): Boolean
     fun setDatabaseSynced(isSynced: Boolean)
     suspend fun setSyncStateToContact(contactId: Int, syncAction: SyncAction): Result<Unit>
+    suspend fun refreshContacts(
+        newContacts: List<ContactInfo>,
+        deletedContactIds: List<Int>
+    ): Result<Unit>
 }

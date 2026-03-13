@@ -1,6 +1,5 @@
 package com.example.androidcourseshpp.domain.usecase.sync
 
-import com.example.androidcourseshpp.domain.entity.contact.SyncAction
 import com.example.androidcourseshpp.domain.repository.ContactsLocalRepository
 import com.example.androidcourseshpp.domain.repository.ContactsNetworkRepository
 import com.example.androidcourseshpp.domain.utils.AppError
@@ -22,37 +21,30 @@ class SyncContactsFromRemoteUseCase @Inject constructor(
         val result = contactsNetworkRepository.loadContacts()
         var isAllContactsSynced = true
 
-        if (result is Result.Error) {
-            return result
-        }
-        if (result is Result.Success) {
-            val serverContacts = result.data
-            contactsLocalRepository.getContacts().first()
-                .onSuccess { contacts ->
-                    val localContacts = contacts.map { it.contactInfo }
+        when (result) {
+            is Result.Error -> return result
+            is Result.Success -> {
+                val serverContacts = result.data
+                contactsLocalRepository.getContacts().first()
+                    .onSuccess { contacts ->
+                        val localContacts = contacts.map { it.contactInfo }
 
-                    val addedContacts =
-                        serverContacts.filter { contact -> !localContacts.contains(contact) }
-                    val deletedContacts =
-                        localContacts.filter { contact -> !serverContacts.contains(contact) }
+                        val newContacts =
+                            serverContacts.filter { contact -> !localContacts.contains(contact) }
 
-                    addedContacts.forEach { contact ->
-                        contactsLocalRepository.addContact(contact).onSuccess {
-                            contactsLocalRepository.setSyncStateToContact(
-                                contact.id,
-                                SyncAction.SYNCED
-                            ).onError { isAllContactsSynced = false }
-                        }.onError { isAllContactsSynced = false }
+                        val deletedContactIds =
+                            localContacts.filter { contact -> !serverContacts.contains(contact) }
+                                .map { it.id }
 
+                        contactsLocalRepository.refreshContacts(newContacts, deletedContactIds)
+                            .onError {
+                                isAllContactsSynced = false
+                            }
+
+                    }.onError {
+                        isAllContactsSynced = false
                     }
-                    deletedContacts.forEach { contact ->
-                        contactsLocalRepository.deleteContactById(contact.id)
-                            .onError { isAllContactsSynced = false }
-                    }
-
-                }.onError {
-                    isAllContactsSynced = false
-                }
+            }
         }
 
         return if (isAllContactsSynced) {

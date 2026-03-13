@@ -2,7 +2,6 @@ package com.example.androidcourseshpp.data.source.network.model
 
 import com.example.androidcourseshpp.domain.entity.contact.ContactInfo
 import com.example.androidcourseshpp.domain.entity.user.UserInfo
-import com.example.androidcourseshpp.domain.entity.user.UserItemInfo
 import java.util.Date
 
 data class UserModel(
@@ -28,16 +27,6 @@ data class UserModel(
             career = career ?: "",
             avatar = image ?: "",
             dateOfBirthday = birthday
-        )
-
-    fun toUserItemInfo(isContact: Boolean) =
-        UserItemInfo(
-            id = id,
-            name = name ?: "",
-            career = career ?: "",
-            avatarURL = image ?: "",
-            address = address ?: "",
-            isContact = isContact
         )
 
     fun toContactInfo() =
