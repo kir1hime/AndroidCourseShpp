@@ -3,10 +3,9 @@ package com.example.androidcourseshpp.ui.sync
 import android.content.Context
 import androidx.work.BackoffPolicy
 import androidx.work.Constraints
-import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.ExistingWorkPolicy
 import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.concurrent.TimeUnit
@@ -25,23 +24,9 @@ class ContactsSyncScheduler @Inject constructor(
     private val workManager = WorkManager.getInstance(context)
 
     companion object {
-        private const val PERIODIC_SYNC_TO_REMOTE = "periodicSyncToRemote"
-        private const val PERIODIC_SYNC_FROM_REMOTE = "periodicSyncFromRemote"
+        private const val SYNC_FROM_REMOTE = "syncFromRemote"
+        private const val SYNC_TO_REMOTE = "syncToRemote"
         private const val BACKOFF_DELAY_IN_SECONDS = 30L
-    }
-
-
-    fun executePeriodicSyncToRemote() {
-        val workRequest = PeriodicWorkRequestBuilder<PushContactsWorker>(
-            repeatInterval = 1,
-            repeatIntervalTimeUnit = TimeUnit.HOURS
-        ).setConstraints(networkConnectionConstraints).build()
-
-        workManager.enqueueUniquePeriodicWork(
-            uniqueWorkName = PERIODIC_SYNC_TO_REMOTE,
-            ExistingPeriodicWorkPolicy.REPLACE,
-            workRequest
-        )
     }
 
     fun executeOnceSyncToRemote() {
@@ -55,20 +40,27 @@ class ContactsSyncScheduler @Inject constructor(
                 networkConnectionConstraints
             ).build()
 
-        workManager.enqueue(workRequest)
+        workManager.enqueueUniqueWork(
+            uniqueWorkName = SYNC_TO_REMOTE,
+            ExistingWorkPolicy.KEEP,
+            workRequest
+        )
     }
 
-    fun executePeriodicSyncFromRemote() {
-        val workRequest = PeriodicWorkRequestBuilder<UploadContactsWorker>(
-            repeatInterval = 1,
-            repeatIntervalTimeUnit = TimeUnit.HOURS
-        ).setConstraints(
-            networkConnectionConstraints
-        ).build()
 
-        workManager.enqueueUniquePeriodicWork(
-            uniqueWorkName = PERIODIC_SYNC_FROM_REMOTE,
-            ExistingPeriodicWorkPolicy.REPLACE,
+    fun executeOnceSyncFromRemote() {
+        val workRequest = OneTimeWorkRequestBuilder<UploadContactsWorker>()
+            .setBackoffCriteria(
+                backoffPolicy = BackoffPolicy.EXPONENTIAL,
+                backoffDelay = BACKOFF_DELAY_IN_SECONDS,
+                TimeUnit.SECONDS
+            ).setConstraints(
+                networkConnectionConstraints
+            ).build()
+
+        workManager.enqueueUniqueWork(
+            uniqueWorkName = SYNC_FROM_REMOTE,
+            ExistingWorkPolicy.KEEP,
             workRequest
         )
     }

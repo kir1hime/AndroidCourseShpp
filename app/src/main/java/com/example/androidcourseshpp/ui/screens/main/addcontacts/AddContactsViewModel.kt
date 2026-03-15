@@ -9,6 +9,7 @@ import com.example.androidcourseshpp.ui.notifications.NotificationService
 import com.example.androidcourseshpp.ui.screens.main.addcontacts.model.UserItem
 import com.example.androidcourseshpp.ui.screens.main.addcontacts.model.toUserItem
 import com.example.androidcourseshpp.ui.screens.model.ContactDetailsModel
+import com.example.androidcourseshpp.ui.sync.ContactsSyncScheduler
 import com.example.androidcourseshpp.ui.utils.executeUseCase
 import com.example.androidcourseshpp.ui.utils.isContainsOrderedSequence
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,7 +20,8 @@ import javax.inject.Inject
 class AddContactsViewModel @Inject constructor(
     private val addContactUseCase: AddContactUseCase,
     private val getUsersUseCase: GetUsersUseCase,
-    private val notificationService: NotificationService
+    private val notificationService: NotificationService,
+    private val contactsSyncScheduler: ContactsSyncScheduler
 ) :
     BaseViewModel<AddContactsContract.Event, AddContactsContract.Effect, AddContactsContract.UIState>() {
 
@@ -99,6 +101,7 @@ class AddContactsViewModel @Inject constructor(
                 addContactUseCase(userInfo.toContactInfo())
             },
             onSuccess = {
+                contactsSyncScheduler.executeOnceSyncToRemote()
                 interruptSuccessLoading()
                 notificationService.showContactAddedNotification(
                     userInfo = userInfo,

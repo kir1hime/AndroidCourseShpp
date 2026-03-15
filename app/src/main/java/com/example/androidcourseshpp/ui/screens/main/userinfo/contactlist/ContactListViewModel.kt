@@ -59,8 +59,7 @@ class ContactListViewModel @Inject constructor(
     init {
         loadContacts()
         triggerContactsLoading()
-        contactListSyncScheduler.executePeriodicSyncToRemote()
-        contactListSyncScheduler.executePeriodicSyncFromRemote()
+        contactListSyncScheduler.executeOnceSyncFromRemote()
     }
 
 
