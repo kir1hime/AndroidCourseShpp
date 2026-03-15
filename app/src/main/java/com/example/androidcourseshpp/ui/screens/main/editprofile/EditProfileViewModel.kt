@@ -115,10 +115,7 @@ class EditProfileViewModel @Inject constructor(
                     updateUserInfoUseCase(state.value.userInfo.toUserInfo())
                 },
                 onSuccess = { navigateToUserProfileScreen() },
-                onBackendError = {
-                    setEffect(EditProfileContract.Effect.ShowToast(R.string.generic_error))
-                },
-                onResponseProcessingError = {
+                onRemoteError = {
                     setEffect(EditProfileContract.Effect.ShowToast(R.string.generic_error))
                 },
                 onConnectionError = {

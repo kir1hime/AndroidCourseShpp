@@ -131,16 +131,12 @@ class AddContactsViewModel @Inject constructor(
             onSuccess = { userList ->
                 setState { copy(userList = userList.map { it.toUserItem() }) }
             },
-            onBackendError = {
-                setState { copy(isTryAgainButtonShowed = true) }
-                setEffect(AddContactsContract.Effect.ShowToast(R.string.generic_error))
-            },
             onConnectionError = {
                 setState { copy(isTryAgainButtonShowed = true) }
                 setEffect(AddContactsContract.Effect.ShowToast(R.string.connection_error))
 
             },
-            onResponseProcessingError = {
+            onRemoteError = {
                 setState { copy(isTryAgainButtonShowed = true) }
                 setEffect(AddContactsContract.Effect.ShowToast(R.string.generic_error))
             },

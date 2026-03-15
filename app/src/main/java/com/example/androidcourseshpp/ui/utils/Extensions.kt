@@ -80,30 +80,42 @@ fun String.isContainsOrderedSequence(searched: String): Boolean {
 
 fun <T> ViewModel.executeUseCase(
     toExecute: suspend () -> Result<T>,
-    onSuccess: (T) -> Unit = {},
-    onBackendError: () -> Unit = {},
-    onConnectionError: () -> Unit = {},
-    onResponseProcessingError: () -> Unit = {},
-    onLocalStorageError: () -> Unit = {},
-    onError: () -> Unit = {},
-    finally: () -> Unit = {}
+    onSuccess: ((T) -> Unit)? = null,
+    onBackendError: (() -> Unit)? = null,
+    onConnectionError: (() -> Unit)? = null,
+    onResponseProcessingError: (() -> Unit)? = null,
+    onLocalStorageError: (() -> Unit)? = null,
+    onError: (() -> Unit)? = null,
+    onRemoteError: (() -> Unit)? = null,
+    finally: (() -> Unit)? = null
 ) {
     viewModelScope.launch {
         when (val result = toExecute()) {
             is Result.Success -> {
-                onSuccess(result.data)
+                onSuccess?.invoke(result.data)
             }
 
             is Result.Error -> {
-                onError()
+                onError?.let {
+                    it.invoke()
+                    finally?.invoke()
+                    return@launch
+                }
+                onRemoteError?.let {
+                    if (result.error is AppError.BackendError || result.error is AppError.ResponseProcessingError) {
+                        it.invoke()
+                        finally?.invoke()
+                        return@launch
+                    }
+                }
                 when (result.error) {
-                    is AppError.BackendError -> onBackendError()
-                    is AppError.ConnectionError -> onConnectionError()
-                    is AppError.LocalStorageError -> onLocalStorageError()
-                    is AppError.ResponseProcessingError -> onResponseProcessingError()
+                    is AppError.BackendError -> onBackendError?.invoke()
+                    is AppError.ConnectionError -> onConnectionError?.invoke()
+                    is AppError.LocalStorageError -> onLocalStorageError?.invoke()
+                    is AppError.ResponseProcessingError -> onResponseProcessingError?.invoke()
                 }
             }
         }
-        finally()
+        finally?.invoke()
     }
 }

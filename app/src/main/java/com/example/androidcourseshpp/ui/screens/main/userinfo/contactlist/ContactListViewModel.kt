@@ -99,10 +99,7 @@ class ContactListViewModel @Inject constructor(
             toExecute = {
                 syncContactsFromRemoteUseCase()
             },
-            onBackendError = {
-                setEffect(ContactListContract.Effect.ShowToast(R.string.generic_error))
-            },
-            onResponseProcessingError = {
+            onRemoteError = {
                 setEffect(ContactListContract.Effect.ShowToast(R.string.generic_error))
             },
             onConnectionError = {

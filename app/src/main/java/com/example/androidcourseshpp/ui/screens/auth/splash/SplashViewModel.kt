@@ -40,15 +40,7 @@ class SplashViewModel @Inject constructor(
                     SplashContract.Effect.NavigateToUserProfileScreen(userInfo.toUserModel())
                 )
             },
-            onBackendError = {
-                setEffect(SplashContract.Effect.NavigateToSignInScreen)
-            },
-            onResponseProcessingError = {
-                setEffect(SplashContract.Effect.NavigateToSignInScreen)
-            },
-            onConnectionError = {
-                setEffect(SplashContract.Effect.NavigateToSignInScreen)
-            }
+            onError = { setEffect(SplashContract.Effect.NavigateToSignInScreen) }
         )
     }
 }
