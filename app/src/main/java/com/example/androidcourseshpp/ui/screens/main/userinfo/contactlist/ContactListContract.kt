@@ -13,6 +13,7 @@ class ContactListContract {
         data object OnAddContactClicked : Event
         data object OnSearchButtonClicked : Event
         data object OnHideSearchButtonClicked : Event
+        data object OnReloadContacts : Event
         data object OnTryAgainButtonClicked : Event
         data class OnSearchBarTextChanged(val input: String) : Event
         data class OnSelectModeChange(val isSelectMode: Boolean) : Event
@@ -35,6 +36,7 @@ class ContactListContract {
 
     sealed interface Effect : ViewEffect {
         data object ShowSearchBar : Effect
+        data object HideRefreshProgressBar : Effect
         data object HideSearchBar : Effect
         data object NavigateToUserProfileScreen : Effect
         data object NavigateToAddContactsScreen : Effect
@@ -51,6 +53,6 @@ class ContactListContract {
         val isProgressBarShowed: Boolean,
         val isTryAgainButtonShowed: Boolean,
         val isSearchMode: Boolean,
-        val isSelectMode: Boolean
+        val isSelectMode: Boolean,
     ) : ViewState
 }

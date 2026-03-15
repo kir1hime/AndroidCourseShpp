@@ -42,8 +42,7 @@ class ContactListFragment :
 
         createContactListAdapter()
         initRecyclerView()
-        initSwipeToDeleteOfContactItem()
-
+        initDeleteContactSwipe()
         setListeners()
         setObservers()
 
@@ -98,6 +97,9 @@ class ContactListFragment :
             when (effect) {
                 is ContactListContract.Effect.HideSearchBar -> hideSearchBar()
                 is ContactListContract.Effect.ShowSearchBar -> showSearchBar()
+                is ContactListContract.Effect.HideRefreshProgressBar -> binding.swipeRefresContactshLayout.isRefreshing =
+                    false
+
                 is ContactListContract.Effect.NavigateToUserProfileScreen -> moveBackToUserProfileScreen()
                 is ContactListContract.Effect.NavigateToAddContactsScreen -> moveToAddContactsScreen()
                 is ContactListContract.Effect.NavigateToDetailsScreen -> moveToDetailsScreen(
@@ -195,6 +197,10 @@ class ContactListFragment :
             setSelectModeViewsVisibility(false)
             viewModel.setEvent(ContactListContract.Event.OnSelectModeChange(false))
         }
+
+        swipeRefresContactshLayout.setOnRefreshListener {
+            viewModel.setEvent(ContactListContract.Event.OnReloadContacts)
+        }
     }
 
     private fun setSelectModeViewsVisibility(isVisible: Boolean) = with(binding) {
@@ -234,7 +240,7 @@ class ContactListFragment :
         undoDeletingSnackBar.show()
     }
 
-    private fun initSwipeToDeleteOfContactItem() {
+    private fun initDeleteContactSwipe() {
         val helper =
             ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
 

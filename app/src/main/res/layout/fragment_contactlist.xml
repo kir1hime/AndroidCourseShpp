@@ -98,14 +98,21 @@
         app:layout_constraintTop_toTopOf="@id/textViewAddContacts"
         tools:visibility="visible" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewContacts"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefresContactshLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="@dimen/main_margin_side"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textViewContactBar"
-        tools:listitem="@layout/contact_item" />
+        app:layout_constraintTop_toBottomOf="@id/textViewContactBar">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewContacts"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            tools:listitem="@layout/contact_item" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingButtonDeleteSelectedItems"

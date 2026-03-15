@@ -85,6 +85,7 @@ fun <T> ViewModel.executeUseCase(
     onConnectionError: () -> Unit = {},
     onResponseProcessingError: () -> Unit = {},
     onLocalStorageError: () -> Unit = {},
+    onError: () -> Unit = {},
     finally: () -> Unit = {}
 ) {
     viewModelScope.launch {
@@ -93,13 +94,15 @@ fun <T> ViewModel.executeUseCase(
                 onSuccess(result.data)
             }
 
-            is Result.Error ->
+            is Result.Error -> {
+                onError()
                 when (result.error) {
                     is AppError.BackendError -> onBackendError()
                     is AppError.ConnectionError -> onConnectionError()
                     is AppError.LocalStorageError -> onLocalStorageError()
                     is AppError.ResponseProcessingError -> onResponseProcessingError()
                 }
+            }
         }
         finally()
     }

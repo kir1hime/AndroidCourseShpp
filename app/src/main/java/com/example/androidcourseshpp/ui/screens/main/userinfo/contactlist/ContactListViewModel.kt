@@ -8,6 +8,7 @@ import com.example.androidcourseshpp.domain.usecase.contacts.AddContactUseCase
 import com.example.androidcourseshpp.domain.usecase.contacts.DeleteContactUseCase
 import com.example.androidcourseshpp.domain.usecase.contacts.DeleteContactsUseCase
 import com.example.androidcourseshpp.domain.usecase.contacts.GetContactsUseCase
+import com.example.androidcourseshpp.domain.usecase.sync.SyncContactsFromRemoteUseCase
 import com.example.androidcourseshpp.domain.utils.AppError
 import com.example.androidcourseshpp.domain.utils.Result
 import com.example.androidcourseshpp.ui.BaseViewModel
@@ -37,7 +38,8 @@ class ContactListViewModel @Inject constructor(
     private val deleteContactsUseCase: DeleteContactsUseCase,
     private val getContactsUseCase: GetContactsUseCase,
     private val notificationService: NotificationService,
-    private val contactListSyncScheduler: ContactsSyncScheduler
+    private val contactListSyncScheduler: ContactsSyncScheduler,
+    private val syncContactsFromRemoteUseCase: SyncContactsFromRemoteUseCase
 ) : BaseViewModel<ContactListContract.Event, ContactListContract.Effect, ContactListContract.UIState>() {
 
     override fun initState() = ContactListContract.UIState(
@@ -58,6 +60,7 @@ class ContactListViewModel @Inject constructor(
         loadContacts()
         triggerContactsLoading()
         contactListSyncScheduler.executePeriodicSyncToRemote()
+        contactListSyncScheduler.executePeriodicSyncFromRemote()
     }
 
 
@@ -65,6 +68,7 @@ class ContactListViewModel @Inject constructor(
         when (event) {
             is ContactListContract.Event.SearchModeSwitched -> switchSearchMode(event.isSearchModeEnabled)
             is ContactListContract.Event.OnHideSearchButtonClicked -> hideSearchBar()
+            is ContactListContract.Event.OnReloadContacts -> reloadContacts()
             is ContactListContract.Event.OnSearchButtonClicked -> showSearchBar()
             is ContactListContract.Event.OnArrowBackButtonClicked -> navigateToPreviousScreen()
             is ContactListContract.Event.OnTryAgainButtonClicked -> triggerContactsLoading()
@@ -88,6 +92,27 @@ class ContactListViewModel @Inject constructor(
                 event.contact
             )
         }
+    }
+
+    private fun reloadContacts() {
+        executeUseCase(
+            toExecute = {
+                syncContactsFromRemoteUseCase()
+            },
+            onBackendError = {
+                setEffect(ContactListContract.Effect.ShowToast(R.string.generic_error))
+            },
+            onResponseProcessingError = {
+                setEffect(ContactListContract.Effect.ShowToast(R.string.generic_error))
+            },
+            onConnectionError = {
+                setEffect(ContactListContract.Effect.ShowToast(R.string.connection_error))
+            },
+            onLocalStorageError = {
+                setEffect(ContactListContract.Effect.ShowToast(R.string.generic_error))
+            },
+            finally = { setEffect(ContactListContract.Effect.HideRefreshProgressBar) }
+        )
     }
 
     private fun changeSelectMode(isSelectMode: Boolean) {
@@ -123,6 +148,7 @@ class ContactListViewModel @Inject constructor(
 
             },
             onSuccess = {
+                contactListSyncScheduler.executeOnceSyncToRemote()
                 setState { copy(contactList = contactList) }
                 updateFilteredContactList { list ->
                     list.remove(contactItem)
@@ -131,14 +157,13 @@ class ContactListViewModel @Inject constructor(
                     userInfo = contactItem.toContactDetails(),
                     notificationActionId = NotificationAction.DELETE_CONTACT.ordinal
                 )
+                deletedItems.push(contactItem)
             },
             onLocalStorageError = {
                 setEffect(ContactListContract.Effect.ShowToast(R.string.generic_error))
             },
             finally = { setState { copy(isProgressBarShowed = false) } }
         )
-
-        deletedItems.push(contactItem)
     }
 
     private fun deleteListOfContacts(contactItems: List<ContactItem>) {
@@ -148,6 +173,7 @@ class ContactListViewModel @Inject constructor(
                 deleteContactsUseCase(contactItems.map { it.id })
             },
             onSuccess = {
+                contactListSyncScheduler.executeOnceSyncToRemote()
                 setState { copy(contactList = contactList) }
                 updateFilteredContactList { list ->
                     list.removeAll(contactItems)
@@ -168,6 +194,7 @@ class ContactListViewModel @Inject constructor(
 
             },
             onSuccess = {
+                contactListSyncScheduler.executeOnceSyncToRemote()
                 setState { copy(contactList = contactList) }
                 updateFilteredContactList { list ->
                     list.add(contactItem)

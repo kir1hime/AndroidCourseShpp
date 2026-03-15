@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.work.BackoffPolicy
 import androidx.work.Constraints
 import androidx.work.ExistingPeriodicWorkPolicy
-import androidx.work.ExistingWorkPolicy
 import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.PeriodicWorkRequestBuilder
@@ -28,9 +27,9 @@ class ContactsSyncScheduler @Inject constructor(
     companion object {
         private const val PERIODIC_SYNC_TO_REMOTE = "periodicSyncToRemote"
         private const val PERIODIC_SYNC_FROM_REMOTE = "periodicSyncFromRemote"
-        private const val ONCE_SYNC_FROM_REMOTE = "onceSyncFromRemote"
         private const val BACKOFF_DELAY_IN_SECONDS = 30L
     }
+
 
     fun executePeriodicSyncToRemote() {
         val workRequest = PeriodicWorkRequestBuilder<PushContactsWorker>(
@@ -40,7 +39,7 @@ class ContactsSyncScheduler @Inject constructor(
 
         workManager.enqueueUniquePeriodicWork(
             uniqueWorkName = PERIODIC_SYNC_TO_REMOTE,
-            ExistingPeriodicWorkPolicy.KEEP,
+            ExistingPeriodicWorkPolicy.REPLACE,
             workRequest
         )
     }
@@ -69,24 +68,7 @@ class ContactsSyncScheduler @Inject constructor(
 
         workManager.enqueueUniquePeriodicWork(
             uniqueWorkName = PERIODIC_SYNC_FROM_REMOTE,
-            ExistingPeriodicWorkPolicy.KEEP,
-            workRequest
-        )
-    }
-
-    fun executeOnceSyncFromRemote() {
-        val workRequest = OneTimeWorkRequestBuilder<UploadContactsWorker>()
-            .setBackoffCriteria(
-                backoffPolicy = BackoffPolicy.EXPONENTIAL,
-                backoffDelay = BACKOFF_DELAY_IN_SECONDS,
-                TimeUnit.SECONDS
-            ).setConstraints(
-                networkConnectionConstraints
-            ).build()
-
-        workManager.enqueueUniqueWork(
-            uniqueWorkName = ONCE_SYNC_FROM_REMOTE,
-            ExistingWorkPolicy.KEEP,
+            ExistingPeriodicWorkPolicy.REPLACE,
             workRequest
         )
     }
