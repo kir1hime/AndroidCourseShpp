@@ -5,9 +5,10 @@ import com.example.androidcourseshpp.domain.usecase.contacts.AddContactUseCase
 import com.example.androidcourseshpp.domain.usecase.contacts.DeleteContactUseCase
 import com.example.androidcourseshpp.ui.BaseViewModel
 import com.example.androidcourseshpp.ui.notifications.NotificationAction
-import com.example.androidcourseshpp.ui.utils.executeUseCase
 import com.example.androidcourseshpp.ui.notifications.NotificationService
 import com.example.androidcourseshpp.ui.screens.model.ContactDetailsModel
+import com.example.androidcourseshpp.ui.sync.ContactsSyncScheduler
+import com.example.androidcourseshpp.ui.utils.executeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -15,7 +16,8 @@ import javax.inject.Inject
 class ContactDetailsNotificationViewModel @Inject constructor(
     private val addContactUseCase: AddContactUseCase,
     private val deleteContactUseCase: DeleteContactUseCase,
-    private val notificationService: NotificationService
+    private val notificationService: NotificationService,
+    private val contactListSyncScheduler: ContactsSyncScheduler,
 ) : BaseViewModel<ContactDetailsNotificationContract.Event, ContactDetailsNotificationContract.Effect, ContactDetailsNotificationContract.UIState>() {
 
 
@@ -42,6 +44,7 @@ class ContactDetailsNotificationViewModel @Inject constructor(
         executeUseCase(
             toExecute = { addContactUseCase(contactDetails.toContactInfo()) },
             onSuccess = {
+                contactListSyncScheduler.executeOnceSyncToRemote()
                 setEffect(ContactDetailsNotificationContract.Effect.ShowToast(R.string.add_contact_toast_message))
                 setEffect(
                     ContactDetailsNotificationContract.Effect.MainActionWasExecuted
@@ -61,6 +64,7 @@ class ContactDetailsNotificationViewModel @Inject constructor(
         executeUseCase(
             toExecute = { deleteContactUseCase(contactDetails.id) },
             onSuccess = {
+                contactListSyncScheduler.executeOnceSyncToRemote()
                 setEffect(
                     ContactDetailsNotificationContract.Effect.ShowToast(R.string.delete_contact_toast_message)
                 )
