@@ -39,12 +39,12 @@ class App : Application(), Configuration.Provider {
     }
 
     @Inject
-    lateinit var contactListSyncFactory: ContactsSyncFactory
+    lateinit var contactsSyncFactory: ContactsSyncFactory
 
     override val workManagerConfiguration: Configuration
         get() = Configuration.Builder()
             .setMinimumLoggingLevel(Log.DEBUG)
-            .setWorkerFactory(contactListSyncFactory)
+            .setWorkerFactory(contactsSyncFactory)
             .build()
 
 

@@ -1,7 +1,6 @@
 package com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist
 
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.domain.entity.contact.SyncAction
@@ -125,7 +124,6 @@ class ContactListViewModel @Inject constructor(
             },
             onSuccess = {
                 setState { copy(contactList = contactList) }
-                Log.d("tag", "fadfkj")
                 updateFilteredContactList { list ->
                     list.remove(contactItem)
                 }

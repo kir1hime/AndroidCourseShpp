@@ -10,8 +10,8 @@ import dagger.assisted.AssistedInject
 
 @HiltWorker
 class PushContactsWorker @AssistedInject constructor(
-    @Assisted context: Context,
-    @Assisted workerParameters: WorkerParameters,
+    @Assisted private val context: Context,
+    @Assisted private val workerParameters: WorkerParameters,
     private val syncContactsToRemoteUseCase: SyncContactsToRemoteUseCase
 ) : CoroutineWorker(context, workerParameters) {
 
