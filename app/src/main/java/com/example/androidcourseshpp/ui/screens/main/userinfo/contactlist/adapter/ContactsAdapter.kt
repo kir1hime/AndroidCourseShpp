@@ -56,7 +56,7 @@ class ContactsAdapter(private val actions: ContactItemActions) :
 
         private fun setListeners(contactItem: SelectableContactItem) = with(binding) {
             imageButtonDelete.setOnClickListener {
-                actions.deleteContactItem(contactItem.item, adapterPosition)
+                actions.deleteContactItem(contactItem.item, absoluteAdapterPosition)
             }
             contactListItem.setOnClickListener {
 

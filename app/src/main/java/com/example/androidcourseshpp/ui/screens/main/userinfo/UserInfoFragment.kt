@@ -30,7 +30,6 @@ class UserInfoFragment : BaseFragment<FragmentUserinfoBinding>(FragmentUserinfoB
                     childFragmentManager.fragments.find { fragment ->
                         if (fragment is Searchable) {
                             fragment.hideSearchBar()
-                            true
                         }
                         false
                     }
