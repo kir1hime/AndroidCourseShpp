@@ -6,9 +6,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidcourseshpp.R
+import com.example.androidcourseshpp.databinding.ContactItemBinding
 import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.model.ContactItem
 import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.model.SelectableContactItem
-import com.example.androidcourseshpp.databinding.ContactItemBinding
 import com.example.androidcourseshpp.ui.utils.loadImageFromURLCircled
 
 
@@ -50,7 +50,6 @@ class ContactsAdapter(private val actions: ContactItemActions) :
                 checkBoxIsSelected.visibility = View.GONE
                 imageButtonDelete.visibility = View.VISIBLE
 
-                /*  actions.hideFloatingDeleteButton()*/
                 selectedItems.clear()
             }
         }
@@ -74,8 +73,6 @@ class ContactsAdapter(private val actions: ContactItemActions) :
             }
 
             contactListItem.setOnLongClickListener {
-                /* actions.showFloatingDeleteButton()
-                 actions.showCancelSelectTextView()*/
                 selectedItems.add(contactItem.item)
                 changeMode(true)
                 true

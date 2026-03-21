@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.databinding.FragmentAddContactsBinding
 import com.example.androidcourseshpp.ui.BaseFragment
@@ -100,9 +101,6 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
             progressBarRequest.isVisible = state.isProgressBarShowed
             buttonTryAgain.isVisible = state.isTryAgainButtonShowed
             imageButtonSearch.isClickable = !progressBarRequest.isVisible
-            floatingButtonArrowTop.isVisible =
-                !progressBarRequest.isVisible && !state.isTryAgainButtonShowed
-
         }
 
         collectFlow(viewModel.filteredUserList) { filteredUserList ->
@@ -173,12 +171,21 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
             viewModel.setEvent(AddContactsContract.Event.SearchModeSwitched(false))
             viewModel.setEvent(AddContactsContract.Event.OnHideSearchButtonClicked)
         }
-        floatingButtonArrowTop.setOnClickListener {
+        floatingButtonScrollUp.setOnClickListener {
             viewModel.setEvent(AddContactsContract.Event.OnArrowTopFloatingButtonClicked)
         }
         editTextSearch.onChangeTextListener { sequence, _, _, _ ->
             viewModel.setEvent(AddContactsContract.Event.OnSearchBarTextChanged(sequence.toString()))
         }
+
+        recyclerViewUsers.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val layoutManager = recyclerViewUsers.layoutManager as LinearLayoutManager
+                floatingButtonScrollUp.isVisible =
+                    layoutManager.findLastVisibleItemPosition() >= MIN_ITEMS_TO_SHOW_SCROLL_UP
+            }
+        })
     }
 
     private fun moveToDetailsScreen(userItem: UserItem) {
@@ -195,5 +202,9 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
 
     private fun moveToContactList() {
         findNavController().navigateUp()
+    }
+
+    companion object {
+        const val MIN_ITEMS_TO_SHOW_SCROLL_UP = 50
     }
 }
