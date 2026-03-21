@@ -52,15 +52,15 @@ class ContactListFragment :
         adapter = ContactsAdapter(getItemActions())
     }
 
-    private fun getItemActions(): ContactItemActions = with(binding) {
+    private fun getItemActions(): ContactItemActions {
         return object : ContactItemActions {
             override fun deleteContactItem(contactItem: ContactItem, position: Int) {
                 viewModel.setEvent(
-                    ContactListContract.Event.ContactItemDeleted(
+                    ContactListContract.Event.OnContactItemDeleted(
                         contactItem
                     )
                 )
-                showUndoDeletingItemSnackBar(contactItem)
+                showUndoDeletingContactSnackBar(contactItem)
             }
 
             override fun showContactItemDetails(contactItem: ContactItem, avatar: ImageView) {
@@ -106,7 +106,7 @@ class ContactListFragment :
                     effect.contact
                 )
 
-                is ContactListContract.Effect.ShowUndoDeletingItemSnackBar -> showUndoDeletingItemSnackBar(
+                is ContactListContract.Effect.ShowUndoDeletingItemSnackBar -> showUndoDeletingContactSnackBar(
                     effect.deletedItem
                 )
 
@@ -166,6 +166,7 @@ class ContactListFragment :
             viewModel.setEvent(ContactListContract.Event.OnAddContactClicked)
         }
         floatingButtonDeleteSelectedItems.setOnClickListener {
+            showUndoDeletingContactsSnackBar()
             viewModel.setEvent(
                 ContactListContract.Event.OnDeleteSelectedItemsFloatingButtonClicked(
                     adapter.selectedItems
@@ -181,11 +182,11 @@ class ContactListFragment :
 
         imageButtonSearch.setOnClickListener {
             viewModel.setEvent(ContactListContract.Event.OnSearchBarTextChanged(""))
-            viewModel.setEvent(ContactListContract.Event.SearchModeSwitched(true))
+            viewModel.setEvent(ContactListContract.Event.OnSearchModeSwitched(true))
             viewModel.setEvent(ContactListContract.Event.OnSearchButtonClicked)
         }
         imageButtonHideSearch.setOnClickListener {
-            viewModel.setEvent(ContactListContract.Event.SearchModeSwitched(false))
+            viewModel.setEvent(ContactListContract.Event.OnSearchModeSwitched(false))
             viewModel.setEvent(ContactListContract.Event.OnHideSearchButtonClicked)
         }
 
@@ -225,16 +226,31 @@ class ContactListFragment :
     }
 
 
-    private fun showUndoDeletingItemSnackBar(contactItem: ContactItem) {
+    private fun showUndoDeletingContactSnackBar(
+        contactItem: ContactItem
+    ) {
         val undoDeletingSnackBar = Snackbar.make(
             binding.root,
-            R.string.snackbar_text,
+            R.string.undo_deleting_contact_snack_bar_text,
             Snackbar.LENGTH_LONG
         )
 
-        undoDeletingSnackBar.setAction(R.string.snackbar_action_text) {
-            viewModel.setEvent(ContactListContract.Event.ContactItemAdded(contactItem))
+        undoDeletingSnackBar.setAction(R.string.undo_deleting_contact_snack_bar_action_text) {
+            viewModel.setEvent(ContactListContract.Event.OnGetBackDeletedContact(contactItem))
 
+        }.setActionTextColor(ContextCompat.getColor(requireContext(), R.color.custom_primary_color))
+
+        undoDeletingSnackBar.show()
+    }
+
+    private fun showUndoDeletingContactsSnackBar() {
+        val undoDeletingSnackBar = Snackbar.make(
+            binding.root,
+            R.string.undo_deleting_contacts_snack_bar_text,
+            Snackbar.LENGTH_LONG
+        )
+        undoDeletingSnackBar.setAction(R.string.undo_deleting_contact_snack_bar_action_text) {
+            viewModel.setEvent(ContactListContract.Event.OnGetBackDeletedContacts)
         }.setActionTextColor(ContextCompat.getColor(requireContext(), R.color.custom_primary_color))
 
         undoDeletingSnackBar.show()
@@ -260,9 +276,9 @@ class ContactListFragment :
                     } else {
                         viewModel.state.value.contactList[adapterPosition]
                     }
-                    showUndoDeletingItemSnackBar(deletedItem)
+                    showUndoDeletingContactSnackBar(deletedItem)
                     viewModel.setEvent(
-                        ContactListContract.Event.ContactItemDeleted(
+                        ContactListContract.Event.OnContactItemDeleted(
                             deletedItem
                         )
                     )

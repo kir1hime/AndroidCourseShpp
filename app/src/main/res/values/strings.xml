@@ -65,8 +65,10 @@
     <string name="arrow_back_imagebutton">arrow_back_ImageButton</string>
 
     <!--My contacts ContactsActivity-->
-    <string name="snackbar_text">Do you want to undo deletion of this contact?</string>
-    <string name="snackbar_action_text">Undo</string>
+    <string name="undo_deleting_contact_snack_bar_text">Do you want to undo deletion of this contact?</string>
+    <string name="undo_deleting_contact_snack_bar_action_text">Undo</string>
+    <string name="undo_deleting_contacts_snack_bar_text">Do you want ot undo deleting of this contacts?</string>
+
 
     <!-- Detail view -->
     <string name="profile_label">Profile</string>

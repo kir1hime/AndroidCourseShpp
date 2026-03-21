@@ -100,7 +100,9 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
             progressBarRequest.isVisible = state.isProgressBarShowed
             buttonTryAgain.isVisible = state.isTryAgainButtonShowed
             imageButtonSearch.isClickable = !progressBarRequest.isVisible
-            floatingButtonArrowTop.isVisible = !progressBarRequest.isVisible
+            floatingButtonArrowTop.isVisible =
+                !progressBarRequest.isVisible && !state.isTryAgainButtonShowed
+
         }
 
         collectFlow(viewModel.filteredUserList) { filteredUserList ->

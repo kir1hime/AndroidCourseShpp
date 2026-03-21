@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.domain.entity.contact.SyncAction
 import com.example.androidcourseshpp.domain.usecase.contacts.AddContactUseCase
+import com.example.androidcourseshpp.domain.usecase.contacts.AddContactsUseCase
 import com.example.androidcourseshpp.domain.usecase.contacts.DeleteContactUseCase
 import com.example.androidcourseshpp.domain.usecase.contacts.DeleteContactsUseCase
 import com.example.androidcourseshpp.domain.usecase.contacts.GetContactsUseCase
@@ -34,6 +35,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ContactListViewModel @Inject constructor(
     private val addContactUseCase: AddContactUseCase,
+    private val addContactsUseCase: AddContactsUseCase,
     private val deleteContactUseCase: DeleteContactUseCase,
     private val deleteContactsUseCase: DeleteContactsUseCase,
     private val getContactsUseCase: GetContactsUseCase,
@@ -50,7 +52,8 @@ class ContactListViewModel @Inject constructor(
         isSelectMode = false
     )
 
-    val deletedItems = Stack<ContactItem>()
+    val deletedContacts = Stack<ContactItem>()
+    private val deletedContactsInMultiselectMode = mutableListOf<ContactItem>()
     private val _filteredContactList = MutableStateFlow(emptyList<ContactItem>())
     val filteredContactList: StateFlow<List<ContactItem>> get() = _filteredContactList
 
@@ -65,7 +68,7 @@ class ContactListViewModel @Inject constructor(
 
     override fun handleEvent(event: ContactListContract.Event) {
         when (event) {
-            is ContactListContract.Event.SearchModeSwitched -> switchSearchMode(event.isSearchModeEnabled)
+            is ContactListContract.Event.OnSearchModeSwitched -> switchSearchMode(event.isSearchModeEnabled)
             is ContactListContract.Event.OnHideSearchButtonClicked -> hideSearchBar()
             is ContactListContract.Event.OnReloadContacts -> reloadContacts()
             is ContactListContract.Event.OnSearchButtonClicked -> showSearchBar()
@@ -73,15 +76,17 @@ class ContactListViewModel @Inject constructor(
             is ContactListContract.Event.OnTryAgainButtonClicked -> triggerContactsLoading()
             is ContactListContract.Event.OnSelectModeChange -> changeSelectMode(event.isSelectMode)
             is ContactListContract.Event.OnSearchBarTextChanged -> updateFilteredContactListBy(event.input)
-            is ContactListContract.Event.ContactItemDeleted -> deleteContact(event.contactItem)
+            is ContactListContract.Event.OnContactItemDeleted -> deleteContact(event.contactItem)
             is ContactListContract.Event.OnAddContactClicked -> {
                 switchSearchMode(false)
                 navigateToAddContactsScreen()
             }
 
-            is ContactListContract.Event.ContactItemAdded -> addContact(
+            is ContactListContract.Event.OnGetBackDeletedContact -> getBackDeletedContact(
                 event.contactItem
             )
+
+            is ContactListContract.Event.OnGetBackDeletedContacts -> getBackDeletedContacts()
 
             is ContactListContract.Event.OnDeleteSelectedItemsFloatingButtonClicked -> deleteListOfContacts(
                 event.contactItems
@@ -145,7 +150,6 @@ class ContactListViewModel @Inject constructor(
             },
             onSuccess = {
                 contactListSyncScheduler.executeOnceSyncToRemote()
-                setState { copy(contactList = contactList) }
                 updateFilteredContactList { list ->
                     list.remove(contactItem)
                 }
@@ -153,7 +157,7 @@ class ContactListViewModel @Inject constructor(
                     userInfo = contactItem.toContactDetails(),
                     notificationActionId = NotificationAction.DELETE_CONTACT.ordinal
                 )
-                deletedItems.push(contactItem)
+                deletedContacts.push(contactItem)
             },
             onLocalStorageError = {
                 setEffect(ContactListContract.Effect.ShowToast(R.string.generic_error))
@@ -170,9 +174,36 @@ class ContactListViewModel @Inject constructor(
             },
             onSuccess = {
                 contactListSyncScheduler.executeOnceSyncToRemote()
-                setState { copy(contactList = contactList) }
                 updateFilteredContactList { list ->
                     list.removeAll(contactItems)
+                }
+                deletedContactsInMultiselectMode.addAll(contactItems)
+            },
+            onLocalStorageError = {
+                setEffect(ContactListContract.Effect.ShowToast(R.string.generic_error))
+            },
+            finally = { setState { copy(isProgressBarShowed = false) } }
+        )
+    }
+
+    private fun getBackDeletedContact(contactItem: ContactItem) {
+        executeUseCase(
+            toExecute = {
+                setState { copy(isProgressBarShowed = true) }
+                addContactUseCase(contactInfo = contactItem.toContactInfo())
+
+            },
+            onSuccess = {
+                contactListSyncScheduler.executeOnceSyncToRemote()
+
+                updateFilteredContactList { list ->
+                    list.add(contactItem)
+                }
+
+                deletedContacts.pop()
+                if (!deletedContacts.isEmpty()) {
+                    val deletedItem = deletedContacts.peek()
+                    setEffect(ContactListContract.Effect.ShowUndoDeletingItemSnackBar(deletedItem))
                 }
             },
             onLocalStorageError = {
@@ -182,34 +213,18 @@ class ContactListViewModel @Inject constructor(
         )
     }
 
-    private fun addContact(contactItem: ContactItem) {
+    private fun getBackDeletedContacts() {
         executeUseCase(
             toExecute = {
                 setState { copy(isProgressBarShowed = true) }
-                addContactUseCase(contactInfo = contactItem.toContactInfo())
-
-            },
-            onSuccess = {
+                addContactsUseCase(contacts = deletedContactsInMultiselectMode.map { it.toContactInfo() })
+            }, onSuccess = {
                 contactListSyncScheduler.executeOnceSyncToRemote()
-                setState { copy(contactList = contactList) }
                 updateFilteredContactList { list ->
-                    list.add(contactItem)
+                    list.addAll(deletedContactsInMultiselectMode)
                 }
-                notificationService.showContactAddedNotification(
-                    userInfo = contactItem.toContactDetails(),
-                    notificationActionId = NotificationAction.ADD_CONTACT.ordinal
-                )
-
-                deletedItems.pop()
-                if (!deletedItems.isEmpty()) {
-                    val deletedItem = deletedItems.peek()
-                    setEffect(ContactListContract.Effect.ShowUndoDeletingItemSnackBar(deletedItem))
-                }
-            },
-            onLocalStorageError = {
-                setEffect(ContactListContract.Effect.ShowToast(R.string.generic_error))
-            },
-            finally = { setState { copy(isProgressBarShowed = false) } }
+                deletedContactsInMultiselectMode.clear()
+            }
         )
     }
 
