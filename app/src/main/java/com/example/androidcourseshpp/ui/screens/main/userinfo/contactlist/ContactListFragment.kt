@@ -166,10 +166,11 @@ class ContactListFragment :
             viewModel.setEvent(ContactListContract.Event.OnAddContactClicked)
         }
         floatingButtonDeleteSelectedItems.setOnClickListener {
+            val itemsToDelete = adapter.selectedItems.toList()
             showUndoDeletingContactsSnackBar()
             viewModel.setEvent(
                 ContactListContract.Event.OnDeleteSelectedItemsFloatingButtonClicked(
-                    adapter.selectedItems
+                    itemsToDelete
                 )
             )
             viewModel.setEvent(ContactListContract.Event.OnSelectModeChange(false))
@@ -237,7 +238,6 @@ class ContactListFragment :
 
         undoDeletingSnackBar.setAction(R.string.undo_deleting_contact_snack_bar_action_text) {
             viewModel.setEvent(ContactListContract.Event.OnGetBackDeletedContact(contactItem))
-
         }.setActionTextColor(ContextCompat.getColor(requireContext(), R.color.custom_primary_color))
 
         undoDeletingSnackBar.show()

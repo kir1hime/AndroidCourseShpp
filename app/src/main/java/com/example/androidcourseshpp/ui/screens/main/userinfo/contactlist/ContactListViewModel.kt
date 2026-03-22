@@ -1,6 +1,7 @@
 package com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist
 
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.domain.entity.contact.SyncAction
@@ -173,11 +174,14 @@ class ContactListViewModel @Inject constructor(
                 deleteContactsUseCase(contactItems.map { it.id })
             },
             onSuccess = {
+                deletedContactsInMultiselectMode.clear()
+                deletedContactsInMultiselectMode.addAll(contactItems.toList())
+                Log.d("myTag", contactItems.toString())
+                Log.d("myTag", deletedContactsInMultiselectMode.toString())
                 contactListSyncScheduler.executeOnceSyncToRemote()
                 updateFilteredContactList { list ->
                     list.removeAll(contactItems)
                 }
-                deletedContactsInMultiselectMode.addAll(contactItems)
             },
             onLocalStorageError = {
                 setEffect(ContactListContract.Effect.ShowToast(R.string.generic_error))
@@ -217,14 +221,20 @@ class ContactListViewModel @Inject constructor(
         executeUseCase(
             toExecute = {
                 setState { copy(isProgressBarShowed = true) }
-                addContactsUseCase(contacts = deletedContactsInMultiselectMode.map { it.toContactInfo() })
+                addContactsUseCase(
+                    contacts = deletedContactsInMultiselectMode.map { it.toContactInfo() })
             }, onSuccess = {
                 contactListSyncScheduler.executeOnceSyncToRemote()
                 updateFilteredContactList { list ->
                     list.addAll(deletedContactsInMultiselectMode)
                 }
                 deletedContactsInMultiselectMode.clear()
-            }
+            },
+            onLocalStorageError = {
+                setEffect(ContactListContract.Effect.ShowToast(R.string.generic_error))
+            },
+            finally = { setState { copy(isProgressBarShowed = false) }}
+
         )
     }
 
