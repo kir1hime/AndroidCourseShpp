@@ -4,6 +4,7 @@ import android.widget.ImageView
 import androidx.lifecycle.viewModelScope
 import com.example.androidcourseshpp.data.contactlist.ContactItem
 import com.example.androidcourseshpp.data.contactlist.ContactsRepository
+import com.example.androidcourseshpp.data.contactlist.SelectableContactItem
 import com.example.androidcourseshpp.ui.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -24,7 +25,7 @@ class ContactListViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             contactsRepository.contactList.collect { list ->
-                setState { copy(contactList = list) }
+                setState { copy(contactList = list.map { SelectableContactItem(it, false) }) }
             }
         }
     }
@@ -56,14 +57,25 @@ class ContactListViewModel @Inject constructor(
             )
 
             is ContactListContract.Event.PhoneContactsAdded -> addPhoneContacts()
-
             is ContactListContract.Event.OnArrowBackButtonClickLed -> navigateToPreviousScreen()
+            is ContactListContract.Event.OnResetSelection -> resetContactsSelection()
+        }
+    }
+
+    private fun resetContactsSelection() {
+        setState {
+            copy(contactList = contactList.map {
+                SelectableContactItem(
+                    it.item,
+                    isSelectionModeEnabled = false
+                )
+            })
         }
     }
 
     private fun addPhoneContacts() {
         if (!state.value.isPhoneContactsLoaded) {
-            val lastContactItemId = state.value.contactList.last().id
+            val lastContactItemId = state.value.contactList.last().item.id
             val contactItemsFromPhoneContacts =
                 contactsRepository.getContactItemsFromPhoneContacts(lastContactItemId)
             contactsRepository.addContactItems(contactItemsFromPhoneContacts)
@@ -81,7 +93,11 @@ class ContactListViewModel @Inject constructor(
     }
 
     private fun createNewContact(contactName: String, contactCareer: String): ContactItem {
-        val lastContactItemId = state.value.contactList.last().id
+        val contactList = state.value.contactList
+        val lastContactItemId = 0
+        if (state.value.contactList.isNotEmpty()) {
+            contactList.last().item.id
+        }
 
         val newContact = ContactItem(
             lastContactItemId + 1,

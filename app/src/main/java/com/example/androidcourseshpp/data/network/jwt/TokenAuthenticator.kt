@@ -13,7 +13,7 @@ class TokenAuthenticator(
 
     private val lock = Any()
 
-    override fun authenticate(route: Route?, response: Response): Request? {
+    override fun authenticate(route: Route?, response: Response): Request {
 
         synchronized(lock) {
             if (countNumberOfResponses(response) >= MAX_NUM_OF_RESPONSES) {

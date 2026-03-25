@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.contactlist.ContactItem
-import com.example.androidcourseshpp.data.contactlist.SelectableContactItem
 import com.example.androidcourseshpp.databinding.FragmentContactlistBinding
 import com.example.androidcourseshpp.ui.BaseFragment
 import com.example.androidcourseshpp.ui.screens.userinfo.TabSwitchable
@@ -107,12 +106,7 @@ class ContactListFragment :
     private fun setObservers() {
         collectFlow(viewModel.state) { state ->
             val contactList = state.contactList
-            adapter.submitList(contactList.map { contactItem ->
-                SelectableContactItem(
-                    contactItem,
-                    false
-                )
-            })
+            adapter.submitList(contactList)
         }
 
         collectFlow(viewModel.effect) { effect ->
@@ -125,7 +119,6 @@ class ContactListFragment :
                 is ContactListContract.Effect.NavigateToMyProfileScreen -> moveToMyProfileScreen()
             }
         }
-        collectAndSubmitContacts()
     }
 
     private fun setListeners() = with(binding) {
@@ -205,10 +198,10 @@ class ContactListFragment :
                     val adapterPosition = viewHolder.adapterPosition
 
                     val deletedItem = viewModel.state.value.contactList[adapterPosition]
-                    showUndoDeletingSnackBarItem(deletedItem, adapterPosition)
+                    showUndoDeletingSnackBarItem(deletedItem.item, adapterPosition)
                     viewModel.setEvent(
                         ContactListContract.Event.ContactItemDeleted(
-                            deletedItem,
+                            deletedItem.item,
                             adapterPosition
                         )
                     )
@@ -243,14 +236,6 @@ class ContactListFragment :
 
     override fun onPause() {
         super.onPause()
-        viewModel.resetContactItemsSelection()
-        collectAndSubmitContacts()
+        viewModel.setEvent(ContactListContract.Event.OnResetSelection)
     }
-
-    private fun collectAndSubmitContacts(){
-        collectFlow(viewModel.selectableContactItems) { contactList ->
-            adapter.submitList(contactList)
-        }
-    }
-
 }
