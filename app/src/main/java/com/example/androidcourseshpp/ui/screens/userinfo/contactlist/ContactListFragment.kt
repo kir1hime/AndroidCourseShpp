@@ -1,13 +1,9 @@
 package com.example.androidcourseshpp.ui.screens.userinfo.contactlist
 
 import android.Manifest
-import android.app.ActivityOptions
 import android.app.AlertDialog
-import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultLauncher
@@ -23,23 +19,21 @@ import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.contactlistdata.ContactItem
 import com.example.androidcourseshpp.databinding.FragmentContactlistBinding
 import com.example.androidcourseshpp.ui.BaseFragment
+import com.example.androidcourseshpp.ui.screens.userinfo.TabSwitchable
+import com.example.androidcourseshpp.ui.screens.userinfo.UserInfoFragmentDirections
 import com.example.androidcourseshpp.ui.screens.userinfo.contactlist.AddContactDialog.Companion.CAREER_KEY
 import com.example.androidcourseshpp.ui.screens.userinfo.contactlist.AddContactDialog.Companion.NAME_KEY
 import com.example.androidcourseshpp.ui.screens.userinfo.contactlist.AddContactDialog.Companion.RESPONSE_KEY
 import com.example.androidcourseshpp.ui.screens.userinfo.contactlist.adapters.ContactItemDecoration
 import com.example.androidcourseshpp.ui.screens.userinfo.contactlist.adapters.ContactsAdapter
 import com.example.androidcourseshpp.ui.screens.userinfo.contactlist.adapters.ItemActions
-import com.example.androidcourseshpp.ui.screens.MainActivity
-import com.example.androidcourseshpp.ui.screens.userinfo.TabSwitchable
-import com.example.androidcourseshpp.ui.screens.userinfo.UserInfoFragmentDirections
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
-class ContactListFragment : BaseFragment() {
-
-    private lateinit var binding: FragmentContactlistBinding
+class ContactListFragment :
+    BaseFragment<FragmentContactlistBinding>(FragmentContactlistBinding::inflate) {
     private val viewModel by viewModels<ContactListViewModel>()
     private lateinit var requestPermissionsLauncher: ActivityResultLauncher<String>
 
@@ -51,23 +45,28 @@ class ContactListFragment : BaseFragment() {
         }
 
     private val adapter by lazy {
-        ContactsAdapter(getItemActions())
-    }
+        ContactsAdapter(object : ItemActions {
+            override fun deleteContactItem(contactItem: ContactItem, position: Int) {
+                viewModel.deleteContactItem(contactItem, position)
+                showUndoDeletingSnackBarItem(contactItem, position)
+            }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+            override fun showContactItemDetails(contactItem: ContactItem, avatar: ImageView) {
+                moveToDetailsScreen(contactItem, avatar)
+            }
 
-        binding = FragmentContactlistBinding.inflate(inflater, container, false)
+            override fun showFloatingDeleteButton() {
+                binding.floatingButtonDeleteSelectedItems.visibility = View.VISIBLE
+            }
 
-        return binding.root
+            override fun hideFloatingDeleteButton() {
+                binding.floatingButtonDeleteSelectedItems.visibility = View.GONE
+            }
+        })
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         checkPermissions()
         requestPermissionsLauncher.launch(Manifest.permission.READ_CONTACTS)
 
@@ -78,19 +77,6 @@ class ContactListFragment : BaseFragment() {
         setObservers()
         setAddContactDialogListener()
         setOnBackPressedListener()
-    }
-
-    private fun getItemActions(): ItemActions {
-        return object : ItemActions {
-            override fun deleteContactItem(contactItem: ContactItem, position: Int) {
-                viewModel.deleteContactItem(contactItem, position)
-                showUndoDeletingSnackBarItem(contactItem, position)
-            }
-
-            override fun showContactItemDetails(contactItem: ContactItem, avatar: ImageView) {
-                moveToDetailsScreen(contactItem, avatar)
-            }
-        }
     }
 
     private fun setOnBackPressedListener() {
@@ -112,7 +98,7 @@ class ContactListFragment : BaseFragment() {
     }
 
     private fun setObservers() {
-        collectFlow(viewModel.contactList) { adapter.submitList(it) }
+        collectAndSubmitContacts()
     }
 
     private fun setListeners() = with(binding) {
@@ -121,6 +107,10 @@ class ContactListFragment : BaseFragment() {
         }
         textViewAddContacts.setOnClickListener {
             showAddContactDialog()
+        }
+        floatingButtonDeleteSelectedItems.setOnClickListener {
+            viewModel.deleteListOfContactItems(adapter.selectedItems)
+            floatingButtonDeleteSelectedItems.visibility = View.GONE
         }
     }
 
@@ -137,7 +127,6 @@ class ContactListFragment : BaseFragment() {
 
         undoDeletingSnackBar.setAction(R.string.snackbar_action_text) {
             viewModel.addContactItem(contactItem, position)
-            viewModel.deletedItems.pop()
 
             if (!viewModel.deletedItems.isEmpty()) {
                 val deletedItem = viewModel.deletedItems.peek()
@@ -200,7 +189,7 @@ class ContactListFragment : BaseFragment() {
     }
 
     private fun moveToMyProfileScreen() {
-       val parentFragment = parentFragment as? TabSwitchable
+        val parentFragment = parentFragment as? TabSwitchable
         parentFragment?.moveToMyProfileTab()
     }
 
@@ -211,6 +200,18 @@ class ContactListFragment : BaseFragment() {
             UserInfoFragmentDirections.actionUserInfoFragmentToContactDetailsFragment(contact)
 
         findNavController().navigate(direction, extras)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        viewModel.resetContactItemsSelection()
+        collectAndSubmitContacts()
+    }
+
+    private fun collectAndSubmitContacts(){
+        collectFlow(viewModel.selectableContactItems) { contactList ->
+            adapter.submitList(contactList)
+        }
     }
 
 }

@@ -8,5 +8,8 @@ data class ContactItem(
     val id: Int,
     val name: String,
     val career: String,
-    val avatarURL: String
+    val avatarURL: String,
 ) : Parcelable
+
+
+data class SelectableContactItem(val item: ContactItem, val isSelectionModeEnabled: Boolean)

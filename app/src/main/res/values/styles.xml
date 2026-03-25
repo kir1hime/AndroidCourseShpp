@@ -33,4 +33,10 @@
         <item name="android:textStyle">bold</item>
         <item name="android:letterSpacing">0.015</item>
     </style>
+
+    <style name="customFloatingButton">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
 </resources>

@@ -4,9 +4,12 @@ import android.content.ContentResolver
 import androidx.lifecycle.ViewModel
 import com.example.androidcourseshpp.data.contactlistdata.ContactListGenerator
 import com.example.androidcourseshpp.data.contactlistdata.ContactItem
+import com.example.androidcourseshpp.data.contactlistdata.SelectableContactItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
 import java.util.Stack
 import javax.inject.Inject
 
@@ -20,11 +23,27 @@ class ContactListViewModel @Inject constructor(
 
     private var mutableContactList =
         MutableStateFlow(ContactListGenerator(contentResolver).getContactItems())
-    val contactList: StateFlow<List<ContactItem>> get() = mutableContactList
+    val contactList: StateFlow<List<ContactItem>> = mutableContactList.asStateFlow()
+
+    val selectableContactItems = contactList.map { contacts ->
+        contacts.map { contact ->
+            SelectableContactItem(
+                contact,
+                false
+            )
+        }
+    }
     private var isPhoneContactsAdded = false
 
-    var deletedItems = Stack<Pair<ContactItem, Int>>()
-        private set
+    val deletedItems = Stack<Pair<ContactItem, Int>>()
+
+    private var _toShowUndoPreviousDeleting: Boolean = false
+    val toShowUndoPreviousDeleting get() = _toShowUndoPreviousDeleting
+
+
+    fun resetContactItemsSelection() {
+        mutableContactList.value = mutableContactList.value.map { item -> item.copy() }
+    }
 
     fun addPhoneContacts() {
         if (!isPhoneContactsAdded) {
@@ -67,8 +86,13 @@ class ContactListViewModel @Inject constructor(
         deletedItems.push(Pair(contactItem, position))
     }
 
+    fun deleteListOfContactItems(contactItems: List<ContactItem>) {
+        updateContactList { it.removeAll(contactItems) }
+    }
+
     fun addContactItem(contactItem: ContactItem, position: Int) {
         updateContactList { it.add(position, contactItem) }
+        deletedItems.pop()
     }
 
     private fun isNewContactDataIsBlank(contactItem: ContactItem): Boolean {
