@@ -15,8 +15,7 @@ import com.example.androidcourseshpp.ui.extensions.loadImageFromURLCircled
 class ContactsAdapter(private val actions: ItemActions) :
     ListAdapter<SelectableContactItem, ContactsAdapter.ViewHolder>(ContactItemDiffUtilCallback) {
 
-    var selectedItems: MutableList<ContactItem> = mutableListOf()
-        private set
+    val selectedItems: MutableList<ContactItem> = mutableListOf()
 
     inner class ViewHolder(
         private val binding: ContactItemBinding,
@@ -38,7 +37,7 @@ class ContactsAdapter(private val actions: ItemActions) :
             setListeners(contactItem)
         }
 
-        private fun switchComponentsVisibility(contactItem: SelectableContactItem) = with(binding) {
+        fun switchComponentsVisibility(contactItem: SelectableContactItem) = with(binding) {
 
             if (contactItem.isSelectionModeEnabled) {
                 contactListItem.setBackgroundResource(R.drawable.contacts_item_background_selected_mode)
@@ -118,6 +117,14 @@ class ContactsAdapter(private val actions: ItemActions) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(getItem(position))
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int, payloads: List<Any?>) {
+        if (payloads.isNotEmpty() && payloads[0] == SELECTION_MODE_PAYLOAD) {
+            holder.switchComponentsVisibility(getItem(position))
+        } else {
+            super.onBindViewHolder(holder, position, payloads)
+        }
     }
 }
 

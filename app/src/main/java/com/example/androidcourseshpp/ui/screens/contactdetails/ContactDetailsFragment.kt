@@ -1,9 +1,7 @@
 package com.example.androidcourseshpp.ui.screens.contactdetails
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.transition.TransitionInflater
@@ -12,20 +10,10 @@ import com.example.androidcourseshpp.databinding.FragmentDetailviewBinding
 import com.example.androidcourseshpp.ui.BaseFragment
 import com.example.androidcourseshpp.ui.extensions.loadImageFromURLCircled
 
-class ContactDetailsFragment : BaseFragment() {
+class ContactDetailsFragment :
+    BaseFragment<FragmentDetailviewBinding>(FragmentDetailviewBinding::inflate) {
 
-    private lateinit var binding : FragmentDetailviewBinding
-    private val args : ContactDetailsFragmentArgs by navArgs()
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentDetailviewBinding.inflate(inflater, container, false)
-
-        return binding.root
-    }
+    private val args: ContactDetailsFragmentArgs by navArgs()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -36,8 +24,9 @@ class ContactDetailsFragment : BaseFragment() {
         setListeners()
     }
 
-    private fun profilePhotoTransition(){
-        sharedElementEnterTransition = TransitionInflater.from(requireContext()).inflateTransition(R.transition.shared_element_transition)
+    private fun profilePhotoTransition() {
+        sharedElementEnterTransition = TransitionInflater.from(requireContext())
+            .inflateTransition(R.transition.shared_element_transition)
         binding.circleViewProfilePhoto.transitionName = args.contactDetails.id.toString()
 
     }
@@ -48,8 +37,8 @@ class ContactDetailsFragment : BaseFragment() {
         textViewCareer.text = args.contactDetails.career
     }
 
-    private fun setListeners(){
-        binding.imageButtonArrowBack.setOnClickListener{
+    private fun setListeners() {
+        binding.imageButtonArrowBack.setOnClickListener {
             findNavController().navigateUp()
         }
     }

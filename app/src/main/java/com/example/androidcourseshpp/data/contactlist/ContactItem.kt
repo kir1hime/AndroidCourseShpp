@@ -12,4 +12,4 @@ data class ContactItem(
 ) : Parcelable
 
 
-data class SelectableContactItem(val item: ContactItem, var isSelectionModeEnabled: Boolean)
+data class SelectableContactItem(val item: ContactItem, val isSelectionModeEnabled: Boolean)

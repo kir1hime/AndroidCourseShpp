@@ -12,11 +12,11 @@ import android.graphics.Typeface
 import android.util.AttributeSet
 import android.view.View
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.content.withStyledAttributes
 import androidx.core.graphics.drawable.toBitmap
 import com.example.androidcourseshpp.R
 import kotlin.math.abs
 import kotlin.math.max
-import kotlin.properties.Delegates
 
 
 @SuppressLint("ResourceType")
@@ -29,33 +29,33 @@ class ViewWithIcon @JvmOverloads constructor(
 
     private var icon: Bitmap? = null
 
-    private var iconWidth by Delegates.notNull<Float>()
-    private var iconHeight by Delegates.notNull<Float>()
-    private var iconColor by Delegates.notNull<Int>()
+    private var iconWidth = DEFAULT_FLOAT_VALUE
+    private var iconHeight = DEFAULT_FLOAT_VALUE
+    private var iconColor: Int = DEFAULT_INT_VALUE
 
-    private var iconPaddingStart by Delegates.notNull<Float>()
-    private var iconPaddingEnd by Delegates.notNull<Float>()
-    private var iconPaddingTop by Delegates.notNull<Float>()
-    private var iconPaddingBottom by Delegates.notNull<Float>()
+    private var iconPaddingStart = DEFAULT_FLOAT_VALUE
+    private var iconPaddingEnd = DEFAULT_FLOAT_VALUE
+    private var iconPaddingTop = DEFAULT_FLOAT_VALUE
+    private var iconPaddingBottom = DEFAULT_FLOAT_VALUE
 
-    private var textPaddingStart by Delegates.notNull<Float>()
-    private var textPaddingEnd by Delegates.notNull<Float>()
-    private var textPaddingTop by Delegates.notNull<Float>()
-    private var textPaddingBottom by Delegates.notNull<Float>()
+    private var textPaddingStart = DEFAULT_FLOAT_VALUE
+    private var textPaddingEnd = DEFAULT_FLOAT_VALUE
+    private var textPaddingTop = DEFAULT_FLOAT_VALUE
+    private var textPaddingBottom = DEFAULT_FLOAT_VALUE
 
-    private var textOriginX by Delegates.notNull<Float>()
-    private var textOriginY by Delegates.notNull<Float>()
+    private var textOriginX = DEFAULT_FLOAT_VALUE
+    private var textOriginY = DEFAULT_FLOAT_VALUE
 
-    private var iconOriginX by Delegates.notNull<Float>()
-    private var iconOriginY by Delegates.notNull<Float>()
+    private var iconOriginX = DEFAULT_FLOAT_VALUE
+    private var iconOriginY = DEFAULT_FLOAT_VALUE
 
-    private var text by Delegates.notNull<String>()
+    private var text = ""
 
-    private var textSize by Delegates.notNull<Float>()
-    private var textStyle by Delegates.notNull<Int>()
+    private var textSize = DEFAULT_FLOAT_VALUE
+    private var textStyle: Int = DEFAULT_INT_VALUE
     private lateinit var textFontFamily: Any
-    private var textColor by Delegates.notNull<Int>()
-    private var textLetterSpacing by Delegates.notNull<Float>()
+    private var textColor: Int = DEFAULT_INT_VALUE
+    private var textLetterSpacing = DEFAULT_FLOAT_VALUE
 
 
     private val textWidth by lazy {
@@ -69,35 +69,15 @@ class ViewWithIcon @JvmOverloads constructor(
         textPaint.fontMetrics
     }
 
-    private lateinit var iconPaint: Paint
-    private lateinit var textPaint: Paint
-
-    private lateinit var iconSpace: RectF
-
-    init {
-        if (attributesSet != null) {
-            initAttributes(attributesSet, defStyleAttr, defStyleRes)
-        } else {
-            initAttributesByDefault()
-        }
-        initPaints()
-    }
-
-    private fun initPaints() {
-        initIconPaint()
-        initTextPaint()
-    }
-
-    private fun initIconPaint() {
-        iconPaint = Paint(Paint.ANTI_ALIAS_FLAG)
-
-        if (iconColor != DEFAULT_INT_VALUE) {
-            iconPaint.colorFilter = PorterDuffColorFilter(iconColor, PorterDuff.Mode.SRC_IN)
+    private val iconPaint by lazy {
+        Paint(Paint.ANTI_ALIAS_FLAG).apply {
+            if (iconColor != DEFAULT_INT_VALUE) {
+                colorFilter = PorterDuffColorFilter(iconColor, PorterDuff.Mode.SRC_IN)
+            }
         }
     }
-
-    private fun initTextPaint() {
-        textPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+    private val textPaint by lazy {
+        Paint(Paint.ANTI_ALIAS_FLAG).apply {
             textSize = this@ViewWithIcon.textSize
             color = this@ViewWithIcon.textColor
             letterSpacing = textLetterSpacing
@@ -110,6 +90,13 @@ class ViewWithIcon @JvmOverloads constructor(
             } else {
                 Typeface.create(textFontFamily.toString(), Typeface.NORMAL)
             }
+        }
+    }
+    private lateinit var iconSpace: RectF
+
+    init {
+        if (attributesSet != null) {
+            initAttributes(attributesSet, defStyleAttr, defStyleRes)
         }
     }
 
@@ -259,29 +246,27 @@ class ViewWithIcon @JvmOverloads constructor(
             android.R.attr.letterSpacing,
         )
 
-        val typedArray = context.obtainStyledAttributes(attributesSet, attributes)
+        context.withStyledAttributes(attributesSet, attributes) {
 
-        textSize = typedArray.getDimension(0, DEFAULT_FLOAT_VALUE)
-        textColor = typedArray.getColor(1, DEFAULT_INT_VALUE)
+            textSize = getDimension(0, DEFAULT_FLOAT_VALUE)
+            textColor = getColor(1, DEFAULT_INT_VALUE)
 
-        val textFontFamilyRes = typedArray.getResourceId(2, DEFAULT_INT_VALUE)
-        textFontFamily =
-            if (textFontFamilyRes != -1) textFontFamilyRes
-            else typedArray.getString(2).toString()
+            val textFontFamilyRes = getResourceId(2, DEFAULT_INT_VALUE)
+            textFontFamily =
+                if (textFontFamilyRes != DEFAULT_INT_VALUE) textFontFamilyRes
+                else getString(2).toString()
 
-        textLetterSpacing = typedArray.getFloat(3, DEFAULT_FLOAT_VALUE)
+            textLetterSpacing = getFloat(3, DEFAULT_FLOAT_VALUE)
 
-        typedArray.recycle()
+        }
 
-        val styleAttr =
-            context.obtainStyledAttributes(attributesSet, intArrayOf(android.R.attr.textStyle))
-        textStyle = styleAttr.getInt(0, DEFAULT_INT_VALUE)
-        styleAttr.recycle()
+        context.withStyledAttributes(attributesSet, intArrayOf(android.R.attr.textStyle)) {
+            textStyle = getInt(0, DEFAULT_INT_VALUE)
+        }
 
-        val textAttr =
-            context.obtainStyledAttributes(attributesSet, intArrayOf(android.R.attr.text))
-        text = textAttr.getString(0) ?: ""
-        textAttr.recycle()
+        context.withStyledAttributes(attributesSet, intArrayOf(android.R.attr.text)) {
+            text = getString(0) ?: ""
+        }
     }
 
     @SuppressLint("CustomViewStyleable")
@@ -290,73 +275,56 @@ class ViewWithIcon @JvmOverloads constructor(
         defStyleAttr: Int,
         defStyleRes: Int
     ) {
-        val typedArray = context.obtainStyledAttributes(
+        context.withStyledAttributes(
             attributesSet,
             R.styleable.ButtonWithIcon,
             defStyleAttr,
             defStyleRes
-        )
+        ) {
 
-        icon = typedArray.getDrawable(R.styleable.ButtonWithIcon_icon)?.toBitmap()
+            icon = getDrawable(R.styleable.ButtonWithIcon_icon)?.toBitmap()
 
-        icon?.let {
-            iconWidth =
-                typedArray.getDimension(R.styleable.ButtonWithIcon_iconWidth, it.width.toFloat())
-            iconHeight =
-                typedArray.getDimension(R.styleable.ButtonWithIcon_iconHeight, it.width.toFloat())
+            icon?.let {
+                iconWidth =
+                    getDimension(R.styleable.ButtonWithIcon_iconWidth, it.width.toFloat())
+                iconHeight =
+                    getDimension(R.styleable.ButtonWithIcon_iconHeight, it.width.toFloat())
+            }
+            iconColor =
+                getColor(R.styleable.ButtonWithIcon_iconColor, DEFAULT_INT_VALUE)
+
+            iconPaddingStart = getDimension(
+                R.styleable.ButtonWithIcon_iconPaddingStart, DEFAULT_FLOAT_VALUE
+            )
+
+            iconPaddingEnd = getDimension(
+                R.styleable.ButtonWithIcon_iconPaddingEnd, DEFAULT_FLOAT_VALUE
+            )
+
+            iconPaddingTop = getDimension(
+                R.styleable.ButtonWithIcon_iconPaddingTop, DEFAULT_FLOAT_VALUE
+            )
+            iconPaddingBottom = getDimension(
+                R.styleable.ButtonWithIcon_iconPaddingBottom, DEFAULT_FLOAT_VALUE
+            )
+
+            textPaddingStart = getDimension(
+                R.styleable.ButtonWithIcon_textPaddingStart, DEFAULT_FLOAT_VALUE
+            )
+
+            textPaddingEnd = getDimension(
+                R.styleable.ButtonWithIcon_textPaddingEnd, DEFAULT_FLOAT_VALUE
+            )
+
+            textPaddingTop = getDimension(
+                R.styleable.ButtonWithIcon_textPaddingTop, DEFAULT_FLOAT_VALUE
+            )
+
+            textPaddingBottom = getDimension(
+                R.styleable.ButtonWithIcon_textPaddingBottom, DEFAULT_FLOAT_VALUE
+            )
+
         }
-        iconColor =
-            typedArray.getColor(R.styleable.ButtonWithIcon_iconColor, DEFAULT_INT_VALUE)
-
-        iconPaddingStart = typedArray.getDimension(
-            R.styleable.ButtonWithIcon_iconPaddingStart, DEFAULT_FLOAT_VALUE
-        )
-
-        iconPaddingEnd = typedArray.getDimension(
-            R.styleable.ButtonWithIcon_iconPaddingEnd, DEFAULT_FLOAT_VALUE
-        )
-
-        iconPaddingTop = typedArray.getDimension(
-            R.styleable.ButtonWithIcon_iconPaddingTop, DEFAULT_FLOAT_VALUE
-        )
-        iconPaddingBottom = typedArray.getDimension(
-            R.styleable.ButtonWithIcon_iconPaddingBottom, DEFAULT_FLOAT_VALUE
-        )
-
-        textPaddingStart = typedArray.getDimension(
-            R.styleable.ButtonWithIcon_textPaddingStart, DEFAULT_FLOAT_VALUE
-        )
-
-        textPaddingEnd = typedArray.getDimension(
-            R.styleable.ButtonWithIcon_textPaddingEnd, DEFAULT_FLOAT_VALUE
-        )
-
-        textPaddingTop = typedArray.getDimension(
-            R.styleable.ButtonWithIcon_textPaddingTop, DEFAULT_FLOAT_VALUE
-        )
-
-        textPaddingBottom = typedArray.getDimension(
-            R.styleable.ButtonWithIcon_textPaddingBottom, DEFAULT_FLOAT_VALUE
-        )
-
-        typedArray.recycle()
-    }
-
-    private fun initAttributesByDefault() {
-        iconWidth = DEFAULT_FLOAT_VALUE
-        iconHeight = DEFAULT_FLOAT_VALUE
-
-        iconColor = DEFAULT_INT_VALUE
-
-        iconPaddingStart = DEFAULT_FLOAT_VALUE
-        iconPaddingEnd = DEFAULT_FLOAT_VALUE
-        iconPaddingTop = DEFAULT_FLOAT_VALUE
-        iconPaddingBottom = DEFAULT_FLOAT_VALUE
-
-        textPaddingStart = DEFAULT_FLOAT_VALUE
-        textPaddingEnd = DEFAULT_FLOAT_VALUE
-        textPaddingTop = DEFAULT_FLOAT_VALUE
-        textPaddingBottom = DEFAULT_FLOAT_VALUE
     }
 
     companion object {

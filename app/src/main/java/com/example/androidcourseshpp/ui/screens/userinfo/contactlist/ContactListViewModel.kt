@@ -2,8 +2,8 @@ package com.example.androidcourseshpp.ui.screens.userinfo.contactlist
 
 import android.widget.ImageView
 import androidx.lifecycle.viewModelScope
-import com.example.androidcourseshpp.data.contactlist.ContactsRepository
 import com.example.androidcourseshpp.data.contactlist.ContactItem
+import com.example.androidcourseshpp.data.contactlist.ContactsRepository
 import com.example.androidcourseshpp.ui.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -24,7 +24,7 @@ class ContactListViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             contactsRepository.contactList.collect { list ->
-                setState { copy(list) }
+                setState { copy(contactList = list) }
             }
         }
     }

@@ -3,9 +3,7 @@ package com.example.androidcourseshpp.ui.screens.userinfo.myprofile
 import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.databinding.FragmentMyProfileBinding
@@ -17,20 +15,9 @@ import com.example.androidcourseshpp.ui.screens.userinfo.TabSwitchable
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MyProfileFragment : BaseFragment() {
-
-    private lateinit var binding: FragmentMyProfileBinding
+class MyProfileFragment :
+    BaseFragment<FragmentMyProfileBinding>(FragmentMyProfileBinding::inflate) {
     private val viewModel by viewModels<MyProfileViewModel>()
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentMyProfileBinding.inflate(inflater, container, false)
-
-        return binding.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
