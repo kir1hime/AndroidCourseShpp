@@ -22,9 +22,6 @@ android {
 
     }
 
-    ksp {
-        arg("room.schemaLocation", "$projectDir/schemas")
-    }
 
     buildTypes {
         release {
@@ -50,10 +47,15 @@ android {
         viewBinding = true
     }
 
-    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
-        compilerOptions {
-            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11)
-        }
+
+}
+
+ksp {
+    arg("room.schemaLocation", "$projectDir/schemas")
+}
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+    compilerOptions {
+        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11)
     }
 }
 
@@ -64,7 +66,6 @@ dependencies {
     implementation(libs.androidx.hilt.common)
     implementation(libs.androidx.work.runtime.ktx)
     ksp(libs.room.compiler)
-    implementation(libs.coil)
     implementation(libs.retrofit.gson)
     implementation(libs.gson)
     implementation(libs.okhttp)
