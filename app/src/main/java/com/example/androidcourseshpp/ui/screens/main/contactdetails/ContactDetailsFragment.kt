@@ -25,7 +25,7 @@ class ContactDetailsFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        renderUI()
+        renderUI(args.toShowAddContactButton)
         setObservers()
         profilePhotoTransition()
         setContactDetailsInfo()
@@ -50,11 +50,14 @@ class ContactDetailsFragment :
         }
     }
 
-    private fun renderUI() = with(binding) {
-        if (args.toShowAddContactButton) {
+    private fun renderUI(isAddToMyContactsButtonVisible: Boolean) = with(binding) {
+        if (isAddToMyContactsButtonVisible) {
             buttonAddToMyContacts.visibility = View.VISIBLE
             buttonOutlineMessage.visibility = View.VISIBLE
+            buttonFilledMessage.visibility = View.INVISIBLE
         } else {
+            buttonAddToMyContacts.visibility = View.INVISIBLE
+            buttonOutlineMessage.visibility = View.INVISIBLE
             buttonFilledMessage.visibility = View.VISIBLE
         }
     }
@@ -90,6 +93,7 @@ class ContactDetailsFragment :
             findNavController().navigateUp()
         }
         buttonAddToMyContacts.setOnClickListener {
+            renderUI(isAddToMyContactsButtonVisible = false)
             viewModel.setEvent(ContactDetailsContract.Event.OnAddContactButtonClicked(args.contactDetails))
         }
     }

@@ -161,7 +161,7 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
             viewModel.setEvent(AddContactsContract.Event.OnArrowBackButtonClicked)
         }
         buttonTryAgain.setOnClickListener {
-            viewModel.setEvent(AddContactsContract.Event.LoadUserList)
+            viewModel.setEvent(AddContactsContract.Event.OnTryAgainButtonClicked)
         }
         imageButtonSearch.setOnClickListener {
             viewModel.setEvent(AddContactsContract.Event.SearchModeSwitched(true))

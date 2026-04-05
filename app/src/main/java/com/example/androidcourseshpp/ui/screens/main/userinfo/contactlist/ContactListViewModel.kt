@@ -1,7 +1,6 @@
 package com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist
 
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.domain.entity.contact.SyncAction
@@ -74,13 +73,17 @@ class ContactListViewModel @Inject constructor(
             is ContactListContract.Event.OnReloadContacts -> reloadContacts()
             is ContactListContract.Event.OnSearchButtonClicked -> showSearchBar()
             is ContactListContract.Event.OnArrowBackButtonClicked -> navigateToPreviousScreen()
-            is ContactListContract.Event.OnTryAgainButtonClicked -> triggerContactsLoading()
             is ContactListContract.Event.OnSelectModeChange -> changeSelectMode(event.isSelectMode)
             is ContactListContract.Event.OnSearchBarTextChanged -> updateFilteredContactListBy(event.input)
             is ContactListContract.Event.OnContactItemDeleted -> deleteContact(event.contactItem)
             is ContactListContract.Event.OnAddContactClicked -> {
                 switchSearchMode(false)
                 navigateToAddContactsScreen()
+            }
+
+            is ContactListContract.Event.OnTryAgainButtonClicked -> {
+                triggerContactsLoading()
+                setState { copy(isTryAgainButtonShowed = false) }
             }
 
             is ContactListContract.Event.OnGetBackDeletedContact -> getBackDeletedContact(
@@ -176,8 +179,6 @@ class ContactListViewModel @Inject constructor(
             onSuccess = {
                 deletedContactsInMultiselectMode.clear()
                 deletedContactsInMultiselectMode.addAll(contactItems.toList())
-                Log.d("myTag", contactItems.toString())
-                Log.d("myTag", deletedContactsInMultiselectMode.toString())
                 contactListSyncScheduler.executeOnceSyncToRemote()
                 updateFilteredContactList { list ->
                     list.removeAll(contactItems)
@@ -233,7 +234,7 @@ class ContactListViewModel @Inject constructor(
             onLocalStorageError = {
                 setEffect(ContactListContract.Effect.ShowToast(R.string.generic_error))
             },
-            finally = { setState { copy(isProgressBarShowed = false) }}
+            finally = { setState { copy(isProgressBarShowed = false) } }
 
         )
     }

@@ -1,8 +1,11 @@
 package com.example.androidcourseshpp.ui.screens.main.addcontacts
 
+import androidx.lifecycle.viewModelScope
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.domain.usecase.contacts.AddContactUseCase
 import com.example.androidcourseshpp.domain.usecase.user.GetUsersUseCase
+import com.example.androidcourseshpp.domain.utils.AppError
+import com.example.androidcourseshpp.domain.utils.Result
 import com.example.androidcourseshpp.ui.BaseViewModel
 import com.example.androidcourseshpp.ui.notifications.NotificationAction
 import com.example.androidcourseshpp.ui.notifications.NotificationService
@@ -13,7 +16,11 @@ import com.example.androidcourseshpp.ui.sync.ContactsSyncScheduler
 import com.example.androidcourseshpp.ui.utils.executeUseCase
 import com.example.androidcourseshpp.ui.utils.isContainsOrderedSequence
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -32,8 +39,11 @@ class AddContactsViewModel @Inject constructor(
         isSearchMode = false
     )
 
+    private val usersLoadingTrigger = MutableSharedFlow<Unit>(replay = 1)
+
     init {
         loadUsers()
+        triggerUserLoadingLoading()
     }
 
     private val _filteredUserList = MutableStateFlow<List<UserItem>>(emptyList())
@@ -44,13 +54,17 @@ class AddContactsViewModel @Inject constructor(
             is AddContactsContract.Event.OnArrowTopFloatingButtonClicked -> scrollUserListToTop()
             is AddContactsContract.Event.SearchModeSwitched -> switchSearchMode(event.isSearchModeEnabled)
             is AddContactsContract.Event.OnHideSearchButtonClicked -> hideSearchBar()
-            is AddContactsContract.Event.LoadUserList -> loadUsers()
             is AddContactsContract.Event.OnSearchButtonClicked -> showSearchBar()
             is AddContactsContract.Event.OnArrowBackButtonClicked -> navigateToPreviousScreen()
             is AddContactsContract.Event.OnSearchBarTextChanged -> updateFilteredUserListBy(event.input)
             is AddContactsContract.Event.OnUserItemClicked -> navigateToDetailsScreen(
                 event.userItem
             )
+
+            is AddContactsContract.Event.OnTryAgainButtonClicked -> {
+                triggerUserLoadingLoading()
+                setState { copy(isTryAgainButtonShowed = false) }
+            }
 
             is AddContactsContract.Event.OnAddContactClicked -> addContact(
                 userInfo = event.contactInfo,
@@ -119,31 +133,56 @@ class AddContactsViewModel @Inject constructor(
         setEffect(AddContactsContract.Effect.NavigateToDetailsScreen(userItem))
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     private fun loadUsers() {
-        executeUseCase(
-            toExecute = {
-                setState {
-                    copy(
-                        isProgressBarShowed = true,
-                        isTryAgainButtonShowed = false,
-                        userList = emptyList()
-                    )
-                }
+        setState {
+            copy(
+                isProgressBarShowed = true,
+                isTryAgainButtonShowed = false
+            )
+        }
+        viewModelScope.launch {
+            usersLoadingTrigger.flatMapLatest {
                 getUsersUseCase()
-            },
-            onSuccess = { userList ->
-                setState { copy(userList = userList.map { it.toUserItem() }) }
-            },
-            onConnectionError = {
-                setState { copy(isTryAgainButtonShowed = true) }
-                setEffect(AddContactsContract.Effect.ShowToast(R.string.connection_error))
+            }.collect { result ->
+                when (result) {
+                    is Result.Success -> {
+                        setState {
+                            copy(
+                                isProgressBarShowed = false,
+                                userList = result.data.map { it.toUserItem() })
+                        }
+                    }
 
-            },
-            onRemoteError = {
-                setState { copy(isTryAgainButtonShowed = true) }
-                setEffect(AddContactsContract.Effect.ShowToast(R.string.generic_error))
-            },
-            finally = { setState { copy(isProgressBarShowed = false) } }
-        )
+                    is Result.Error -> {
+                        setState {
+                            copy(
+                                isTryAgainButtonShowed = true,
+                                isProgressBarShowed = false
+                            )
+                        }
+                        when (result.error) {
+                            AppError.ConnectionError -> setEffect(
+                                AddContactsContract.Effect.ShowToast(
+                                    R.string.connection_error
+                                )
+                            )
+
+                            else -> setEffect(
+                                AddContactsContract.Effect.ShowToast(
+                                    R.string.generic_error
+                                )
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun triggerUserLoadingLoading() {
+        viewModelScope.launch {
+            usersLoadingTrigger.emit(Unit)
+        }
     }
 }

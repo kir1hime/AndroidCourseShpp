@@ -13,7 +13,7 @@ class AddContactsContract {
         data object OnSearchButtonClicked : Event
         data object OnHideSearchButtonClicked : Event
         data object OnArrowTopFloatingButtonClicked : Event
-        data object LoadUserList : Event
+        data object OnTryAgainButtonClicked : Event
         data class OnUserItemClicked(val userItem: UserItem) : Event
         data class OnSearchBarTextChanged(val input: String) : Event
         data class SearchModeSwitched(val isSearchModeEnabled: Boolean) : Event
