@@ -7,6 +7,10 @@ import android.text.TextWatcher
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
@@ -28,9 +32,29 @@ import kotlinx.coroutines.launch
 const val USER_SERVER_ID = "userServerId"
 
 
-open class BaseFragment : Fragment() {
+open class BaseFragment<VBinding : ViewBinding>(private val inflaterMethod: (LayoutInflater, ViewGroup?, Boolean) -> VBinding) :
+    Fragment() {
 
     protected fun <T> BaseFragment.collectFlow(flow: Flow<T>, onCollect: (T) -> Unit) {
+    private var _binding: VBinding? = null
+     val binding get() = requireNotNull(_binding)
+
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = inflaterMethod.invoke(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
+    }
+
+    fun <T> BaseFragment<VBinding>.collectFlow(flow: Flow<T>, onCollect: (T) -> Unit) {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 flow.collect {
@@ -139,5 +163,4 @@ open class BaseFragment : Fragment() {
         private val BRACKET_POSITIONS = mapOf(1 to "(", 5 to ")-")
         private val HYPHEN_POSITIONS = listOf(6, 10, 13)
     }
-
 }

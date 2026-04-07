@@ -2,6 +2,7 @@ package com.example.androidcourseshpp.ui.screens.userinfo.contactlist
 
 import android.widget.ImageView
 import com.example.androidcourseshpp.data.contactlist.ContactItem
+import com.example.androidcourseshpp.data.contactlist.SelectableContactItem
 import com.example.androidcourseshpp.ui.ViewEffect
 import com.example.androidcourseshpp.ui.ViewEvent
 import com.example.androidcourseshpp.ui.ViewState
@@ -12,6 +13,7 @@ class ContactListContract {
         data object OnArrowBackButtonClicked : Event
         data object OnAddContactClicked : Event
         data object PhoneContactsAdded : Event
+        data object OnResetSelection : Event
         data class ContactItemAdded(val contactItem: ContactItem, val position: Int) :
             Event
 
@@ -46,7 +48,7 @@ class ContactListContract {
     }
 
     data class UIState(
-        val contactList: List<ContactItem>,
+        val contactList: List<SelectableContactItem>,
         val isPhoneContactsLoaded: Boolean
     ) : ViewState
 }

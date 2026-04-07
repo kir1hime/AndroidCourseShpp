@@ -15,8 +15,7 @@ import com.example.androidcourseshpp.ui.utils.loadImageFromURLCircled
 class ContactsAdapter(private val actions: ItemActions) :
     ListAdapter<SelectableContactItem, ContactsAdapter.ViewHolder>(ContactItemDiffUtilCallback) {
 
-    var selectedItems: MutableList<ContactItem> = mutableListOf()
-        private set
+    val selectedItems: MutableList<ContactItem> = mutableListOf()
 
     inner class ViewHolder(
         private val binding: ContactItemBinding,
@@ -34,12 +33,16 @@ class ContactsAdapter(private val actions: ItemActions) :
             switchComponentsVisibility(contactItem)
 
             checkBoxIsSelected.isChecked = selectedItems.contains(contactItem.item)
-
             setListeners(contactItem)
         }
 
-        private fun switchComponentsVisibility(contactItem: SelectableContactItem) = with(binding) {
+        fun bindPayLoad(contactItem: SelectableContactItem) = with(binding){
+            switchComponentsVisibility(contactItem)
+            checkBoxIsSelected.isChecked = selectedItems.contains(contactItem.item)
+            setListeners(contactItem)
+        }
 
+        fun switchComponentsVisibility(contactItem: SelectableContactItem) = with(binding) {
             if (contactItem.isSelectionModeEnabled) {
                 contactListItem.setBackgroundResource(R.drawable.contacts_item_background_selected_mode)
                 checkBoxIsSelected.visibility = View.VISIBLE
@@ -75,7 +78,8 @@ class ContactsAdapter(private val actions: ItemActions) :
 
             contactListItem.setOnLongClickListener {
                 actions.showFloatingDeleteButton()
-                onLongClickListener(contactItem)
+                selectedItems.add(contactItem.item)
+                changeMode(true)
                 true
             }
         }
@@ -93,11 +97,6 @@ class ContactsAdapter(private val actions: ItemActions) :
                     changeMode(false)
                 }
             }
-        }
-
-        private fun onLongClickListener(contactItem: SelectableContactItem) {
-            selectedItems.add(contactItem.item)
-            changeMode(true)
         }
 
         private fun changeMode(selectionModeEnabled: Boolean) {
@@ -118,6 +117,14 @@ class ContactsAdapter(private val actions: ItemActions) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(getItem(position))
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int, payloads: List<Any?>) {
+        if (payloads.isNotEmpty() && payloads[0] == SELECTION_MODE_PAYLOAD) {
+            holder.bindPayLoad(getItem(position))
+        } else {
+            super.onBindViewHolder(holder, position, payloads)
+        }
     }
 }
 

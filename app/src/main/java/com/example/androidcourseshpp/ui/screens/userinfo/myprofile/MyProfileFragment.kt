@@ -3,7 +3,6 @@ package com.example.androidcourseshpp.ui.screens.userinfo.myprofile
 import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
@@ -22,12 +21,11 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlin.getValue
 
 @AndroidEntryPoint
-class MyProfileFragment : BaseFragment() {
-
-    private lateinit var binding: FragmentMyProfileBinding
-
+class MyProfileFragment :
+BaseFragment<FragmentMyProfileBinding>(FragmentMyProfileBinding::inflate) {
+  
     private val viewModel by viewModels<MyProfileViewModel>()
-
+    
     private val onBackPressedCallback: OnBackPressedCallback =
         object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -35,15 +33,6 @@ class MyProfileFragment : BaseFragment() {
             }
         }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentMyProfileBinding.inflate(inflater, container, false)
-
-        return binding.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

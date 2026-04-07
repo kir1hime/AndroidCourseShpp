@@ -14,10 +14,10 @@ private const val NUM_OF_CAREERS = 10
 
 @Singleton
 class ContactsRepository @Inject constructor(
-      private val contentResolver: ContentResolver
+    private val contentResolver: ContentResolver
 ) {
 
-    private val nameList : List<String> = generateNames()
+    private val nameList: List<String> = generateNames()
 
     private val URLImageList = listOf(
         "https://gcs.tripi.vn/public-tripi/tripi-feed/img/474187SoY/anh-avatar-chu-meo-dang-yeu_051724941.jpg",
@@ -32,22 +32,22 @@ class ContactsRepository @Inject constructor(
     private val _contactList = MutableStateFlow(getContactItems())
     val contactList: StateFlow<List<ContactItem>> get() = _contactList
 
-    fun addContactItem(contactItem: ContactItem, position: Int){
+    fun addContactItem(contactItem: ContactItem, position: Int) {
         val currentList = _contactList.value.toMutableList()
         currentList.add(position, contactItem)
         _contactList.value = currentList
     }
 
-    fun addContactItems(contactItems : List<ContactItem>){
-        _contactList.value =_contactList.value + contactItems
+    fun addContactItems(contactItems: List<ContactItem>) {
+        _contactList.value += contactItems
     }
 
-    fun deleteContactItem(contactItem: ContactItem){
-        _contactList.value = _contactList.value - contactItem
+    fun deleteContactItem(contactItem: ContactItem) {
+        _contactList.value -= contactItem
     }
 
-    fun deleteContactItems(contactItems: List<ContactItem>){
-        _contactList.value = _contactList.value - contactItems
+    fun deleteContactItems(contactItems: List<ContactItem>) {
+        _contactList.value -= contactItems
     }
 
 
