@@ -2,15 +2,13 @@ package com.example.androidcourseshpp.ui
 
 import android.app.ActivityOptions
 import android.content.Intent
-import android.text.Editable
-import android.text.TextWatcher
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.TextView
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
@@ -21,10 +19,10 @@ import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.databinding.FragmentEditProfileBinding
 import com.example.androidcourseshpp.databinding.FragmentSignInBinding
 import com.example.androidcourseshpp.databinding.FragmentSignUpExtendedBinding
-import com.example.androidcourseshpp.ui.utils.loadImageFromURL
 import com.example.androidcourseshpp.ui.screens.MainActivity
 import com.example.androidcourseshpp.ui.screens.chooseprofilephotodialog.ChooseProfilePhotoDialog
 import com.example.androidcourseshpp.ui.screens.chooseprofilephotodialog.ChooseProfilePhotoDialog.Companion.PHOTO
+import com.example.androidcourseshpp.ui.utils.loadImageFromURL
 import com.example.androidcourseshpp.ui.utils.onChangeTextListener
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
@@ -35,16 +33,15 @@ const val USER_SERVER_ID = "userServerId"
 open class BaseFragment<VBinding : ViewBinding>(private val inflaterMethod: (LayoutInflater, ViewGroup?, Boolean) -> VBinding) :
     Fragment() {
 
-    protected fun <T> BaseFragment.collectFlow(flow: Flow<T>, onCollect: (T) -> Unit) {
     private var _binding: VBinding? = null
-     val binding get() = requireNotNull(_binding)
+    val binding get() = requireNotNull(_binding)
 
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = inflaterMethod.invoke(inflater, container, false)
         return binding.root
     }

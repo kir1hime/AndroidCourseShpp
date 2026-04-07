@@ -27,8 +27,6 @@ class MyProfileViewModel @Inject constructor(
         address = "",
         avatar = "",
         userServerId = DEFAULT_ID_VALUE
-        dateOfBirthday = "",
-        mobilePhone = ""
     )
 
     override fun handleEvent(event: MyProfileContract.Event) {
