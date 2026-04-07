@@ -15,11 +15,11 @@ class MyProfileViewModel @Inject constructor(
 
 
     override fun initState() = MyProfileContract.UIState(
-        "",
-        "",
-        "",
-        "",
-        ""
+        userName = "",
+        career = "",
+        address = "",
+        dateOfBirthday = "",
+        mobilePhone = ""
     )
 
     override fun handleEvent(event: MyProfileContract.Event) {
