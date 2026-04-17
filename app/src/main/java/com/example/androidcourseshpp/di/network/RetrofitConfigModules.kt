@@ -1,17 +1,13 @@
-package com.example.androidcourseshpp.di
+package com.example.androidcourseshpp.di.network
 
-import com.example.androidcourseshpp.data.network.BASE_URL
-import com.example.androidcourseshpp.data.network.RetrofitServicesProvider
-import com.example.androidcourseshpp.data.network.ServicesProvider
+import com.example.androidcourseshpp.data.network.api.token.TokenRefreshAPI
 import com.example.androidcourseshpp.data.network.jwt.JWTManager
 import com.example.androidcourseshpp.data.network.jwt.TokenAuthenticator
-import com.example.androidcourseshpp.data.network.service.auth.AuthService
-import com.example.androidcourseshpp.data.network.service.auth.AuthServiceImpl
-import com.example.androidcourseshpp.data.network.service.user.UserService
-import com.example.androidcourseshpp.data.network.service.user.UserServiceImpl
-import com.example.androidcourseshpp.data.network.api.token.TokenRefreshAPI
+import com.example.androidcourseshpp.di.MainOkHttpClient
+import com.example.androidcourseshpp.di.MainRetrofit
+import com.example.androidcourseshpp.di.TokenRefreshOkHttpClient
+import com.example.androidcourseshpp.di.TokenRefreshRetrofit
 import com.google.gson.Gson
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,23 +19,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
-@Module
-@InstallIn(SingletonComponent::class)
-interface RetrofitServicesModules {
-
-    @Binds
-    @Singleton
-    fun provideAuthService(authServiceImpl: AuthServiceImpl): AuthService
-
-    @Binds
-    @Singleton
-    fun provideUserService(userServiceImpl: UserServiceImpl): UserService
-
-    @Binds
-    @Singleton
-    fun providerServiceProvider(retrofitServicesProvider: RetrofitServicesProvider): ServicesProvider
-}
-
+const val BASE_URL = "http://178.63.9.114:7777/api/"
 @Module
 @InstallIn(SingletonComponent::class)
 class RetrofitConfigModule {
@@ -59,15 +39,15 @@ class RetrofitConfigModule {
     @Singleton
     @MainOkHttpClient
     fun provideMainOkHttpClient(
-        @TokenRefreshRetrofit retrofit: Retrofit,
-        jwtManager: JWTManager
+        jwtManager: JWTManager,
+        tokenRefreshAPI: TokenRefreshAPI
     ): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(createLoggingInterceptor())
             .addInterceptor(createAuthorizationInterceptor(jwtManager))
             .authenticator(
                 TokenAuthenticator(
-                    retrofit.create(TokenRefreshAPI::class.java),
+                    tokenRefreshAPI,
                     jwtManager
                 )
             )

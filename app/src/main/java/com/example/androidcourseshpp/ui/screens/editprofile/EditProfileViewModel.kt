@@ -4,8 +4,8 @@ package com.example.androidcourseshpp.ui.screens.editprofile
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.dataProvider.DEFAULT_AVATAR_VALUE
 import com.example.androidcourseshpp.data.dataProvider.UserDataProvider
-import com.example.androidcourseshpp.data.network.ServicesProvider
 import com.example.androidcourseshpp.data.network.entity.user.UpdateUserData
+import com.example.androidcourseshpp.data.network.service.user.UserService
 import com.example.androidcourseshpp.ui.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.util.Date
@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class EditProfileViewModel @Inject constructor(
-    private val servicesProvider: ServicesProvider,
+    private val userService: UserService,
     private val userDataProvider: UserDataProvider
 ) :
     BaseViewModel<EditProfileContract.Event, EditProfileContract.Effect, EditProfileContract.UIState>() {
@@ -80,7 +80,7 @@ class EditProfileViewModel @Inject constructor(
                 setState {
                     copy(isProgressBarShowed = true)
                 }
-                val response = servicesProvider.getUserService().getUser(userServerId)
+                val response = userService.getUser(userServerId)
                 val userInfo = response.user
 
                 val savedAvatarUrl = userDataProvider.getUserAvatarUrl()
@@ -126,8 +126,7 @@ class EditProfileViewModel @Inject constructor(
         processNetworkExceptions(
             toExecute = {
                 setState { copy(isProgressBarShowed = true) }
-
-                servicesProvider.getUserService().updateUserInfo(userServerId, updateUserData)
+                userService.updateUserInfo(userServerId, updateUserData)
             },
             processBackendException = {
                 setEffect(EditProfileContract.Effect.ShowToast(R.string.generic_error))

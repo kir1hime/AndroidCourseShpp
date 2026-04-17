@@ -3,9 +3,9 @@ package com.example.androidcourseshpp.ui.screens.auth.signupextended
 import android.graphics.Bitmap
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.dataProvider.UserDataProvider
-import com.example.androidcourseshpp.data.network.RetrofitServiceProviderHolder
-import com.example.androidcourseshpp.data.network.jwt.JWTManager
 import com.example.androidcourseshpp.data.network.entity.signup.SignUpData
+import com.example.androidcourseshpp.data.network.jwt.JWTManager
+import com.example.androidcourseshpp.data.network.service.auth.AuthService
 import com.example.androidcourseshpp.ui.BaseViewModel
 import com.example.androidcourseshpp.ui.screens.auth.signup.entity.SignUpUserInfo
 import com.example.androidcourseshpp.ui.utils.ImageConvertor
@@ -16,7 +16,7 @@ private const val PHONE_NUMBER_LENGTH = 15
 
 @HiltViewModel
 class SignUpExtendedViewModel @Inject constructor(
-    private val serviceProviderHolder: RetrofitServiceProviderHolder,
+    private val authService: AuthService,
     private val jwtManager: JWTManager,
     private val dataProvider: UserDataProvider,
     private val imageConvertor: ImageConvertor
@@ -74,7 +74,7 @@ class SignUpExtendedViewModel @Inject constructor(
                 toExecute = {
                     setState { copy(isProgressBarShowed = true) }
 
-                    val response = serviceProviderHolder.serviceProvider.getAuthService().signUp(
+                    val response = authService.signUp(
                         SignUpData(
                             userName = userName,
                             mobilePhone = mobilePhone,
