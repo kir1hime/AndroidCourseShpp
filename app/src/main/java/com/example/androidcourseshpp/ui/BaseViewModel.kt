@@ -2,7 +2,6 @@ package com.example.androidcourseshpp.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.androidcourseshpp.data.network.jwt.AuthenticationException
 import com.example.androidcourseshpp.data.network.service.BackendException
 import com.example.androidcourseshpp.data.network.service.ConnectionException
 import com.example.androidcourseshpp.data.network.service.ResponseProcessingException
@@ -66,21 +65,18 @@ abstract class BaseViewModel<UIEvent : ViewEvent, UIEffect : ViewEffect, UIState
         processBackendException: () -> Unit,
         processConnectionException: () -> Unit,
         processResponseProcessingException: () -> Unit,
-        processAuthenticationException: () -> Unit,
         finally: () -> Unit
     ) {
         viewModelScope.launch {
             try {
                 toExecute.invoke()
-            } catch (e: BackendException) {
+            } catch (_: BackendException) {
                 processBackendException.invoke()
-            } catch (e: ResponseProcessingException) {
+            } catch (_: ResponseProcessingException) {
                 processResponseProcessingException.invoke()
-            } catch (e: ConnectionException) {
+            } catch (_: ConnectionException) {
                 processConnectionException.invoke()
-            } catch (e: AuthenticationException) {
-                processAuthenticationException.invoke()
-            } finally {
+            }  finally {
                 finally.invoke()
             }
         }

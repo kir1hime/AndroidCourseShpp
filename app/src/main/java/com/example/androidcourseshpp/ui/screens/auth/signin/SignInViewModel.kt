@@ -67,9 +67,6 @@ class SignInViewModel @Inject constructor(
             processConnectionException = {
                 setEffect(SignInContract.Effect.ShowToast(R.string.connection_error))
             },
-            processAuthenticationException = {
-                setEffect(SignInContract.Effect.ShowToast(R.string.unauthorized_error))
-            },
             finally = {
                 setState {
                     copy(

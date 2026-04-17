@@ -106,10 +106,6 @@ class EditProfileViewModel @Inject constructor(
                 setEffect(EditProfileContract.Effect.ShowToast(R.string.generic_error))
                 disableSaveButton()
             },
-            processAuthenticationException = {
-                setEffect(EditProfileContract.Effect.ShowToast(R.string.generic_error))
-                disableSaveButton()
-            },
             processResponseProcessingException = {
                 setEffect(EditProfileContract.Effect.ShowToast(R.string.generic_error))
                 disableSaveButton()
@@ -129,9 +125,6 @@ class EditProfileViewModel @Inject constructor(
                 userService.updateUserInfo(userServerId, updateUserData)
             },
             processBackendException = {
-                setEffect(EditProfileContract.Effect.ShowToast(R.string.generic_error))
-            },
-            processAuthenticationException = {
                 setEffect(EditProfileContract.Effect.ShowToast(R.string.generic_error))
             },
             processResponseProcessingException = {
