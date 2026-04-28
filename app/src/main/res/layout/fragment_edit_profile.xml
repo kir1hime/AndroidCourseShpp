@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools"
+    android:id="@+id/editProfile"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_background_color"
+    tool:context="com.example.androidcourseshpp.ui.screens.editprofile.EditProfileFragment">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/GuideLineMiddleHor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.3" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/textViewTopPartOfScreen"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/second_background_color"
+        app:layout_constraintBottom_toBottomOf="@id/GuideLineMiddleHor"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/main_margin_side"
+        android:fontFamily="@font/open_sans"
+        android:text="@string/edit_profile"
+        android:textAlignment="center"
+        android:textColor="@color/edit_profile_label_color"
+        android:textSize="@dimen/big_text_size"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/circleImageViewProfilePhoto"
+        android:layout_width="@dimen/edit_profile_photo_size"
+        android:layout_height="@dimen/edit_profile_photo_size"
+        android:layout_marginTop="@dimen/edit_profile_photo_margin_top"
+        android:src="@drawable/profile_mockup"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/imageButtonAddProfilePhoto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/add_prof_photo_image_button_margin_start"
+        android:background="@null"
+        android:src="@drawable/add_profile_photo_ic"
+        app:layout_constraintBottom_toBottomOf="@id/circleImageViewProfilePhoto"
+        app:layout_constraintStart_toEndOf="@id/circleImageViewProfilePhoto"
+        app:layout_constraintTop_toTopOf="@id/circleImageViewProfilePhoto" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonSave"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/save_bt_h"
+        android:layout_marginHorizontal="@dimen/main_margin_side"
+        android:layout_marginBottom="@dimen/save_button_margin_bottom"
+        android:background="@drawable/save_button_background"
+        android:fontFamily="@font/open_sans"
+        android:letterSpacing="0.15"
+        android:text="@string/save"
+        android:textColor="@color/save_button_text_color"
+        android:textSize="@dimen/middle_text_size"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayoutUsername"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/main_margin_side"
+        android:layout_marginTop="@dimen/edit_profile_username_margin_top"
+        android:layout_marginBottom="@dimen/edit_profile_username_margin_bottom"
+        android:hint="@string/username"
+        android:paddingStart="@dimen/input_text_padding"
+        android:textColorHint="@color/input_hint_color"
+        android:theme="@style/input_style"
+        app:boxBackgroundColor="@color/edit_profile_inputs_background_color"
+        app:boxBackgroundMode="filled"
+        app:boxStrokeErrorColor="@color/input_line_color"
+        app:boxStrokeWidthFocused="@dimen/input_box_stroke_w_focused"
+        app:cursorColor="@color/cursor_color_2"
+        app:expandedHintEnabled="false"
+        app:hintTextAppearance="@style/hint_style"
+        app:hintTextColor="@color/input_hint_color"
+        app:layout_constraintBottom_toTopOf="@id/buttonSave"
+        app:layout_constraintTop_toBottomOf="@id/textViewTopPartOfScreen"
+        tool:ignore="RtlSymmetry">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextUsername"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/open_sans"
+            android:inputType="textEmailAddress"
+            android:maxLength="40"
+            android:paddingTop="@dimen/input_text_edit_padding_top"
+            android:paddingBottom="@dimen/input_text_edit_padding_bottom"
+            android:textColor="@color/edit_profile_inputs_text_color"
+            android:textSize="@dimen/big_text_size"
+            android:textStyle="bold" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayoutCareer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/main_margin_side"
+        android:layout_marginTop="@dimen/edit_profile_username_margin_top"
+        android:hint="@string/career"
+        android:paddingStart="@dimen/input_text_padding"
+        android:textColorHint="@color/input_hint_color"
+        android:theme="@style/input_style"
+        app:boxBackgroundColor="@color/edit_profile_inputs_background_color"
+        app:boxBackgroundMode="filled"
+        app:boxStrokeErrorColor="@color/input_line_color"
+        app:boxStrokeWidthFocused="@dimen/input_box_stroke_w_focused"
+        app:cursorColor="@color/cursor_color_2"
+        app:expandedHintEnabled="false"
+        app:hintTextAppearance="@style/hint_style"
+        app:hintTextColor="@color/input_hint_color"
+        app:layout_constraintTop_toBottomOf="@id/textInputLayoutUsername"
+        tool:ignore="RtlSymmetry">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextCareer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/open_sans"
+            android:inputType="textEmailAddress"
+            android:maxLength="40"
+            android:paddingTop="@dimen/input_text_edit_padding_top"
+            android:paddingBottom="@dimen/input_text_edit_padding_bottom"
+            android:textColor="@color/edit_profile_inputs_text_color"
+            android:textSize="@dimen/big_text_size"
+            android:textStyle="bold" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayoutMobilePhone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/main_margin_side"
+        android:layout_marginTop="@dimen/edit_profile_username_margin_top"
+        android:hint="@string/mobile_phone"
+        android:paddingStart="@dimen/input_text_padding"
+        android:textColorHint="@color/input_hint_color"
+        android:theme="@style/input_style"
+        app:boxBackgroundColor="@color/edit_profile_inputs_background_color"
+        app:boxBackgroundMode="filled"
+        app:boxStrokeErrorColor="@color/input_line_color"
+        app:boxStrokeWidthFocused="@dimen/input_box_stroke_w_focused"
+        app:cursorColor="@color/cursor_color_2"
+        app:expandedHintEnabled="false"
+        app:hintTextAppearance="@style/hint_style"
+        app:hintTextColor="@color/input_hint_color"
+        app:layout_constraintTop_toBottomOf="@id/textInputLayoutCareer"
+        tool:ignore="RtlSymmetry">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextMobilePhone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/open_sans"
+            android:inputType="number"
+            android:maxLength="15"
+            android:paddingTop="@dimen/input_text_edit_padding_top"
+            android:paddingBottom="@dimen/input_text_edit_padding_bottom"
+            android:textColor="@color/edit_profile_inputs_text_color"
+            android:textSize="@dimen/big_text_size"
+            android:textStyle="bold" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayoutAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/main_margin_side"
+        android:layout_marginTop="@dimen/edit_profile_username_margin_top"
+        android:hint="@string/address"
+        android:paddingStart="@dimen/input_text_padding"
+        android:textColorHint="@color/input_hint_color"
+        android:theme="@style/input_style"
+        app:boxBackgroundColor="@color/edit_profile_inputs_background_color"
+        app:boxBackgroundMode="filled"
+        app:boxStrokeErrorColor="@color/input_line_color"
+        app:boxStrokeWidthFocused="@dimen/input_box_stroke_w_focused"
+        app:cursorColor="@color/cursor_color_2"
+        app:expandedHintEnabled="false"
+        app:hintTextAppearance="@style/hint_style"
+        app:hintTextColor="@color/input_hint_color"
+        app:layout_constraintTop_toBottomOf="@id/textInputLayoutMobilePhone"
+        tool:ignore="RtlSymmetry">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/open_sans"
+            android:inputType="textEmailAddress"
+            android:maxLength="40"
+            android:paddingTop="@dimen/input_text_edit_padding_top"
+            android:paddingBottom="@dimen/input_text_edit_padding_bottom"
+            android:textColor="@color/edit_profile_inputs_text_color"
+            android:textSize="@dimen/big_text_size"
+            android:textStyle="bold" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayoutDateOfBirthday"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/main_margin_side"
+        android:layout_marginTop="@dimen/edit_profile_username_margin_top"
+        android:hint="@string/date_of_birthday"
+        android:paddingStart="@dimen/input_text_padding"
+        android:textColorHint="@color/input_hint_color"
+        android:theme="@style/input_style"
+        app:boxBackgroundColor="@color/edit_profile_inputs_background_color"
+        app:boxBackgroundMode="filled"
+        app:boxStrokeErrorColor="@color/input_line_color"
+        app:boxStrokeWidthFocused="@dimen/input_box_stroke_w_focused"
+        app:cursorColor="@color/cursor_color_2"
+        app:expandedHintEnabled="false"
+        app:hintTextAppearance="@style/hint_style"
+        app:hintTextColor="@color/input_hint_color"
+        app:layout_constraintTop_toBottomOf="@id/textInputLayoutAddress"
+        tool:ignore="RtlSymmetry">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextDateOfBirthday"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/open_sans"
+            android:inputType="number"
+            android:maxLength="10"
+            android:paddingTop="@dimen/input_text_edit_padding_top"
+            android:paddingBottom="@dimen/input_text_edit_padding_bottom"
+            android:textColor="@color/edit_profile_inputs_text_color"
+            android:textSize="@dimen/big_text_size"
+            android:textStyle="bold" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBarRequest"
+        android:layout_width="@dimen/progress_bar_request_size"
+        android:layout_height="@dimen/progress_bar_request_size"
+        android:indeterminateTint="@color/progress_bar_request_color"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

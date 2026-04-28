@@ -2,5 +2,5 @@ package com.example.androidcourseshpp.ui.screens.chooseprofilephotodialog.adapte
 
 interface ItemActions {
 
-    fun choosePhoto(photo : String)
+    fun choosePhoto(photo: String)
 }

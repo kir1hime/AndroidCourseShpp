@@ -1,17 +1,16 @@
 package com.example.androidcourseshpp.ui.screens.splash
 
 import com.example.androidcourseshpp.data.dataProvider.DEFAULT_ID_VALUE
-import com.example.androidcourseshpp.data.dataProvider.DataProvider
-import com.example.androidcourseshpp.data.network.ServicesProvider
+import com.example.androidcourseshpp.data.dataProvider.UserDataProvider
+import com.example.androidcourseshpp.data.network.service.user.UserService
 import com.example.androidcourseshpp.ui.BaseViewModel
-import com.example.androidcourseshpp.ui.screens.UserInfoEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 
 @HiltViewModel
 class SplashViewModel @Inject constructor(
-    private val dataProvider: DataProvider,
-    private val servicesProvider: ServicesProvider
+    private val userdataProvider: UserDataProvider,
+    private val userService: UserService,
 ) :
     BaseViewModel<SplashContract.Event, SplashContract.Effect, SplashContract.Sate>() {
 
@@ -22,11 +21,10 @@ class SplashViewModel @Inject constructor(
     }
 
     init {
-        val userServerId = dataProvider.getUserServerId()
+        val userServerId = userdataProvider.getUserServerId()
 
         if (userServerId == DEFAULT_ID_VALUE) {
-            setEffect(SplashContract.Effect.NavigateToSignUpScreen)
-
+            setEffect(SplashContract.Effect.NavigateToSignInScreen)
         } else {
             enterToAccount(userServerId)
         }
@@ -35,33 +33,22 @@ class SplashViewModel @Inject constructor(
     private fun enterToAccount(userServerId: Long) {
         processNetworkExceptions(
             toExecute = {
-                val response = servicesProvider.getUserService().getUser(userServerId)
-                val userInfo = response.user
+                val response = userService.getUser(userServerId)
+                val userServerId = response.user.id
 
                 setEffect(
-                    SplashContract.Effect.NavigateToMyProfileScreen(
-                        UserInfoEntity(
-                            userName = userInfo.name ?: "",
-                            career = userInfo.career ?: "",
-                            address = userInfo.address ?: "",
-                            dateOfBirthday = userInfo.birthday ?: "",
-                            mobilePhone = userInfo.phone ?: ""
-                        )
-                    )
+                    SplashContract.Effect.NavigateToMyProfileScreen(userServerId)
                 )
 
             },
             processBackendException = {
-                setEffect(SplashContract.Effect.NavigateToSignUpScreen)
+                setEffect(SplashContract.Effect.NavigateToSignInScreen)
             },
             processResponseProcessingException = {
-                setEffect(SplashContract.Effect.NavigateToSignUpScreen)
+                setEffect(SplashContract.Effect.NavigateToSignInScreen)
             },
             processConnectionException = {
-                setEffect(SplashContract.Effect.NavigateToSignUpScreen)
-            },
-            processAuthenticationException = {
-                setEffect(SplashContract.Effect.NavigateToSignUpScreen)
+                setEffect(SplashContract.Effect.NavigateToSignInScreen)
             },
             finally = { }
         )

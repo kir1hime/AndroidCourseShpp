@@ -6,12 +6,12 @@ import javax.inject.Inject
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.PasswordErrorMessagesContainer
 import com.example.androidcourseshpp.ui.BaseViewModel
-import com.example.androidcourseshpp.ui.screens.SignUpUserInfo
+import com.example.androidcourseshpp.ui.screens.auth.signup.entity.SignUpUserInfo
 
 
 @HiltViewModel
-class SignUpViewModel @Inject constructor() : BaseViewModel<SignUpContract.Event, SignUpContract.Effect, SignUpContract.UIState>() {
-
+class SignUpViewModel @Inject constructor() :
+    BaseViewModel<SignUpContract.Event, SignUpContract.Effect, SignUpContract.UIState>() {
 
     override fun initState() = SignUpContract.UIState(
         eMailHelperTextResId = R.string.no_error,
@@ -37,30 +37,18 @@ class SignUpViewModel @Inject constructor() : BaseViewModel<SignUpContract.Event
 
         if (!checkEmail(email)) {
             isEMailCorrect = false
-            setState {
-                copy(eMailHelperTextResId = R.string.incorrect_email_error)
-            }
+            setState { copy(eMailHelperTextResId = R.string.incorrect_email_error) }
         } else {
             isEMailCorrect = true
-            setState {
-                copy(
-                    eMailHelperTextResId = R.string.no_error,
-                )
-            }
+            setState { copy(eMailHelperTextResId = R.string.no_error) }
         }
 
         if (!checkPassword(password)) {
             isPasswordCorrect = false
-            setState {
-                copy(passwordHelperTextResId = definePasswordErrorMessage(password))
-            }
+            setState { copy(passwordHelperTextResId = definePasswordErrorMessage(password)) }
         } else {
             isPasswordCorrect = true
-            setState {
-                copy(
-                    passwordHelperTextResId = R.string.no_error,
-                )
-            }
+            setState { copy(passwordHelperTextResId = R.string.no_error) }
         }
 
         if (isEMailCorrect && isPasswordCorrect) {
@@ -75,6 +63,7 @@ class SignUpViewModel @Inject constructor() : BaseViewModel<SignUpContract.Event
             )
         }
     }
+
     /**
      * function checks all types of password checks and returns certain error text
      * */

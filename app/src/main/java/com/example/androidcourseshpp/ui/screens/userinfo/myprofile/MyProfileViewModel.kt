@@ -1,57 +1,94 @@
 package com.example.androidcourseshpp.ui.screens.userinfo.myprofile
 
-import com.example.androidcourseshpp.data.dataProvider.DataProvider
+
+import androidx.lifecycle.viewModelScope
+import com.example.androidcourseshpp.R
+import com.example.androidcourseshpp.data.dataProvider.DEFAULT_AVATAR_VALUE
+import com.example.androidcourseshpp.data.dataProvider.DEFAULT_ID_VALUE
+import com.example.androidcourseshpp.data.dataProvider.UserDataProvider
 import com.example.androidcourseshpp.data.network.jwt.JWTManager
+import com.example.androidcourseshpp.data.network.service.user.UserService
 import com.example.androidcourseshpp.ui.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
+import jakarta.inject.Inject
+import kotlinx.coroutines.launch
 
 @HiltViewModel
 class MyProfileViewModel @Inject constructor(
-    private val dataProvider: DataProvider,
-    private val jwtManager: JWTManager
+    private val userDataProvider: UserDataProvider,
+    private val jwtManager: JWTManager,
+    private val userService: UserService
 ) :
     BaseViewModel<MyProfileContract.Event, MyProfileContract.Effect, MyProfileContract.UIState>() {
-
 
     override fun initState() = MyProfileContract.UIState(
         userName = "",
         career = "",
         address = "",
-        dateOfBirthday = "",
-        mobilePhone = ""
+        avatar = "",
+        userServerId = DEFAULT_ID_VALUE
     )
 
     override fun handleEvent(event: MyProfileContract.Event) {
         when (event) {
-            is MyProfileContract.Event.OnViewMyContactsButtonClicked -> viewMyContacts()
+            is MyProfileContract.Event.OnViewMyContactsButtonClicked -> navigateToMyContacts()
             is MyProfileContract.Event.OnLogOutButtonClicked -> logOut()
-            is MyProfileContract.Event.UserInfoUpdated -> updateUserInfo(event.sate)
+            is MyProfileContract.Event.OnEditProfileClicked -> navigateToEditProfileScreen()
+            is MyProfileContract.Event.UpdateUserInfo -> updateUserInfo(event.userServerId)
         }
 
     }
 
-    private fun updateUserInfo(state: MyProfileContract.UIState) {
-        setState {
-            with(state) {
-                copy(
-                    userName = userName,
-                    career = career,
-                    mobilePhone = mobilePhone,
-                    address = address,
-                    dateOfBirthday = dateOfBirthday
-                )
-            }
+    private fun updateUserInfo(userServerId: Long) {
+        viewModelScope.launch {
+            processNetworkExceptions(
+                toExecute = {
+                    val response = userService.getUser(userServerId)
+                    val userInfo = response.user
+
+                    val savedAvatarUrl = userDataProvider.getUserAvatarUrl()
+
+                    setState {
+                        copy(
+                            userName = userInfo.name ?: "",
+                            career = userInfo.career ?: "",
+                            address = userInfo.address ?: "",
+                            avatar = if (savedAvatarUrl != DEFAULT_AVATAR_VALUE) {
+                                savedAvatarUrl
+                            } else {
+                                userInfo.image ?: ""
+                            },
+                            userServerId = userServerId
+                        )
+                    }
+                },
+                processBackendException = {
+                    setEffect(MyProfileContract.Effect.ShowToast(R.string.enter_error))
+                },
+                processResponseProcessingException = {
+                    setEffect(MyProfileContract.Effect.ShowToast(R.string.enter_error))
+                },
+                processConnectionException = {
+                    setEffect(MyProfileContract.Effect.ShowToast(R.string.connection_error))
+                },
+                finally = {}
+            )
         }
     }
+
+    private fun navigateToEditProfileScreen() {
+        setEffect(MyProfileContract.Effect.NavigateToEditProfileScreen(state.value.userServerId))
+    }
+
 
     private fun logOut() {
-        dataProvider.clearUserServerId()
         jwtManager.clearTokens()
-        setEffect(MyProfileContract.Effect.NavigateToSignUpScreen)
+        userDataProvider.clearUserServerId()
+        userDataProvider.clearUserAvatarUrl()
+        setEffect(MyProfileContract.Effect.NavigateToSignInScreen)
     }
 
-    private fun viewMyContacts() {
+    private fun navigateToMyContacts() {
         setEffect(MyProfileContract.Effect.NavigateToContactList)
     }
 }

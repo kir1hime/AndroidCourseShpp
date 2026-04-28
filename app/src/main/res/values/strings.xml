@@ -1,6 +1,14 @@
 <resources>
     <string name="app_name">AndroidCourseShpp</string>
 
+    <!-- Error -->
+    <string name="backend_error">Server error</string>
+    <string name="server_response_error">Something went wrong. Please try again</string>
+    <string name="connection_error">Check your internet connection</string>
+    <string name="unauthorized_error">User is not authorized</string>
+    <string name="generic_error">Something went wrong. Please try again.</string>
+    <string name="enter_error">Please restart the app</string>
+
     <!--My profile (activity_main.xml)-->
     <string name="view_my_contacts">VIEW MY CONTACTS</string>
     <string name="edit_profile">Edit profile</string>
@@ -35,7 +43,7 @@
     <string name="lowercase_letter_error">There must be at least one lowercase letter</string>
     <string name="special_symbol_error">There must be at least one special symbol</string>
     <string name="numbers_error">There must be at least one number</string>
-    <string name="no_error" translatable="false"></string>
+    <string name="no_error" translatable="false" />
 
     <!--My contacts (activity_contacts.xml)-->
     <string name="contacts">Contacts</string>
@@ -72,10 +80,21 @@
     <!--Choose profile photo -->
     <string name="open_gallery">Open gallery</string>
 
-    <string name="backend_error_text">Backend error</string>
-    <string name="backend_error">Server error</string>
-    <string name="server_response_error">Something went wrong. Please try again</string>
-    <string name="connection_error">Check your internet connection</string>
+
+    <!--Sign in -->
+    <string name="hello_label">Hello!</string>
+    <string name="enter_your_data_label">Enter your email and password below</string>
+    <string name="login_button_text">LOGIN</string>
+    <string name="don_t_have_account_label">Don\'t have account?</string>
+    <string name="sign_up_label">Sign up</string>
+    <string name="forgot_your_password_label">Forgot your password?</string>
+    <string name="incorrect_email_or_password_error">Incorrect email or password</string>
+
+    <!-- Edit profile -->
+    <string name="save">SAVE</string>
+    <string name="username">Username</string>
+    <string name="address">Address</string>
+    <string name="date_of_birthday">Date of birthday</string>
 
     <!-- Splash screen -->
     <string name="greeting">Glad to see you again!</string>

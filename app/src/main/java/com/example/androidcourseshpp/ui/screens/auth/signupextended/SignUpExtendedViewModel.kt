@@ -1,13 +1,14 @@
 package com.example.androidcourseshpp.ui.screens.auth.signupextended
 
+import android.graphics.Bitmap
 import com.example.androidcourseshpp.R
-import com.example.androidcourseshpp.data.dataProvider.DataProvider
-import com.example.androidcourseshpp.data.network.RetrofitServiceProviderHolder
+import com.example.androidcourseshpp.data.dataProvider.UserDataProvider
+import com.example.androidcourseshpp.data.network.entity.signup.SignUpData
 import com.example.androidcourseshpp.data.network.jwt.JWTManager
-import com.example.androidcourseshpp.data.network.service.auth.entity.SignUpData
+import com.example.androidcourseshpp.data.network.service.auth.AuthService
 import com.example.androidcourseshpp.ui.BaseViewModel
-import com.example.androidcourseshpp.ui.screens.SignUpUserInfo
-import com.example.androidcourseshpp.ui.screens.UserInfoEntity
+import com.example.androidcourseshpp.ui.screens.auth.signup.entity.SignUpUserInfo
+import com.example.androidcourseshpp.ui.utils.ImageConvertor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -15,9 +16,10 @@ private const val PHONE_NUMBER_LENGTH = 15
 
 @HiltViewModel
 class SignUpExtendedViewModel @Inject constructor(
-    private val serviceProviderHolder: RetrofitServiceProviderHolder,
+    private val authService: AuthService,
     private val jwtManager: JWTManager,
-    private val dataProvider: DataProvider
+    private val dataProvider: UserDataProvider,
+    private val imageConvertor: ImageConvertor
 ) :
     BaseViewModel<SignUpExtendedContract.Event, SignUpExtendedContract.Effect, SignUpExtendedContract.UIState>() {
 
@@ -32,7 +34,8 @@ class SignUpExtendedViewModel @Inject constructor(
             is SignUpExtendedContract.Event.OnForwardButtonClicked -> processInputData(
                 userName = event.userName,
                 mobilePhone = event.mobilePhone,
-                event.signUpUserInfo
+                event.signUpUserInfo,
+                event.avatar
             )
 
             is SignUpExtendedContract.Event.OnAddProfilePhotoImageViewClicked -> navigateToChooseProfilePhotoDialog()
@@ -43,7 +46,8 @@ class SignUpExtendedViewModel @Inject constructor(
     private fun processInputData(
         userName: String,
         mobilePhone: String,
-        signUpUserInfo: SignUpUserInfo
+        signUpUserInfo: SignUpUserInfo,
+        avatar: Bitmap
     ) {
         var isMobilePhoneCorrect: Boolean
         var isUserNameCorrect: Boolean
@@ -69,33 +73,25 @@ class SignUpExtendedViewModel @Inject constructor(
             processNetworkExceptions(
                 toExecute = {
                     setState { copy(isProgressBarShowed = true) }
-                    val response = serviceProviderHolder.serviceProvider.getAuthService().signUp(
+
+                    val response = authService.signUp(
                         SignUpData(
                             userName = userName,
                             mobilePhone = mobilePhone,
                             email = signUpUserInfo.email,
-                            password = signUpUserInfo.password
+                            password = signUpUserInfo.password,
+                            image = imageConvertor.convertBitmapToMultipartBody(avatar)
                         )
                     )
+
                     jwtManager.saveTokens(response.accessToken, response.refreshToken)
 
+                    val userServerId = response.user.id
                     if (signUpUserInfo.toRememberUser) {
-                        dataProvider.saveUserServerId(response.user.id)
+                        dataProvider.saveUserServerId(userServerId)
                     }
+                    setEffect(SignUpExtendedContract.Effect.NavigateToMyProfileScreen(userServerId))
 
-                    val userInfo = response.user
-
-                    setEffect(
-                        SignUpExtendedContract.Effect.NavigateToMyProfileScreen(
-                            UserInfoEntity(
-                                userName = userInfo.name ?: "",
-                                address = userInfo.address ?: "",
-                                career = userInfo.career ?: "",
-                                mobilePhone = userInfo.phone ?: "",
-                                dateOfBirthday = userInfo.birthday ?: ""
-                            )
-                        )
-                    )
                 },
                 processBackendException = {
                     setEffect(SignUpExtendedContract.Effect.ShowToast(R.string.email_already_registered_error))
@@ -106,7 +102,6 @@ class SignUpExtendedViewModel @Inject constructor(
                 processConnectionException = {
                     setEffect(SignUpExtendedContract.Effect.ShowToast(R.string.connection_error))
                 },
-                processAuthenticationException = {},
                 finally = {
                     setState { copy(isProgressBarShowed = false) }
                 }

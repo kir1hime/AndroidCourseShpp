@@ -1,7 +1,7 @@
 package com.example.androidcourseshpp.data.network.service.user
 
-import com.example.androidcourseshpp.data.network.service.user.entity.GetUserResponseEntity
-import com.example.androidcourseshpp.data.network.service.user.entity.UpdateUserData
+import com.example.androidcourseshpp.data.network.entity.user.GetUserResponseEntity
+import com.example.androidcourseshpp.data.network.entity.user.UpdateUserData
 
 interface UserService {
 

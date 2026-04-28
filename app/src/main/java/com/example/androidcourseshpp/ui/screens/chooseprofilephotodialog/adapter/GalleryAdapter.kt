@@ -7,12 +7,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.gallery.GalleryItem
 import com.example.androidcourseshpp.databinding.GalleryItemBinding
-import com.example.androidcourseshpp.ui.extensions.loadImageFromURL
+import com.example.androidcourseshpp.ui.utils.loadImageFromURL
 
 class GalleryAdapter(private val actions: ItemActions) :
     ListAdapter<GalleryItem, GalleryAdapter.ViewHolder>(
         GalleryItemDiffUtilCallback
     ) {
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -41,7 +42,7 @@ class GalleryAdapter(private val actions: ItemActions) :
             setListeners(galleryItem.photoURL)
         }
 
-        private fun setListeners(photo : String) {
+        private fun setListeners(photo: String){
             binding.imageViewPhoto.setOnClickListener {
                 actions.choosePhoto(photo)
             }

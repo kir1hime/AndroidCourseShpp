@@ -4,6 +4,8 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
 import android.view.ViewGroup
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
@@ -24,12 +26,23 @@ class ChooseProfilePhotoDialog : DialogFragment() {
     private lateinit var binding: DialogChooseProfilePhotoBinding
     private val viewModel by viewModels<ChooseProfilePhotoViewModel>()
 
+    private val pickMedia =
+        registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+            if (uri != null) {
+                parentFragmentManager.setFragmentResult(
+                    REQUEST_KEY,
+                    bundleOf(PHOTO to uri.toString())
+                )
+                findNavController().navigateUp()
+            } else {
+                findNavController().navigateUp()
+            }
+        }
     private val adapter: GalleryAdapter by lazy {
         GalleryAdapter(object : ItemActions {
 
             override fun choosePhoto(photo: String) {
                 parentFragmentManager.setFragmentResult(REQUEST_KEY, bundleOf(PHOTO to photo))
-
                 findNavController().navigateUp()
             }
         })
@@ -41,12 +54,17 @@ class ChooseProfilePhotoDialog : DialogFragment() {
         initRecycleView()
         setObservers()
         setListeners()
+        binding.textViewOpenGallery.setOnClickListener { launchMediaPicker() }
 
         val dialog = AlertDialog.Builder(requireContext())
             .setView(binding.root)
             .create()
 
         return dialog
+    }
+
+    private fun launchMediaPicker() {
+        pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
     }
 
     private fun setListeners() = with(binding) {
@@ -88,8 +106,7 @@ class ChooseProfilePhotoDialog : DialogFragment() {
 
     companion object {
         private const val MOVEMENT_ALONG_Y = 400
-
-        val REQUEST_KEY = "REQUEST_KEY - ${ChooseProfilePhotoDialog::class.java}"
+        const val REQUEST_KEY = "REQUEST_KEY"
         const val PHOTO = "PHOTO"
     }
 

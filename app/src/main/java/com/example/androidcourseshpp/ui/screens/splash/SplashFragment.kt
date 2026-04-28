@@ -19,14 +19,14 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>(FragmentSplashBinding
     private fun setObservers() {
         collectFlow(viewModel.effect) { effect ->
             when (effect) {
-                is SplashContract.Effect.NavigateToSignUpScreen -> moveToSignUpScreen()
-                is SplashContract.Effect.NavigateToMyProfileScreen -> moveToMyProfileScreen(effect.userInfo)
+                is SplashContract.Effect.NavigateToSignInScreen -> moveToSignInScreen()
+                is SplashContract.Effect.NavigateToMyProfileScreen -> moveToMyProfileScreen(effect.userServerId)
             }
         }
     }
 
-    private fun moveToSignUpScreen() {
-        val direction = SplashFragmentDirections.actionSplashFragmentToSignUpFragment()
+    private fun moveToSignInScreen() {
+        val direction = SplashFragmentDirections.actionSplashFragmentToSignInFragment()
         findNavController().navigate(direction)
     }
 }

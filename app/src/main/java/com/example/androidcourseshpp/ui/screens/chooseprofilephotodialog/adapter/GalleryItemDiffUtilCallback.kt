@@ -8,7 +8,7 @@ object GalleryItemDiffUtilCallback : DiffUtil.ItemCallback<GalleryItem>() {
         oldItem: GalleryItem,
         newItem: GalleryItem
     ): Boolean {
-       return oldItem.id == newItem.id
+        return oldItem.id == newItem.id
     }
 
     override fun areContentsTheSame(

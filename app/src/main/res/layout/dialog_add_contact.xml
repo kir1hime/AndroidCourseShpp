@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/dialog_add_contact_background_color">
+    android:background="@color/dialog_add_contact_background_color"
+    tools:context="com.example.androidcourseshpp.ui.screens.userinfo.contactlist.addcontactdialog.AddContactDialog">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayoutContactName"
@@ -42,9 +43,9 @@
         android:id="@+id/textInputLayoutContactCareer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/dialog_career_edit_text_padding_top"
         android:layout_marginHorizontal="@dimen/main_margin_side"
         android:hint="@string/career"
+        android:paddingTop="@dimen/dialog_career_edit_text_padding_top"
         android:textColorHint="@color/dialog_add_contact_hint_text_color"
         android:theme="@style/input_style"
         app:boxStrokeErrorColor="@color/input_line_color"

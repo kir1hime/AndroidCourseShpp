@@ -10,7 +10,8 @@ import com.example.androidcourseshpp.ui.ViewState
 class ContactListContract {
 
     sealed interface Event : ViewEvent {
-        data object OnArrowBackButtonClickLed : Event
+        data object OnArrowBackButtonClicked : Event
+        data object OnAddContactClicked : Event
         data object PhoneContactsAdded : Event
         data object OnResetSelection : Event
         data class ContactItemAdded(val contactItem: ContactItem, val position: Int) :
@@ -42,6 +43,8 @@ class ContactListContract {
             val contact: ContactItem,
             val avatar: ImageView
         ) : Effect
+
+        data object ShowAddContactDialog : Effect
     }
 
     data class UIState(

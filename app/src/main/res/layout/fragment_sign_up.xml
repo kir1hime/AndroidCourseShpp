@@ -13,11 +13,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/main_margin_side"
-        android:layout_marginTop="144dp"
+        android:layout_marginTop="@dimen/greeting_margin_top_ver"
         android:fontFamily="@font/open_sans"
         android:gravity="center"
         android:text="@string/acquaintance"
-        android:textColor="@android:color/white"
+        android:textColor="@color/sign_up_greetings_text_color"
         android:textSize="@dimen/large_text_size"
         android:textStyle="bold"
         app:layout_constraintTop_toTopOf="parent"
@@ -32,7 +32,7 @@
         android:fontFamily="@font/open_sans"
         android:gravity="center"
         android:text="@string/filling_out"
-        android:textColor="@android:color/white"
+        android:textColor="@color/fill_out_label_color"
         android:textSize="@dimen/tiny_text_size"
         app:layout_constraintTop_toBottomOf="@id/textViewAcquainted" />
 
@@ -232,16 +232,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:textPaddingEnd="@dimen/google_bt_text_padding_end"
         app:textPaddingStart="@dimen/google_bt_text_padding_start" />
-
-    <ProgressBar
-        android:id="@+id/progressBarRequest"
-        android:layout_width="@dimen/progress_bar_request_size"
-        android:layout_height="@dimen/progress_bar_request_size"
-        android:indeterminateTint="@color/progress_bar_request_color"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

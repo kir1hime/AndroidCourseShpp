@@ -57,7 +57,8 @@ class ContactListViewModel @Inject constructor(
             )
 
             is ContactListContract.Event.PhoneContactsAdded -> addPhoneContacts()
-            is ContactListContract.Event.OnArrowBackButtonClickLed -> navigateToPreviousScreen()
+            is ContactListContract.Event.OnArrowBackButtonClicked -> navigateToPreviousScreen()
+            is ContactListContract.Event.OnAddContactClicked -> showAddContactDialog()
             is ContactListContract.Event.OnResetSelection -> resetContactsSelection()
         }
     }
@@ -71,6 +72,10 @@ class ContactListViewModel @Inject constructor(
                 )
             })
         }
+    }
+
+    private fun showAddContactDialog() {
+        setEffect(ContactListContract.Effect.ShowAddContactDialog)
     }
 
     private fun addPhoneContacts() {

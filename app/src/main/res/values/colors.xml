@@ -10,12 +10,12 @@
 
     <color name="input_hint_color">#B2B2B3</color>
 
-    <!-- User Info (fragment_userinfo.xml) -->
+    <!-- User Info -->
     <color name="background_userinfo_tab_layout">#242235</color>
     <color name="tab_selected_text_color">#FB5E06</color>
     <color name="tab_unselected_text_color">#B2B2B3</color>
 
-    <!--My profile (activity_main.xml) -->
+    <!--My profile  -->
     <color name="bottom_view_color">#FFFFFFFF</color>
     <color name="view_my_contacts_text_color">@color/bottom_view_color</color>
     <color name="name_text_color">@color/bottom_view_color</color>
@@ -33,7 +33,7 @@
     <color name="career_text_color">@color/log_out_border_and_text_color</color>
     <color name="home_address_text_color">@color/log_out_border_and_text_color</color>
 
-    <!--Sign up (activity_auth.xml)-->
+    <!--Sign up-->
     <color name="auth_screen_color">#242235</color>
     <color name="email_input_background_color">@color/auth_screen_color</color>
     <color name="register_background_color">@color/auth_screen_color</color>
@@ -52,8 +52,10 @@
     <color name="remember_me_text_color">@color/account_question_text_color</color>
 
     <color name="google_text_color">#000000</color>
+    <color name="fill_out_label_color">#FFFFFFFF</color>
+    <color name="sign_up_greetings_text_color">#FFFFFFFF</color>
 
-    <!-- Contact list (fragment_contactlist.xml)-->
+    <!-- Contact list -->
     <color name="contacts_bar_color">#242235</color>
 
     <color name="contacts_screen_color">#FFFFFF</color>
@@ -63,7 +65,7 @@
     <color name="floating_delete_button_color">#FB5E06</color>
 
 
-    <!-- Contact list item (contact_recyclerview_item) -->
+    <!-- Contact item -->
     <color name="item_background_color_in_unselected_mode">@color/contacts_screen_color</color>
     <color name="item_background_color_in_selected_mode">#E7E7E7</color>
 
@@ -73,19 +75,19 @@
 
     <color name="contacts_item_border_color">#B2B2B3</color>
 
-    <!-- Dialog (dialog_add_contacts.xml) -->
+    <!-- Dialog  -->
     <color name="dialog_add_contact_background_color">#FFFFFF</color>
     <color name="dialog_add_contact_input_text_color">#242235</color>
     <color name="dialog_add_contact_hint_text_color">#B2B2B3</color>
 
-    <!-- Detail view (fragment_detailview.xml) -->
+    <!-- Detail view -->
     <color name="detail_view_bottom_view_color">@color/bottom_view_color</color>
-    <color name="profile_label_text_color">@color/detail_view_bottom_view_color</color>
+    <color name="profile_label_text_color">#FFFFFFFF</color>
     <color name="message_button_text_color">@color/view_my_contacts_text_color</color>
 
     <color name="detail_view_top_view_color">@color/top_view_color</color>
 
-    <!-- Sign up extended (fragment_sign_up_extended.xml) -->
+    <!-- Sign up extended  -->
     <color name="your_profile_data_text_color">#FFFFFF</color>
     <color name="instruction_to_do_text_color">@color/your_profile_data_text_color</color>
     <color name="sign_up_extended_background">#242235</color>
@@ -99,11 +101,31 @@
     <color name="cancel_button_text_color">#FFFFFF</color>
     <color name="progress_bar_request_color">#FB5E06</color>
 
-    <!--Choose profile photo (dialog_choose_profile_photo) -->
+    <!--Choose profile photo -->
     <color name="cancel_text_color">#B2B2B3</color>
     <color name="open_gallery_text_color">#FFFFFF</color>
+
+
+    <!--Sign In -->
+    <color name="sign_in_screen_color">#242235</color>
+    <color name="login_background_color">@color/sign_in_screen_color</color>
+    <color name="sign_in_greetings_text_color">#FFFFFF</color>
+    <color name="forgot_your_password_label_color">#FFFFFF</color>
+    <color name="login_text_color">#FFFFFF</color>
+    <color name="sign_up_label_color">#FFFFFF</color>
+    <color name="login_border_color">#FB5E06</color>
+
+    <!-- Edit Profile -->
+    <color name="save_button_background_color">#FB5E06</color>
+    <color name="main_background_color">#FFFFFF</color>
+    <color name="second_background_color">#242235</color>
+    <color name="edit_profile_label_color">#FFFFFF</color>
+    <color name="save_button_text_color">#FFFFFF</color>
+    <color name="edit_profile_inputs_background_color">#FFFFFF</color>
+    <color name="edit_profile_inputs_text_color">#18181F</color>
 
     <!-- Splash screen -->
     <color name="splash_screen_background_color">@color/top_view_color</color>
     <color name="splash_screen_greeting_text_color">#FFFFFF</color>
+
 </resources>

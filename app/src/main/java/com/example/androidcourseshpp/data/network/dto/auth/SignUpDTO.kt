@@ -1,13 +1,6 @@
 package com.example.androidcourseshpp.data.network.dto.auth
 
-import com.example.androidcourseshpp.data.network.service.auth.entity.SignUpResponseEntity
-
-data class SignUpRequestDTO(
-    val email: String,
-    val password: String,
-    val name: String,
-    val phone: String
-)
+import com.example.androidcourseshpp.data.network.entity.signup.SignUpResponseEntity
 
 data class SignUpResponseDTO(
     val data: SignUpResponseEntity

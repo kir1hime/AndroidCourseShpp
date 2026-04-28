@@ -1,18 +1,19 @@
 package com.example.androidcourseshpp.ui.screens.auth.signupextended
 
 import android.os.Bundle
+
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.core.graphics.drawable.toBitmap
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.androidcourseshpp.databinding.FragmentSignUpExtendedBinding
 import com.example.androidcourseshpp.ui.BaseFragment
-import com.example.androidcourseshpp.ui.extensions.loadImageFromURL
-import com.example.androidcourseshpp.ui.screens.chooseprofilephotodialog.ChooseProfilePhotoDialog
-import com.example.androidcourseshpp.ui.screens.chooseprofilephotodialog.ChooseProfilePhotoDialog.Companion.PHOTO
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -27,40 +28,44 @@ class SignUpExtendedFragment : BaseFragment<FragmentSignUpExtendedBinding>(
         super.onViewCreated(view, savedInstanceState)
         setListeners()
         setObservers()
-        setChooseProfilePhotoDialogListener()
-        formatMobilePhoneInput()
+        setChooseProfilePhotoDialogResultListener(binding.circleImageViewProfilePhoto) {}
+        formatMobilePhoneInput(binding.editTextMobilePhone)
     }
 
     private fun setListeners() = with(binding) {
-        buttonForward.setOnClickListener {
-            val inputUserName = editTextUserName.text.toString()
-            val inputMobilePhone = editTextMobilePhone.text.toString()
-            viewModel.setEvent(
-                SignUpExtendedContract.Event.OnForwardButtonClicked(
-                    inputUserName,
-                    inputMobilePhone,
-                    args.signUpInfo
-                )
-            )
-        }
+        buttonForward.setOnClickListener { onForwardButtonClick() }
+
         buttonCancel.setOnClickListener {
             viewModel.setEvent(SignUpExtendedContract.Event.OnCancelButtonClicked)
         }
+
         imageButtonAddProfilePhoto.setOnClickListener {
             viewModel.setEvent(SignUpExtendedContract.Event.OnAddProfilePhotoImageViewClicked)
         }
+    }
 
+    private fun onForwardButtonClick() = with(binding) {
+        val inputUserName = editTextUserName.text.toString()
+        val inputMobilePhone = editTextMobilePhone.text.toString()
+
+        viewModel.setEvent(
+            SignUpExtendedContract.Event.OnForwardButtonClicked(
+                inputUserName,
+                inputMobilePhone,
+                args.signUpInfo,
+                circleImageViewProfilePhoto.drawable.toBitmap()
+            )
+        )
     }
 
     private fun setObservers() = with(binding) {
         collectFlow(viewModel.effect) { effect ->
             when (effect) {
                 is SignUpExtendedContract.Effect.NavigateToMyProfileScreen -> moveToMyProfileScreen(
-                    effect.userInfo
+                    effect.userServerId
                 )
 
                 is SignUpExtendedContract.Effect.NavigateToPreviousScreen -> findNavController().navigateUp()
-
                 is SignUpExtendedContract.Effect.NavigateToChooseProfilePhotoDialog -> {
                     val direction =
                         SignUpExtendedFragmentDirections.actionSignUpExtendedFragmentToChooseProfilePhotoDialog()
@@ -75,71 +80,7 @@ class SignUpExtendedFragment : BaseFragment<FragmentSignUpExtendedBinding>(
             textInputLayoutUserName.helperText = getString(state.userNameHelperResId)
             textInputLayoutMobilePhone.helperText = getString(state.mobilePhoneHelperResId)
             progressBarRequest.isVisible = state.isProgressBarShowed
-            setLoadingState(state.isProgressBarShowed)
+            setLoadingState(state.isProgressBarShowed, binding)
         }
     }
-
-    private fun setChooseProfilePhotoDialogListener() {
-        parentFragmentManager.setFragmentResultListener(
-            ChooseProfilePhotoDialog.REQUEST_KEY,
-            viewLifecycleOwner
-        ) { _, data ->
-            val newProfilePhoto = data.getString(PHOTO) ?: ""
-            binding.circleImageViewProfilePhoto.loadImageFromURL(requireContext(), newProfilePhoto)
-        }
-    }
-
-    private fun formatMobilePhoneInput() = with(binding) {
-        editTextMobilePhone.addTextChangedListener(object : TextWatcher {
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun afterTextChanged(s: Editable?) {}
-
-            override fun onTextChanged(
-                inputText: CharSequence?,
-                start: Int,
-                before: Int,
-                count: Int
-            ) {
-                inputText?.let {
-
-                    if (BRACKET_POSITIONS.keys.contains(inputText.length) && count > 0 && before == 0) {
-                        updateMobilePhoneInput(BRACKET_POSITIONS[inputText.length])
-                    }
-                    if (HYPHEN_POSITIONS.contains(inputText.length) && count > 0 && before == 0) {
-                        updateMobilePhoneInput("-")
-
-                    }
-                }
-            }
-        })
-    }
-
-    private fun setLoadingState(isLoaded: Boolean) = with(binding) {
-        val isEnabled = !isLoaded
-
-        editTextUserName.apply {
-            isFocusable = isEnabled
-            isFocusableInTouchMode = isEnabled
-        }
-        editTextMobilePhone.apply {
-            isFocusable = isEnabled
-            isFocusableInTouchMode = isEnabled
-        }
-        imageButtonAddProfilePhoto.isClickable = isEnabled
-    }
-
-    private fun updateMobilePhoneInput(sign: String?) = with(binding) {
-        val currentText = editTextMobilePhone.text.toString()
-        val newInputText = StringBuilder(currentText)
-        newInputText.insert(currentText.length - 1, sign)
-        editTextMobilePhone.setText(newInputText)
-        editTextMobilePhone.setSelection(editTextMobilePhone.length())
-    }
-
-    companion object {
-        private val BRACKET_POSITIONS = mapOf(1 to "(", 5 to ")-")
-        private val HYPHEN_POSITIONS = listOf(6, 10, 13)
-    }
-
 }

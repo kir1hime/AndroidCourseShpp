@@ -2,6 +2,8 @@
     <string name="app_name">ShppAndroidCourse</string>
 
     <!--My profile (activity_main.xml)-->
+    <string name="generic_error">Щось пішло не так. Будь ласка спробуйте знову</string>
+    <string name="enter_error">Будь ласка перезайдіть в застосунок</string>
     <string name="view_my_contacts">ПЕРЕГЛЯНУТИ МОЇ КОНТАКТИ</string>
     <string name="edit_profile">Редагувати профіль</string>
     <string name="settings">Налаштування</string>
@@ -66,10 +68,23 @@
     <string name="incorrect_mobile_phone_error">Неправильний номер мобільного телефона</string>
     <string name="open_gallery">Відкрити галерею</string>
     <string name="empty_name_error">Не вкзано ім\'я, повинно бути щонайменше одна літера</string>
-    <string name="backend_error_text">Backend error</string>
     <string name="backend_error">Помилка сервера</string>
     <string name="server_response_error">Щось пішло не так. Будь ласка, спробуйте знову</string>
     <string name="connection_error">Перевірте ваше інтернет з\'єднання</string>
     <string name="greeting">Радий тебе бачити знову!</string>
+
+    <!-- Sign in -->
+    <string name="unauthorized_error">"Користувач не "</string>
+    <string name="hello_label">Привіт!</string>
+    <string name="enter_your_data_label">Введіть вашу пошту та пароль нижче</string>
+    <string name="login_button_text">УВІЙТИ</string>
+    <string name="don_t_have_account_label">Не маєте акаунту?</string>
+    <string name="sign_up_label">Зареєструватися</string>
+    <string name="forgot_your_password_label">Забули пароль?</string>
+    <string name="incorrect_email_or_password_error">Неправильна пошта або пароль</string>
+    <string name="save">ЗБЕРЕГТИ</string>
+    <string name="username">Ім\'я</string>
+    <string name="address">Адреса</string>
+    <string name="date_of_birthday">День народження</string>
 
 </resources>

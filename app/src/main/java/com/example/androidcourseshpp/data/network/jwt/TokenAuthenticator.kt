@@ -1,6 +1,6 @@
 package com.example.androidcourseshpp.data.network.jwt
 
-import com.example.androidcourseshpp.data.network.webapi.tokenrefresh.TokenRefreshAPI
+import com.example.androidcourseshpp.data.network.api.token.TokenRefreshAPI
 import okhttp3.Authenticator
 import okhttp3.Request
 import okhttp3.Response
@@ -13,11 +13,11 @@ class TokenAuthenticator(
 
     private val lock = Any()
 
-    override fun authenticate(route: Route?, response: Response): Request {
+    override fun authenticate(route: Route?, response: Response): Request? {
 
         synchronized(lock) {
             if (countNumberOfResponses(response) >= MAX_NUM_OF_RESPONSES) {
-                throw AuthenticationException()
+                return null
             }
             val currentAccessToken = jwtManager.getAccessToken()
 
@@ -32,9 +32,9 @@ class TokenAuthenticator(
             val newTokensResponse = tokenRefreshAPI.refreshToken().execute()
 
             if (!newTokensResponse.isSuccessful) {
-                throw AuthenticationException()
+                return null
             }
-            val newTokens = newTokensResponse.body()?.data ?: throw AuthenticationException()
+            val newTokens = newTokensResponse.body()?.data ?: return null
 
             jwtManager.saveTokens(newTokens.accessToken, newTokens.refreshToken)
 
@@ -63,4 +63,3 @@ class TokenAuthenticator(
     }
 }
 
-class AuthenticationException() : Exception()

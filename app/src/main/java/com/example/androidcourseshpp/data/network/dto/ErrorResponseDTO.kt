@@ -1,4 +1,3 @@
 package com.example.androidcourseshpp.data.network.dto
 
-
-data class ErrorResponseDTO (val message: String)
+data class ErrorResponseDTO(val message: String)
