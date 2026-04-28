@@ -43,7 +43,7 @@ class SignInFragment : BaseFragment<FragmentSignInBinding>
         }
     }
 
-    override fun setListeners() = with(binding) {
+    private fun setListeners() = with(binding) {
         buttonLogin.setOnClickListener {
 
             viewModel.setEvent(

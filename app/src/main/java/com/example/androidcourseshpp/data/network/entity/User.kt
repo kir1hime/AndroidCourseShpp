@@ -3,7 +3,7 @@ package com.example.androidcourseshpp.data.network.entity
 import java.util.Date
 
 data class User(
-    val id: Int,
+    val id: Long,
     val email: String,
     val name: String?,
     val phone: String?,

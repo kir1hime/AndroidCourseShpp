@@ -50,7 +50,7 @@
             app:destination="@id/chooseProfilePhotoDialog" />
         <argument
             android:name="userServerId"
-            app:argType="integer" />
+            app:argType="long" />
     </fragment>
     <dialog
         android:id="@+id/chooseProfilePhotoDialog"

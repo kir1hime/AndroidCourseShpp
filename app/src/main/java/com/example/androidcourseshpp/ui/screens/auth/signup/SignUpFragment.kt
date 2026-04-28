@@ -36,7 +36,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
         }
     }
 
-    override fun setListeners() = with(binding) {
+    private fun setListeners() = with(binding) {
         buttonRegister.setOnClickListener {
             onRegisterButtonClick()
         }

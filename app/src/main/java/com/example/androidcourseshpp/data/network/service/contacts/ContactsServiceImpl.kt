@@ -1,19 +1,18 @@
 package com.example.androidcourseshpp.data.network.service.contacts
 
-import com.example.androidcourseshpp.data.network.RetrofitConfig
+
 import com.example.androidcourseshpp.data.network.api.contacts.ContactsAPI
 import com.example.androidcourseshpp.data.network.dto.contacts.AddContactRequestDTO
 import com.example.androidcourseshpp.data.network.entity.contacts.ContactData
 import com.example.androidcourseshpp.data.network.service.BaseRetrofitService
+
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class ContactsServiceImpl @Inject constructor(config: RetrofitConfig) :
-    BaseRetrofitService(config),
+class ContactsServiceImpl @Inject constructor(private val contactsApi: ContactsAPI) :
+    BaseRetrofitService(),
     ContactsService {
-
-    private val contactsApi = retrofit.create(ContactsAPI::class.java)
 
     override suspend fun addContact(contactData: ContactData) {
         processRetrofitExceptions {
@@ -27,7 +26,7 @@ class ContactsServiceImpl @Inject constructor(config: RetrofitConfig) :
         }
     }
 
-    override suspend fun getUserContacts(userId: Int) = processRetrofitExceptions {
+    override suspend fun getUserContacts(userId: Long) = processRetrofitExceptions {
         contactsApi.getUserContacts(userId).data
     }
 }

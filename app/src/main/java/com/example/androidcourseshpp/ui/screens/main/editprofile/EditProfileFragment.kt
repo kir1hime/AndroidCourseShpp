@@ -41,13 +41,13 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(FragmentEdi
         }
     }
 
-    private fun setUserInfo() = with(binding) {
+    private fun setUserInfo() {
         viewModel.setEvent(EditProfileContract.Event.SetUserInfo(args.userServerId))
     }
 
 
     @SuppressLint("ClickableViewAccessibility")
-    override fun setListeners() = with(binding) {
+    private fun setListeners() = with(binding) {
 
         buttonSave.setOnClickListener {
             onSaveButtonClick()
@@ -137,7 +137,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(FragmentEdi
         viewModel.setEvent(EditProfileContract.Event.OnAddProfilePhotoImageViewClicked)
     }
 
-    override fun setObservers() = with(binding) {
+    private fun setObservers() = with(binding) {
         collectFlow(viewModel.state) { state ->
 
             editTextUsername.setText(state.userName)

@@ -63,7 +63,7 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
         )
     }
 
-    override fun setObservers() = with(binding) {
+    private fun setObservers() = with(binding) {
 
         collectFlow(viewModel.state) { state ->
             if (state.isSearchMode) {
@@ -130,7 +130,7 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
         imageButtonHideSearch.isVisible = true
     }
 
-    override fun setListeners() = with(binding) {
+    private fun setListeners() = with(binding) {
         imageButtonArrowBack.setOnClickListener {
             viewModel.setEvent(AddContactsContract.Event.OnArrowBackButtonClicked)
         }

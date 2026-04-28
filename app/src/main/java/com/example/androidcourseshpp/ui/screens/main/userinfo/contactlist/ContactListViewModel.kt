@@ -2,8 +2,8 @@ package com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist
 
 
 import com.example.androidcourseshpp.R
-import com.example.androidcourseshpp.data.models.contactlist.ContactsRepository
 import com.example.androidcourseshpp.data.models.contactlist.ContactItem
+import com.example.androidcourseshpp.data.models.contactlist.ContactsRepository
 import com.example.androidcourseshpp.ui.BaseViewModel
 import com.example.androidcourseshpp.ui.utils.isContainsOrderedSequence
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -84,9 +84,13 @@ class ContactListViewModel @Inject constructor(
         processNetworkExceptions(
             toExecute = {
                 setState { copy(isProgressBarShowed = true) }
+
                 contactsRepository.deleteContactItem(contactItem)
                 val contactList = contactsRepository.loadContacts()
+
                 setState { copy(contactList = contactList) }
+
+                deletedItems.push(contactItem)
             },
             processBackendException = {
                 setEffect(ContactListContract.Effect.ShowToast(R.string.generic_error))
@@ -100,7 +104,7 @@ class ContactListViewModel @Inject constructor(
             finally = { setState { copy(isProgressBarShowed = false) } }
         )
 
-        deletedItems.push(contactItem)
+
     }
 
     private fun deleteListOfContactItems(contactItems: List<ContactItem>) {
@@ -128,9 +132,17 @@ class ContactListViewModel @Inject constructor(
         processNetworkExceptions(
             toExecute = {
                 setState { copy(isProgressBarShowed = true) }
+
                 contactsRepository.addContactItem(contactItem)
                 val contactList = contactsRepository.loadContacts()
+
                 setState { copy(contactList = contactList) }
+
+                deletedItems.pop()
+                if (!deletedItems.isEmpty()) {
+                    val deletedItem = deletedItems.peek()
+                    setEffect(ContactListContract.Effect.ShowUndoDeletingItemSnackBar(deletedItem))
+                }
             },
             processBackendException = {
                 setEffect(ContactListContract.Effect.ShowToast(R.string.generic_error))
@@ -143,11 +155,6 @@ class ContactListViewModel @Inject constructor(
             },
             finally = { setState { copy(isProgressBarShowed = false) } }
         )
-        deletedItems.pop()
-        if (!deletedItems.isEmpty()) {
-            val deletedItem = deletedItems.peek()
-            setEffect(ContactListContract.Effect.ShowUndoDeletingItemSnackBar(deletedItem))
-        }
     }
 
     private fun loadContacts() {
@@ -190,6 +197,5 @@ class ContactListViewModel @Inject constructor(
     private fun navigateToAddContactsScreen() {
         setEffect(ContactListContract.Effect.NavigateToAddContactsScreen)
     }
-
 }
 

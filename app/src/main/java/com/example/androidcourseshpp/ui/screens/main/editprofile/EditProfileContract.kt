@@ -10,7 +10,7 @@ class EditProfileContract {
 
     sealed interface Event : ViewEvent {
         data object OnAddProfilePhotoImageViewClicked : Event
-        data class SetUserInfo(val userServerId: Int) : Event
+        data class SetUserInfo(val userServerId: Long) : Event
         data class ProfilePhotoUpdated(val profilePhotoUrl: String) : Event
         data class UserNameUpdated(val userName: String) : Event
         data class CareerUpdated(val career: String) : Event
@@ -18,7 +18,7 @@ class EditProfileContract {
         data class AddressUpdated(val address: String) : Event
         data class DateOfBirthdayUpdated(val dateOfBirthday: Date?) : Event
         data class OnSaveButtonClicked(
-            val userServerId: Int,
+            val userServerId: Long,
             val updateUserData: UpdateUserData
         ) : Event
     }

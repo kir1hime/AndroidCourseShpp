@@ -16,7 +16,7 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>(FragmentSplashBinding
         setObservers()
     }
 
-    override fun setObservers() = with(binding) {
+    private fun setObservers() {
         collectFlow(viewModel.effect) { effect ->
             when (effect) {
                 is SplashContract.Effect.NavigateToSignInScreen -> moveToSignInScreen()

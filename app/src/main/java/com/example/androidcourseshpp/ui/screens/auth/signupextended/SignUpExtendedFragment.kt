@@ -28,7 +28,7 @@ class SignUpExtendedFragment : BaseFragment<FragmentSignUpExtendedBinding>(
         formatMobilePhoneInput(binding.editTextMobilePhone)
     }
 
-    override fun setListeners() = with(binding) {
+    private fun setListeners() = with(binding) {
         buttonForward.setOnClickListener { onForwardButtonClick() }
 
         buttonCancel.setOnClickListener {
@@ -54,7 +54,7 @@ class SignUpExtendedFragment : BaseFragment<FragmentSignUpExtendedBinding>(
         )
     }
 
-    override fun setObservers() = with(binding) {
+    private fun setObservers() = with(binding) {
         collectFlow(viewModel.effect) { effect ->
             when (effect) {
                 is SignUpExtendedContract.Effect.ShowToast -> makeToast(effect.toastMessageResId)

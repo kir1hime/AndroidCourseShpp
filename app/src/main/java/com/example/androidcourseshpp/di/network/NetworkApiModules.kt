@@ -1,6 +1,7 @@
 package com.example.androidcourseshpp.di.network
 
 import com.example.androidcourseshpp.data.network.api.auth.AuthAPI
+import com.example.androidcourseshpp.data.network.api.contacts.ContactsAPI
 import com.example.androidcourseshpp.data.network.api.token.TokenRefreshAPI
 import com.example.androidcourseshpp.data.network.api.user.UserAPI
 import com.example.androidcourseshpp.di.MainRetrofit
@@ -26,6 +27,12 @@ class NetworkApiModules {
     @Singleton
     fun provideUserAPI(@MainRetrofit retrofit: Retrofit): UserAPI {
         return retrofit.create(UserAPI::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideContactsAPI(@MainRetrofit retrofit: Retrofit) : ContactsAPI {
+        return  retrofit.create(ContactsAPI::class.java)
     }
 
     @Provides

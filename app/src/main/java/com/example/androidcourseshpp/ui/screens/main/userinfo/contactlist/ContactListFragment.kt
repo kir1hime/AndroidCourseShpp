@@ -18,12 +18,12 @@ import com.example.androidcourseshpp.data.models.contactlist.SelectableContactIt
 import com.example.androidcourseshpp.databinding.FragmentContactlistBinding
 import com.example.androidcourseshpp.ui.BaseFragment
 import com.example.androidcourseshpp.ui.screens.main.addcontacts.TO_RELOAD_CONTACT_LIST
-import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.adapter.ContactItemDecoration
-import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.adapter.ContactsAdapter
-import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.adapter.ContactItemActions
+import com.example.androidcourseshpp.ui.screens.main.userinfo.Searchable
 import com.example.androidcourseshpp.ui.screens.main.userinfo.TabSwitchable
 import com.example.androidcourseshpp.ui.screens.main.userinfo.UserInfoFragmentDirections
-import com.example.androidcourseshpp.ui.screens.main.userinfo.Searchable
+import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.adapter.ContactItemActions
+import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.adapter.ContactItemDecoration
+import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.adapter.ContactsAdapter
 import com.example.androidcourseshpp.ui.utils.onChangeTextListener
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -122,7 +122,7 @@ class ContactListFragment :
         )
     }
 
-    override fun setObservers() = with(binding) {
+    private fun setObservers() = with(binding) {
 
         collectFlow(viewModel.state) { state ->
             if (state.isSearchMode) {
@@ -183,7 +183,7 @@ class ContactListFragment :
         }
     }
 
-    override fun setListeners() = with(binding) {
+    private fun setListeners() = with(binding) {
         imageButtonArrowBack.setOnClickListener {
             viewModel.setEvent(ContactListContract.Event.OnArrowBackButtonClicked)
         }

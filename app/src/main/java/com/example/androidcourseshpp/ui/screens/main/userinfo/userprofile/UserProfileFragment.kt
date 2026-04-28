@@ -53,7 +53,7 @@ class UserProfileFragment : BaseFragment<FragmentUserProfileBinding>(FragmentUse
         viewModel.setEvent(UserProfileContract.Event.UpdateUserInfo(userServerId))
     }
 
-    override fun setListeners() = with(binding) {
+    private fun setListeners() = with(binding) {
         buttonLogOut.setOnClickListener {
             viewModel.setEvent(UserProfileContract.Event.OnLogOutButtonClicked)
         }
@@ -65,7 +65,7 @@ class UserProfileFragment : BaseFragment<FragmentUserProfileBinding>(FragmentUse
         }
     }
 
-    override fun setObservers() = with(binding) {
+    private fun setObservers() = with(binding) {
         collectFlow(viewModel.effect) { effect ->
             when (effect) {
                 is UserProfileContract.Effect.NavigateToContactList -> moveToMyContactsScreen()

@@ -1,8 +1,9 @@
 package com.example.androidcourseshpp.data.models.userlist
 
-import com.example.androidcourseshpp.data.network.RetrofitServiceProviderHolder
 import com.example.androidcourseshpp.data.network.entity.User
 import com.example.androidcourseshpp.data.network.entity.contacts.ContactData
+import com.example.androidcourseshpp.data.network.service.contacts.ContactsService
+import com.example.androidcourseshpp.data.network.service.user.UserService
 import com.example.androidcourseshpp.data.userdata.UserDataProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -10,15 +11,15 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class UsersRepositoryImpl @Inject constructor(
-    private val serviceProviderHolder: RetrofitServiceProviderHolder,
+    private val contactsService: ContactsService,
+    private val userService: UserService,
     private val userDataProvider: UserDataProvider
 ) : UsersRepository {
 
 
     override suspend fun addContact(userItem: UserItem) {
         withContext(Dispatchers.IO) {
-            serviceProviderHolder.serviceProvider.getContactsService()
-                .addContact(ContactData(userDataProvider.getUserServerId(), userItem.id))
+            contactsService.addContact(ContactData(userDataProvider.getUserServerId(), userItem.id))
         }
     }
 
@@ -28,10 +29,10 @@ class UsersRepositoryImpl @Inject constructor(
 
         withContext(Dispatchers.IO) {
             val usersResponse = async {
-                serviceProviderHolder.serviceProvider.getUserService().getUsers()
+               userService.getUsers()
             }
             val contactsResponse = async {
-                serviceProviderHolder.serviceProvider.getContactsService()
+                contactsService
                     .getUserContacts(userDataProvider.getUserServerId())
             }
             userList = usersResponse.await().users
