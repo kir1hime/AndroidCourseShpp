@@ -4,42 +4,88 @@ import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.example.androidcourseshpp.R
-import com.example.androidcourseshpp.data.EmailParser
+import com.example.androidcourseshpp.data.dataProvider.DEFAULT_ID_VALUE
+import com.example.androidcourseshpp.data.dataProvider.USER_SERVER_ID
 import com.example.androidcourseshpp.databinding.FragmentMyProfileBinding
 import com.example.androidcourseshpp.ui.BaseFragment
 import com.example.androidcourseshpp.ui.screens.auth.AuthActivity
 import com.example.androidcourseshpp.ui.screens.userinfo.TabSwitchable
+import com.example.androidcourseshpp.ui.screens.userinfo.UserInfoFragmentDirections
+import com.example.androidcourseshpp.ui.utils.loadImageFromURLCircled
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MyProfileFragment :
-    BaseFragment<FragmentMyProfileBinding>(FragmentMyProfileBinding::inflate) {
+BaseFragment<FragmentMyProfileBinding>(FragmentMyProfileBinding::inflate) {
+  
     private val viewModel by viewModels<MyProfileViewModel>()
+    
+    private val onBackPressedCallback: OnBackPressedCallback =
+        object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                requireActivity().finish()
+            }
+        }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        defineUserName()
+        setUserInfo()
         setListeners()
+        setObservers()
+        setOnBackPressedListener()
     }
 
-    private fun defineUserName() {
-        val eMail = viewModel.savedEMail.value
-        binding.textViewName.text = EmailParser.parseEMail(eMail)
-
+    private fun setOnBackPressedListener() {
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            onBackPressedCallback
+        )
     }
 
+    private fun setUserInfo() {
+        val userServerId = requireActivity().intent.getLongExtra(USER_SERVER_ID, DEFAULT_ID_VALUE)
+        viewModel.setEvent(MyProfileContract.Event.UpdateUserInfo(userServerId))
+    }
 
     private fun setListeners() = with(binding) {
         buttonLogOut.setOnClickListener {
-            moveToSignUpScreen()
-            viewModel.deleteUserInfo()
-
+            viewModel.setEvent(MyProfileContract.Event.OnLogOutButtonClicked)
         }
         buttonViewMyContacts.setOnClickListener {
-            moveToMyContactsScreen()
+            viewModel.setEvent(MyProfileContract.Event.OnViewMyContactsButtonClicked)
+        }
+        buttonEditProfile.setOnClickListener {
+            viewModel.setEvent(MyProfileContract.Event.OnEditProfileClicked)
+        }
+    }
+
+    private fun setObservers() = with(binding) {
+        collectFlow(viewModel.effect) { effect ->
+            when (effect) {
+                is MyProfileContract.Effect.NavigateToContactList -> moveToMyContactsScreen()
+                is MyProfileContract.Effect.NavigateToSignInScreen -> moveToSignUpScreen()
+                is MyProfileContract.Effect.NavigateToEditProfileScreen -> moveToEditProfileScreen(
+                    effect.userServerId
+                )
+
+                is MyProfileContract.Effect.ShowToast -> makeToast(effect.toastMessageResId)
+            }
+        }
+
+        collectFlow(viewModel.state) { state ->
+            textViewName.text = state.userName
+            textViewCareer.updateIfNotEmpty(state.career)
+            textViewHomeAddress.updateIfNotEmpty(state.address)
+            circleViewProfilePhoto.loadImageFromURLCircled(
+                requireContext(),
+                state.avatar,
+                R.drawable.avatar
+            )
         }
     }
 
@@ -60,5 +106,11 @@ class MyProfileFragment :
     private fun moveToMyContactsScreen() {
         val parentFragment = parentFragment as? TabSwitchable
         parentFragment?.moveToContactsTab()
+    }
+
+    private fun moveToEditProfileScreen(userServerId: Long) {
+        val direction =
+            UserInfoFragmentDirections.actionUserInfoFragmentToEditProfileFragment(userServerId)
+        findNavController().navigate(direction)
     }
 }

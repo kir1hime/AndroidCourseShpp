@@ -72,6 +72,47 @@
 
     <dimen name="floating_delete_button_margin_bottom">45dp</dimen>
 
+    <dimen name="mockup_profile_photo_margin_top">71dp</dimen>
+    <dimen name="mockup_profile_photo_margin_bottom">504dp</dimen>
+    <dimen name="mockup_profile_photo_margin_bottom_ver">160dp</dimen>
+    <dimen name="add_prof_photo_image_button_margin_start">16dp</dimen>
+
+    <dimen name="your_profile_data_text_margin_top">208dp</dimen>
+    <dimen name="your_profile_data_text_margin_top_land">24dp</dimen>
+    <dimen name="your_profile_data_text_margin_bottom">449dp</dimen>
+    <dimen name="instruction_to_do_text_margin_top">8dp</dimen>
+
+    <dimen name="text_input_layout_user_name_margin_top">24dp</dimen>
+
+    <dimen name="cancel_button_margin_bottom">16dp</dimen>
+
+    <dimen name="open_gallery_text_margin_bottom">50dp</dimen>
+
+    <dimen name="take_photo_margins">8dp</dimen>
+
+    <dimen name="gallery_item_margin_top">8dp</dimen>
+    <dimen name="gallery_item_margin_start">101dp</dimen>
+
+    <dimen name="contacts_recycle_view_space_size_between_items">16dp</dimen>
+    <dimen name="gallery_recycler_view_left_offset">8dp</dimen>
+    <dimen name="splash_screen_progress_bar_margin_bottom">200dp</dimen>
+
+    <dimen name="enter_your_data_padding_top">8dp</dimen>
+
+    <dimen name="sign_in_email_input_margin_top">24dp</dimen>
+    <dimen name="sign_in_email_input_margin_bottom">186dp</dimen>
+    <dimen name="sign_in_password_input_margin_top">24dp</dimen>
+
+    <dimen name="login_button_margin_bottom">50dp</dimen>
+    <dimen name="sign_up_account_question_margin_start">81dp</dimen>
+    <dimen name="sign_up_account_question_margin_end">143dp</dimen>
+
+    <dimen name="sign_up_margin_start">12dp</dimen>
+    <dimen name="edit_profile_photo_margin_top">63dp</dimen>
+    <dimen name="save_button_margin_bottom">24dp</dimen>
+    <dimen name="edit_profile_username_margin_top">24dp</dimen>
+    <dimen name="edit_profile_username_margin_bottom">360dp</dimen>
+
 
     <!--paddings-->
     <dimen name="settings_padding_vertical">4.5dp</dimen>
@@ -82,6 +123,7 @@
     <dimen name="input_text_edit_padding_top">26dp</dimen>
     <dimen name="input_text_edit_padding_bottom">8dp</dimen>
     <dimen name="dialog_career_edit_text_padding_top">24dp</dimen>
+    <dimen name="forgot_your_password_label">15dp</dimen>
 
     <!--button dimens-->
     <dimen name="view_my_contacts_bt_h">55dp</dimen>
@@ -95,6 +137,9 @@
     <dimen name="is_selected_check_box_w">24dp</dimen>
     <dimen name="is_selected_check_box_h">20dp</dimen>
     <dimen name="floating_delete_button_size">60dp</dimen>
+    <dimen name="forward_bt_h">@dimen/view_my_contacts_bt_h</dimen>
+    <dimen name="cancel_bt_h">40dp</dimen>
+    <dimen name="save_bt_h">@dimen/view_my_contacts_bt_h</dimen>
 
     <!-- button content dimens -->
     <dimen name="google_bt_icon_h">20dp</dimen>
@@ -109,7 +154,9 @@
     <dimen name="contacts_bar_h">149dp</dimen>
     <dimen name="contacts_recycle_view_item_h">66dp</dimen>
     <dimen name="contacts_recycle_view_item_ava_size">50dp</dimen>
-    <dimen name="contacts_recycle_view_space_size_between_items">16dp</dimen>
+    <dimen name="choose_profile_photo_dialog_h">219dp</dimen>
+    <dimen name="progress_bar_request_size">70dp</dimen>
+
 
     <!--text sizes-->
     <dimen name="middle_text_size">16sp</dimen>
@@ -120,6 +167,9 @@
 
     <dimen name="input_box_stroke_w_focused">1dp</dimen>
     <dimen name="profile_photo_size">113dp</dimen>
+    <dimen name="gallery_item_size">85dp</dimen>
+
+    <dimen name="edit_profile_photo_size">118dp</dimen>
 
     <!--border radius -->
     <dimen name="radius_6">6dp</dimen>

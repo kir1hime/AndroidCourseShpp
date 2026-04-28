@@ -1,6 +1,7 @@
 [versions]
-agp = "8.8.2"
+agp = "8.13.1"
 circleimageview = "3.1.0"
+coil = "2.7.0"
 fragmentKtx = "1.8.8"
 # logical parts
 fragmentKtxVersion = "1.8.8"
@@ -9,6 +10,10 @@ javafaker = "1.0.2" # test data
 # DI
 hilt = "2.56.2"
 ksp = "2.1.20-1.0.31"
+# Network
+gson = "2.13.2"
+okhttp = "5.2.1"
+retrofit = "3.0.0"
 # ________________
 kotlin = "2.1.20"
 coreKtx = "1.16.0"
@@ -20,9 +25,7 @@ material = "1.12.0"
 activity = "1.10.1"
 constraintlayout = "2.2.1"
 navigationUiKtx = "2.9.0"
-picasso = "2.8"
-picassoTransformations = "2.4.0"
-roomCompilerProcessingTesting = "2.7.2"
+navigationFragmentKtx = "2.9.6"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -41,19 +44,22 @@ androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
-picasso = { module = "com.squareup.picasso:picasso", version.ref = "picasso" }
-androidx-room-compiler-processing-testing = { group = "androidx.room", name = "room-compiler-processing-testing", version.ref = "roomCompilerProcessingTesting" }
-picasso-transformations = { module = "jp.wasabeef:picasso-transformations", version.ref = "picassoTransformations" }
-hilt-android = {module = "com.google.dagger:hilt-android", version.ref="hilt"}
-hilt-android-compiler = {module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt"}
+hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
+hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
+okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
+retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
+logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
+retrofit-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
+navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigationFragmentKtx" }
 
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-android-navigation-safeargs = {id = "androidx.navigation.safeargs.kotlin", version.ref = "navigationUiKtx"}
-kotlin-parcelize = {id = "kotlin-parcelize"}
-hilt = {id = "com.google.dagger.hilt.android", version.ref="hilt"}
-ksp = {id = "com.google.devtools.ksp", version.ref="ksp"}
+android-navigation-safeargs = { id = "androidx.navigation.safeargs.kotlin", version.ref = "navigationUiKtx" }
+kotlin-parcelize = { id = "kotlin-parcelize" }
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 
 

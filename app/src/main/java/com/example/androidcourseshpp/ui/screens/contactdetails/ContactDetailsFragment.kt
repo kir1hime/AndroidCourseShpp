@@ -8,7 +8,7 @@ import androidx.transition.TransitionInflater
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.databinding.FragmentDetailviewBinding
 import com.example.androidcourseshpp.ui.BaseFragment
-import com.example.androidcourseshpp.ui.extensions.loadImageFromURL
+import com.example.androidcourseshpp.ui.utils.loadImageFromURLCircled
 
 class ContactDetailsFragment :
     BaseFragment<FragmentDetailviewBinding>(FragmentDetailviewBinding::inflate) {
@@ -32,7 +32,10 @@ class ContactDetailsFragment :
     }
 
     private fun setContactDetailsInfo() = with(binding) {
-        circleViewProfilePhoto.loadImageFromURL(requireContext(), args.contactDetails.avatarURL)
+        circleViewProfilePhoto.loadImageFromURLCircled(
+            requireContext(),
+            args.contactDetails.avatarURL
+        )
         textViewName.text = args.contactDetails.name
         textViewCareer.text = args.contactDetails.career
     }

@@ -11,13 +11,12 @@ import android.graphics.PorterDuffColorFilter
 import android.graphics.RectF
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatButton
+import androidx.core.content.withStyledAttributes
 import androidx.core.graphics.drawable.toBitmap
 import com.example.androidcourseshpp.R
-import kotlin.math.abs
-import kotlin.properties.Delegates
-import androidx.core.content.withStyledAttributes
 import com.example.androidcourseshpp.ui.customviews.ViewWithIcon.Companion.DEFAULT_FLOAT_VALUE
 import com.example.androidcourseshpp.ui.customviews.ViewWithIcon.Companion.DEFAULT_INT_VALUE
+import kotlin.math.abs
 
 class ButtonWithIcon @JvmOverloads constructor(
     context: Context,

@@ -34,6 +34,13 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+
+    packaging {
+        resources {
+            excludes += "META-INF/versions/9/OSGI-INF/MANIFEST.MF"
+        }
+    }
+
     kotlinOptions {
         jvmTarget = "11"
     }
@@ -44,15 +51,19 @@ android {
 }
 
 dependencies {
+    implementation(libs.retrofit.gson)
+    implementation(libs.gson)
+    implementation(libs.okhttp)
+    implementation(libs.logging.interceptor)
+    implementation(libs.retrofit)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.hilt.android)
+    implementation(libs.navigation.fragment.ktx)
     ksp(libs.hilt.android.compiler)
     implementation(libs.androidx.fragment.ktx.v188)
     implementation(libs.javafaker)
     implementation(libs.androidx.fragment.ktx)
-    implementation(libs.picasso.transformations)
-    implementation(libs.picasso)
     implementation(libs.circleimageview)
     implementation(libs.glide)
     implementation(libs.androidx.core.ktx)

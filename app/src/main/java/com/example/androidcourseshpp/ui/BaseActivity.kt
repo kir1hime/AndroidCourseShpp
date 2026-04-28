@@ -7,7 +7,7 @@ import androidx.core.view.WindowInsetsCompat
 
 open class BaseActivity : AppCompatActivity() {
 
-    fun adaptUserInterface(view: View) {
+    protected fun adaptUserInterface(view: View) {
         ViewCompat.setOnApplyWindowInsetsListener(view) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)

@@ -12,12 +12,11 @@ import android.graphics.Typeface
 import android.util.AttributeSet
 import android.view.View
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.content.withStyledAttributes
 import androidx.core.graphics.drawable.toBitmap
 import com.example.androidcourseshpp.R
 import kotlin.math.abs
 import kotlin.math.max
-import kotlin.properties.Delegates
-import androidx.core.content.withStyledAttributes
 
 
 @SuppressLint("ResourceType")

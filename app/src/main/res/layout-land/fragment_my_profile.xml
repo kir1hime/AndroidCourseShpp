@@ -130,13 +130,13 @@
         android:layout_marginTop="@dimen/home_address_margin_top"
         android:fontFamily="@font/open_sans"
         android:text="@string/home_address"
+        android:textAlignment="center"
         android:textColor="@color/home_address_text_color"
         android:textSize="@dimen/small_text_size"
         android:textStyle="bold"
-        android:textAlignment="center"
-        app:layout_constraintStart_toStartOf="@id/textViewTopPartOfScreen"
         app:layout_constraintEnd_toStartOf="@id/textViewWhitePartOfScreen"
-        app:layout_constraintTop_toBottomOf="@id/textViewCareer"/>
+        app:layout_constraintStart_toStartOf="@id/textViewTopPartOfScreen"
+        app:layout_constraintTop_toBottomOf="@id/textViewCareer" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/buttonViewMyContacts"
@@ -157,7 +157,7 @@
         app:layout_constraintStart_toStartOf="@id/textViewWhitePartOfScreen" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/buttonEditText"
+        android:id="@+id/buttonEditProfile"
         android:layout_width="0dp"
         android:layout_height="@dimen/edit_profile_bt_h"
         android:layout_marginHorizontal="@dimen/main_margin_side"
@@ -165,9 +165,9 @@
         android:background="@drawable/edit_profile_background"
         android:fontFamily="@font/open_sans"
         android:text="@string/edit_profile"
+        android:textAllCaps="false"
         android:textColor="@color/edit_profile_text_color"
         android:textSize="@dimen/small_text_size"
-        android:textAllCaps="false"
         android:textStyle="bold"
         app:backgroundTint="@null"
         app:layout_constraintBottom_toTopOf="@id/buttonViewMyContacts"

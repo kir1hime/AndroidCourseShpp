@@ -1,16 +1,7 @@
 package com.example.androidcourseshpp.ui.screens.auth
 
-import android.app.ActivityOptions
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
-import com.example.androidcourseshpp.R
-import com.example.androidcourseshpp.data.MIN_NUM_OF_CHARS_IN_PASSWORD
-import com.example.androidcourseshpp.data.PasswordErrorMessagesContainer
-import com.example.androidcourseshpp.data.SignUpValidator
-import com.example.androidcourseshpp.data.dataProvider.EMAIL_KEY
-import com.example.androidcourseshpp.ui.screens.MainActivity
 import com.example.androidcourseshpp.databinding.ActivityAuthBinding
 import com.example.androidcourseshpp.ui.BaseActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -19,7 +10,6 @@ import dagger.hilt.android.AndroidEntryPoint
 class AuthActivity : BaseActivity() {
 
     private lateinit var binding: ActivityAuthBinding
-    private val viewModel by viewModels<SignUpViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,79 +21,6 @@ class AuthActivity : BaseActivity() {
 
         adaptUserInterface(binding.root)
 
-        val savedEmail = viewModel.savedEMail.value
-        if (savedEmail != "") {
-            moveToMyProfileScreen(savedEmail)
-        }
-
-        setListeners()
     }
 
-
-    private fun setListeners() {
-        binding.buttonRegister.setOnClickListener {
-            onRegisterButtonClickListener()
-        }
-    }
-
-    private fun onRegisterButtonClickListener()= with(binding)  {
-        val inputEMail = editTextEMail.text.toString()
-        val inputPassword = editTextPassword.text.toString()
-
-        val isInputEMailCorrect = SignUpValidator.isEMailCorrect(inputEMail)
-        val isInputPasswordCorrect = SignUpValidator.isPasswordCorrect(inputPassword)
-
-        if (isInputEMailCorrect && isInputPasswordCorrect) {
-            textInputLayoutPassword.helperText = ""
-            textInputLayoutEMail.helperText = ""
-
-            if (comboBoxRememberMe.isChecked) {
-                saveUserInfo()
-            }
-            moveToMyProfileScreen(editTextEMail.text.toString())
-
-        } else {
-            setPasswordErrorMessage(isInputPasswordCorrect, inputPassword)
-            setEMailErrorMessage(isInputEMailCorrect)
-        }
-    }
-
-    private fun saveUserInfo() = with(binding){
-        viewModel.saveUserInfo(
-            editTextEMail.text.toString(),
-            editTextPassword.text.toString()
-        )
-    }
-
-    private fun setPasswordErrorMessage(isInputPasswordCorrect: Boolean, inputPassword: String){
-        binding.textInputLayoutPassword.helperText =
-            if (!isInputPasswordCorrect) {
-                viewModel.definePasswordErrorMessage(
-                    inputPassword,
-                    PasswordErrorMessagesContainer.getMessageResourceIds()
-                        .map {  getString(it, MIN_NUM_OF_CHARS_IN_PASSWORD) })
-            } else ""
-    }
-
-    private fun setEMailErrorMessage(isInputEMailCorrect: Boolean){
-        binding.textInputLayoutEMail.helperText =
-            if (!isInputEMailCorrect) {
-                getString(R.string.email_error)
-            } else ""
-    }
-
-    private fun moveToMyProfileScreen(userEMail: String) {
-        val intent = Intent(this, MainActivity::class.java)
-
-        intent.putExtra(EMAIL_KEY, userEMail)
-
-        val options = ActivityOptions.makeCustomAnimation(
-            this,
-            R.anim.slide_in_from_right_to_left,
-            R.anim.slide_out_from_right_to_left
-        )
-
-        startActivity(intent, options.toBundle())
-        finish()
-    }
 }
