@@ -1,8 +1,8 @@
 package com.example.androidcourseshpp.ui.screens.auth.splash
 
+import com.example.androidcourseshpp.data.network.service.user.UserService
 import com.example.androidcourseshpp.data.userdata.DEFAULT_ID_VALUE
 import com.example.androidcourseshpp.data.userdata.UserDataProvider
-import com.example.androidcourseshpp.data.network.ServicesProvider
 import com.example.androidcourseshpp.ui.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
@@ -10,7 +10,7 @@ import jakarta.inject.Inject
 @HiltViewModel
 class SplashViewModel @Inject constructor(
     private val userdataProvider: UserDataProvider,
-    private val servicesProvider: ServicesProvider,
+    private val userService: UserService,
 ) :
     BaseViewModel<SplashContract.Event, SplashContract.Effect, SplashContract.Sate>() {
 
@@ -30,10 +30,10 @@ class SplashViewModel @Inject constructor(
         }
     }
 
-    private fun enterToAccount(userServerId: Int) {
+    private fun enterToAccount(userServerId: Long) {
         processNetworkExceptions(
             toExecute = {
-                val response = servicesProvider.getUserService().getUser(userServerId)
+                val response = userService.getUser(userServerId)
                 val userServerId = response.user.id
 
                 setEffect(

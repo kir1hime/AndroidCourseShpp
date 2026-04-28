@@ -3,11 +3,11 @@ package com.example.androidcourseshpp.ui.screens.main.userinfo.userprofile
 
 import androidx.lifecycle.viewModelScope
 import com.example.androidcourseshpp.R
+import com.example.androidcourseshpp.data.network.jwt.JWTManager
+import com.example.androidcourseshpp.data.network.service.user.UserService
 import com.example.androidcourseshpp.data.userdata.DEFAULT_AVATAR_VALUE
 import com.example.androidcourseshpp.data.userdata.DEFAULT_ID_VALUE
 import com.example.androidcourseshpp.data.userdata.UserDataProvider
-import com.example.androidcourseshpp.data.network.ServicesProvider
-import com.example.androidcourseshpp.data.network.jwt.JWTManager
 import com.example.androidcourseshpp.ui.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 class UserProfileViewModel @Inject constructor(
     private val userDataProvider: UserDataProvider,
     private val jwtManager: JWTManager,
-    private val serviceProvider: ServicesProvider
+    private val userService: UserService
 ) :
     BaseViewModel<UserProfileContract.Event, UserProfileContract.Effect, UserProfileContract.UIState>() {
 
@@ -39,11 +39,11 @@ class UserProfileViewModel @Inject constructor(
 
     }
 
-    private fun updateUserInfo(userServerId: Int) {
+    private fun updateUserInfo(userServerId: Long) {
         viewModelScope.launch {
             processNetworkExceptions(
                 toExecute = {
-                    val response = serviceProvider.getUserService().getUser(userServerId)
+                    val response = userService.getUser(userServerId)
                     val userInfo = response.user
 
                     val savedAvatarUrl = userDataProvider.getUserAvatarUrl()

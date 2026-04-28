@@ -12,12 +12,11 @@ import com.example.androidcourseshpp.data.userdata.DEFAULT_ID_VALUE
 import com.example.androidcourseshpp.data.userdata.USER_SERVER_ID
 import com.example.androidcourseshpp.databinding.FragmentUserProfileBinding
 import com.example.androidcourseshpp.ui.BaseFragment
-import com.example.androidcourseshpp.ui.utils.loadImageFromURLCircled
 import com.example.androidcourseshpp.ui.screens.auth.AuthActivity
 import com.example.androidcourseshpp.ui.screens.main.userinfo.TabSwitchable
 import com.example.androidcourseshpp.ui.screens.main.userinfo.UserInfoFragmentDirections
+import com.example.androidcourseshpp.ui.utils.loadImageFromURLCircled
 import dagger.hilt.android.AndroidEntryPoint
-import kotlin.getValue
 
 @AndroidEntryPoint
 class UserProfileFragment : BaseFragment<FragmentUserProfileBinding>(FragmentUserProfileBinding::inflate) {
@@ -50,7 +49,7 @@ class UserProfileFragment : BaseFragment<FragmentUserProfileBinding>(FragmentUse
     }
 
     private fun setUserInfo() {
-        val userServerId = requireActivity().intent.getIntExtra(USER_SERVER_ID, DEFAULT_ID_VALUE)
+        val userServerId = requireActivity().intent.getLongExtra(USER_SERVER_ID, DEFAULT_ID_VALUE)
         viewModel.setEvent(UserProfileContract.Event.UpdateUserInfo(userServerId))
     }
 
@@ -110,7 +109,7 @@ class UserProfileFragment : BaseFragment<FragmentUserProfileBinding>(FragmentUse
         parentFragment?.moveToContactsTab()
     }
 
-    private fun moveToEditProfileScreen(userServerId: Int) {
+    private fun moveToEditProfileScreen(userServerId: Long) {
         val direction =
             UserInfoFragmentDirections.actionUserInfoFragmentToEditProfileFragment(userServerId)
         findNavController().navigate(direction)

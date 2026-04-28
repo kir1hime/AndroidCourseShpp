@@ -15,7 +15,13 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
 
     private val viewModel by viewModels<SignUpViewModel>()
 
-    override fun setObservers() = with(binding) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setObserves()
+        setListeners()
+    }
+
+    private fun setObserves() = with(binding) {
         collectFlow(viewModel.effect) { effect ->
             when (effect) {
                 is SignUpContract.Effect.NavigateToSignUpExtended -> moveToSignUpExtended(effect.signUpUserInfo)
@@ -38,12 +44,6 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
         textViewSignIn.setOnClickListener {
             findNavController().navigateUp()
         }
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        setObservers()
-        setListeners()
     }
 
     private fun onRegisterButtonClick() = with(binding) {

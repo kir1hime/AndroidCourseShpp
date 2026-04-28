@@ -19,10 +19,10 @@ import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.databinding.FragmentEditProfileBinding
 import com.example.androidcourseshpp.databinding.FragmentSignInBinding
 import com.example.androidcourseshpp.databinding.FragmentSignUpExtendedBinding
+import com.example.androidcourseshpp.ui.screens.MainActivity
+import com.example.androidcourseshpp.ui.screens.chooseprofilephotodialog.ChooseProfilePhotoDialog
+import com.example.androidcourseshpp.ui.screens.chooseprofilephotodialog.ChooseProfilePhotoDialog.Companion.PHOTO
 import com.example.androidcourseshpp.ui.utils.loadImageFromURL
-import com.example.androidcourseshpp.ui.screens.main.MainActivity
-import com.example.androidcourseshpp.ui.screens.main.chooseprofilephotodialog.ChooseProfilePhotoDialog
-import com.example.androidcourseshpp.ui.screens.main.chooseprofilephotodialog.ChooseProfilePhotoDialog.Companion.PHOTO
 import com.example.androidcourseshpp.ui.utils.onChangeTextListener
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
@@ -30,17 +30,18 @@ import kotlinx.coroutines.launch
 const val USER_SERVER_ID = "userServerId"
 
 
-abstract class BaseFragment<VBinding : ViewBinding>(
-    private val inflaterMethod: (LayoutInflater, ViewGroup?, Boolean) -> VBinding
-) : Fragment() {
+open class BaseFragment<VBinding : ViewBinding>(private val inflaterMethod: (LayoutInflater, ViewGroup?, Boolean) -> VBinding) :
+    Fragment() {
+
     private var _binding: VBinding? = null
     val binding get() = requireNotNull(_binding)
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = inflaterMethod.invoke(inflater, container, false)
         return binding.root
     }
@@ -50,11 +51,7 @@ abstract class BaseFragment<VBinding : ViewBinding>(
         super.onDestroyView()
     }
 
-     open fun setObservers(){}
-
-     open fun setListeners(){}
-
-    protected fun <T> BaseFragment<VBinding>.collectFlow(flow: Flow<T>, onCollect: (T) -> Unit) {
+    fun <T> BaseFragment<VBinding>.collectFlow(flow: Flow<T>, onCollect: (T) -> Unit) {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 flow.collect {
@@ -74,7 +71,7 @@ abstract class BaseFragment<VBinding : ViewBinding>(
         }
     }
 
-    protected fun moveToUserProfileScreen(userServerId: Int) {
+    protected fun moveToMyProfileScreen(userServerId: Long) {
         val intent = Intent(requireContext(), MainActivity::class.java)
 
         intent.putExtra(USER_SERVER_ID, userServerId)
@@ -163,5 +160,4 @@ abstract class BaseFragment<VBinding : ViewBinding>(
         private val BRACKET_POSITIONS = mapOf(1 to "(", 5 to ")-")
         private val HYPHEN_POSITIONS = listOf(6, 10, 13)
     }
-
 }

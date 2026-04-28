@@ -2,10 +2,10 @@ package com.example.androidcourseshpp.ui.screens.auth.signin
 
 
 import com.example.androidcourseshpp.R
-import com.example.androidcourseshpp.data.userdata.UserDataProvider
-import com.example.androidcourseshpp.data.network.RetrofitServiceProviderHolder
-import com.example.androidcourseshpp.data.network.jwt.JWTManager
 import com.example.androidcourseshpp.data.network.entity.signin.SignInData
+import com.example.androidcourseshpp.data.network.jwt.JWTManager
+import com.example.androidcourseshpp.data.network.service.auth.AuthService
+import com.example.androidcourseshpp.data.userdata.UserDataProvider
 import com.example.androidcourseshpp.ui.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -13,7 +13,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SignInViewModel @Inject constructor(
     private val jwtManager: JWTManager,
-    private val serviceProviderHolder: RetrofitServiceProviderHolder,
+    private val authService: AuthService,
     private val userDataProvider: UserDataProvider,
 ) :
     BaseViewModel<SignInContract.Event, SignInContract.Effect, SignInContract.UIState>() {
@@ -42,8 +42,7 @@ class SignInViewModel @Inject constructor(
             toExecute = {
                 setState { copy(isProgressBarShowed = true) }
 
-                val response = serviceProviderHolder.serviceProvider.getAuthService()
-                    .singIn(SignInData(email = email, password = password))
+                val response = authService.singIn(SignInData(email = email, password = password))
 
                 jwtManager.saveAccessToken(response.accessToken)
                 jwtManager.saveRefreshToken(response.refreshToken)

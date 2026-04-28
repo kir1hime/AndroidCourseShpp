@@ -9,7 +9,6 @@ import com.example.androidcourseshpp.data.MIN_NUM_OF_CHARS_IN_PASSWORD
 import com.example.androidcourseshpp.databinding.FragmentSignInBinding
 import com.example.androidcourseshpp.ui.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
-import kotlin.getValue
 
 @AndroidEntryPoint
 class SignInFragment : BaseFragment<FragmentSignInBinding>
@@ -21,9 +20,10 @@ class SignInFragment : BaseFragment<FragmentSignInBinding>
         super.onViewCreated(view, savedInstanceState)
         setListeners()
         setObservers()
+
     }
 
-    override fun setObservers() = with(binding) {
+    private fun setObservers() = with(binding) {
         collectFlow(viewModel.effect) { effect ->
             when (effect) {
                 is SignInContract.Effect.NavigateToSingUpScreen -> moveToSignUpScreen()
@@ -45,6 +45,7 @@ class SignInFragment : BaseFragment<FragmentSignInBinding>
 
     override fun setListeners() = with(binding) {
         buttonLogin.setOnClickListener {
+
             viewModel.setEvent(
                 SignInContract.Event.OnLoginButtonClicked(
                     editTextEMail.text.toString(),
