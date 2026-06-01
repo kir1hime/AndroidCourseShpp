@@ -138,7 +138,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(FragmentEdi
     }
 
     private fun setObservers() = with(binding) {
-        collectFlow(viewModel.state) { state ->
+        collectFlowWithLifecycle(viewModel.state) { state ->
 
             editTextUsername.setText(state.userName)
             editTextCareer.setText(state.career)
@@ -159,7 +159,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(FragmentEdi
             setLoadingState(state.isProgressBarShowed, binding)
         }
 
-        collectFlow(viewModel.effect) { effect ->
+        collectFlowWithLifecycle(viewModel.effect) { effect ->
             when (effect) {
                 is EditProfileContract.Effect.ShowToast -> makeToast(effect.toastMessageResId)
                 is EditProfileContract.Effect.NavigateToChooseProfilePhotoDialog -> moveToChooseProfilePhotoDialog()

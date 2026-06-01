@@ -66,7 +66,7 @@ class UserProfileFragment : BaseFragment<FragmentUserProfileBinding>(FragmentUse
     }
 
     private fun setObservers() = with(binding) {
-        collectFlow(viewModel.effect) { effect ->
+        collectFlowWithLifecycle(viewModel.effect) { effect ->
             when (effect) {
                 is UserProfileContract.Effect.NavigateToContactList -> moveToMyContactsScreen()
                 is UserProfileContract.Effect.NavigateToSignInScreen -> moveToSignUpScreen()
@@ -78,7 +78,7 @@ class UserProfileFragment : BaseFragment<FragmentUserProfileBinding>(FragmentUse
             }
         }
 
-        collectFlow(viewModel.state) { state ->
+        collectFlowWithLifecycle(viewModel.state) { state ->
             textViewName.text = state.userName
             textViewCareer.updateIfNotEmpty(state.career)
             textViewHomeAddress.updateIfNotEmpty(state.address)

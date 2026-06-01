@@ -22,14 +22,14 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
     }
 
     private fun setObserves() = with(binding) {
-        collectFlow(viewModel.effect) { effect ->
+        collectFlowWithLifecycle(viewModel.effect) { effect ->
             when (effect) {
                 is SignUpContract.Effect.NavigateToSignUpExtended -> moveToSignUpExtended(effect.signUpUserInfo)
                 is SignUpContract.Effect.ShowToast -> makeToast(effect.toastMessageResId)
             }
         }
 
-        collectFlow(viewModel.state) { state ->
+        collectFlowWithLifecycle(viewModel.state) { state ->
             textInputLayoutPassword.helperText =
                 getString(state.passwordHelperTextResId, MIN_NUM_OF_CHARS_IN_PASSWORD)
             textInputLayoutEMail.helperText = getString(state.eMailHelperTextResId)

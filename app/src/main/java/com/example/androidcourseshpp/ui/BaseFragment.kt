@@ -51,7 +51,7 @@ open class BaseFragment<VBinding : ViewBinding>(private val inflaterMethod: (Lay
         super.onDestroyView()
     }
 
-    fun <T> BaseFragment<VBinding>.collectFlow(flow: Flow<T>, onCollect: (T) -> Unit) {
+    fun <T> BaseFragment<VBinding>.collectFlowWithLifecycle(flow: Flow<T>, onCollect: (T) -> Unit) {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 flow.collect {

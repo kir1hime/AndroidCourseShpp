@@ -17,7 +17,7 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>(FragmentSplashBinding
     }
 
     private fun setObservers() {
-        collectFlow(viewModel.effect) { effect ->
+        collectFlowWithLifecycle(viewModel.effect) { effect ->
             when (effect) {
                 is SplashContract.Effect.NavigateToSignInScreen -> moveToSignInScreen()
                 is SplashContract.Effect.NavigateToUserProfileScreen -> moveToUserProfileScreen(effect.userServerId)

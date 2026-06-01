@@ -55,7 +55,7 @@ class SignUpExtendedFragment : BaseFragment<FragmentSignUpExtendedBinding>(
     }
 
     private fun setObservers() = with(binding) {
-        collectFlow(viewModel.effect) { effect ->
+        collectFlowWithLifecycle(viewModel.effect) { effect ->
             when (effect) {
                 is SignUpExtendedContract.Effect.ShowToast -> makeToast(effect.toastMessageResId)
                 is SignUpExtendedContract.Effect.NavigateToPreviousScreen -> findNavController().navigateUp()
@@ -71,7 +71,7 @@ class SignUpExtendedFragment : BaseFragment<FragmentSignUpExtendedBinding>(
             }
         }
 
-        collectFlow(viewModel.state) { state ->
+        collectFlowWithLifecycle(viewModel.state) { state ->
             textInputLayoutUserName.helperText = getString(state.userNameHelperResId)
             textInputLayoutMobilePhone.helperText = getString(state.mobilePhoneHelperResId)
             progressBarRequest.isVisible = state.isProgressBarShowed

@@ -4,7 +4,7 @@ import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.data.models.userlist.UserItem
 import com.example.androidcourseshpp.data.models.userlist.UsersRepository
 import com.example.androidcourseshpp.ui.BaseViewModel
-import com.example.androidcourseshpp.ui.utils.isContainsOrderedSequence
+import com.example.androidcourseshpp.ui.utils.containsOrderedSequence
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
@@ -61,7 +61,7 @@ class AddContactsViewModel @Inject constructor(
     private fun updateFilteredUserListBy(input: String) {
         val filteredContactList = mutableListOf<UserItem>()
         state.value.userList.forEach { user ->
-            if (user.name.isContainsOrderedSequence(input)) {
+            if (user.name.containsOrderedSequence(input)) {
                 filteredContactList.add(user)
             }
         }

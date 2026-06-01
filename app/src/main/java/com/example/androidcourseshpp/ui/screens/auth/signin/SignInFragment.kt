@@ -24,7 +24,7 @@ class SignInFragment : BaseFragment<FragmentSignInBinding>
     }
 
     private fun setObservers() = with(binding) {
-        collectFlow(viewModel.effect) { effect ->
+        collectFlowWithLifecycle(viewModel.effect) { effect ->
             when (effect) {
                 is SignInContract.Effect.NavigateToSingUpScreen -> moveToSignUpScreen()
                 is SignInContract.Effect.NavigateToUserProfileScreen -> moveToUserProfileScreen(effect.userServerId)
@@ -32,7 +32,7 @@ class SignInFragment : BaseFragment<FragmentSignInBinding>
             }
         }
 
-        collectFlow(viewModel.state) { state ->
+        collectFlowWithLifecycle(viewModel.state) { state ->
             textInputLayoutPassword.helperText =
                 getString(state.passwordHelperTextResId, MIN_NUM_OF_CHARS_IN_PASSWORD)
 

@@ -65,7 +65,7 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
 
     private fun setObservers() = with(binding) {
 
-        collectFlow(viewModel.state) { state ->
+        collectFlowWithLifecycle(viewModel.state) { state ->
             if (state.isSearchMode) {
                 showSearchBar()
             }
@@ -81,7 +81,7 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
             textViewAdvice.isVisible = false
         }
 
-        collectFlow(viewModel.filteredUserList) { filteredUserList ->
+        collectFlowWithLifecycle(viewModel.filteredUserList) { filteredUserList ->
             if (filteredUserList.isEmpty() && textInputLayoutSearch.isVisible) {
                 textViewNoResultsFound.isVisible = true
                 textViewAdvice.isVisible = true
@@ -94,7 +94,7 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
             }
         }
 
-        collectFlow(viewModel.effect) { effect ->
+        collectFlowWithLifecycle(viewModel.effect) { effect ->
             when (effect) {
                 is AddContactsContract.Effect.ScrollUserListToTop -> scrollUserListToTop()
                 is AddContactsContract.Effect.ShowToast -> makeToast(effect.toastMessageResId)

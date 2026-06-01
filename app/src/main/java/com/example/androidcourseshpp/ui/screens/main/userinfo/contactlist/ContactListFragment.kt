@@ -124,7 +124,7 @@ class ContactListFragment :
 
     private fun setObservers() = with(binding) {
 
-        collectFlow(viewModel.state) { state ->
+        collectFlowWithLifecycle(viewModel.state) { state ->
             if (state.isSearchMode) {
                 showSearchBar()
             }
@@ -147,7 +147,7 @@ class ContactListFragment :
         }
 
 
-        collectFlow(viewModel.filteredContactList) { filteredContactList ->
+        collectFlowWithLifecycle(viewModel.filteredContactList) { filteredContactList ->
             if (filteredContactList.isEmpty() && textInputLayoutSearch.isVisible) {
                 textViewNoResultsFound.isVisible = true
                 textViewAdvice.isVisible = true
@@ -165,7 +165,7 @@ class ContactListFragment :
         }
 
 
-        collectFlow(viewModel.effect) { effect ->
+        collectFlowWithLifecycle(viewModel.effect) { effect ->
             when (effect) {
                 is ContactListContract.Effect.HideSearchBar -> hideSearchBar()
                 is ContactListContract.Effect.ShowSearchBar -> showSearchBar()

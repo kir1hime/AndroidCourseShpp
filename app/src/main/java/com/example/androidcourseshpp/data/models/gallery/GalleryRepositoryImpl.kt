@@ -40,25 +40,20 @@ class GalleryRepositoryImpl @Inject constructor(private val userDataProvider: Us
             return@update newList
         }
 
-        val photoURLSet = mutableSetOf<String>()
-        _galleryPhotos.value.map { photo -> photoURLSet.add(photo.photoURL) }
+        val photoURLSet =  _galleryPhotos.value.map { it.photoURL }.toSet()
 
         userDataProvider.saveUserGalleryPhotos(photoURLSet)
     }
 
     private fun getDefaultGalleryItems(): List<GalleryItem> {
-        val galleryItemList = mutableListOf<GalleryItem>()
-
-        if (userDataProvider.getUserGalleryPhotos().isEmpty()) {
-            repeat(defaultStringPhotos.size) { index ->
-                galleryItemList.add(GalleryItem(index, defaultStringPhotos[index]))
+        return if (userDataProvider.getUserGalleryPhotos().isEmpty()) {
+            defaultStringPhotos.mapIndexed { index, url->
+                GalleryItem(index, url)
             }
         } else {
             userDataProvider.getUserGalleryPhotos().mapIndexed { index, photoURL ->
-                galleryItemList.add(GalleryItem(index, photoURL))
+                GalleryItem(index, photoURL)
             }
         }
-
-        return galleryItemList
     }
 }
