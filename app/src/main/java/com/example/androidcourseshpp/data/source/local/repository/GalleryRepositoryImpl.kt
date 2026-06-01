@@ -42,8 +42,7 @@ class GalleryRepositoryImpl @Inject constructor(private val galleryDataProvider:
             return@update newList
         }
 
-        val photoURLSet = mutableSetOf<String>()
-        _galleryPhotos.value.map { photo -> photoURLSet.add(photo.photoURL) }
+        val photoURLSet =  _galleryPhotos.value.map { it.photoURL }.toSet()
 
         galleryDataProvider.saveUserGalleryPhotos(photoURLSet)
     }

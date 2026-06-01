@@ -76,10 +76,12 @@ abstract class BaseViewModel<UIEvent : ViewEvent, UIEffect : ViewEffect, UIState
                 processResponseProcessingException.invoke()
             } catch (_: ConnectionException) {
                 processConnectionException.invoke()
-            } finally {
+            }  finally {
                 finally.invoke()
             }
         }
     }
+
+
 }
 

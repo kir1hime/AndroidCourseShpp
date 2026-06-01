@@ -13,13 +13,13 @@ interface UserAPI {
 
     @PUT("users/{userId}")
     suspend fun updateUserInfo(
-        @Path("userId") userId: Int,
+        @Path("userId") userId: Long,
         @Body updateUserRequestDTO: UpdateUserRequestDTO
     ): UpdateUserResponseDTO
 
     @GET("users/{userId}")
-    suspend fun getUser(@Path("userId") userId: Int): GetUserResponseDTO
+    suspend fun getUser(@Path("userId") userId: Long): GetUserResponseDTO
 
     @GET("users")
-    suspend fun getUsers() : GetUsersResponseDTO
+    suspend fun getUsers(): GetUsersResponseDTO
 }

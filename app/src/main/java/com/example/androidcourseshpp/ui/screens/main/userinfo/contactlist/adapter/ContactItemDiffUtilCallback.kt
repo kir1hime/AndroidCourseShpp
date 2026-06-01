@@ -3,6 +3,8 @@ package com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.adapt
 import androidx.recyclerview.widget.DiffUtil
 import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.model.SelectableContactItem
 
+const val SELECTION_MODE_PAYLOAD = "selectionModePayload"
+
 object ContactItemDiffUtilCallback : DiffUtil.ItemCallback<SelectableContactItem>() {
     override fun areItemsTheSame(
         oldItem: SelectableContactItem,
@@ -18,4 +20,13 @@ object ContactItemDiffUtilCallback : DiffUtil.ItemCallback<SelectableContactItem
         return oldItem == newItem
     }
 
+    override fun getChangePayload(
+        oldItem: SelectableContactItem,
+        newItem: SelectableContactItem
+    ): Any? {
+        if (oldItem.item == newItem.item && oldItem.isSelectionModeEnabled != newItem.isSelectionModeEnabled) {
+            return SELECTION_MODE_PAYLOAD
+        }
+        return super.getChangePayload(oldItem, newItem)
+    }
 }

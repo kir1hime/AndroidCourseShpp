@@ -6,10 +6,10 @@ import com.example.androidcourseshpp.domain.usecase.contacts.AddContactUseCase
 import com.example.androidcourseshpp.domain.usecase.contacts.DeleteContactUseCase
 import com.example.androidcourseshpp.domain.usecase.contacts.DeleteContactsUseCase
 import com.example.androidcourseshpp.domain.usecase.contacts.GetContactsUseCase
-import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.model.ContactItem
 import com.example.androidcourseshpp.ui.BaseViewModel
+import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.model.ContactItem
 import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.model.toContactItem
-import com.example.androidcourseshpp.ui.utils.isContainsOrderedSequence
+import com.example.androidcourseshpp.ui.utils.containsOrderedSequence
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -85,7 +85,7 @@ class ContactListViewModel @Inject constructor(
     private fun updateFilteredContactListBy(input: String) {
         val filteredContactList = mutableListOf<ContactItem>()
         state.value.contactList.forEach { contact ->
-            if (contact.name.isContainsOrderedSequence(input)) {
+            if (contact.name.containsOrderedSequence(input)) {
                 filteredContactList.add(contact)
             }
         }
@@ -106,6 +106,7 @@ class ContactListViewModel @Inject constructor(
                     list.remove(contactItem)
                 }
 
+                deletedItems.push(contactItem)
             },
             processBackendException = {
                 setEffect(ContactListContract.Effect.ShowToast(R.string.generic_error))
@@ -119,7 +120,6 @@ class ContactListViewModel @Inject constructor(
             finally = { setState { copy(isProgressBarShowed = false) } }
         )
 
-        deletedItems.push(contactItem)
     }
 
     private fun deleteListOfContactItems(contactItems: List<ContactItem>) {
@@ -160,6 +160,12 @@ class ContactListViewModel @Inject constructor(
                 updateFilteredContactList { list ->
                     list.add(contactItem)
                 }
+
+                deletedItems.pop()
+                if (!deletedItems.isEmpty()) {
+                    val deletedItem = deletedItems.peek()
+                    setEffect(ContactListContract.Effect.ShowUndoDeletingItemSnackBar(deletedItem))
+                }
             },
             processBackendException = {
                 setEffect(ContactListContract.Effect.ShowToast(R.string.generic_error))
@@ -172,11 +178,6 @@ class ContactListViewModel @Inject constructor(
             },
             finally = { setState { copy(isProgressBarShowed = false) } }
         )
-        deletedItems.pop()
-        if (!deletedItems.isEmpty()) {
-            val deletedItem = deletedItems.peek()
-            setEffect(ContactListContract.Effect.ShowUndoDeletingItemSnackBar(deletedItem))
-        }
     }
 
     private fun loadContacts() {

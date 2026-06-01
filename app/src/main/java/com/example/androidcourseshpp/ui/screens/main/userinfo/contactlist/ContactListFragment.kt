@@ -13,16 +13,16 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidcourseshpp.R
-import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.model.ContactItem
-import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.model.SelectableContactItem
 import com.example.androidcourseshpp.databinding.FragmentContactlistBinding
 import com.example.androidcourseshpp.ui.BaseFragment
 import com.example.androidcourseshpp.ui.screens.main.addcontacts.TO_RELOAD_CONTACT_LIST
-import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.adapter.ContactItemDecoration
-import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.adapter.ContactsAdapter
-import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.adapter.ContactItemActions
 import com.example.androidcourseshpp.ui.screens.main.userinfo.TabSwitchable
 import com.example.androidcourseshpp.ui.screens.main.userinfo.UserInfoFragmentDirections
+import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.adapter.ContactItemActions
+import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.adapter.ContactItemDecoration
+import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.adapter.ContactsAdapter
+import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.model.ContactItem
+import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.model.SelectableContactItem
 import com.example.androidcourseshpp.ui.utils.onChangeTextListener
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -121,7 +121,7 @@ class ContactListFragment :
         )
     }
 
-    override fun setObservers() = with(binding) {
+    private fun setObservers() = with(binding) {
 
         collectFlow(viewModel.state) { state ->
             val contactList = state.contactList
@@ -160,7 +160,7 @@ class ContactListFragment :
             textViewAdvice.isVisible = false
         }
 
-        collectFlow(viewModel.effect) { effect ->
+        collectFlowWithLifecycle(viewModel.effect) { effect ->
             when (effect) {
                 is ContactListContract.Effect.HideSearchBar -> hideSearchBar()
                 is ContactListContract.Effect.ShowSearchBar -> showSearchBar()
@@ -178,7 +178,7 @@ class ContactListFragment :
         }
     }
 
-    override fun setListeners() = with(binding) {
+    private fun setListeners() = with(binding) {
         imageButtonArrowBack.setOnClickListener {
             viewModel.setEvent(ContactListContract.Event.OnArrowBackButtonClicked)
         }

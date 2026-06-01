@@ -10,12 +10,12 @@ import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.androidcourseshpp.R
-import com.example.androidcourseshpp.ui.screens.main.addcontacts.model.UserItem
 import com.example.androidcourseshpp.databinding.FragmentAddContactsBinding
 import com.example.androidcourseshpp.ui.BaseFragment
 import com.example.androidcourseshpp.ui.screens.main.addcontacts.adapter.UserItemActions
 import com.example.androidcourseshpp.ui.screens.main.addcontacts.adapter.UserItemDecorations
 import com.example.androidcourseshpp.ui.screens.main.addcontacts.adapter.UsersAdapter
+import com.example.androidcourseshpp.ui.screens.main.addcontacts.model.UserItem
 import com.example.androidcourseshpp.ui.utils.onChangeTextListener
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -68,9 +68,9 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
         )
     }
 
-    override fun setObservers() = with(binding) {
+    private fun setObservers() = with(binding) {
 
-        collectFlow(viewModel.state) { state ->
+        collectFlowWithLifecycle(viewModel.state) { state ->
             if (state.isSearchMode) {
                 showSearchBar()
             }
@@ -85,7 +85,7 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
             floatingButtonArrowTop.isVisible = !progressBarRequest.isVisible
         }
 
-        collectFlow(viewModel.filteredUserList) { filteredUserList ->
+        collectFlowWithLifecycle(viewModel.filteredUserList) { filteredUserList ->
             if (filteredUserList.isEmpty() && textInputLayoutSearch.isVisible) {
                 textViewNoResultsFound.isVisible = true
                 textViewAdvice.isVisible = true
@@ -98,7 +98,7 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
             }
         }
 
-        collectFlow(viewModel.effect) { effect ->
+        collectFlowWithLifecycle(viewModel.effect) { effect ->
             when (effect) {
                 is AddContactsContract.Effect.ScrollUserListToTop -> scrollUserListToTop()
                 is AddContactsContract.Effect.ShowToast -> makeToast(effect.toastMessageResId)
@@ -134,7 +134,7 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
         imageButtonHideSearch.isVisible = true
     }
 
-    override fun setListeners() = with(binding) {
+    private fun setListeners() = with(binding) {
         imageButtonArrowBack.setOnClickListener {
             viewModel.setEvent(AddContactsContract.Event.OnArrowBackButtonClicked)
         }

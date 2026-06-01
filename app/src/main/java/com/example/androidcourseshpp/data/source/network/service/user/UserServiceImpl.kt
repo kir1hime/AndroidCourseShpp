@@ -1,20 +1,17 @@
 package com.example.androidcourseshpp.data.source.network.service.user
 
-import com.example.androidcourseshpp.data.source.network.RetrofitConfig
-import com.example.androidcourseshpp.data.source.network.service.BaseRetrofitService
-import com.example.androidcourseshpp.data.source.network.model.user.UpdateUserDataModel
+import com.example.androidcourseshpp.data.network.entity.user.UpdateUserData
 import com.example.androidcourseshpp.data.source.network.api.user.UserAPI
+import com.example.androidcourseshpp.data.source.network.service.BaseRetrofitService
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class UserServiceImpl @Inject constructor(
-    config: RetrofitConfig
-) : BaseRetrofitService(config), UserService {
+    private val userApi: UserAPI
+) : BaseRetrofitService(), UserService {
 
-    private val userApi = retrofit.create(UserAPI::class.java)
-
-    override suspend fun updateUserInfo(userData: UpdateUserDataModel) {
+    override suspend fun updateUserInfo(userId: Long, userData: UpdateUserData) {
         processRetrofitExceptions {
             userApi.updateUserInfo(
                 userId = userData.id,
@@ -23,7 +20,7 @@ class UserServiceImpl @Inject constructor(
         }
     }
 
-    override suspend fun getUser(userId: Int) = processRetrofitExceptions {
+    override suspend fun getUser(userId: Long) = processRetrofitExceptions {
         userApi.getUser(userId).data
     }
 

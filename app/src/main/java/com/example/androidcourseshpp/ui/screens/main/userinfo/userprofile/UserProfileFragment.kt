@@ -11,14 +11,13 @@ import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.databinding.FragmentUserProfileBinding
 import com.example.androidcourseshpp.ui.BaseFragment
 import com.example.androidcourseshpp.ui.USER_INFO
-import com.example.androidcourseshpp.ui.utils.loadImageFromURLCircled
 import com.example.androidcourseshpp.ui.screens.auth.AuthActivity
 import com.example.androidcourseshpp.ui.screens.main.editprofile.TO_UPDATE_USER_PROFILE
 import com.example.androidcourseshpp.ui.screens.main.userinfo.TabSwitchable
 import com.example.androidcourseshpp.ui.screens.main.userinfo.UserInfoFragmentDirections
 import com.example.androidcourseshpp.ui.screens.model.UserModel
+import com.example.androidcourseshpp.ui.utils.loadImageFromURLCircled
 import dagger.hilt.android.AndroidEntryPoint
-import kotlin.getValue
 
 @AndroidEntryPoint
 class UserProfileFragment :
@@ -69,7 +68,7 @@ class UserProfileFragment :
         }
     }
 
-    override fun setListeners() = with(binding) {
+    private fun setListeners() = with(binding) {
         buttonLogOut.setOnClickListener {
             viewModel.setEvent(UserProfileContract.Event.OnLogOutButtonClicked)
         }
@@ -81,8 +80,8 @@ class UserProfileFragment :
         }
     }
 
-    override fun setObservers() = with(binding) {
-        collectFlow(viewModel.effect) { effect ->
+    private fun setObservers() = with(binding) {
+        collectFlowWithLifecycle(viewModel.effect) { effect ->
             when (effect) {
                 is UserProfileContract.Effect.NavigateToContactList -> moveToMyContactsScreen()
                 is UserProfileContract.Effect.NavigateToSignInScreen -> moveToSignUpScreen()
@@ -94,7 +93,7 @@ class UserProfileFragment :
             }
         }
 
-        collectFlow(viewModel.state) { state ->
+        collectFlowWithLifecycle(viewModel.state) { state ->
             textViewName.text = state.userInfo.name
             textViewCareer.updateIfNotEmpty(state.userInfo.career)
             textViewHomeAddress.updateIfNotEmpty(state.userInfo.address)

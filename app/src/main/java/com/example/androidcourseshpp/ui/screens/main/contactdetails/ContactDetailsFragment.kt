@@ -15,7 +15,6 @@ class ContactDetailsFragment :
 
     private val args: ContactDetailsFragmentArgs by navArgs()
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -48,7 +47,7 @@ class ContactDetailsFragment :
         textViewCareer.text = args.contactDetails.career
     }
 
-    override fun setListeners() {
+    private fun setListeners() {
         binding.imageButtonArrowBack.setOnClickListener {
             findNavController().navigateUp()
         }
