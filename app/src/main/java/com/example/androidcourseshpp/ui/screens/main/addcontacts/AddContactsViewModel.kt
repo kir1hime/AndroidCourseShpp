@@ -86,7 +86,7 @@ class AddContactsViewModel @Inject constructor(
 
 
     private fun addContact(
-        userId: Int,
+        userId: Long,
         interruptSuccessLoading: () -> Unit,
         interruptFailureLoading: () -> Unit
     ) {

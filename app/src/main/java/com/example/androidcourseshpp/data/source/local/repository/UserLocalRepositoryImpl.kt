@@ -7,11 +7,11 @@ import javax.inject.Singleton
 
 @Singleton
 class UserLocalRepositoryImpl @Inject constructor(private val userDataProvider: UserDataProvider) : UserLocalRepository {
-    override fun saveUserServerId(userServerId: Int) {
+    override fun saveUserServerId(userServerId: Long) {
         userDataProvider.saveUserServerId(userServerId)
     }
 
-    override fun getUserServerId(): Int {
+    override fun getUserServerId(): Long {
         return userDataProvider.getUserServerId()
     }
 

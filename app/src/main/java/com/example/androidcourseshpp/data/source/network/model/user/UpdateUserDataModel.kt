@@ -5,7 +5,7 @@ import com.example.androidcourseshpp.domain.entity.user.UserInfo
 import java.util.Date
 
 data class UpdateUserDataModel(
-    val id: Int,
+    val id: Long,
     val name: String? = null,
     val phone: String? = null,
     val address: String? = null,

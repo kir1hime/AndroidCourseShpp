@@ -123,12 +123,12 @@ class ContactListFragment :
 
     private fun setObservers() = with(binding) {
 
-        collectFlow(viewModel.state) { state ->
+        collectFlowWithLifecycle(viewModel.state) { state ->
             val contactList = state.contactList
 
             if (state.isSearchMode) {
                 showSearchBar()
-                collectFlow(viewModel.filteredContactList) { filteredContactList ->
+                collectFlowWithLifecycle(viewModel.filteredContactList) { filteredContactList ->
                     if (filteredContactList.isEmpty() && textInputLayoutSearch.isVisible) {
                         textViewNoResultsFound.isVisible = true
                         textViewAdvice.isVisible = true

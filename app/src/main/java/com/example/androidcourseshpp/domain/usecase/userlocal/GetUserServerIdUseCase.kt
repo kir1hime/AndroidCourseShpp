@@ -6,7 +6,7 @@ import javax.inject.Singleton
 
 @Singleton
 class GetUserServerIdUseCase @Inject constructor(private val userLocalRepository: UserLocalRepository) {
-    operator fun invoke(): Int {
+    operator fun invoke(): Long {
         return userLocalRepository.getUserServerId()
     }
 }

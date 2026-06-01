@@ -3,14 +3,10 @@ package com.example.androidcourseshpp.di.network
 import com.example.androidcourseshpp.data.source.network.api.auth.TokenRefreshAPI
 import com.example.androidcourseshpp.data.source.network.jwt.JWTManager
 import com.example.androidcourseshpp.data.source.network.jwt.TokenAuthenticator
-import com.example.androidcourseshpp.data.source.network.service.RetrofitServicesProvider
-import com.example.androidcourseshpp.data.source.network.service.ServicesProvider
-import com.example.androidcourseshpp.data.source.network.service.auth.AuthService
-import com.example.androidcourseshpp.data.source.network.service.auth.AuthServiceImpl
-import com.example.androidcourseshpp.data.source.network.service.contacts.ContactsService
-import com.example.androidcourseshpp.data.source.network.service.contacts.ContactsServiceImpl
-import com.example.androidcourseshpp.data.source.network.service.user.UserService
-import com.example.androidcourseshpp.data.source.network.service.user.UserServiceImpl
+import com.example.androidcourseshpp.di.MainOkHttpClient
+import com.example.androidcourseshpp.di.MainRetrofit
+import com.example.androidcourseshpp.di.TokenRefreshOkHttpClient
+import com.example.androidcourseshpp.di.TokenRefreshRetrofit
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
@@ -25,27 +21,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 const val BASE_URL = "http://178.63.9.114:7777/api/"
-
-@Module
-@InstallIn(SingletonComponent::class)
-interface RetrofitServicesModules {
-
-    @Binds
-    @Singleton
-    fun bindAuthService(authServiceImpl: AuthServiceImpl): AuthService
-
-    @Binds
-    @Singleton
-    fun bindUserService(userServiceImpl: UserServiceImpl): UserService
-
-    @Binds
-    @Singleton
-    fun bindContactsService(contactsServiceImpl: ContactsServiceImpl): ContactsService
-
-    @Binds
-    @Singleton
-    fun bindServiceProvider(retrofitServicesProvider: RetrofitServicesProvider): ServicesProvider
-}
 
 @Module
 @InstallIn(SingletonComponent::class)

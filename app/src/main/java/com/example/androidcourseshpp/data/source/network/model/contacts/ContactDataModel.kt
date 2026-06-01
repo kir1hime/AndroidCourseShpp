@@ -1,3 +1,3 @@
 package com.example.androidcourseshpp.data.source.network.model.contacts
 
-data class ContactDataModel(val userId: Int, val contactId: Int)
+data class ContactDataModel(val userId: Long, val contactId: Long)

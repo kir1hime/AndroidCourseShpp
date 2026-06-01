@@ -8,7 +8,7 @@ import javax.inject.Singleton
 @Singleton
 class GetUserUseCase @Inject constructor(private val userRepository: UserRepository) {
 
-    suspend operator fun invoke(userServerId: Int): UserInfo {
+    suspend operator fun invoke(userServerId: Long): UserInfo {
         val userInfo = userRepository.getUser(userServerId)
         return userInfo
     }

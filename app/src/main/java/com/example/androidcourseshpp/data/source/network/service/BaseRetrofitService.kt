@@ -1,7 +1,6 @@
 package com.example.androidcourseshpp.data.source.network.service
 
-
-import com.example.androidcourseshpp.data.network.dto.ErrorResponseDTO
+import com.example.androidcourseshpp.data.source.network.dto.ErrorResponseDTO
 import com.google.gson.Gson
 import com.google.gson.JsonParseException
 import retrofit2.HttpException

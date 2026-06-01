@@ -6,7 +6,7 @@ import javax.inject.Singleton
 
 @Singleton
 class AddContactUseCase @Inject constructor(private val contactsRepository: ContactsRepository) {
-    suspend operator fun invoke(newContactId: Int) {
+    suspend operator fun invoke(newContactId: Long) {
         contactsRepository.addContact(newContactId)
     }
 }

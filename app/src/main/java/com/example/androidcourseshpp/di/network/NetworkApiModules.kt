@@ -1,9 +1,9 @@
 package com.example.androidcourseshpp.di.network
 
-import com.example.androidcourseshpp.data.network.api.auth.AuthAPI
-import com.example.androidcourseshpp.data.network.api.contacts.ContactsAPI
-import com.example.androidcourseshpp.data.network.api.token.TokenRefreshAPI
-import com.example.androidcourseshpp.data.network.api.user.UserAPI
+import com.example.androidcourseshpp.data.source.network.api.auth.AuthAPI
+import com.example.androidcourseshpp.data.source.network.api.auth.TokenRefreshAPI
+import com.example.androidcourseshpp.data.source.network.api.contacts.ContactsAPI
+import com.example.androidcourseshpp.data.source.network.api.user.UserAPI
 import com.example.androidcourseshpp.di.MainRetrofit
 import com.example.androidcourseshpp.di.TokenRefreshRetrofit
 import dagger.Module

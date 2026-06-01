@@ -2,11 +2,11 @@ package com.example.androidcourseshpp.data.source.network.model
 
 import com.example.androidcourseshpp.domain.entity.contact.ContactInfo
 import com.example.androidcourseshpp.domain.entity.user.UserInfo
-import com.example.androidcourseshpp.domain.entity.user.UserItemInfo
+import com.example.androidcourseshpp.domain.entity.user.UserListItemInfo
 import java.util.Date
 
 data class UserModel(
-    val id: Int,
+    val id: Long,
     val email: String,
     val name: String?,
     val phone: String?,
@@ -31,7 +31,7 @@ data class UserModel(
         )
 
     fun toUserItemInfo(isContact: Boolean) =
-        UserItemInfo(
+        UserListItemInfo(
             id = id,
             name = name ?: "",
             career = career ?: "",

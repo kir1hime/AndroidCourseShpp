@@ -1,10 +1,10 @@
 package com.example.androidcourseshpp.data.source.network.service.auth
 
-import com.example.androidcourseshpp.data.network.api.auth.AuthAPI
-import com.example.androidcourseshpp.data.network.dto.auth.SignInRequestDTO
-import com.example.androidcourseshpp.data.network.entity.signin.SignInData
-import com.example.androidcourseshpp.data.network.entity.signup.SignUpData
-import com.example.androidcourseshpp.data.network.service.BaseRetrofitService
+import com.example.androidcourseshpp.data.source.network.api.auth.AuthAPI
+import com.example.androidcourseshpp.data.source.network.dto.auth.SignInRequestDTO
+import com.example.androidcourseshpp.data.source.network.model.auth.SignInData
+import com.example.androidcourseshpp.data.source.network.model.auth.SignUpData
+import com.example.androidcourseshpp.data.source.network.service.BaseRetrofitService
 import okhttp3.RequestBody.Companion.toRequestBody
 import javax.inject.Inject
 import javax.inject.Singleton

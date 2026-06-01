@@ -6,7 +6,7 @@ import javax.inject.Singleton
 
 @Singleton
 class DeleteContactUseCase @Inject constructor(private val contactsRepository: ContactsRepository) {
-    suspend operator fun invoke(contactId: Int) {
+    suspend operator fun invoke(contactId: Long) {
         contactsRepository.deleteContact(contactId)
     }
 

@@ -48,9 +48,6 @@ abstract class BaseFragment<VBinding : ViewBinding>(
         super.onDestroyView()
     }
 
-    open fun setObservers() {}
-
-    open fun setListeners() {}
 
     protected fun <T> BaseFragment<VBinding>.collectFlowWithLifecycle(flow: Flow<T>, onCollect: (T) -> Unit) {
         lifecycleScope.launch {

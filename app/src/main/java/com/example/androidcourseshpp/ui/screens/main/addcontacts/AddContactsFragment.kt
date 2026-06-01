@@ -31,7 +31,7 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
     private val adapter by lazy {
         UsersAdapter(object : UserItemActions {
             override fun addToContacts(
-                userId: Int,
+                userId: Long,
                 interruptSuccessLoading: () -> Unit,
                 interruptFailureLoading: () -> Unit
             ) {
