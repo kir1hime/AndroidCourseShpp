@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/main_background_color"
-    tool:context="com.example.androidcourseshpp.ui.screens.editprofile.EditProfileFragment">
+    tool:context=".ui.screens.main.editprofile.EditProfileFragment">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/GuideLineMiddleVer"

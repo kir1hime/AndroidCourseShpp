@@ -14,6 +14,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import okhttp3.ResponseBody.Companion.toResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -43,6 +44,7 @@ class RetrofitConfigModule {
         tokenRefreshAPI: TokenRefreshAPI
     ): OkHttpClient {
         return OkHttpClient.Builder()
+            .addInterceptor(createResponseInterceptor())
             .addInterceptor(createLoggingInterceptor())
             .addInterceptor(createAuthorizationInterceptor(jwtManager))
             .authenticator(
@@ -101,6 +103,22 @@ class RetrofitConfigModule {
             modifiedRequest.addHeader("RefreshToken", refreshToken).build()
         }
         chain.proceed(modifiedRequest.build())
+
+    }
+
+    private fun createResponseInterceptor() = Interceptor { chain ->
+        val response = chain.proceed(chain.request())
+
+        val body = response.body
+        var bodyString = body.string().trim()
+        val contentType = body.contentType()
+
+        if (bodyString.endsWith("]}")) {
+            bodyString = "$bodyString}"
+        }
+        bodyString.replace("nll", "null")
+        return@Interceptor response.newBuilder().body(bodyString.toResponseBody(contentType))
+            .build()
 
     }
 }

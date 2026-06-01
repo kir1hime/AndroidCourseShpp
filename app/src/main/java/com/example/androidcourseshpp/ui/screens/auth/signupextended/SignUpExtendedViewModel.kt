@@ -2,12 +2,12 @@ package com.example.androidcourseshpp.ui.screens.auth.signupextended
 
 import android.graphics.Bitmap
 import com.example.androidcourseshpp.R
-import com.example.androidcourseshpp.data.dataProvider.UserDataProvider
 import com.example.androidcourseshpp.data.network.entity.signup.SignUpData
 import com.example.androidcourseshpp.data.network.jwt.JWTManager
 import com.example.androidcourseshpp.data.network.service.auth.AuthService
+import com.example.androidcourseshpp.data.userdata.UserDataProvider
 import com.example.androidcourseshpp.ui.BaseViewModel
-import com.example.androidcourseshpp.ui.screens.auth.signup.entity.SignUpUserInfo
+import com.example.androidcourseshpp.ui.screens.auth.signup.entity.SignUpUserInfoEntity
 import com.example.androidcourseshpp.ui.utils.ImageConvertor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -18,7 +18,7 @@ private const val PHONE_NUMBER_LENGTH = 15
 class SignUpExtendedViewModel @Inject constructor(
     private val authService: AuthService,
     private val jwtManager: JWTManager,
-    private val dataProvider: UserDataProvider,
+    private val userDataProvider: UserDataProvider,
     private val imageConvertor: ImageConvertor
 ) :
     BaseViewModel<SignUpExtendedContract.Event, SignUpExtendedContract.Effect, SignUpExtendedContract.UIState>() {
@@ -31,22 +31,21 @@ class SignUpExtendedViewModel @Inject constructor(
 
     override fun handleEvent(event: SignUpExtendedContract.Event) {
         when (event) {
+            is SignUpExtendedContract.Event.OnAddProfilePhotoImageViewClicked -> navigateToChooseProfilePhotoDialog()
+            is SignUpExtendedContract.Event.OnCancelButtonClicked -> navigateToPreviousScreen()
             is SignUpExtendedContract.Event.OnForwardButtonClicked -> processInputData(
                 userName = event.userName,
                 mobilePhone = event.mobilePhone,
                 event.signUpUserInfo,
                 event.avatar
             )
-
-            is SignUpExtendedContract.Event.OnAddProfilePhotoImageViewClicked -> navigateToChooseProfilePhotoDialog()
-            is SignUpExtendedContract.Event.OnCancelButtonClicked -> navigateToPreviousScreen()
         }
     }
 
     private fun processInputData(
         userName: String,
         mobilePhone: String,
-        signUpUserInfo: SignUpUserInfo,
+        signUpUserInfo: SignUpUserInfoEntity,
         avatar: Bitmap
     ) {
         var isMobilePhoneCorrect: Boolean
@@ -88,9 +87,9 @@ class SignUpExtendedViewModel @Inject constructor(
 
                     val userServerId = response.user.id
                     if (signUpUserInfo.toRememberUser) {
-                        dataProvider.saveUserServerId(userServerId)
+                        userDataProvider.saveUserServerId(userServerId)
                     }
-                    setEffect(SignUpExtendedContract.Effect.NavigateToMyProfileScreen(userServerId))
+                    setEffect(SignUpExtendedContract.Effect.NavigateToUserProfileScreen(userServerId))
 
                 },
                 processBackendException = {

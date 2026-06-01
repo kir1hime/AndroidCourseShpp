@@ -49,13 +49,9 @@
     <string name="snackbar_action_text">Скасувати</string>
 
     <!-- Add contact dialog -->
-    <string name="add_contact_dialog_title">Додати новий контакт</string>
-    <string name="add_contact_dialog_message">Введіть дані нового користувача</string>
-    <string name="add_contact_dialog_positive_button_text">Зберігти</string>
-    <string name="add_contact_dialog_negative_button_text">Закрити</string>
     <string name="profile_label">Профіль</string>
     <string name="message">Повідомлення</string>
-    <string name="my_profile">Мій профіль</string>
+    <string name="user_profile">Мій профіль</string>
 
     <!-- Sign up extended-->
     <string name="delete_button_description">видалити всі вибрані елементи</string>
@@ -75,6 +71,7 @@
 
     <!-- Sign in -->
     <string name="unauthorized_error">"Користувач не "</string>
+    <string name="delete_current_photo">Видалити поточне фото</string>
     <string name="hello_label">Привіт!</string>
     <string name="enter_your_data_label">Введіть вашу пошту та пароль нижче</string>
     <string name="login_button_text">УВІЙТИ</string>
@@ -86,5 +83,12 @@
     <string name="username">Ім\'я</string>
     <string name="address">Адреса</string>
     <string name="date_of_birthday">День народження</string>
+    <string name="users">Користувачі</string>
+    <string name="add">ДОДАТИ</string>
+    <string name="try_again">СПРОБУВАТИ ЗНОВУ</string>
+    <string name="no_results_found">Немає результатів</string>
+    <string name="you_can_see_more_contacts_on_the_users_page">Ви можете побачити більше контактів на сторінці користувачів</string>
+    <string name="oops_there_are_no_users_with_this_name">Упс! Немає користувачів з таким ім\'ям</string>
+    <string name="arrow_top_description">move to top of user list</string>
 
 </resources>

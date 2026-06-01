@@ -1,11 +1,11 @@
 package com.example.androidcourseshpp.data.network.service.user
 
 import com.example.androidcourseshpp.data.network.api.user.UserAPI
-import com.example.androidcourseshpp.data.network.entity.user.GetUserResponseEntity
 import com.example.androidcourseshpp.data.network.entity.user.UpdateUserData
 import com.example.androidcourseshpp.data.network.service.BaseRetrofitService
 import javax.inject.Inject
 import javax.inject.Singleton
+
 
 @Singleton
 class UserServiceImpl @Inject constructor(
@@ -21,10 +21,11 @@ class UserServiceImpl @Inject constructor(
         }
     }
 
-    override suspend fun getUser(userId: Long) =
-        processRetrofitExceptions {
-            GetUserResponseEntity(
-                userApi.getUser(userId).data.user
-            )
-        }
+    override suspend fun getUser(userId: Long) = processRetrofitExceptions {
+        userApi.getUser(userId).data
+    }
+
+    override suspend fun getUsers() = processRetrofitExceptions {
+        userApi.getUsers().data
+    }
 }

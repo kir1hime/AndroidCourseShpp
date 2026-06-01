@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/contacts_screen_color"
-    tools:context="com.example.androidcourseshpp.ui.screens.userinfo.contactlist.ContactListFragment">
+    tools:context=".ui.screens.main.userinfo.contactlist.ContactListFragment">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/textViewContactBar"
@@ -33,8 +33,8 @@
         android:id="@+id/imageButtonArrowBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/contacts_arrow_back_margin_start"
-        android:layout_marginTop="@dimen/contacts_arrow_back_margin_top"
+        android:layout_marginStart="@dimen/main_margin_side"
+        android:layout_marginTop="@dimen/main_margin_side"
         android:background="@color/contacts_bar_color"
         android:contentDescription="@string/arrow_back_imagebutton"
         android:src="@drawable/ic_arrow_back"
@@ -45,11 +45,24 @@
         android:id="@+id/imageButtonSearch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/search_margin_top"
+        android:layout_marginTop="@dimen/main_margin_side"
         android:layout_marginEnd="@dimen/main_margin_side"
         android:background="@color/contacts_bar_color"
         android:contentDescription="@string/search_imagebutton"
         android:src="@drawable/ic_search"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/imageButtonHideSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/main_margin_side"
+        android:layout_marginEnd="@dimen/main_margin_side"
+        android:background="@color/contacts_bar_color"
+        android:contentDescription="@string/search_imagebutton"
+        android:src="@drawable/ic_close"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -85,14 +98,108 @@
         android:layout_marginEnd="@dimen/main_margin_side"
         android:layout_marginBottom="@dimen/floating_delete_button_margin_bottom"
         android:backgroundTint="@color/floating_delete_button_color"
-        android:contentDescription="@string/delete_button_description"
+        android:contentDescription="@string/arrow_top_description"
         android:src="@drawable/ic_white_trash_can"
         android:visibility="gone"
-        app:fabCustomSize="@dimen/floating_delete_button_fab_custom_size"
         app:elevation="@dimen/floating_delete_button_elevation"
+        app:fabCustomSize="@dimen/floating_delete_button_fab_custom_size"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:shapeAppearanceOverlay="@style/customFloatingButton"
         app:tint="@null" />
+
+    <ProgressBar
+        android:id="@+id/progressBarRequest"
+        android:layout_width="@dimen/progress_bar_request_size"
+        android:layout_height="@dimen/progress_bar_request_size"
+        android:indeterminateTint="@color/progress_bar_request_color"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonTryAgain"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/try_again_bt_h"
+        android:background="@drawable/try_again_background"
+        android:fontFamily="@font/open_sans"
+        android:text="@string/try_again"
+        android:textColor="@color/try_again_button_text_color"
+        android:textSize="@dimen/middle_text_size"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayoutSearch"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/main_margin_side"
+        android:layout_marginTop="@dimen/search_bar_margin_top"
+        android:layout_marginEnd="@dimen/search_bar_margin_end"
+        android:background="@drawable/search_bar_background"
+        android:visibility="gone"
+        app:boxBackgroundColor="@color/search_bar_background_color"
+        app:boxStrokeWidth="@dimen/search_bar_stroke"
+        app:boxStrokeWidthFocused="0dp"
+        app:cursorColor="@color/cursor_color_1"
+        app:endIconDrawable="@drawable/ic_search"
+        app:endIconMode="custom"
+        app:endIconTint="@color/search_bar_icon_color"
+        app:hintEnabled="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextSearch"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/search_bar_h"
+            android:fontFamily="@font/open_sans"
+            android:gravity="top"
+            android:includeFontPadding="false"
+            android:paddingStart="@dimen/search_bar_padding_start"
+            android:paddingTop="@dimen/search_bar_padding_top"
+            android:paddingEnd="@dimen/search_bar_padding_end"
+            android:paddingBottom="@dimen/search_bar_padding_bottom"
+            android:textColor="@color/input_text_color"
+            android:textSize="@dimen/small_text_size"
+            android:textStyle="bold"
+            tools:text="Some text" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/textViewNoResultsFound"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/main_margin_side"
+        android:layout_marginTop="@dimen/no_results_margin_top"
+        android:fontFamily="@font/open_sans"
+        android:gravity="center"
+        android:text="@string/no_results_found"
+        android:textColor="@color/no_results_label_text_color"
+        android:textSize="@dimen/large_text_size"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/textViewContactBar" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/textViewAdvice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/items_list_advice_margin_top"
+        android:fontFamily="@font/open_sans"
+        android:gravity="center"
+        android:text="@string/you_can_see_more_contacts_on_the_users_page"
+        android:textColor="@color/advice_label_text_color"
+        android:textSize="@dimen/small_text_size"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/textViewNoResultsFound" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

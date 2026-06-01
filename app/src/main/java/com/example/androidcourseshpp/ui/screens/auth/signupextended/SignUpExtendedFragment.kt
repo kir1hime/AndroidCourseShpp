@@ -2,12 +2,8 @@ package com.example.androidcourseshpp.ui.screens.auth.signupextended
 
 import android.os.Bundle
 
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.graphics.drawable.toBitmap
-import android.text.Editable
-import android.text.TextWatcher
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -59,12 +55,9 @@ class SignUpExtendedFragment : BaseFragment<FragmentSignUpExtendedBinding>(
     }
 
     private fun setObservers() = with(binding) {
-        collectFlow(viewModel.effect) { effect ->
+        collectFlowWithLifecycle(viewModel.effect) { effect ->
             when (effect) {
-                is SignUpExtendedContract.Effect.NavigateToMyProfileScreen -> moveToMyProfileScreen(
-                    effect.userServerId
-                )
-
+                is SignUpExtendedContract.Effect.ShowToast -> makeToast(effect.toastMessageResId)
                 is SignUpExtendedContract.Effect.NavigateToPreviousScreen -> findNavController().navigateUp()
                 is SignUpExtendedContract.Effect.NavigateToChooseProfilePhotoDialog -> {
                     val direction =
@@ -72,11 +65,13 @@ class SignUpExtendedFragment : BaseFragment<FragmentSignUpExtendedBinding>(
                     findNavController().navigate(direction)
                 }
 
-                is SignUpExtendedContract.Effect.ShowToast -> makeToast(effect.toastMessageResId)
+                is SignUpExtendedContract.Effect.NavigateToUserProfileScreen -> moveToUserProfileScreen(
+                    effect.userServerId
+                )
             }
         }
 
-        collectFlow(viewModel.state) { state ->
+        collectFlowWithLifecycle(viewModel.state) { state ->
             textInputLayoutUserName.helperText = getString(state.userNameHelperResId)
             textInputLayoutMobilePhone.helperText = getString(state.mobilePhoneHelperResId)
             progressBarRequest.isVisible = state.isProgressBarShowed

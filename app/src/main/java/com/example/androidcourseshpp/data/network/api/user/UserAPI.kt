@@ -1,6 +1,7 @@
 package com.example.androidcourseshpp.data.network.api.user
 
 import com.example.androidcourseshpp.data.network.dto.user.GetUserResponseDTO
+import com.example.androidcourseshpp.data.network.dto.user.GetUsersResponseDTO
 import com.example.androidcourseshpp.data.network.dto.user.UpdateUserRequestDTO
 import com.example.androidcourseshpp.data.network.dto.user.UpdateUserResponseDTO
 import retrofit2.http.Body
@@ -18,4 +19,7 @@ interface UserAPI {
 
     @GET("users/{userId}")
     suspend fun getUser(@Path("userId") userId: Long): GetUserResponseDTO
+
+    @GET("users")
+    suspend fun getUsers(): GetUsersResponseDTO
 }

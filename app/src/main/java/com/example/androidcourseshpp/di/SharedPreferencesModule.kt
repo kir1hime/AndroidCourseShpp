@@ -9,7 +9,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 import android.content.SharedPreferences
-import com.example.androidcourseshpp.data.dataProvider.USER_INFO_STORE
+import com.example.androidcourseshpp.data.userdata.USER_INFO_STORE
 import com.example.androidcourseshpp.data.network.jwt.JWT_STORAGE
 
 

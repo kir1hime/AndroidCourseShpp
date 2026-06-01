@@ -1,7 +1,7 @@
 package com.example.androidcourseshpp.di
 
-import com.example.androidcourseshpp.data.dataProvider.UserDataProvider
-import com.example.androidcourseshpp.data.dataProvider.UserDataProviderImpl
+import com.example.androidcourseshpp.data.userdata.UserDataProvider
+import com.example.androidcourseshpp.data.userdata.UserDataProviderImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

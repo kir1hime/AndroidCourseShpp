@@ -44,11 +44,7 @@
     <dimen name="sign_in_margin_start">12dp</dimen>
 
     <dimen name="contacts_margin_top">10dp</dimen>
-
-    <dimen name="contacts_arrow_back_margin_start">20dp</dimen>
-    <dimen name="contacts_arrow_back_margin_top">17.5dp</dimen>
-
-    <dimen name="search_margin_top">@dimen/contacts_arrow_back_margin_top</dimen>
+    <dimen name="users_label_margin_top">@dimen/contacts_margin_top</dimen>
 
     <dimen name="add_contacts_margin_top">73dp</dimen>
     <dimen name="add_contacts_margin_bottom">26dp</dimen>
@@ -57,6 +53,7 @@
     <dimen name="item_info_margin_start">16dp</dimen>
     <dimen name="item_name_margin_top">14dp</dimen>
     <dimen name="item_name_margin_bottom">29dp</dimen>
+    <dimen name="item_name_margin_end">90dp</dimen>
 
     <dimen name="item_career_margin_top">37dp</dimen>
     <dimen name="item_career_margin_bottom">13dp</dimen>
@@ -85,8 +82,8 @@
     <dimen name="text_input_layout_user_name_margin_top">24dp</dimen>
 
     <dimen name="cancel_button_margin_bottom">16dp</dimen>
-
-    <dimen name="open_gallery_text_margin_bottom">50dp</dimen>
+    <dimen name="open_gallery_text_margin_bottom">84dp</dimen>
+    <dimen name="delete_current_photo_margin_bottom">50dp</dimen>
 
     <dimen name="take_photo_margins">8dp</dimen>
 
@@ -113,6 +110,17 @@
     <dimen name="edit_profile_username_margin_top">24dp</dimen>
     <dimen name="edit_profile_username_margin_bottom">360dp</dimen>
 
+    <dimen name="add_contact_label_margin_end">43dp</dimen>
+    <dimen name="add_contact_margin_end">12dp</dimen>
+
+    <dimen name="search_bar_margin_top">10dp</dimen>
+    <dimen name="search_bar_margin_end">48dp</dimen>
+
+    <dimen name="no_results_margin_top">32dp</dimen>
+    <dimen name="items_list_advice_margin_top">8dp</dimen>
+
+    <dimen name="floating_arrow_top_button_margin">45dp</dimen>
+
 
     <!--paddings-->
     <dimen name="settings_padding_vertical">4.5dp</dimen>
@@ -124,6 +132,10 @@
     <dimen name="input_text_edit_padding_bottom">8dp</dimen>
     <dimen name="dialog_career_edit_text_padding_top">24dp</dimen>
     <dimen name="forgot_your_password_label">15dp</dimen>
+    <dimen name="search_bar_padding_start">12dp</dimen>
+    <dimen name="search_bar_padding_top">4dp</dimen>
+    <dimen name="search_bar_padding_end">0dp</dimen>
+    <dimen name="search_bar_padding_bottom">0dp</dimen>
 
     <!--button dimens-->
     <dimen name="view_my_contacts_bt_h">55dp</dimen>
@@ -140,6 +152,8 @@
     <dimen name="forward_bt_h">@dimen/view_my_contacts_bt_h</dimen>
     <dimen name="cancel_bt_h">40dp</dimen>
     <dimen name="save_bt_h">@dimen/view_my_contacts_bt_h</dimen>
+    <dimen name="try_again_bt_h">40dp</dimen>
+    <dimen name="floating_arrow_top_bt_size">@dimen/floating_delete_button_size</dimen>
 
     <!-- button content dimens -->
     <dimen name="google_bt_icon_h">20dp</dimen>
@@ -152,10 +166,13 @@
 
     <!--view/textView dimens-->
     <dimen name="contacts_bar_h">149dp</dimen>
+    <dimen name="user_bar_h">@dimen/contacts_bar_h</dimen>
     <dimen name="contacts_recycle_view_item_h">66dp</dimen>
     <dimen name="contacts_recycle_view_item_ava_size">50dp</dimen>
     <dimen name="choose_profile_photo_dialog_h">219dp</dimen>
     <dimen name="progress_bar_request_size">70dp</dimen>
+    <dimen name="add_contact_item_state_icon_size">25dp</dimen>
+    <dimen name="search_bar_h">30dp</dimen>
 
 
     <!--text sizes-->
@@ -176,9 +193,15 @@
 
     <dimen name="floating_delete_button_elevation">0dp</dimen>
     <dimen name="floating_delete_button_fab_custom_size">60dp</dimen>
+    <dimen name="floating_arrow_top_button_elevation">@dimen/floating_delete_button_elevation
+    </dimen>
+    <dimen name="floating_arrow_top_button_fab_custom_size">
+        @dimen/floating_delete_button_fab_custom_size
+    </dimen>
 
     <!--stroke with -->
     <dimen name="stroke_1">1dp</dimen>
     <dimen name="stroke_2">2dp</dimen>
     <dimen name="stroke_3">3dp</dimen>
+    <dimen name="search_bar_stroke">0dp</dimen>
 </resources>

@@ -32,6 +32,7 @@ class TokenAuthenticator(
             val newTokensResponse = tokenRefreshAPI.refreshToken().execute()
 
             if (!newTokensResponse.isSuccessful) {
+                jwtManager.clearTokens()
                 return null
             }
             val newTokens = newTokensResponse.body()?.data ?: return null

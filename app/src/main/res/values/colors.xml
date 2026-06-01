@@ -10,6 +10,13 @@
 
     <color name="input_hint_color">#B2B2B3</color>
 
+    <color name="top_view_color">#242235</color>
+    <color name="try_again_button_text_color">#242235</color>
+    <color name="try_again_button_color">#FB5E06</color>
+    <color name="search_bar_background_color">#18181F</color>
+    <color name="search_bar_icon_color">#B2B2B3</color>
+    <color name="input_text_color">#FFFFFFFF</color>
+
     <!-- User Info -->
     <color name="background_userinfo_tab_layout">#242235</color>
     <color name="tab_selected_text_color">#FB5E06</color>
@@ -20,8 +27,6 @@
     <color name="view_my_contacts_text_color">@color/bottom_view_color</color>
     <color name="name_text_color">@color/bottom_view_color</color>
     <color name="settings_text_color">@color/bottom_view_color</color>
-
-    <color name="top_view_color">#242235</color>
     <color name="edit_profile_border_color">@color/top_view_color</color>
 
     <color name="view_my_contacts_color">#FB5E06</color>
@@ -45,7 +50,7 @@
     <color name="google_background_color">@color/agreements_text_color</color>
     <color name="or_text_color">@color/agreements_text_color</color>
     <color name="register_text_color">@color/agreements_text_color</color>
-    <color name="input_text_color">@color/agreements_text_color</color>
+
     <color name="remember_me_check_box_color">@color/agreements_text_color</color>
 
     <color name="account_question_text_color">#B2B2B3</color>
@@ -61,8 +66,9 @@
     <color name="contacts_screen_color">#FFFFFF</color>
     <color name="contacts_label_color">#FFFFFF</color>
     <color name="add_contact_color">@color/contacts_label_color</color>
-
     <color name="floating_delete_button_color">#FB5E06</color>
+    <color name="no_results_label_text_color">#18181F</color>
+    <color name="advice_label_text_color">@color/no_results_label_text_color</color>
 
 
     <!-- Contact item -->
@@ -102,9 +108,9 @@
     <color name="progress_bar_request_color">#FB5E06</color>
 
     <!--Choose profile photo -->
-    <color name="cancel_text_color">#B2B2B3</color>
     <color name="open_gallery_text_color">#FFFFFF</color>
-
+    <color name="cancel_text_color">@color/open_gallery_text_color</color>
+    <color name="delete_current_photo_text_color">#B2B2B3</color>
 
     <!--Sign In -->
     <color name="sign_in_screen_color">#242235</color>
@@ -127,5 +133,12 @@
     <!-- Splash screen -->
     <color name="splash_screen_background_color">@color/top_view_color</color>
     <color name="splash_screen_greeting_text_color">#FFFFFF</color>
+
+    <!-- Add contacts -->
+    <color name="users_label_color">#FFFFFF</color>
+    <color name="add_contacts_bar_color">#242235</color>
+    <color name="add_contact_label_color">#FB5E06</color>
+    <color name="add_contact_background_color">#FFFFFF</color>
+    <color name="floating_arrow_top_button_color">#FB5E06</color>
 
 </resources>

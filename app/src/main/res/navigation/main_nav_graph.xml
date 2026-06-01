@@ -7,24 +7,22 @@
 
     <fragment
         android:id="@+id/contactDetailsFragment"
-        android:name="com.example.androidcourseshpp.ui.screens.contactdetails.ContactDetailsFragment"
+        android:name="com.example.androidcourseshpp.ui.screens.main.contactdetails.ContactDetailsFragment"
         android:label="fragment_detailview"
         tools:layout="@layout/fragment_detailview">
         <argument
             android:name="contactDetails"
-            app:argType="com.example.androidcourseshpp.data.contactlist.ContactItem" />
+            app:argType="com.example.androidcourseshpp.ui.screens.main.contactdetails.ContactDetailsEntity" />
 
     </fragment>
     <fragment
         android:id="@+id/userInfoFragment"
-        android:name="com.example.androidcourseshpp.ui.screens.userinfo.UserInfoFragment"
+        android:name="com.example.androidcourseshpp.ui.screens.main.userinfo.UserInfoFragment"
         android:label="fragment_userinfo"
         tools:layout="@layout/fragment_userinfo">
         <action
             android:id="@+id/action_userInfoFragment_to_contactDetailsFragment"
             app:destination="@id/contactDetailsFragment"
-            app:enterAnim="@anim/slide_in_from_right_to_left"
-            app:exitAnim="@anim/slide_out_from_right_to_left"
             app:popEnterAnim="@anim/slide_in_from_left_to_right"
             app:popExitAnim="@anim/slide_out_from_left_to_right" />
         <action
@@ -35,12 +33,16 @@
             app:popEnterAnim="@anim/slide_in_from_bottom_to_top"
             app:popExitAnim="@anim/slide_out_from_bottom_to_top" />
         <action
-            android:id="@+id/action_userInfoFragment_to_addContactDialog"
-            app:destination="@id/addContactDialog" />
+            android:id="@+id/action_userInfoFragment_to_addContactsFragment"
+            app:destination="@id/addContactsFragment"
+            app:enterAnim="@anim/slide_in_from_right_to_left"
+            app:exitAnim="@anim/slide_out_from_right_to_left"
+            app:popEnterAnim="@anim/slide_in_from_left_to_right"
+            app:popExitAnim="@anim/slide_out_from_left_to_right" />
     </fragment>
     <fragment
         android:id="@+id/editProfileFragment"
-        android:name="com.example.androidcourseshpp.ui.screens.editprofile.EditProfileFragment"
+        android:name="com.example.androidcourseshpp.ui.screens.main.editprofile.EditProfileFragment"
         android:label="fragment_edit_profile"
         tools:layout="@layout/fragment_edit_profile">
         <action
@@ -52,12 +54,18 @@
     </fragment>
     <dialog
         android:id="@+id/chooseProfilePhotoDialog"
-        android:name="com.example.androidcourseshpp.ui.screens.chooseprofilephotodialog.ChooseProfilePhotoDialog"
+        android:name="com.example.androidcourseshpp.ui.screens.main.chooseprofilephotodialog.ChooseProfilePhotoDialog"
         android:label="dialog_choose_profile_photo"
         tools:layout="@layout/dialog_choose_profile_photo" />
-    <dialog
-        android:id="@+id/addContactDialog"
-        android:name="com.example.androidcourseshpp.ui.screens.userinfo.contactlist.addcontactdialog.AddContactDialog"
-        android:label="dialog_add_contact"
-        tools:layout="@layout/dialog_add_contact" />
+    <fragment
+        android:id="@+id/addContactsFragment"
+        android:name="com.example.androidcourseshpp.ui.screens.main.addcontacts.AddContactsFragment"
+        android:label="fragment_add_contacts"
+        tools:layout="@layout/fragment_add_contacts">
+        <action
+            android:id="@+id/action_addContactsFragment_to_contactDetailsFragment"
+            app:destination="@id/contactDetailsFragment"
+            app:popEnterAnim="@anim/slide_in_from_left_to_right"
+            app:popExitAnim="@anim/slide_out_from_left_to_right" />
+    </fragment>
 </navigation>

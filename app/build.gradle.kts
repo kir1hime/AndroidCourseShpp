@@ -51,7 +51,6 @@ android {
 }
 
 dependencies {
-    implementation(libs.coil)
     implementation(libs.retrofit.gson)
     implementation(libs.gson)
     implementation(libs.okhttp)
@@ -61,7 +60,6 @@ dependencies {
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.hilt.android)
     implementation(libs.navigation.fragment.ktx)
-    implementation(libs.navigation.ui.ktx)
     ksp(libs.hilt.android.compiler)
     implementation(libs.androidx.fragment.ktx.v188)
     implementation(libs.javafaker)

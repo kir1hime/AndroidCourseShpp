@@ -55,16 +55,10 @@
     <string name="snackbar_text">Do you want to undo deletion of this contact?</string>
     <string name="snackbar_action_text">Undo</string>
 
-    <!-- Add contact dialog -->
-    <string name="add_contact_dialog_title">Add new contact</string>
-    <string name="add_contact_dialog_message">Enter the data of the new contact</string>
-    <string name="add_contact_dialog_positive_button_text">Save</string>
-    <string name="add_contact_dialog_negative_button_text">Cancel</string>
-
     <!-- Detail view -->
     <string name="profile_label">Profile</string>
     <string name="message">MESSAGE</string>
-    <string name="my_profile">My Profile</string>
+    <string name="user_profile">My Profile</string>
 
     <!-- Sign up extended-->
     <string name="delete_button_description" translatable="false">to delete all selected items</string>
@@ -79,7 +73,7 @@
 
     <!--Choose profile photo -->
     <string name="open_gallery">Open gallery</string>
-
+    <string name="delete_current_photo">Delete current photo</string>
 
     <!--Sign in -->
     <string name="hello_label">Hello!</string>
@@ -98,5 +92,14 @@
 
     <!-- Splash screen -->
     <string name="greeting">Glad to see you again!</string>
+
+    <!-- Add contacts -->
+    <string name="users">Users</string>
+    <string name="add">Add</string>
+    <string name="try_again">TRY AGAIN</string>
+    <string name="no_results_found">No results found</string>
+    <string name="you_can_see_more_contacts_on_the_users_page">You can see more contacts on the users page</string>
+    <string name="oops_there_are_no_users_with_this_name">Oops! There are no users with this name</string>
+    <string name="arrow_top_description">move to top of user list</string>
 
 </resources>

@@ -7,19 +7,18 @@ import com.example.androidcourseshpp.ui.ViewState
 class SignInContract {
 
     sealed interface Event : ViewEvent {
+        object OnSignUpLabelClicked : Event
         data class OnLoginButtonClicked(
             val email: String,
             val password: String,
             val toRememberUser: Boolean
         ) : Event
-
-        object OnSignUpLabelClicked : Event
     }
 
     sealed interface Effect : ViewEffect {
         data object NavigateToSingUpScreen : Effect
 
-        data class NavigateToMyProfileScreen(val userServerId: Long) : Effect
+        data class NavigateToUserProfileScreen(val userServerId: Long) : Effect
 
         data class ShowToast(val toastMessageResId: Int) : Effect
     }

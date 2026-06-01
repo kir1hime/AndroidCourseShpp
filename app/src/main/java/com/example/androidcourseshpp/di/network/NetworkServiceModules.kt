@@ -2,6 +2,8 @@ package com.example.androidcourseshpp.di.network
 
 import com.example.androidcourseshpp.data.network.service.auth.AuthService
 import com.example.androidcourseshpp.data.network.service.auth.AuthServiceImpl
+import com.example.androidcourseshpp.data.network.service.contacts.ContactsService
+import com.example.androidcourseshpp.data.network.service.contacts.ContactsServiceImpl
 import com.example.androidcourseshpp.data.network.service.user.UserService
 import com.example.androidcourseshpp.data.network.service.user.UserServiceImpl
 import dagger.Binds
@@ -18,4 +20,6 @@ interface NetworkServiceModules {
 
     @Binds
     fun bindUserService(userServiceImpl: UserServiceImpl): UserService
+    @Binds
+    fun bindContactService(contactsServiceImpl: ContactsServiceImpl) : ContactsService
 }

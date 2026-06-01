@@ -2,10 +2,10 @@ package com.example.androidcourseshpp.ui.screens.auth.signin
 
 
 import com.example.androidcourseshpp.R
-import com.example.androidcourseshpp.data.dataProvider.UserDataProvider
 import com.example.androidcourseshpp.data.network.entity.signin.SignInData
 import com.example.androidcourseshpp.data.network.jwt.JWTManager
 import com.example.androidcourseshpp.data.network.service.auth.AuthService
+import com.example.androidcourseshpp.data.userdata.UserDataProvider
 import com.example.androidcourseshpp.ui.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -28,13 +28,12 @@ class SignInViewModel @Inject constructor(
 
     override fun handleEvent(event: SignInContract.Event) {
         when (event) {
+            is SignInContract.Event.OnSignUpLabelClicked -> navigateToSignUpScreen()
             is SignInContract.Event.OnLoginButtonClicked -> logInUser(
                 email = event.email,
                 password = event.password,
                 toRememberUser = event.toRememberUser
             )
-
-            is SignInContract.Event.OnSignUpLabelClicked -> navigateToSignUpScreen()
         }
     }
 
@@ -54,7 +53,7 @@ class SignInViewModel @Inject constructor(
                     userDataProvider.saveUserServerId(userServerId)
                 }
 
-                setEffect(SignInContract.Effect.NavigateToMyProfileScreen(userServerId))
+                setEffect(SignInContract.Effect.NavigateToUserProfileScreen(userServerId))
 
             },
             processBackendException = {
