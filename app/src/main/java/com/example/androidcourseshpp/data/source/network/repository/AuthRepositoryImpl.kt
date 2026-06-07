@@ -1,8 +1,8 @@
 package com.example.androidcourseshpp.data.source.network.repository
 
 import com.example.androidcourseshpp.data.source.network.jwt.JWTManager
-import com.example.androidcourseshpp.data.source.network.model.auth.SignInData
-import com.example.androidcourseshpp.data.source.network.model.auth.SignUpData
+import com.example.androidcourseshpp.data.source.network.model.auth.SignInRequestModel
+import com.example.androidcourseshpp.data.source.network.model.auth.SignUpRequestModel
 import com.example.androidcourseshpp.data.source.network.service.auth.AuthService
 import com.example.androidcourseshpp.domain.entity.auth.SignInInfo
 import com.example.androidcourseshpp.domain.entity.auth.SignUpInfo
@@ -31,7 +31,7 @@ class AuthRepositoryImpl @Inject constructor(
     }
 
     override suspend fun signIn(signInInfo: SignInInfo): UserInfo {
-        val data = SignInData(email = signInInfo.email, password = signInInfo.password)
+        val data = SignInRequestModel(email = signInInfo.email, password = signInInfo.password)
 
         val response = authService.singIn(data)
 
@@ -44,7 +44,7 @@ class AuthRepositoryImpl @Inject constructor(
     }
 
     override suspend fun singUp(signUpInfo: SignUpInfo): UserInfo {
-        val data = SignUpData(
+        val data = SignUpRequestModel(
             userName = signUpInfo.userName,
             mobilePhone = signUpInfo.mobilePhone,
             email = signUpInfo.email,

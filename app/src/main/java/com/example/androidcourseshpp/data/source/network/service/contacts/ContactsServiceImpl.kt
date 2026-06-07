@@ -2,7 +2,7 @@ package com.example.androidcourseshpp.data.source.network.service.contacts
 
 import com.example.androidcourseshpp.data.source.network.api.contacts.ContactsAPI
 import com.example.androidcourseshpp.data.source.network.dto.contacts.AddContactRequestDTO
-import com.example.androidcourseshpp.data.source.network.model.contacts.ContactDataModel
+import com.example.androidcourseshpp.data.source.network.model.contacts.ContactRequestModel
 import com.example.androidcourseshpp.data.source.network.service.BaseRetrofitService
 
 import javax.inject.Inject
@@ -13,15 +13,15 @@ class ContactsServiceImpl @Inject constructor(private val contactsApi: ContactsA
     BaseRetrofitService(),
     ContactsService {
 
-    override suspend fun addContact(contactData: ContactDataModel) {
+    override suspend fun addContact(data: ContactRequestModel) {
         processRetrofitExceptions {
-            contactsApi.addContact(contactData.userId, AddContactRequestDTO(contactData.contactId))
+            contactsApi.addContact(data.userId, AddContactRequestDTO(data.contactId))
         }
     }
 
-    override suspend fun deleteContact(contactData: ContactDataModel) {
+    override suspend fun deleteContact(data: ContactRequestModel) {
         processRetrofitExceptions {
-            contactsApi.deleteContact(contactData.userId, contactData.contactId)
+            contactsApi.deleteContact(data.userId, data.contactId)
         }
     }
 

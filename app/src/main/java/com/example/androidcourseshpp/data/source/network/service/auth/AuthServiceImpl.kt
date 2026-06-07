@@ -2,8 +2,8 @@ package com.example.androidcourseshpp.data.source.network.service.auth
 
 import com.example.androidcourseshpp.data.source.network.api.auth.AuthAPI
 import com.example.androidcourseshpp.data.source.network.dto.auth.SignInRequestDTO
-import com.example.androidcourseshpp.data.source.network.model.auth.SignInData
-import com.example.androidcourseshpp.data.source.network.model.auth.SignUpData
+import com.example.androidcourseshpp.data.source.network.model.auth.SignInRequestModel
+import com.example.androidcourseshpp.data.source.network.model.auth.SignUpRequestModel
 import com.example.androidcourseshpp.data.source.network.service.BaseRetrofitService
 import okhttp3.RequestBody.Companion.toRequestBody
 import javax.inject.Inject
@@ -16,7 +16,7 @@ class AuthServiceImpl @Inject constructor(
 ) : BaseRetrofitService(), AuthService {
 
 
-    override suspend fun signUp(data: SignUpData) =
+    override suspend fun signUp(data: SignUpRequestModel) =
         processRetrofitExceptions {
             with(data) {
                 authApi.signUp(
@@ -29,7 +29,7 @@ class AuthServiceImpl @Inject constructor(
             }
         }
 
-    override suspend fun singIn(data: SignInData) =
+    override suspend fun singIn(data: SignInRequestModel) =
         processRetrofitExceptions {
             val signInRequestDTO = SignInRequestDTO(
                 email = data.email,
