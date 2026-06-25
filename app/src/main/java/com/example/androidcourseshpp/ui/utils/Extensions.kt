@@ -1,12 +1,15 @@
 package com.example.androidcourseshpp.ui.utils
 
+import android.content.ContentResolver
 import android.content.Context
 import android.net.Uri
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.EditText
 import android.widget.ImageView
-import androidx.core.net.toUri
+import androidx.navigation.NavController
+import androidx.navigation.NavDirections
+import androidx.navigation.Navigator
 import com.bumptech.glide.Glide
 import com.example.androidcourseshpp.R
 
@@ -53,7 +56,11 @@ fun EditText.onChangeTextListener(onTextChanged: (CharSequence, Int, Int, Int) -
 }
 
 fun Int.toUri(context: Context): Uri {
-    return "android.resource://${context.packageName}/${R.drawable.profile_mockup}".toUri()
+    return Uri.Builder()
+        .scheme(ContentResolver.SCHEME_ANDROID_RESOURCE)
+        .authority(context.packageName)
+        .appendPath(this.toString())
+        .build()
 }
 
 fun String.containsOrderedSequence(searched: String): Boolean {
@@ -69,4 +76,16 @@ fun String.containsOrderedSequence(searched: String): Boolean {
 
     return true
 }
+
+fun NavController.navigate(
+    directions: NavDirections,
+    extras: Navigator.Extras?
+) {
+    if (extras != null) {
+        navigate(directions, extras)
+    } else {
+        navigate(directions)
+    }
+}
+
 

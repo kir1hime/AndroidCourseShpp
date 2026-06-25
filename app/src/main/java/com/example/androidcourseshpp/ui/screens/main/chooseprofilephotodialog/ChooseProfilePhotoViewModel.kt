@@ -1,20 +1,31 @@
 package com.example.androidcourseshpp.ui.screens.main.chooseprofilephotodialog
 
 import androidx.lifecycle.viewModelScope
-import com.example.androidcourseshpp.data.models.gallery.GalleryRepository
+import com.example.androidcourseshpp.domain.usecase.gallery.AddGalleryPhotoUseCase
+import com.example.androidcourseshpp.domain.usecase.gallery.GetGalleryPhotosUseCase
 import com.example.androidcourseshpp.ui.BaseViewModel
+import com.example.androidcourseshpp.ui.screens.main.chooseprofilephotodialog.model.GalleryItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ChooseProfilePhotoViewModel @Inject constructor(private val galleryRepository: GalleryRepository) :
+class ChooseProfilePhotoViewModel @Inject constructor(
+    private val getGalleryPhotosUseCase: GetGalleryPhotosUseCase,
+    private val addGalleryPhotoUseCase: AddGalleryPhotoUseCase
+) :
     BaseViewModel<ChooseProfilePhotoContract.Event, ChooseProfilePhotoContract.Effect, ChooseProfilePhotoContract.UIState>() {
 
     init {
         viewModelScope.launch {
-            galleryRepository.galleryPhotos.collect { photos ->
-                setState { copy(photoList = photos) }
+            getGalleryPhotosUseCase().collect { photos ->
+                val photoList = photos.map { photo ->
+                    GalleryItem(
+                        id = photo.id,
+                        photoURL = photo.photoURL
+                    )
+                }
+                setState { copy(photoList = photoList) }
             }
         }
     }
@@ -31,7 +42,7 @@ class ChooseProfilePhotoViewModel @Inject constructor(private val galleryReposit
     }
 
     private fun addNewPhotoToGallery(photo: String) {
-        galleryRepository.addPhoto(photo)
+        addGalleryPhotoUseCase(photo)
         setEffect(ChooseProfilePhotoContract.Effect.SendPhotoToParentFragment(photo))
         navigateToParentFragment()
     }
@@ -43,6 +54,4 @@ class ChooseProfilePhotoViewModel @Inject constructor(private val galleryReposit
     private fun openPhoneGallery() {
         setEffect(ChooseProfilePhotoContract.Effect.OpenPhoneGallery)
     }
-
-
 }

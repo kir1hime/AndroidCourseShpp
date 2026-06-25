@@ -1,7 +1,7 @@
 package com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.adapter
 
 import androidx.recyclerview.widget.DiffUtil
-import com.example.androidcourseshpp.data.models.contactlist.SelectableContactItem
+import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.model.SelectableContactItem
 
 const val SELECTION_MODE_PAYLOAD = "selectionModePayload"
 

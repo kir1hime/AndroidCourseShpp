@@ -20,7 +20,7 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>(FragmentSplashBinding
         collectFlowWithLifecycle(viewModel.effect) { effect ->
             when (effect) {
                 is SplashContract.Effect.NavigateToSignInScreen -> moveToSignInScreen()
-                is SplashContract.Effect.NavigateToUserProfileScreen -> moveToUserProfileScreen(effect.userServerId)
+                is SplashContract.Effect.NavigateToUserProfileScreen -> moveToUserProfileScreen(effect.userInfo)
             }
         }
     }

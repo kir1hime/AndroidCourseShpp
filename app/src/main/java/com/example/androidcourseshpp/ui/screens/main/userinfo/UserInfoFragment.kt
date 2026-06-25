@@ -7,6 +7,7 @@ import com.example.androidcourseshpp.databinding.FragmentUserinfoBinding
 import com.example.androidcourseshpp.ui.BaseFragment
 import com.example.androidcourseshpp.ui.screens.main.userinfo.adapter.UserInfoAdapter
 import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.ContactListFragment
+import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.Searchable
 import com.example.androidcourseshpp.ui.screens.main.userinfo.userprofile.UserProfileFragment
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator

@@ -2,19 +2,16 @@ package com.example.androidcourseshpp.ui.screens.auth.signin
 
 
 import com.example.androidcourseshpp.R
-import com.example.androidcourseshpp.data.network.entity.signin.SignInData
-import com.example.androidcourseshpp.data.network.jwt.JWTManager
-import com.example.androidcourseshpp.data.network.service.auth.AuthService
-import com.example.androidcourseshpp.data.userdata.UserDataProvider
+import com.example.androidcourseshpp.domain.entity.auth.SignInInfo
+import com.example.androidcourseshpp.domain.usecase.auth.SignInUseCase
 import com.example.androidcourseshpp.ui.BaseViewModel
+import com.example.androidcourseshpp.ui.screens.model.toUserModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class SignInViewModel @Inject constructor(
-    private val jwtManager: JWTManager,
-    private val authService: AuthService,
-    private val userDataProvider: UserDataProvider,
+    private val signInUseCase: SignInUseCase
 ) :
     BaseViewModel<SignInContract.Event, SignInContract.Effect, SignInContract.UIState>() {
 
@@ -41,23 +38,24 @@ class SignInViewModel @Inject constructor(
         processNetworkExceptions(
             toExecute = {
                 setState { copy(isProgressBarShowed = true) }
+                val userInfo =
+                    signInUseCase(SignInInfo(email, password), toRememberUser).toUserModel()
 
-                val response = authService.singIn(SignInData(email = email, password = password))
-
-                jwtManager.saveAccessToken(response.accessToken)
-                jwtManager.saveRefreshToken(response.refreshToken)
-
-                val userServerId = response.user.id
-
-                if (toRememberUser) {
-                    userDataProvider.saveUserServerId(userServerId)
+                setState {
+                    copy(
+                        eMailHelperTextResId = R.string.no_error,
+                        passwordHelperTextResId = R.string.no_error
+                    )
                 }
-
-                setEffect(SignInContract.Effect.NavigateToUserProfileScreen(userServerId))
-
+                setEffect(SignInContract.Effect.NavigateToUserProfileScreen(userInfo))
             },
             processBackendException = {
-                setState { copy(eMailHelperTextResId = R.string.incorrect_email_or_password_error) }
+                setState {
+                    copy(
+                        eMailHelperTextResId = R.string.incorrect_input_data,
+                        passwordHelperTextResId = R.string.incorrect_input_data
+                    )
+                }
                 setEffect(SignInContract.Effect.ShowToast(R.string.backend_error))
             },
             processResponseProcessingException = {
@@ -68,16 +66,13 @@ class SignInViewModel @Inject constructor(
             },
             finally = {
                 setState {
-                    copy(
-                        isProgressBarShowed = false,
-                        eMailHelperTextResId = R.string.no_error
-                    )
+                    copy(isProgressBarShowed = false)
                 }
             }
         )
     }
 
     private fun navigateToSignUpScreen() {
-        setEffect(SignInContract.Effect.NavigateToSingUpScreen)
+        setEffect(SignInContract.Effect.NavigateToSignUpScreen)
     }
 }

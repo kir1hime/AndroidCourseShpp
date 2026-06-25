@@ -1,9 +1,14 @@
 package com.example.androidcourseshpp.ui.screens.main.addcontacts.adapter
 
 import android.widget.ImageView
-import com.example.androidcourseshpp.data.models.userlist.UserItem
+import com.example.androidcourseshpp.ui.screens.main.addcontacts.model.UserItem
 
 interface UserItemActions {
-    fun addToContacts(userItem: UserItem, interruptLoading: () -> Unit)
+    fun addToContacts(
+        userId: Long,
+        interruptSuccessLoading: () -> Unit,
+        interruptFailureLoading: () -> Unit
+    )
+
     fun showUserItemDetails(userItem: UserItem, avatar: ImageView)
 }

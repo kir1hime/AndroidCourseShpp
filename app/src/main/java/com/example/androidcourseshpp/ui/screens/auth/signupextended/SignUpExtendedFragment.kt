@@ -66,7 +66,7 @@ class SignUpExtendedFragment : BaseFragment<FragmentSignUpExtendedBinding>(
                 }
 
                 is SignUpExtendedContract.Effect.NavigateToUserProfileScreen -> moveToUserProfileScreen(
-                    effect.userServerId
+                    effect.userInfo
                 )
             }
         }
@@ -75,7 +75,14 @@ class SignUpExtendedFragment : BaseFragment<FragmentSignUpExtendedBinding>(
             textInputLayoutUserName.helperText = getString(state.userNameHelperResId)
             textInputLayoutMobilePhone.helperText = getString(state.mobilePhoneHelperResId)
             progressBarRequest.isVisible = state.isProgressBarShowed
-            setLoadingState(state.isProgressBarShowed, binding)
+            setLoadingState(state.isProgressBarShowed)
         }
+    }
+
+    private fun setLoadingState(isLoading: Boolean) = with(binding) {
+        val isEnabled = !isLoading
+        enableEditText(editTextUserName)
+        enableEditText(editTextMobilePhone)
+        imageButtonAddProfilePhoto.isClickable = isEnabled
     }
 }

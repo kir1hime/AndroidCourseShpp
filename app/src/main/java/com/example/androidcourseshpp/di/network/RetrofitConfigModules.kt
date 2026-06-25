@@ -1,8 +1,8 @@
 package com.example.androidcourseshpp.di.network
 
-import com.example.androidcourseshpp.data.network.api.token.TokenRefreshAPI
-import com.example.androidcourseshpp.data.network.jwt.JWTManager
-import com.example.androidcourseshpp.data.network.jwt.TokenAuthenticator
+import com.example.androidcourseshpp.data.source.network.api.auth.TokenRefreshAPI
+import com.example.androidcourseshpp.data.source.network.jwt.JWTManager
+import com.example.androidcourseshpp.data.source.network.jwt.TokenAuthenticator
 import com.example.androidcourseshpp.di.MainOkHttpClient
 import com.example.androidcourseshpp.di.MainRetrofit
 import com.example.androidcourseshpp.di.TokenRefreshOkHttpClient
@@ -21,6 +21,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 const val BASE_URL = "http://178.63.9.114:7777/api/"
+
 @Module
 @InstallIn(SingletonComponent::class)
 class RetrofitConfigModule {
@@ -86,7 +87,6 @@ class RetrofitConfigModule {
 
     private fun createAuthorizationInterceptor(jwtManager: JWTManager) = Interceptor { chain ->
         val accessToken = jwtManager.getAccessToken()
-
         val modifiedRequest = chain.request().newBuilder()
         if (accessToken != "") {
             modifiedRequest.addHeader("Authorization", "Bearer $accessToken").build()

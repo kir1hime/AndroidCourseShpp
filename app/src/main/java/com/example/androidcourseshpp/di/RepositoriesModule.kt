@@ -1,11 +1,15 @@
 package com.example.androidcourseshpp.di
 
-import com.example.androidcourseshpp.data.models.contactlist.ContactsRepository
-import com.example.androidcourseshpp.data.models.contactlist.ContactsRepositoryImpl
-import com.example.androidcourseshpp.data.models.gallery.GalleryRepository
-import com.example.androidcourseshpp.data.models.gallery.GalleryRepositoryImpl
-import com.example.androidcourseshpp.data.models.userlist.UsersRepository
-import com.example.androidcourseshpp.data.models.userlist.UsersRepositoryImpl
+import com.example.androidcourseshpp.domain.repository.ContactsRepository
+import com.example.androidcourseshpp.data.source.network.repository.ContactsRepositoryImpl
+import com.example.androidcourseshpp.domain.repository.GalleryRepository
+import com.example.androidcourseshpp.data.source.local.repository.GalleryRepositoryImpl
+import com.example.androidcourseshpp.data.source.local.repository.UserLocalRepositoryImpl
+import com.example.androidcourseshpp.data.source.network.repository.AuthRepositoryImpl
+import com.example.androidcourseshpp.domain.repository.UserRepository
+import com.example.androidcourseshpp.data.source.network.repository.UserRepositoryImpl
+import com.example.androidcourseshpp.domain.repository.AuthRepository
+import com.example.androidcourseshpp.domain.repository.UserLocalRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -18,13 +22,22 @@ interface RepositoriesModule {
 
     @Binds
     @Singleton
-    fun provideContactsRepository(contactsRepositoryImpl: ContactsRepositoryImpl): ContactsRepository
+    fun bindContactsRepository(contactsRepositoryImpl: ContactsRepositoryImpl): ContactsRepository
 
     @Binds
     @Singleton
-    fun provideUsersRepository(usersRepositoryImpl: UsersRepositoryImpl): UsersRepository
+    fun bindUserRepository(usersRepositoryImpl: UserRepositoryImpl): UserRepository
 
     @Binds
     @Singleton
-    fun provideGalleryRepository(galleryRepositoryImpl: GalleryRepositoryImpl): GalleryRepository
+    fun bindGalleryRepository(galleryRepositoryImpl: GalleryRepositoryImpl): GalleryRepository
+
+    @Binds
+    @Singleton
+    fun bindAuthRepository(authRepositoryImpl: AuthRepositoryImpl): AuthRepository
+
+    @Binds
+    @Singleton
+    fun bindUserLocalRepository(userRepositoryImpl: UserLocalRepositoryImpl): UserLocalRepository
+
 }
