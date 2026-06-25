@@ -20,8 +20,8 @@ class UserRepositoryImpl @Inject constructor(
 ) : UserRepository {
 
     override suspend fun getUsers(): List<UserListItemInfo> {
-        val userList = emptyList<UserModel>()
-        val contactList = emptyList<UserModel>()
+        val userList = mutableListOf<UserModel>()
+        val contactList = mutableListOf<UserModel>()
 
         withContext(Dispatchers.IO) {
             val usersResponse = async {
