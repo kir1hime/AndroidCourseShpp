@@ -5,7 +5,7 @@ import com.example.androidcourseshpp.ui.screens.main.contactdetails.model.Contac
 
 
 data class ContactItem(
-    val id: Int,
+    val id: Long,
     val name: String,
     val career: String,
     val avatarURL: String,

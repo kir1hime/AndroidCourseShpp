@@ -8,7 +8,6 @@ import androidx.navigation.fragment.findNavController
 import com.example.androidcourseshpp.databinding.FragmentSignInBinding
 import com.example.androidcourseshpp.ui.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
-import kotlin.getValue
 
 @AndroidEntryPoint
 class SignInFragment : BaseFragment<FragmentSignInBinding>
@@ -22,8 +21,8 @@ class SignInFragment : BaseFragment<FragmentSignInBinding>
         setObservers()
     }
 
-    override fun setObservers() = with(binding) {
-        collectFlow(viewModel.effect) { effect ->
+    private fun setObservers() = with(binding) {
+        collectFlowWithLifecycle(viewModel.effect) { effect ->
             when (effect) {
                 is SignInContract.Effect.NavigateToSignUpScreen -> moveToSignUpScreen()
                 is SignInContract.Effect.ShowToast -> makeToast(effect.toastMessageResId)
@@ -33,7 +32,7 @@ class SignInFragment : BaseFragment<FragmentSignInBinding>
             }
         }
 
-        collectFlow(viewModel.state) { state ->
+        collectFlowWithLifecycle(viewModel.state) { state ->
             textInputLayoutPassword.helperText = getString(state.passwordHelperTextResId)
 
             textInputLayoutEMail.helperText = getString(state.eMailHelperTextResId)
@@ -43,7 +42,7 @@ class SignInFragment : BaseFragment<FragmentSignInBinding>
         }
     }
 
-    override fun setListeners() = with(binding) {
+    private fun setListeners() = with(binding) {
         buttonLogin.setOnClickListener {
             viewModel.setEvent(
                 SignInContract.Event.OnLoginButtonClicked(

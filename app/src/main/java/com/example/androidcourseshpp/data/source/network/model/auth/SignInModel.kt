@@ -3,7 +3,14 @@ package com.example.androidcourseshpp.data.source.network.model.auth
 import com.example.androidcourseshpp.data.source.network.model.UserModel
 import com.google.gson.annotations.SerializedName
 
-data class SignInResponseEntity(
+data class SignInRequestModel(
+    @SerializedName("email")
+    val email: String,
+    @SerializedName("password")
+    val password: String
+)
+
+data class SignInResponseModel(
     @SerializedName("user")
     val user: UserModel,
     @SerializedName("accessToken")

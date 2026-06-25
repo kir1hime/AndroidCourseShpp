@@ -6,17 +6,16 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidcourseshpp.R
+import com.example.androidcourseshpp.databinding.ContactItemBinding
 import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.model.ContactItem
 import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.model.SelectableContactItem
-import com.example.androidcourseshpp.databinding.ContactItemBinding
 import com.example.androidcourseshpp.ui.utils.loadImageFromURLCircled
 
 
 class ContactsAdapter(private val actions: ContactItemActions) :
     ListAdapter<SelectableContactItem, ContactsAdapter.ViewHolder>(ContactItemDiffUtilCallback) {
 
-    var selectedItems: MutableList<ContactItem> = mutableListOf()
-        private set
+    val selectedItems: MutableList<ContactItem> = mutableListOf()
 
     inner class ViewHolder(
         private val binding: ContactItemBinding,
@@ -34,12 +33,16 @@ class ContactsAdapter(private val actions: ContactItemActions) :
             switchComponentsVisibility(contactItem)
 
             checkBoxIsSelected.isChecked = selectedItems.contains(contactItem.item)
-
             setListeners(contactItem)
         }
 
-        private fun switchComponentsVisibility(contactItem: SelectableContactItem) = with(binding) {
+        fun bindPayLoad(contactItem: SelectableContactItem) = with(binding){
+            switchComponentsVisibility(contactItem)
+            checkBoxIsSelected.isChecked = selectedItems.contains(contactItem.item)
+            setListeners(contactItem)
+        }
 
+        fun switchComponentsVisibility(contactItem: SelectableContactItem) = with(binding) {
             if (contactItem.isSelectionModeEnabled) {
                 contactListItem.setBackgroundResource(R.drawable.contacts_item_background_selected_mode)
                 checkBoxIsSelected.visibility = View.VISIBLE
@@ -75,7 +78,8 @@ class ContactsAdapter(private val actions: ContactItemActions) :
 
             contactListItem.setOnLongClickListener {
                 actions.showFloatingDeleteButton()
-                onLongClickListener(contactItem)
+                selectedItems.add(contactItem.item)
+                changeMode(true)
                 true
             }
         }
@@ -93,11 +97,6 @@ class ContactsAdapter(private val actions: ContactItemActions) :
                     changeMode(false)
                 }
             }
-        }
-
-        private fun onLongClickListener(contactItem: SelectableContactItem) {
-            selectedItems.add(contactItem.item)
-            changeMode(true)
         }
 
         private fun changeMode(selectionModeEnabled: Boolean) {
@@ -118,6 +117,14 @@ class ContactsAdapter(private val actions: ContactItemActions) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(getItem(position))
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int, payloads: List<Any?>) {
+        if (payloads.isNotEmpty() && payloads[0] == SELECTION_MODE_PAYLOAD) {
+            holder.bindPayLoad(getItem(position))
+        } else {
+            super.onBindViewHolder(holder, position, payloads)
+        }
     }
 }
 

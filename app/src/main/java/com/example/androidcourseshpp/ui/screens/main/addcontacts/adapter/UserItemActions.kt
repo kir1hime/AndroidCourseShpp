@@ -5,7 +5,7 @@ import com.example.androidcourseshpp.ui.screens.main.addcontacts.model.UserItem
 
 interface UserItemActions {
     fun addToContacts(
-        userId: Int,
+        userId: Long,
         interruptSuccessLoading: () -> Unit,
         interruptFailureLoading: () -> Unit
     )

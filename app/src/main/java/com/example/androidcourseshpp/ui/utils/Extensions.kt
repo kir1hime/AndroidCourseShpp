@@ -63,21 +63,18 @@ fun Int.toUri(context: Context): Uri {
         .build()
 }
 
-fun String.isContainsOrderedSequence(searched: String): Boolean {
-    val lowerCaseSearched = searched.lowercase().trim()
-    val lowercaseSource = this.lowercase()
+fun String.containsOrderedSequence(searched: String): Boolean {
+    val cleanSearched = searched.lowercase().trim()
+    val source = this.lowercase()
+    var indexInSource = 0
+    for (char in cleanSearched) {
+        indexInSource = source.indexOf(char, indexInSource)
 
-    var subSource = lowercaseSource
-    var searchedCounter = 0
-
-    for (char in lowerCaseSearched.withIndex()) {
-        if (subSource.contains(char.value)) {
-
-            subSource = subSource.substring(subSource.indexOf(char.value) + 1, subSource.length)
-            searchedCounter++
-        }
+        if (indexInSource == -1) return false
+        indexInSource++
     }
-    return lowerCaseSearched.length == searchedCounter
+
+    return true
 }
 
 fun NavController.navigate(

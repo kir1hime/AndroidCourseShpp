@@ -2,13 +2,13 @@ package com.example.androidcourseshpp.data.source.network.model
 
 import com.example.androidcourseshpp.domain.entity.contact.ContactInfo
 import com.example.androidcourseshpp.domain.entity.user.UserInfo
-import com.example.androidcourseshpp.domain.entity.user.UserItemInfo
-import com.google.gson.annotations.SerializedName
+import com.example.androidcourseshpp.domain.entity.user.UserListItemInfo
 import java.util.Date
+import com.google.gson.annotations.SerializedName
 
 data class UserModel(
     @SerializedName("id")
-    val id: Int,
+    val id: Long,
     @SerializedName("email")
     val email: String,
     @SerializedName("name")
@@ -44,7 +44,7 @@ data class UserModel(
         )
 
     fun toUserItemInfo(isContact: Boolean) =
-        UserItemInfo(
+        UserListItemInfo(
             id = id,
             name = name ?: "",
             career = career ?: "",

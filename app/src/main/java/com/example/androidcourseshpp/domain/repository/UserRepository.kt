@@ -1,10 +1,10 @@
 package com.example.androidcourseshpp.domain.repository
 
 import com.example.androidcourseshpp.domain.entity.user.UserInfo
-import com.example.androidcourseshpp.domain.entity.user.UserItemInfo
+import com.example.androidcourseshpp.domain.entity.user.UserListItemInfo
 
 interface UserRepository {
-    suspend fun getUsers(): List<UserItemInfo>
-    suspend fun getUser(userServerId: Int): UserInfo
+    suspend fun getUsers(): List<UserListItemInfo>
+    suspend fun getUser(userServerId: Long): UserInfo
     suspend fun updateUserInfo(userInfo: UserInfo)
 }
