@@ -1,3 +1,8 @@
 package com.example.androidcourseshpp.data.source.network.dto.contacts
 
-data class AddContactRequestDTO(val contactId: Int)
+import com.google.gson.annotations.SerializedName
+
+data class AddContactRequestDTO(
+    @SerializedName("contactId")
+    val contactId: Int
+)

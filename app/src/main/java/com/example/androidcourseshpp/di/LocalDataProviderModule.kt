@@ -1,8 +1,8 @@
 package com.example.androidcourseshpp.di
 
 import com.example.androidcourseshpp.data.source.local.userdata.GalleryDataProvider
+import com.example.androidcourseshpp.data.source.local.userdata.LocalDataProviderImpl
 import com.example.androidcourseshpp.data.source.local.userdata.UserDataProvider
-import com.example.androidcourseshpp.data.source.local.userdata.LocalDataProvider
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -15,10 +15,10 @@ interface LocalDataProviderModule {
 
     @Binds
     @Singleton
-    fun bindUserDataProvider(localDataProvider: LocalDataProvider): UserDataProvider
+    fun bindUserDataProvider(localDataProviderImpl: LocalDataProviderImpl): UserDataProvider
 
     @Binds
     @Singleton
-    fun bindGalleryDataProvider(localDataProvider: LocalDataProvider): GalleryDataProvider
+    fun bindGalleryDataProvider(localDataProviderImpl: LocalDataProviderImpl): GalleryDataProvider
 
 }

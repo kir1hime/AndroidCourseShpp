@@ -10,12 +10,13 @@ import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.androidcourseshpp.R
-import com.example.androidcourseshpp.ui.screens.main.addcontacts.model.UserItem
 import com.example.androidcourseshpp.databinding.FragmentAddContactsBinding
 import com.example.androidcourseshpp.ui.BaseFragment
 import com.example.androidcourseshpp.ui.screens.main.addcontacts.adapter.UserItemActions
 import com.example.androidcourseshpp.ui.screens.main.addcontacts.adapter.UserItemDecorations
 import com.example.androidcourseshpp.ui.screens.main.addcontacts.adapter.UsersAdapter
+import com.example.androidcourseshpp.ui.screens.main.addcontacts.model.UserItem
+import com.example.androidcourseshpp.ui.utils.navigate
 import com.example.androidcourseshpp.ui.utils.onChangeTextListener
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -27,7 +28,7 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
 
     private val viewModel by viewModels<AddContactsViewModel>()
 
-    private lateinit var sharedUserProfilePhoto: ImageView
+    private var sharedUserProfilePhoto: ImageView? = null
     private val adapter by lazy {
         UsersAdapter(object : UserItemActions {
             override fun addToContacts(
@@ -158,8 +159,9 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
     }
 
     private fun moveToDetailsScreen(userItem: UserItem) {
-        val extras =
-            FragmentNavigatorExtras(sharedUserProfilePhoto to userItem.id.toString())
+        val extras = sharedUserProfilePhoto?.let { imageView ->
+            FragmentNavigatorExtras(imageView to userItem.id.toString())
+        }
 
         val direction =
             AddContactsFragmentDirections.actionAddContactsFragmentToContactDetailsFragment(
@@ -177,5 +179,10 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
             )
         }
         findNavController().navigateUp()
+    }
+
+    override fun onDestroyView() {
+        sharedUserProfilePhoto = null
+        super.onDestroyView()
     }
 }

@@ -18,8 +18,8 @@ class UserRepositoryImpl @Inject constructor(
 ) : UserRepository {
 
     override suspend fun getUsers(): List<UserItemInfo> {
-        var userList = emptyList<UserModel>()
-        var contactList = emptyList<UserModel>()
+        val userList = mutableListOf<UserModel>()
+        val contactList = mutableListOf<UserModel>()
 
         withContext(Dispatchers.IO) {
             val usersResponse = async {
@@ -29,8 +29,8 @@ class UserRepositoryImpl @Inject constructor(
                 servicesProvider.getContactsService()
                     .getUserContacts(userDataProvider.getUserServerId())
             }
-            userList = usersResponse.await().users
-            contactList = contactsResponse.await().contacts
+            userList.addAll(usersResponse.await().users)
+            contactList.addAll(contactsResponse.await().contacts)
         }
 
         val userItemList = userList.map { user ->
@@ -52,8 +52,8 @@ class UserRepositoryImpl @Inject constructor(
 
     override suspend fun updateUserInfo(userInfo: UserInfo) {
         withContext(Dispatchers.IO) {
-                servicesProvider.getUserService()
-                    .updateUserInfo(userInfo.toUpdateUserDataModel())
-            }
+            servicesProvider.getUserService()
+                .updateUserInfo(userInfo.toUpdateUserDataModel())
+        }
     }
 }

@@ -85,8 +85,8 @@ class SignUpExtendedViewModel @Inject constructor(
         userName: String,
         mobilePhone: String,
     ): Boolean {
-        var isMobilePhoneCorrect: Boolean
-        var isUserNameCorrect: Boolean
+        val isMobilePhoneCorrect: Boolean
+        val isUserNameCorrect: Boolean
 
         if (!userName.isBlank()) {
             isUserNameCorrect = true
