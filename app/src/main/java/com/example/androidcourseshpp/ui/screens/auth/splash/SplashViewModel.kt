@@ -1,16 +1,17 @@
 package com.example.androidcourseshpp.ui.screens.auth.splash
 
-import com.example.androidcourseshpp.data.network.service.user.UserService
-import com.example.androidcourseshpp.data.userdata.DEFAULT_ID_VALUE
-import com.example.androidcourseshpp.data.userdata.UserDataProvider
+import com.example.androidcourseshpp.data.source.local.userdata.DEFAULT_ID_VALUE
+import com.example.androidcourseshpp.domain.usecase.user.GetUserUseCase
+import com.example.androidcourseshpp.domain.usecase.userlocal.GetUserServerIdUseCase
 import com.example.androidcourseshpp.ui.BaseViewModel
+import com.example.androidcourseshpp.ui.screens.model.toUserModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 
 @HiltViewModel
 class SplashViewModel @Inject constructor(
-    private val userdataProvider: UserDataProvider,
-    private val userService: UserService,
+    private val getUserServerIdUseCase: GetUserServerIdUseCase,
+    private val getUserInfoUseCase: GetUserUseCase
 ) :
     BaseViewModel<SplashContract.Event, SplashContract.Effect, SplashContract.Sate>() {
 
@@ -21,7 +22,7 @@ class SplashViewModel @Inject constructor(
     }
 
     init {
-        val userServerId = userdataProvider.getUserServerId()
+        val userServerId = getUserServerIdUseCase()
 
         if (userServerId == DEFAULT_ID_VALUE) {
             setEffect(SplashContract.Effect.NavigateToSignInScreen)
@@ -33,11 +34,10 @@ class SplashViewModel @Inject constructor(
     private fun enterToAccount(userServerId: Long) {
         processNetworkExceptions(
             toExecute = {
-                val response = userService.getUser(userServerId)
-                val userServerId = response.user.id
+                val userInfo = getUserInfoUseCase(userServerId).toUserModel()
 
                 setEffect(
-                    SplashContract.Effect.NavigateToUserProfileScreen(userServerId)
+                    SplashContract.Effect.NavigateToUserProfileScreen(userInfo)
                 )
 
             },

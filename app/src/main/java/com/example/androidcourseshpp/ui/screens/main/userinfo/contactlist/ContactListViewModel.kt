@@ -2,20 +2,28 @@ package com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist
 
 
 import com.example.androidcourseshpp.R
-import com.example.androidcourseshpp.data.models.contactlist.ContactItem
-import com.example.androidcourseshpp.data.models.contactlist.ContactsRepository
+import com.example.androidcourseshpp.domain.usecase.contacts.AddContactUseCase
+import com.example.androidcourseshpp.domain.usecase.contacts.DeleteContactUseCase
+import com.example.androidcourseshpp.domain.usecase.contacts.DeleteContactsUseCase
+import com.example.androidcourseshpp.domain.usecase.contacts.GetContactsUseCase
 import com.example.androidcourseshpp.ui.BaseViewModel
+import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.model.ContactItem
+import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.model.toContactItem
 import com.example.androidcourseshpp.ui.utils.containsOrderedSequence
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import java.util.Stack
 import javax.inject.Inject
 
 
 @HiltViewModel
 class ContactListViewModel @Inject constructor(
-    private val contactsRepository: ContactsRepository
+    private val addContactUseCase: AddContactUseCase,
+    private val deleteContactUseCase: DeleteContactUseCase,
+    private val deleteContactsUseCase: DeleteContactsUseCase,
+    private val getContactsUseCase: GetContactsUseCase
 ) : BaseViewModel<ContactListContract.Event, ContactListContract.Effect, ContactListContract.UIState>() {
 
     override fun initState() = ContactListContract.UIState(
@@ -41,9 +49,13 @@ class ContactListViewModel @Inject constructor(
             is ContactListContract.Event.OnSearchButtonClicked -> showSearchBar()
             is ContactListContract.Event.OnArrowBackButtonClicked -> navigateToPreviousScreen()
             is ContactListContract.Event.LoadContactList -> loadContacts()
-            is ContactListContract.Event.OnAddContactClicked -> navigateToAddContactsScreen()
             is ContactListContract.Event.OnSearchBarTextChanged -> updateFilteredContactListBy(event.input)
             is ContactListContract.Event.ContactItemDeleted -> deleteContactItem(event.contactItem)
+            is ContactListContract.Event.OnAddContactClicked -> {
+                switchSearchMode(false)
+                navigateToAddContactsScreen()
+            }
+
             is ContactListContract.Event.ContactItemAdded -> addContactItem(
                 event.contactItem
             )
@@ -85,10 +97,14 @@ class ContactListViewModel @Inject constructor(
             toExecute = {
                 setState { copy(isProgressBarShowed = true) }
 
-                contactsRepository.deleteContactItem(contactItem)
-                val contactList = contactsRepository.loadContacts()
+                deleteContactUseCase(contactItem.id)
+                val contactList = getContactsUseCase().map { it.toContactItem() }
 
                 setState { copy(contactList = contactList) }
+
+                updateFilteredContactList { list ->
+                    list.remove(contactItem)
+                }
 
                 deletedItems.push(contactItem)
             },
@@ -104,16 +120,20 @@ class ContactListViewModel @Inject constructor(
             finally = { setState { copy(isProgressBarShowed = false) } }
         )
 
-
     }
 
     private fun deleteListOfContactItems(contactItems: List<ContactItem>) {
         processNetworkExceptions(
             toExecute = {
                 setState { copy(isProgressBarShowed = true) }
-                contactsRepository.deleteContactItems(contactItems)
-                val contactList = contactsRepository.loadContacts()
+
+                deleteContactsUseCase(contactItems.map { it.toContactInfo() })
+                val contactList = getContactsUseCase().map { it.toContactItem() }
+
                 setState { copy(contactList = contactList) }
+                updateFilteredContactList { list ->
+                    list.removeAll(contactItems)
+                }
             },
             processBackendException = {
                 setEffect(ContactListContract.Effect.ShowToast(R.string.generic_error))
@@ -133,10 +153,13 @@ class ContactListViewModel @Inject constructor(
             toExecute = {
                 setState { copy(isProgressBarShowed = true) }
 
-                contactsRepository.addContactItem(contactItem)
-                val contactList = contactsRepository.loadContacts()
+                addContactUseCase(newContactId = contactItem.id)
+                val contactList = getContactsUseCase().map { it.toContactItem() }
 
                 setState { copy(contactList = contactList) }
+                updateFilteredContactList { list ->
+                    list.add(contactItem)
+                }
 
                 deletedItems.pop()
                 if (!deletedItems.isEmpty()) {
@@ -167,8 +190,12 @@ class ContactListViewModel @Inject constructor(
                         contactList = emptyList()
                     )
                 }
-                val contactList = contactsRepository.loadContacts()
+                val contactList = getContactsUseCase().map { it.toContactItem() }
                 setState { copy(contactList = contactList) }
+                updateFilteredContactList { list ->
+                    list.clear()
+                    list.addAll(contactList)
+                }
             },
             processBackendException = {
                 setState { copy(isTryAgainButtonShowed = true) }
@@ -195,7 +222,17 @@ class ContactListViewModel @Inject constructor(
     }
 
     private fun navigateToAddContactsScreen() {
+        setEffect(ContactListContract.Effect.HideSearchBar)
         setEffect(ContactListContract.Effect.NavigateToAddContactsScreen)
     }
+
+    private fun updateFilteredContactList(toUpdate: (MutableList<ContactItem>) -> Unit) {
+        _filteredContactList.update {
+            val newFilteredList = _filteredContactList.value.toMutableList()
+            toUpdate(newFilteredList)
+            newFilteredList
+        }
+    }
+
 }
 

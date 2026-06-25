@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.androidcourseshpp.data.models.userlist.UserItem
+import com.example.androidcourseshpp.ui.screens.main.addcontacts.model.UserItem
 import com.example.androidcourseshpp.databinding.AddContactItemBinding
 import com.example.androidcourseshpp.ui.utils.loadImageFromURLCircled
 
@@ -20,7 +20,8 @@ class UsersAdapter(
 
         fun bind(userItem: UserItem) = with(binding) {
             imageViewAvatar.loadImageFromURLCircled(
-                root.context, userItem.avatarURL)
+                root.context, userItem.avatarURL
+            )
 
             imageViewAvatar.transitionName = userItem.id.toString()
             textViewName.text = userItem.name
@@ -55,16 +56,25 @@ class UsersAdapter(
         }
 
         private fun addContact(userItem: UserItem) = with(binding) {
-            userItem.isContact = true
-
             imageButtonAddContact.isVisible = false
             textViewAddContact.isVisible = false
             progressBarAddContact.isVisible = true
 
-            actions.addToContacts(userItem) {
-                progressBarAddContact.isVisible = false
-                imageButtonContactAdded.isVisible = true
-            }
+
+            actions.addToContacts(
+                userId = userItem.id,
+                interruptSuccessLoading = {
+                    userItem.isContact = true
+                    progressBarAddContact.isVisible = false
+                    imageButtonContactAdded.isVisible = true
+                },
+                interruptFailureLoading = {
+                    progressBarAddContact.isVisible = false
+                    imageButtonContactAdded.isVisible = false
+                    imageButtonAddContact.isVisible = true
+                    textViewAddContact.isVisible = true
+
+                })
         }
     }
 

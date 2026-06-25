@@ -13,17 +13,16 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidcourseshpp.R
-import com.example.androidcourseshpp.data.models.contactlist.ContactItem
-import com.example.androidcourseshpp.data.models.contactlist.SelectableContactItem
 import com.example.androidcourseshpp.databinding.FragmentContactlistBinding
 import com.example.androidcourseshpp.ui.BaseFragment
 import com.example.androidcourseshpp.ui.screens.main.addcontacts.TO_RELOAD_CONTACT_LIST
-import com.example.androidcourseshpp.ui.screens.main.userinfo.Searchable
 import com.example.androidcourseshpp.ui.screens.main.userinfo.TabSwitchable
 import com.example.androidcourseshpp.ui.screens.main.userinfo.UserInfoFragmentDirections
 import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.adapter.ContactItemActions
 import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.adapter.ContactItemDecoration
 import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.adapter.ContactsAdapter
+import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.model.ContactItem
+import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.model.SelectableContactItem
 import com.example.androidcourseshpp.ui.utils.onChangeTextListener
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -125,12 +124,27 @@ class ContactListFragment :
     private fun setObservers() = with(binding) {
 
         collectFlowWithLifecycle(viewModel.state) { state ->
+            val contactList = state.contactList
+
             if (state.isSearchMode) {
                 showSearchBar()
-            }
+                collectFlowWithLifecycle(viewModel.filteredContactList) { filteredContactList ->
+                    if (filteredContactList.isEmpty() && textInputLayoutSearch.isVisible) {
+                        textViewNoResultsFound.isVisible = true
+                        textViewAdvice.isVisible = true
+                    } else {
+                        textViewNoResultsFound.isVisible = false
+                        textViewAdvice.isVisible = false
+                    }
 
-            if (!state.isSearchMode) {
-                val contactList = state.contactList
+                    adapter.submitList(filteredContactList.map { contactItem ->
+                        SelectableContactItem(
+                            contactItem,
+                            false
+                        )
+                    })
+                }
+            } else {
                 adapter.submitList(contactList.map { contactItem ->
                     SelectableContactItem(
                         contactItem,
@@ -145,25 +159,6 @@ class ContactListFragment :
             textViewNoResultsFound.isVisible = false
             textViewAdvice.isVisible = false
         }
-
-
-        collectFlowWithLifecycle(viewModel.filteredContactList) { filteredContactList ->
-            if (filteredContactList.isEmpty() && textInputLayoutSearch.isVisible) {
-                textViewNoResultsFound.isVisible = true
-                textViewAdvice.isVisible = true
-            } else {
-                textViewNoResultsFound.isVisible = false
-                textViewAdvice.isVisible = false
-            }
-
-            adapter.submitList(filteredContactList.map { contactItem ->
-                SelectableContactItem(
-                    contactItem,
-                    false
-                )
-            })
-        }
-
 
         collectFlowWithLifecycle(viewModel.effect) { effect ->
             when (effect) {

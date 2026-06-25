@@ -17,7 +17,7 @@
     <color name="search_bar_icon_color">#B2B2B3</color>
     <color name="input_text_color">#FFFFFFFF</color>
 
-    <!-- User Info -->
+    <!-- UserModel Info -->
     <color name="background_userinfo_tab_layout">#242235</color>
     <color name="tab_selected_text_color">#FB5E06</color>
     <color name="tab_unselected_text_color">#B2B2B3</color>

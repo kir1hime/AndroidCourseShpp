@@ -1,9 +1,11 @@
 package com.example.androidcourseshpp.ui.screens.main.addcontacts
 
 import com.example.androidcourseshpp.R
-import com.example.androidcourseshpp.data.models.userlist.UserItem
-import com.example.androidcourseshpp.data.models.userlist.UsersRepository
+import com.example.androidcourseshpp.domain.usecase.contacts.AddContactUseCase
+import com.example.androidcourseshpp.domain.usecase.user.GetUsersUseCase
 import com.example.androidcourseshpp.ui.BaseViewModel
+import com.example.androidcourseshpp.ui.screens.main.addcontacts.model.UserItem
+import com.example.androidcourseshpp.ui.screens.main.addcontacts.model.toUserItem
 import com.example.androidcourseshpp.ui.utils.containsOrderedSequence
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -11,7 +13,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddContactsViewModel @Inject constructor(
-    private val usersRepository: UsersRepository
+    private val addContactUseCase: AddContactUseCase,
+    private val getUsersUseCase: GetUsersUseCase
 ) :
     BaseViewModel<AddContactsContract.Event, AddContactsContract.Effect, AddContactsContract.UIState>() {
 
@@ -44,8 +47,9 @@ class AddContactsViewModel @Inject constructor(
             )
 
             is AddContactsContract.Event.OnAddContactClicked -> addContact(
-                event.userItem,
-                event.interruptProgressBar
+                userId = event.userId,
+                interruptSuccessLoading = event.interruptSuccessLoading,
+                interruptFailureLoading = event.interruptFailureLoading
             )
         }
     }
@@ -81,23 +85,31 @@ class AddContactsViewModel @Inject constructor(
     }
 
 
-    private fun addContact(userItem: UserItem, interruptLoading: () -> Unit) {
+    private fun addContact(
+        userId: Long,
+        interruptSuccessLoading: () -> Unit,
+        interruptFailureLoading: () -> Unit
+    ) {
 
         processNetworkExceptions(
             toExecute = {
-                usersRepository.addContact(userItem)
+                addContactUseCase(userId)
                 setState { copy(isContactListChanged = true) }
+                interruptSuccessLoading()
             },
             processBackendException = {
                 setEffect(AddContactsContract.Effect.ShowToast(R.string.generic_error))
+                interruptFailureLoading()
             },
             processConnectionException = {
                 setEffect(AddContactsContract.Effect.ShowToast(R.string.generic_error))
+                interruptFailureLoading()
             },
             processResponseProcessingException = {
                 setEffect(AddContactsContract.Effect.ShowToast(R.string.connection_error))
+                interruptFailureLoading()
             },
-            finally = { interruptLoading() }
+            finally = { }
         )
     }
 
@@ -115,7 +127,8 @@ class AddContactsViewModel @Inject constructor(
                         userList = emptyList()
                     )
                 }
-                val userList = usersRepository.loadUsers()
+                val userList = getUsersUseCase().map { it.toUserItem() }
+
                 setState { copy(userList = userList) }
             },
             processBackendException = {

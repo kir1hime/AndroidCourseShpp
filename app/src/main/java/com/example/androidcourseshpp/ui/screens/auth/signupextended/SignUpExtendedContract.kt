@@ -4,7 +4,8 @@ import android.graphics.Bitmap
 import com.example.androidcourseshpp.ui.ViewEffect
 import com.example.androidcourseshpp.ui.ViewEvent
 import com.example.androidcourseshpp.ui.ViewState
-import com.example.androidcourseshpp.ui.screens.auth.signup.entity.SignUpUserInfoEntity
+import com.example.androidcourseshpp.ui.screens.auth.signup.model.SignUpModel
+import com.example.androidcourseshpp.ui.screens.model.UserModel
 
 class SignUpExtendedContract {
     sealed interface Event : ViewEvent {
@@ -13,7 +14,7 @@ class SignUpExtendedContract {
         data class OnForwardButtonClicked(
             val userName: String,
             val mobilePhone: String,
-            val signUpUserInfo: SignUpUserInfoEntity,
+            val signUpUserInfo: SignUpModel,
             val avatar: Bitmap
         ) : Event
     }
@@ -22,7 +23,7 @@ class SignUpExtendedContract {
         data object NavigateToPreviousScreen : Effect
         data object NavigateToChooseProfilePhotoDialog : Effect
         data class ShowToast(val toastMessageResId: Int) : Effect
-        data class NavigateToUserProfileScreen(val userServerId: Long) : Effect
+        data class NavigateToUserProfileScreen(val userInfo: UserModel) : Effect
     }
 
     data class UIState(

@@ -16,26 +16,23 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewbinding.ViewBinding
 import com.example.androidcourseshpp.R
-import com.example.androidcourseshpp.databinding.FragmentEditProfileBinding
-import com.example.androidcourseshpp.databinding.FragmentSignInBinding
-import com.example.androidcourseshpp.databinding.FragmentSignUpExtendedBinding
 import com.example.androidcourseshpp.ui.screens.main.MainActivity
 import com.example.androidcourseshpp.ui.screens.main.chooseprofilephotodialog.ChooseProfilePhotoDialog
 import com.example.androidcourseshpp.ui.screens.main.chooseprofilephotodialog.ChooseProfilePhotoDialog.Companion.PHOTO
+import com.example.androidcourseshpp.ui.screens.model.UserModel
 import com.example.androidcourseshpp.ui.utils.loadImageFromURL
 import com.example.androidcourseshpp.ui.utils.onChangeTextListener
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
-const val USER_SERVER_ID = "userServerId"
+const val USER_INFO = "userInfo"
 
 
-open class BaseFragment<VBinding : ViewBinding>(private val inflaterMethod: (LayoutInflater, ViewGroup?, Boolean) -> VBinding) :
-    Fragment() {
-
+abstract class BaseFragment<VBinding : ViewBinding>(
+    private val inflaterMethod: (LayoutInflater, ViewGroup?, Boolean) -> VBinding
+) : Fragment() {
     private var _binding: VBinding? = null
     val binding get() = requireNotNull(_binding)
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,7 +48,8 @@ open class BaseFragment<VBinding : ViewBinding>(private val inflaterMethod: (Lay
         super.onDestroyView()
     }
 
-    fun <T> BaseFragment<VBinding>.collectFlowWithLifecycle(flow: Flow<T>, onCollect: (T) -> Unit) {
+
+    protected fun <T> BaseFragment<VBinding>.collectFlowWithLifecycle(flow: Flow<T>, onCollect: (T) -> Unit) {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 flow.collect {
@@ -71,10 +69,10 @@ open class BaseFragment<VBinding : ViewBinding>(private val inflaterMethod: (Lay
         }
     }
 
-    protected fun moveToUserProfileScreen(userServerId: Long) {
+    protected fun moveToUserProfileScreen(userInfo: UserModel) {
         val intent = Intent(requireContext(), MainActivity::class.java)
 
-        intent.putExtra(USER_SERVER_ID, userServerId)
+        intent.putExtra(USER_INFO, userInfo)
 
         val options = ActivityOptions.makeCustomAnimation(
             requireContext(),
@@ -120,34 +118,7 @@ open class BaseFragment<VBinding : ViewBinding>(private val inflaterMethod: (Lay
         }
     }
 
-    protected fun <T : ViewBinding> setLoadingState(isLoaded: Boolean, binding: T) {
-        val isEnabled = !isLoaded
-
-        when (binding) {
-            is FragmentSignInBinding -> with(binding) {
-                enableEditText(editTextEMail)
-                enableEditText(editTextPassword)
-                comboBoxRememberMe.isClickable = isEnabled
-            }
-
-            is FragmentEditProfileBinding -> with(binding) {
-                enableEditText(editTextUsername)
-                enableEditText(editTextCareer)
-                enableEditText(editTextMobilePhone)
-                enableEditText(editTextAddress)
-                enableEditText(editTextDateOfBirthday)
-                imageButtonAddProfilePhoto.isClickable = isEnabled
-            }
-
-            is FragmentSignUpExtendedBinding -> with(binding) {
-                enableEditText(editTextUserName)
-                enableEditText(editTextMobilePhone)
-                imageButtonAddProfilePhoto.isClickable = isEnabled
-            }
-        }
-    }
-
-    private fun enableEditText(editText: EditText) {
+    protected fun enableEditText(editText: EditText) {
         editText.apply {
             isFocusable = isEnabled
             isFocusableInTouchMode = isEnabled

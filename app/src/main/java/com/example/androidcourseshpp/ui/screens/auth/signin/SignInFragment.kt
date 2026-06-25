@@ -5,7 +5,6 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.example.androidcourseshpp.data.MIN_NUM_OF_CHARS_IN_PASSWORD
 import com.example.androidcourseshpp.databinding.FragmentSignInBinding
 import com.example.androidcourseshpp.ui.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -20,32 +19,31 @@ class SignInFragment : BaseFragment<FragmentSignInBinding>
         super.onViewCreated(view, savedInstanceState)
         setListeners()
         setObservers()
-
     }
 
     private fun setObservers() = with(binding) {
         collectFlowWithLifecycle(viewModel.effect) { effect ->
             when (effect) {
-                is SignInContract.Effect.NavigateToSingUpScreen -> moveToSignUpScreen()
-                is SignInContract.Effect.NavigateToUserProfileScreen -> moveToUserProfileScreen(effect.userServerId)
+                is SignInContract.Effect.NavigateToSignUpScreen -> moveToSignUpScreen()
                 is SignInContract.Effect.ShowToast -> makeToast(effect.toastMessageResId)
+                is SignInContract.Effect.NavigateToUserProfileScreen -> moveToUserProfileScreen(
+                    effect.userInfo
+                )
             }
         }
 
         collectFlowWithLifecycle(viewModel.state) { state ->
-            textInputLayoutPassword.helperText =
-                getString(state.passwordHelperTextResId, MIN_NUM_OF_CHARS_IN_PASSWORD)
+            textInputLayoutPassword.helperText = getString(state.passwordHelperTextResId)
 
             textInputLayoutEMail.helperText = getString(state.eMailHelperTextResId)
 
             progressBarRequest.isVisible = state.isProgressBarShowed
-            setLoadingState(state.isProgressBarShowed, binding)
+            setLoadingState(state.isProgressBarShowed)
         }
     }
 
     private fun setListeners() = with(binding) {
         buttonLogin.setOnClickListener {
-
             viewModel.setEvent(
                 SignInContract.Event.OnLoginButtonClicked(
                     editTextEMail.text.toString(),
@@ -57,6 +55,14 @@ class SignInFragment : BaseFragment<FragmentSignInBinding>
         textViewSignUp.setOnClickListener {
             viewModel.setEvent(SignInContract.Event.OnSignUpLabelClicked)
         }
+    }
+
+    private fun setLoadingState(isLoading: Boolean) = with(binding) {
+        val isEnabled = !isLoading
+
+        enableEditText(editTextEMail)
+        enableEditText(editTextPassword)
+        comboBoxRememberMe.isClickable = isEnabled
     }
 
     private fun moveToSignUpScreen() {

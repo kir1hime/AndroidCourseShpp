@@ -12,7 +12,7 @@
         tools:layout="@layout/fragment_detailview">
         <argument
             android:name="contactDetails"
-            app:argType="com.example.androidcourseshpp.ui.screens.main.contactdetails.ContactDetailsEntity" />
+            app:argType="com.example.androidcourseshpp.ui.screens.main.contactdetails.model.ContactDetailsModel" />
 
     </fragment>
     <fragment
@@ -49,8 +49,8 @@
             android:id="@+id/action_editProfileFragment_to_chooseProfilePhotoDialog"
             app:destination="@id/chooseProfilePhotoDialog" />
         <argument
-            android:name="userServerId"
-            app:argType="long" />
+            android:name="userInfo"
+            app:argType="com.example.androidcourseshpp.ui.screens.model.UserModel" />
     </fragment>
     <dialog
         android:id="@+id/chooseProfilePhotoDialog"
