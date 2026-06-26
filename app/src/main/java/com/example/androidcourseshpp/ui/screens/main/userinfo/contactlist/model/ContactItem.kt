@@ -5,7 +5,7 @@ import com.example.androidcourseshpp.ui.screens.model.ContactDetailsModel
 
 
 data class ContactItem(
-    val id: Int,
+    val id: Long,
     val name: String,
     val career: String,
     val address: String,

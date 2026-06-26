@@ -7,7 +7,7 @@ import java.util.Date
 
 @Parcelize
 data class UserModel(
-    val id: Int,
+    val id: Long,
     val name: String,
     val mobilePhone: String,
     val address: String,

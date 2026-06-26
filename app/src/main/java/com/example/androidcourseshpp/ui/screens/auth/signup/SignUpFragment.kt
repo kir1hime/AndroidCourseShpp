@@ -15,22 +15,28 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
 
     private val viewModel by viewModels<SignUpViewModel>()
 
-    override fun setObservers() = with(binding) {
-        collectFlow(viewModel.effect) { effect ->
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setObserves()
+        setListeners()
+    }
+
+    private fun setObserves() = with(binding) {
+        collectFlowWithLifecycle(viewModel.effect) { effect ->
             when (effect) {
                 is SignUpContract.Effect.NavigateToSignUpExtended -> moveToSignUpExtended(effect.signUpUserInfo)
                 is SignUpContract.Effect.ShowToast -> makeToast(effect.toastMessageResId)
             }
         }
 
-        collectFlow(viewModel.state) { state ->
+        collectFlowWithLifecycle(viewModel.state) { state ->
             textInputLayoutPassword.helperText =
                 getString(state.passwordHelperTextResId, MIN_NUM_OF_CHARS_IN_PASSWORD)
             textInputLayoutEMail.helperText = getString(state.eMailHelperTextResId)
         }
     }
 
-    override fun setListeners() = with(binding) {
+    private fun setListeners() = with(binding) {
         buttonRegister.setOnClickListener {
             onRegisterButtonClick()
         }
@@ -38,12 +44,6 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
         textViewSignIn.setOnClickListener {
             findNavController().navigateUp()
         }
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        setObservers()
-        setListeners()
     }
 
     private fun onRegisterButtonClick() = with(binding) {

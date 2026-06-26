@@ -73,7 +73,7 @@
     <string name="user_profile">My Profile</string>
 
     <!-- Sign up extended-->
-    <string name="delete_button_description">to delete all selected items</string>
+    <string name="delete_button_description" translatable="false">to delete all selected items</string>
     <string name="your_profile_data">Your profile data</string>
     <string name="instruction_to_do">Fill out the profile and go to the application</string>
     <string name="user_name">User name</string>

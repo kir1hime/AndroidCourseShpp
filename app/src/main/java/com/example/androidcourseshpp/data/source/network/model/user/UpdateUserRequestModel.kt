@@ -4,8 +4,8 @@ import com.example.androidcourseshpp.data.source.network.dto.user.UpdateUserRequ
 import com.example.androidcourseshpp.domain.entity.user.UserInfo
 import java.util.Date
 
-data class UpdateUserDataModel(
-    val id: Int,
+data class UpdateUserRequest(
+    val id: Long,
     val name: String? = null,
     val phone: String? = null,
     val address: String? = null,
@@ -31,7 +31,7 @@ data class UpdateUserDataModel(
 }
 
 fun UserInfo.toUpdateUserDataModel() =
-    UpdateUserDataModel(
+    UpdateUserRequest(
         id = id,
         name = name,
         phone = mobilePhone,

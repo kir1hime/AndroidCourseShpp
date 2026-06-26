@@ -28,7 +28,7 @@ class SignUpExtendedFragment : BaseFragment<FragmentSignUpExtendedBinding>(
         formatMobilePhoneInput(binding.editTextMobilePhone)
     }
 
-    override fun setListeners() = with(binding) {
+    private fun setListeners() = with(binding) {
         buttonForward.setOnClickListener { onForwardButtonClick() }
 
         buttonCancel.setOnClickListener {
@@ -54,8 +54,8 @@ class SignUpExtendedFragment : BaseFragment<FragmentSignUpExtendedBinding>(
         )
     }
 
-    override fun setObservers() = with(binding) {
-        collectFlow(viewModel.effect) { effect ->
+    private fun setObservers() = with(binding) {
+        collectFlowWithLifecycle(viewModel.effect) { effect ->
             when (effect) {
                 is SignUpExtendedContract.Effect.ShowToast -> makeToast(effect.toastMessageResId)
                 is SignUpExtendedContract.Effect.NavigateToPreviousScreen -> findNavController().navigateUp()
@@ -71,7 +71,7 @@ class SignUpExtendedFragment : BaseFragment<FragmentSignUpExtendedBinding>(
             }
         }
 
-        collectFlow(viewModel.state) { state ->
+        collectFlowWithLifecycle(viewModel.state) { state ->
             textInputLayoutUserName.helperText = getString(state.userNameHelperResId)
             textInputLayoutMobilePhone.helperText = getString(state.mobilePhoneHelperResId)
             progressBarRequest.isVisible = state.isProgressBarShowed

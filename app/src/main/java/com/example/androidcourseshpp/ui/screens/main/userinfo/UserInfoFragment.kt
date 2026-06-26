@@ -22,7 +22,7 @@ class UserInfoFragment : BaseFragment<FragmentUserinfoBinding>(FragmentUserinfoB
         setListeners()
     }
 
-    override fun setListeners() = with(binding) {
+    private fun setListeners() = with(binding) {
         tabLayoutUserInfo.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
 
             override fun onTabSelected(tab: TabLayout.Tab?) {

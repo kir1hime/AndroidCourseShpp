@@ -31,7 +31,7 @@ class SplashViewModel @Inject constructor(
         }
     }
 
-    private fun enterToAccount(userServerId: Int) {
+    private fun enterToAccount(userServerId: Long) {
         processNetworkExceptions(
             toExecute = {
                 val userInfo = getUserInfoUseCase(userServerId).toUserModel()
