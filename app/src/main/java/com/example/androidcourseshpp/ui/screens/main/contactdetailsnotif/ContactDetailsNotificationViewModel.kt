@@ -32,7 +32,7 @@ class ContactDetailsNotificationViewModel @Inject constructor(
         setEffect(ContactDetailsNotificationContract.Effect.NavigateToPreviousScreen)
     }
 
-    private fun executeMainAction(action: NotificationAction, contactId: Int) {
+    private fun executeMainAction(action: NotificationAction, contactId: Long) {
         processNetworkExceptions(
             toExecute = {
                 when (action) {

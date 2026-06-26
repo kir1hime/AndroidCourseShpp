@@ -10,7 +10,7 @@ class ContactDetailsNotificationContract {
     sealed interface Event : ViewEvent {
         data class OnMainActionButtonClicked(
             val action: NotificationAction,
-            val contactId: Int
+            val contactId: Long
         ) : Event
 
         data object OnArrowBackButtonClicked : Event

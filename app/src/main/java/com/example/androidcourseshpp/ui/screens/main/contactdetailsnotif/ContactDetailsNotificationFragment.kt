@@ -48,8 +48,8 @@ class ContactDetailsNotificationFragment :
         }
     }
 
-    override fun setObservers() = with(binding) {
-        collectFlow(viewModel.effect) { effect ->
+    private fun setObservers() =
+        collectFlowWithLifecycle(viewModel.effect) { effect ->
             when (effect) {
                 is ContactDetailsNotificationContract.Effect.NavigateToPreviousScreen -> requireActivity().onNavigateUp()
                 is ContactDetailsNotificationContract.Effect.ShowToast -> Toast.makeText(
@@ -57,11 +57,11 @@ class ContactDetailsNotificationFragment :
                     Toast.LENGTH_LONG
                 ).show()
             }
+
         }
-    }
 
 
-    override fun setListeners() = with(binding) {
+    private fun setListeners() = with(binding) {
         imageButtonArrowBack.setOnClickListener {
             viewModel.setEvent(ContactDetailsNotificationContract.Event.OnArrowBackButtonClicked)
         }
