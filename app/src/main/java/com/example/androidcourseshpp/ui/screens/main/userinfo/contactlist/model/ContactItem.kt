@@ -1,21 +1,23 @@
 package com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.model
 
 import com.example.androidcourseshpp.domain.entity.contact.ContactInfo
-import com.example.androidcourseshpp.ui.screens.main.contactdetails.model.ContactDetailsModel
+import com.example.androidcourseshpp.ui.screens.model.ContactDetailsModel
 
 
 data class ContactItem(
     val id: Long,
     val name: String,
     val career: String,
+    val address: String,
     val avatarURL: String,
 ) {
-    fun toContactDetailsEntity() =
+    fun toContactDetails() =
         ContactDetailsModel(
             id = id,
             name = name,
             career = career,
-            avatarURL = avatarURL
+            avatarURL = avatarURL,
+            address = address
         )
 
     fun toContactInfo() =
@@ -23,6 +25,7 @@ data class ContactItem(
             id = id,
             name = name,
             career = career,
+            address = address,
             avatarURL = avatarURL
         )
 }
@@ -32,6 +35,7 @@ fun ContactInfo.toContactItem() =
         id = id,
         name = name,
         career = career,
+        address = address,
         avatarURL = avatarURL
     )
 

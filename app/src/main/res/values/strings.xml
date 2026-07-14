@@ -1,5 +1,17 @@
 <resources>
     <string name="app_name">AndroidCourseShpp</string>
+    <string name="channel_description">Used to view information about deleted or added contacts</string>
+    <string name="view_contact_details" translatable="false">VIEW CONTACT DETAILS</string>
+
+    <!-- Notifications -->
+    <string name="add_contact_notif_title">New Contact</string>
+    <string name="add_contact_notif_content">%1$s was added to contacts</string>
+    <string name="delete_contact_notif_title">Delete Contact</string>
+    <string name="delete_contact_notif_content">%1$s was deleted from contacts</string>
+    <string name="add_contact_toast_message">New contact was added</string>
+    <string name="delete_contact_toast_message">Contact was deleted</string>
+    <string name="view_details_label" translatable="false">VIEW DETAILS</string>
+
 
     <!-- Error -->
     <string name="backend_error">Server error</string>
@@ -101,5 +113,10 @@
     <string name="you_can_see_more_contacts_on_the_users_page">You can see more contacts on the users page</string>
     <string name="oops_there_are_no_users_with_this_name">Oops! There are no users with this name</string>
     <string name="arrow_top_description">move to top of user list</string>
+
+    <!-- Detail view notification-->
+    <string name="message_bt_text">Message</string>
+    <string name="add_to_my_contacts">ADD TO MY CONTACTS</string>
+    <string name="delete_from_my_contacts">DELETE FROM MY CONTACTS</string>
 
 </resources>

@@ -62,7 +62,7 @@ class UsersAdapter(
 
 
             actions.addToContacts(
-                userId = userItem.id,
+                userItem = userItem,
                 interruptSuccessLoading = {
                     userItem.isContact = true
                     progressBarAddContact.isVisible = false

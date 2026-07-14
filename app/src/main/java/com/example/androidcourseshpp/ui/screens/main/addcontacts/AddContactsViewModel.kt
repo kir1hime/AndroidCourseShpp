@@ -4,8 +4,11 @@ import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.domain.usecase.contacts.AddContactUseCase
 import com.example.androidcourseshpp.domain.usecase.user.GetUsersUseCase
 import com.example.androidcourseshpp.ui.BaseViewModel
+import com.example.androidcourseshpp.ui.notifications.NotificationAction
+import com.example.androidcourseshpp.ui.notifications.NotificationService
 import com.example.androidcourseshpp.ui.screens.main.addcontacts.model.UserItem
 import com.example.androidcourseshpp.ui.screens.main.addcontacts.model.toUserItem
+import com.example.androidcourseshpp.ui.screens.model.ContactDetailsModel
 import com.example.androidcourseshpp.ui.utils.containsOrderedSequence
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,7 +17,8 @@ import javax.inject.Inject
 @HiltViewModel
 class AddContactsViewModel @Inject constructor(
     private val addContactUseCase: AddContactUseCase,
-    private val getUsersUseCase: GetUsersUseCase
+    private val getUsersUseCase: GetUsersUseCase,
+    private val notificationService: NotificationService
 ) :
     BaseViewModel<AddContactsContract.Event, AddContactsContract.Effect, AddContactsContract.UIState>() {
 
@@ -47,7 +51,7 @@ class AddContactsViewModel @Inject constructor(
             )
 
             is AddContactsContract.Event.OnAddContactClicked -> addContact(
-                userId = event.userId,
+                userInfo = event.contactInfo,
                 interruptSuccessLoading = event.interruptSuccessLoading,
                 interruptFailureLoading = event.interruptFailureLoading
             )
@@ -86,16 +90,23 @@ class AddContactsViewModel @Inject constructor(
 
 
     private fun addContact(
-        userId: Long,
+        userInfo: ContactDetailsModel,
         interruptSuccessLoading: () -> Unit,
         interruptFailureLoading: () -> Unit
     ) {
 
         processNetworkExceptions(
             toExecute = {
-                addContactUseCase(userId)
+                addContactUseCase(userInfo.id)
+
                 setState { copy(isContactListChanged = true) }
+
                 interruptSuccessLoading()
+
+                notificationService.showContactAddedNotification(
+                    userInfo = userInfo,
+                    notificationActionId = NotificationAction.ADD_CONTACT.ordinal
+                )
             },
             processBackendException = {
                 setEffect(AddContactsContract.Effect.ShowToast(R.string.generic_error))

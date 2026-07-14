@@ -1,4 +1,4 @@
-package com.example.androidcourseshpp.ui.screens.main.contactdetails.model
+package com.example.androidcourseshpp.ui.screens.model
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
@@ -8,5 +8,6 @@ data class ContactDetailsModel(
     val id: Long,
     val name: String,
     val career: String,
-    val avatarURL: String
+    val avatarURL: String,
+    val address: String
 ) : Parcelable

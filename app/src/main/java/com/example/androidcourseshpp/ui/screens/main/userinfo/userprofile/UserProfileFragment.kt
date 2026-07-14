@@ -37,7 +37,7 @@ class UserProfileFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUserInfo()
-        updateUserProfile()
+        updateUserInfo()
         setListeners()
         setObservers()
         setOnBackPressedListener()
@@ -58,7 +58,7 @@ class UserProfileFragment :
         }
     }
 
-    private fun updateUserProfile() {
+    private fun updateUserInfo() {
         val savedStateHandle = findNavController().currentBackStackEntry?.savedStateHandle
 
         val userInfoLiveData = savedStateHandle?.getLiveData<UserModel>(TO_UPDATE_USER_PROFILE)

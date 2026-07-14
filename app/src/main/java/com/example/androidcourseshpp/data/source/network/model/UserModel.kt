@@ -49,6 +49,7 @@ data class UserModel(
             name = name ?: "",
             career = career ?: "",
             avatarURL = image ?: "",
+            address = address ?: "",
             isContact = isContact
         )
 
@@ -57,6 +58,7 @@ data class UserModel(
             id = id,
             name = name ?: "",
             career = career ?: "",
+            address = address ?: "",
             avatarURL = image ?: ""
         )
 }

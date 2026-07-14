@@ -32,13 +32,13 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
     private val adapter by lazy {
         UsersAdapter(object : UserItemActions {
             override fun addToContacts(
-                userId: Long,
+                userItem: UserItem,
                 interruptSuccessLoading: () -> Unit,
                 interruptFailureLoading: () -> Unit
             ) {
                 viewModel.setEvent(
                     AddContactsContract.Event.OnAddContactClicked(
-                        userId,
+                        userItem.toContactDetails(),
                         interruptSuccessLoading,
                         interruptFailureLoading
                     )
@@ -165,7 +165,7 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
 
         val direction =
             AddContactsFragmentDirections.actionAddContactsFragmentToContactDetailsFragment(
-                userItem.toContactDetailsEntity()
+                userItem.toContactDetails()
             )
 
         findNavController().navigate(direction, extras)
