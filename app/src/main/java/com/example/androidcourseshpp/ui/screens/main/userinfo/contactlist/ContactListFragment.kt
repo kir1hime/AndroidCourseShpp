@@ -282,7 +282,7 @@ class ContactListFragment :
         val extras = FragmentNavigatorExtras(sharedContactProfilePhoto to contactItem.id.toString())
 
         val direction = UserInfoFragmentDirections
-            .actionUserInfoFragmentToContactDetailsFragment(contactItem.toContactDetailsEntity())
+            .actionUserInfoFragmentToContactDetailsFragment(contactItem.toContactDetails())
 
         findNavController().navigate(direction, extras)
     }
