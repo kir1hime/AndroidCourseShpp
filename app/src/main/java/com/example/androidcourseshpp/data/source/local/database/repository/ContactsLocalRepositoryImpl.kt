@@ -46,11 +46,11 @@ class ContactsLocalRepositoryImpl @Inject constructor(
             .catch { emit(Result.Error(AppError.LocalStorageError)) }
 
 
-    override suspend fun getContactById(id: Int): Result<SyncContactInfo?> = wrapSQLiteException {
+    override suspend fun getContactById(id: Long): Result<SyncContactInfo?> = wrapSQLiteException {
         return@wrapSQLiteException contactsDao.getContactById(id)?.toSyncContactInfo()
     }
 
-    override suspend fun deleteContactById(id: Int) = wrapSQLiteException {
+    override suspend fun deleteContactById(id: Long) = wrapSQLiteException {
         contactsDao.deleteContactById(id)
     }
 
@@ -58,7 +58,7 @@ class ContactsLocalRepositoryImpl @Inject constructor(
         contactsDao.clearContacts()
     }
 
-    override suspend fun deleteContactsByIds(ids: List<Int>) = wrapSQLiteException {
+    override suspend fun deleteContactsByIds(ids: List<Long>) = wrapSQLiteException {
         contactsDao.deleteContactsByIds(ids)
     }
 
@@ -69,14 +69,14 @@ class ContactsLocalRepositoryImpl @Inject constructor(
     }
 
 
-    override suspend fun setSyncStateToContact(contactId: Int, syncAction: SyncAction) =
+    override suspend fun setSyncStateToContact(contactId: Long, syncAction: SyncAction) =
         wrapSQLiteException {
             contactsDao.setContactSync(id = contactId, syncState = syncAction.toSyncState())
         }
 
     override suspend fun refreshContacts(
         newContacts: List<ContactInfo>,
-        deletedContactIds: List<Int>
+        deletedContactIds: List<Long>
     ) = wrapSQLiteException {
         val newDBEntities = newContacts.map { contact -> ContactDbEntity.fromContactInfo(contact) }
 

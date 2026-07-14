@@ -1,7 +1,7 @@
 package com.example.androidcourseshpp.domain.usecase.user
 
 import com.example.androidcourseshpp.domain.entity.contact.SyncAction
-import com.example.androidcourseshpp.domain.entity.user.UserItemInfo
+import com.example.androidcourseshpp.domain.entity.user.UserListItemInfo
 import com.example.androidcourseshpp.domain.entity.user.toUserItemInfo
 import com.example.androidcourseshpp.domain.repository.ContactsLocalRepository
 import com.example.androidcourseshpp.domain.repository.UserRepository
@@ -9,12 +9,12 @@ import com.example.androidcourseshpp.domain.utils.Result
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-class GetUsersUseCase (
+class GetUsersUseCase(
     private val userRepository: UserRepository,
     private val contactsLocalRepository: ContactsLocalRepository
 ) {
 
-    suspend operator fun invoke(): Flow<Result<List<UserItemInfo>>> {
+    suspend operator fun invoke(): Flow<Result<List<UserListItemInfo>>> {
 
         val usersResult = userRepository.getUsers()
         if (usersResult is Result.Error) {

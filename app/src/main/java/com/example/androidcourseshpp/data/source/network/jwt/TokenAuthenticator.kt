@@ -1,6 +1,8 @@
 package com.example.androidcourseshpp.data.source.network.jwt
 
-import com.example.androidcourseshpp.data.source.local.userdata.LocalDataProvider
+import com.example.androidcourseshpp.data.source.local.userdata.DatabaseSyncProvider
+import com.example.androidcourseshpp.data.source.local.userdata.GalleryDataProvider
+import com.example.androidcourseshpp.data.source.local.userdata.UserDataProvider
 import com.example.androidcourseshpp.data.source.network.api.auth.TokenRefreshAPI
 import com.example.androidcourseshpp.domain.repository.ContactsLocalRepository
 import kotlinx.coroutines.runBlocking
@@ -13,7 +15,9 @@ class TokenAuthenticator(
     private val tokenRefreshAPI: TokenRefreshAPI,
     private val jwtManager: JWTManager,
     private val contactsLocalRepository: ContactsLocalRepository,
-    private val localDataProvider: LocalDataProvider
+    private val userDataProvider: UserDataProvider,
+    private val galleryDataProvider: GalleryDataProvider,
+    private val databaseSyncProvider: DatabaseSyncProvider
 ) : Authenticator {
 
     private val lock = Any()
@@ -38,10 +42,10 @@ class TokenAuthenticator(
 
             if (!newTokensResponse.isSuccessful) {
                 jwtManager.clearTokens()
-                localDataProvider.clearUserServerId()
-                localDataProvider.clearUserAvatarUrl()
-                localDataProvider.clearGalleryPhotos()
-                localDataProvider.markDatabaseAsSynced(false)
+                userDataProvider.clearUserServerId()
+                userDataProvider.clearUserAvatarUrl()
+                galleryDataProvider.clearGalleryPhotos()
+                databaseSyncProvider.markDatabaseAsSynced(false)
                 runBlocking {
                     contactsLocalRepository.clearContacts()
                 }

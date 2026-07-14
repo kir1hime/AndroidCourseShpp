@@ -12,7 +12,7 @@ import com.example.androidcourseshpp.domain.entity.contact.SyncContactInfo
     tableName = "contacts"
 )
 data class ContactDbEntity(
-    @PrimaryKey val id: Int,
+    @PrimaryKey val id: Long,
     val name: String,
     val career: String,
     val address: String,

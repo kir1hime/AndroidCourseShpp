@@ -13,7 +13,7 @@ data class UserInfo(
 )
 
 fun UserInfo.toUserItemInfo(isContact: Boolean) =
-    UserItemInfo(
+    UserListItemInfo(
         id = id,
         name = name,
         career = career,

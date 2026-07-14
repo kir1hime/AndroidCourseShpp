@@ -24,5 +24,5 @@ interface LocalDataProviderModule {
 
     @Binds
     @Singleton
-    fun bindDatabaseSyncProvider(localDataProvider: LocalDataProvider): DatabaseSyncProvider
+    fun bindDatabaseSyncProvider(localDataProviderImpl: LocalDataProviderImpl): DatabaseSyncProvider
 }

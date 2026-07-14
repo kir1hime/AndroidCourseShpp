@@ -6,7 +6,7 @@ import com.example.androidcourseshpp.domain.utils.Result
 
 
 class DeleteContactsUseCase(private val deleteContactUseCase: DeleteContactUseCase) {
-    suspend operator fun invoke(contactIds: List<Int>): Result<Unit> {
+    suspend operator fun invoke(contactIds: List<Long>): Result<Unit> {
 
         contactIds.forEach { contactId ->
             val result = deleteContactUseCase(contactId)

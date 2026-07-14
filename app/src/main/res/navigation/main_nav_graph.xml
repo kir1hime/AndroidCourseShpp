@@ -79,7 +79,7 @@
             app:uri="notification://user_details?id={id}&amp;name={name}&amp;career={career}&amp;address={address}&amp;avatarURL={avatarURL}&amp;notifId={notifId}" />
         <argument
             android:name="id"
-            app:argType="integer" />
+            app:argType="long" />
         <argument
             android:name="name"
             app:argType="string" />

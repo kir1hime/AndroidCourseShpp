@@ -5,8 +5,8 @@ import com.example.androidcourseshpp.domain.repository.ContactsLocalRepository
 import com.example.androidcourseshpp.domain.utils.AppError
 import com.example.androidcourseshpp.domain.utils.Result
 
-class DeleteContactUseCase (private val contactsLocalRepository: ContactsLocalRepository) {
-    suspend operator fun invoke(contactId: Int): Result<Unit> {
+class DeleteContactUseCase(private val contactsLocalRepository: ContactsLocalRepository) {
+    suspend operator fun invoke(contactId: Long): Result<Unit> {
         val getContactResult = contactsLocalRepository.getContactById(contactId)
 
         if (getContactResult is Result.Success && getContactResult.data != null) {

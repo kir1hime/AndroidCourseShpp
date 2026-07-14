@@ -32,8 +32,8 @@ class ContactDetailsFragment :
         setListeners()
     }
 
-    override fun setObservers() {
-        collectFlow(viewModel.effect) { effect ->
+    private fun setObservers() {
+        collectFlowWithLifecycle(viewModel.effect) { effect ->
             when (effect) {
                 is ContactDetailsContract.Effect.ShowToast -> {
                     val toast = makeToast(effect.toastMessageResId)

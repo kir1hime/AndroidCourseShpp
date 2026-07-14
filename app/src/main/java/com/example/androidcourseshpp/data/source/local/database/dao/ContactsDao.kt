@@ -22,24 +22,24 @@ interface ContactsDao {
     fun getContacts(): Flow<List<ContactDbEntity>>
 
     @Query("SELECT * FROM contacts WHERE id = :id")
-    suspend fun getContactById(id: Int): ContactDbEntity?
+    suspend fun getContactById(id: Long): ContactDbEntity?
 
     @Query("DELETE FROM contacts WHERE id = :id")
-    suspend fun deleteContactById(id: Int)
+    suspend fun deleteContactById(id: Long)
 
     @Query("DELETE FROM contacts")
     suspend fun clearContacts()
 
     @Query("DELETE FROM contacts WHERE id IN (:ids)")
-    suspend fun deleteContactsByIds(ids: List<Int>)
+    suspend fun deleteContactsByIds(ids: List<Long>)
 
     @Query("UPDATE contacts SET sync_state = :syncState WHERE id = :id")
-    suspend fun setContactSync(id: Int, syncState: SyncState)
+    suspend fun setContactSync(id: Long, syncState: SyncState)
 
     @Transaction
     suspend fun refreshContacts(
         newContacts: List<ContactDbEntity>,
-        deletedContactIds: List<Int>
+        deletedContactIds: List<Long>
     ) {
         addContacts(newContacts)
         deleteContactsByIds(deletedContactIds)

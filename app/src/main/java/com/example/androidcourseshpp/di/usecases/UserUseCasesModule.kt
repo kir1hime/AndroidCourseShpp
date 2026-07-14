@@ -1,7 +1,10 @@
 package com.example.androidcourseshpp.di.usecases
 
-import com.example.androidcourseshpp.domain.repository.UserLocalRepository
+import com.example.androidcourseshpp.domain.repository.ContactsLocalRepository
+import com.example.androidcourseshpp.domain.repository.UserLocalDataRepository
 import com.example.androidcourseshpp.domain.repository.UserRepository
+import com.example.androidcourseshpp.domain.usecase.user.GetUserAvatarUseCase
+import com.example.androidcourseshpp.domain.usecase.user.GetUserRememberStateUseCase
 import com.example.androidcourseshpp.domain.usecase.user.GetUserUseCase
 import com.example.androidcourseshpp.domain.usecase.user.GetUsersUseCase
 import com.example.androidcourseshpp.domain.usecase.user.UpdateUserInfoUseCase
@@ -17,7 +20,23 @@ class UserUseCasesModule {
 
     @Singleton
     @Provides
-    fun provideGetUsersUseCase(userRepository: UserRepository) = GetUsersUseCase(userRepository)
+    fun provideGetUsersUseCase(
+        userRepository: UserRepository,
+        contactsLocalRepository: ContactsLocalRepository
+    ) = GetUsersUseCase(
+        userRepository = userRepository,
+        contactsLocalRepository = contactsLocalRepository
+    )
+
+    @Singleton
+    @Provides
+    fun provideUpdateUserInfoUseCase(
+        userRepository: UserRepository,
+        userLocalDataRepository: UserLocalDataRepository
+    ) = UpdateUserInfoUseCase(
+        userRepository = userRepository,
+        userLocalDataRepository = userLocalDataRepository
+    )
 
     @Singleton
     @Provides
@@ -25,9 +44,11 @@ class UserUseCasesModule {
 
     @Singleton
     @Provides
-    fun provideUpdateUserInfoUseCase(
-        userRepository: UserRepository,
-        userLocalRepository: UserLocalRepository
-    ) =
-        UpdateUserInfoUseCase(userRepository, userLocalRepository)
+    fun provideGetUserAvatarUseCase(userLocalDataRepository: UserLocalDataRepository) =
+        GetUserAvatarUseCase(userLocalDataRepository = userLocalDataRepository)
+
+    @Singleton
+    @Provides
+    fun provideGetUserRememberStateUseCase(userLocalDataRepository: UserLocalDataRepository) =
+        GetUserRememberStateUseCase(userLocalDataRepository = userLocalDataRepository)
 }

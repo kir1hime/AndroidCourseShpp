@@ -68,7 +68,7 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
             REQUEST_CODE,
             viewLifecycleOwner
         ) { _, data ->
-            val userId = data.getInt(TO_RELOAD_USER_LIST)
+            val userId = data.getLong(TO_RELOAD_USER_LIST)
             val updatedList = viewModel.state.value.userList.toMutableList()
             updatedList.map { user ->
                 if (user.id == userId) {

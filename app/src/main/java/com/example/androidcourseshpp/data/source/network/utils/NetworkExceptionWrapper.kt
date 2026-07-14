@@ -4,8 +4,7 @@ import com.example.androidcourseshpp.data.source.network.service.BackendExceptio
 import com.example.androidcourseshpp.data.source.network.service.ConnectionException
 import com.example.androidcourseshpp.data.source.network.service.ResponseProcessingException
 import com.example.androidcourseshpp.domain.utils.AppError
-import   com.example.androidcourseshpp.domain.utils.Result
-
+import com.example.androidcourseshpp.domain.utils.Result
 
 
 suspend fun <T> wrapNetworkExceptions(toExecute: suspend () -> T): Result<T> {

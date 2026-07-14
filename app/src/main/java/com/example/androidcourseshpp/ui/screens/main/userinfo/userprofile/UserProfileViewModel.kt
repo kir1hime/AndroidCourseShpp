@@ -8,7 +8,7 @@ import com.example.androidcourseshpp.ui.BaseViewModel
 import com.example.androidcourseshpp.ui.screens.model.UserModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
-
+import kotlinx.coroutines.launch
 
 
 @HiltViewModel

@@ -17,7 +17,7 @@ const val DEFAULT_USER_REMEMBER_STATE_VALUE = false
 
 
 class LocalDataProviderImpl @Inject constructor(@param:DataProviderPref private val sharedPref: SharedPreferences) :
-    UserDataProvider, GalleryDataProvider {
+    UserDataProvider, GalleryDataProvider, DatabaseSyncProvider {
 
     private val editor = sharedPref.edit()
 
