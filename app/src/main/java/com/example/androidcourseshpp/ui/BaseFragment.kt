@@ -38,7 +38,7 @@ abstract class BaseFragment<VBinding : ViewBinding>(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = inflaterMethod.invoke(inflater, container, false)
         return binding.root
     }
@@ -48,11 +48,8 @@ abstract class BaseFragment<VBinding : ViewBinding>(
         super.onDestroyView()
     }
 
-    open fun setObservers() {}
 
-    open fun setListeners() {}
-
-    protected fun <T> BaseFragment<VBinding>.collectFlow(flow: Flow<T>, onCollect: (T) -> Unit) {
+    protected fun <T> BaseFragment<VBinding>.collectFlowWithLifecycle(flow: Flow<T>, onCollect: (T) -> Unit) {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 flow.collect {
@@ -134,5 +131,4 @@ abstract class BaseFragment<VBinding : ViewBinding>(
         private val BRACKET_POSITIONS = mapOf(1 to "(", 5 to ")-")
         private val HYPHEN_POSITIONS = listOf(6, 10, 13)
     }
-
 }

@@ -4,11 +4,8 @@ import com.example.androidcourseshpp.domain.entity.user.UserInfo
 import com.example.androidcourseshpp.domain.repository.UserLocalDataRepository
 import com.example.androidcourseshpp.domain.repository.UserRepository
 import com.example.androidcourseshpp.domain.utils.Result
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class UpdateUserInfoUseCase @Inject constructor(
+class UpdateUserInfoUseCase(
     private val userRepository: UserRepository,
     private val userLocalDataRepository: UserLocalDataRepository
 ) {

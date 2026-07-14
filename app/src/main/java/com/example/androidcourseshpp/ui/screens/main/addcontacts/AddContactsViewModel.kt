@@ -13,8 +13,8 @@ import com.example.androidcourseshpp.ui.screens.main.addcontacts.model.UserItem
 import com.example.androidcourseshpp.ui.screens.main.addcontacts.model.toUserItem
 import com.example.androidcourseshpp.ui.screens.model.ContactDetailsModel
 import com.example.androidcourseshpp.ui.sync.ContactsSyncScheduler
+import com.example.androidcourseshpp.ui.utils.containsOrderedSequence
 import com.example.androidcourseshpp.ui.utils.executeUseCase
-import com.example.androidcourseshpp.ui.utils.isContainsOrderedSequence
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -85,7 +85,7 @@ class AddContactsViewModel @Inject constructor(
     private fun updateFilteredUserListBy(input: String) {
         val filteredContactList = mutableListOf<UserItem>()
         state.value.userList.forEach { user ->
-            if (user.name.isContainsOrderedSequence(input)) {
+            if (user.name.containsOrderedSequence(input)) {
                 filteredContactList.add(user)
             }
         }
@@ -167,7 +167,6 @@ class AddContactsViewModel @Inject constructor(
                                     R.string.connection_error
                                 )
                             )
-
                             else -> setEffect(
                                 AddContactsContract.Effect.ShowToast(
                                     R.string.generic_error

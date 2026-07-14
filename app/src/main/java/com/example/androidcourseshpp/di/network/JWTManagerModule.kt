@@ -1,4 +1,4 @@
-package com.example.androidcourseshpp.di
+package com.example.androidcourseshpp.di.network
 
 import com.example.androidcourseshpp.data.source.network.jwt.JWTManager
 import com.example.androidcourseshpp.data.source.network.jwt.JWTManagerImpl

@@ -86,14 +86,14 @@ class ContactListFragment :
         )
     }
 
-    override fun setObservers() {
+    private fun setObservers() {
         collectState()
         collectEffects()
     }
 
     private fun collectEffects() {
         var toast: Toast? = null
-        collectFlow(viewModel.effect) { effect ->
+        collectFlowWithLifecycle(viewModel.effect) { effect ->
             when (effect) {
                 is ContactListContract.Effect.HideSearchBar -> hideSearchBar()
                 is ContactListContract.Effect.ShowSearchBar -> showSearchBar()
@@ -120,12 +120,12 @@ class ContactListFragment :
     }
 
     private fun collectState() = with(binding) {
-        collectFlow(viewModel.state) { state ->
+        collectFlowWithLifecycle(viewModel.state) { state ->
             val contactList = state.contactList
 
             if (state.isSearchMode) {
                 showSearchBar()
-                collectFlow(viewModel.filteredContactList) { filteredContactList ->
+                collectFlowWithLifecycle(viewModel.filteredContactList) { filteredContactList ->
                     if (filteredContactList.isEmpty() && textInputLayoutSearch.isVisible) {
                         textViewNoResultsFound.isVisible = true
                         textViewAdvice.isVisible = true
@@ -158,7 +158,7 @@ class ContactListFragment :
         }
     }
 
-    override fun setListeners() = with(binding) {
+    private fun setListeners() = with(binding) {
         imageButtonArrowBack.setOnClickListener {
             viewModel.setEvent(ContactListContract.Event.OnArrowBackButtonClicked)
         }

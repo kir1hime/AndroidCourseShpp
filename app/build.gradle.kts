@@ -19,9 +19,7 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-
     }
-
 
     buildTypes {
         release {
@@ -74,6 +72,7 @@ dependencies {
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.hilt.android)
     implementation(libs.navigation.ui.ktx)
+    implementation(libs.navigation.fragment.ktx)
     ksp(libs.hilt.android.compiler)
     implementation(libs.javafaker)
     implementation(libs.androidx.fragment.ktx)

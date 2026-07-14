@@ -6,12 +6,8 @@ import com.example.androidcourseshpp.domain.repository.AuthRepository
 import com.example.androidcourseshpp.domain.repository.UserLocalDataRepository
 import com.example.androidcourseshpp.domain.utils.Result
 import com.example.androidcourseshpp.domain.utils.onSuccess
-import javax.inject.Inject
-import javax.inject.Singleton
 
-
-@Singleton
-class SignInUseCase @Inject constructor(
+class SignInUseCase (
     private val authRepository: AuthRepository,
     private val userLocalDataRepository: UserLocalDataRepository
 ) {

@@ -1,14 +1,17 @@
 package com.example.androidcourseshpp.ui.utils
 
+import android.content.ContentResolver
 import android.content.Context
 import android.net.Uri
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.EditText
 import android.widget.ImageView
-import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
+import androidx.navigation.NavDirections
+import androidx.navigation.Navigator
 import com.bumptech.glide.Glide
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.domain.utils.AppError
@@ -58,24 +61,36 @@ fun EditText.onChangeTextListener(onTextChanged: (CharSequence, Int, Int, Int) -
 }
 
 fun Int.toUri(context: Context): Uri {
-    return "android.resource://${context.packageName}/${this}".toUri()
+    return Uri.Builder()
+        .scheme(ContentResolver.SCHEME_ANDROID_RESOURCE)
+        .authority(context.packageName)
+        .appendPath(this.toString())
+        .build()
 }
 
-fun String.isContainsOrderedSequence(searched: String): Boolean {
-    val lowerCaseSearched = searched.lowercase().trim()
-    val lowercaseSource = this.lowercase()
+fun String.containsOrderedSequence(searched: String): Boolean {
+    val cleanSearched = searched.lowercase().trim()
+    val source = this.lowercase()
+    var indexInSource = 0
+    for (char in cleanSearched) {
+        indexInSource = source.indexOf(char, indexInSource)
 
-    var subSource = lowercaseSource
-    var searchedCounter = 0
-
-    for (char in lowerCaseSearched.withIndex()) {
-        if (subSource.contains(char.value)) {
-
-            subSource = subSource.substring(subSource.indexOf(char.value) + 1, subSource.length)
-            searchedCounter++
-        }
+        if (indexInSource == -1) return false
+        indexInSource++
     }
-    return lowerCaseSearched.length == searchedCounter
+
+    return true
+}
+
+fun NavController.navigate(
+    directions: NavDirections,
+    extras: Navigator.Extras?
+) {
+    if (extras != null) {
+        navigate(directions, extras)
+    } else {
+        navigate(directions)
+    }
 }
 
 fun <T> ViewModel.executeUseCase(
@@ -94,7 +109,6 @@ fun <T> ViewModel.executeUseCase(
             is Result.Success -> {
                 onSuccess?.invoke(result.data)
             }
-
             is Result.Error -> {
                 onError?.let {
                     it.invoke()

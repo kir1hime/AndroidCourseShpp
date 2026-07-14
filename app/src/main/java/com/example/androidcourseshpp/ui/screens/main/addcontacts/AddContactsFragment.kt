@@ -20,6 +20,7 @@ import com.example.androidcourseshpp.ui.screens.main.addcontacts.adapter.UsersAd
 import com.example.androidcourseshpp.ui.screens.main.addcontacts.model.UserItem
 import com.example.androidcourseshpp.ui.screens.main.contactdetails.REQUEST_CODE
 import com.example.androidcourseshpp.ui.screens.main.contactdetails.TO_RELOAD_USER_LIST
+import com.example.androidcourseshpp.ui.utils.navigate
 import com.example.androidcourseshpp.ui.utils.onChangeTextListener
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -30,7 +31,7 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
 
     private val viewModel by viewModels<AddContactsViewModel>()
 
-    private lateinit var sharedUserProfilePhoto: ImageView
+    private var sharedUserProfilePhoto: ImageView? = null
     private val adapter by lazy {
         UsersAdapter(object : UserItemActions {
             override fun addToContacts(
@@ -87,9 +88,9 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
         )
     }
 
-    override fun setObservers() = with(binding) {
+    private fun setObservers() = with(binding) {
 
-        collectFlow(viewModel.state) { state ->
+        collectFlowWithLifecycle(viewModel.state) { state ->
             if (state.isSearchMode) {
                 showSearchBar()
             }
@@ -103,7 +104,7 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
             imageButtonSearch.isClickable = !progressBarRequest.isVisible
         }
 
-        collectFlow(viewModel.filteredUserList) { filteredUserList ->
+        collectFlowWithLifecycle(viewModel.filteredUserList) { filteredUserList ->
             if (filteredUserList.isEmpty() && textInputLayoutSearch.isVisible) {
                 textViewNoResultsFound.isVisible = true
                 textViewAdvice.isVisible = true
@@ -117,7 +118,7 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
         }
 
         var toast: Toast? = null
-        collectFlow(viewModel.effect) { effect ->
+        collectFlowWithLifecycle(viewModel.effect) { effect ->
             when (effect) {
                 is AddContactsContract.Effect.ScrollUserListToTop -> scrollUserListToTop()
                 is AddContactsContract.Effect.ShowSearchBar -> showSearchBar()
@@ -156,7 +157,7 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
         imageButtonHideSearch.isVisible = true
     }
 
-    override fun setListeners() = with(binding) {
+    private fun setListeners() = with(binding) {
         imageButtonArrowBack.setOnClickListener {
             viewModel.setEvent(AddContactsContract.Event.OnArrowBackButtonClicked)
         }
@@ -189,8 +190,9 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
     }
 
     private fun moveToDetailsScreen(userItem: UserItem) {
-        val extras =
-            FragmentNavigatorExtras(sharedUserProfilePhoto to userItem.id.toString())
+        val extras = sharedUserProfilePhoto?.let { imageView ->
+            FragmentNavigatorExtras(imageView to userItem.id.toString())
+        }
 
         val direction =
             AddContactsFragmentDirections.actionAddContactsFragmentToContactDetailsFragment(
@@ -202,6 +204,11 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
 
     private fun moveToContactList() {
         findNavController().navigateUp()
+    }
+
+    override fun onDestroyView() {
+        sharedUserProfilePhoto = null
+        super.onDestroyView()
     }
 
     companion object {

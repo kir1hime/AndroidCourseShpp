@@ -18,8 +18,8 @@ import com.example.androidcourseshpp.ui.notifications.NotificationService
 import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.model.ContactItem
 import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.model.toContactItem
 import com.example.androidcourseshpp.ui.sync.ContactsSyncScheduler
+import com.example.androidcourseshpp.ui.utils.containsOrderedSequence
 import com.example.androidcourseshpp.ui.utils.executeUseCase
-import com.example.androidcourseshpp.ui.utils.isContainsOrderedSequence
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -139,7 +139,7 @@ class ContactListViewModel @Inject constructor(
     private fun updateFilteredContactListBy(input: String) {
         updateFilteredContactList { list -> list.clear() }
         state.value.contactList.forEach { contact ->
-            if (contact.name.isContainsOrderedSequence(input)) {
+            if (contact.name.containsOrderedSequence(input)) {
                 updateFilteredContactList { list -> list.add(contact) }
             }
         }
@@ -294,7 +294,6 @@ class ContactListViewModel @Inject constructor(
             contactsLoadingTrigger.emit(Unit)
         }
     }
-
 
     private fun navigateToDetailsScreen(contact: ContactItem) {
         setEffect(ContactListContract.Effect.NavigateToDetailsScreen(contact))

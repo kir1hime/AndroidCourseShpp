@@ -48,9 +48,9 @@ class ContactDetailsNotificationFragment :
         }
     }
 
-    override fun setObservers() = with(binding) {
+    private fun setObservers() = with(binding) {
         var toast: Toast? = null
-        collectFlow(viewModel.effect) { effect ->
+        collectFlowWithLifecycle(viewModel.effect) { effect ->
             when (effect) {
                 is ContactDetailsNotificationContract.Effect.NavigateToPreviousScreen -> requireActivity().onNavigateUp()
                 is ContactDetailsNotificationContract.Effect.ShowToast -> {
@@ -69,8 +69,7 @@ class ContactDetailsNotificationFragment :
         }
     }
 
-
-    override fun setListeners() = with(binding) {
+    private fun setListeners() = with(binding) {
         val contactDetails = with(args) {
             ContactDetailsModel(
                 id = id,

@@ -18,9 +18,9 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
 
     private val viewModel by viewModels<SignUpViewModel>()
 
-    override fun setObservers() = with(binding) {
+    private fun setObservers() = with(binding) {
         var toast: Toast? = null
-        collectFlow(viewModel.effect) { effect ->
+        collectFlowWithLifecycle(viewModel.effect) { effect ->
             when (effect) {
                 is SignUpContract.Effect.NavigateToSignUpExtended -> moveToSignUpExtended(effect.signUpUserInfo)
                 is SignUpContract.Effect.ShowToast -> {
@@ -31,14 +31,14 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
             }
         }
 
-        collectFlow(viewModel.state) { state ->
+        collectFlowWithLifecycle(viewModel.state) { state ->
             textInputLayoutPassword.helperText =
                 getString(state.passwordHelperTextResId, MIN_NUM_OF_CHARS_IN_PASSWORD)
             textInputLayoutEMail.helperText = getString(state.eMailHelperTextResId)
         }
     }
 
-    override fun setListeners() = with(binding) {
+    private fun setListeners() = with(binding) {
         buttonRegister.setOnClickListener {
             onRegisterButtonClick()
         }

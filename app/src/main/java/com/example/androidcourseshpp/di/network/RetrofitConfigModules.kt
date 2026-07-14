@@ -1,20 +1,15 @@
-package com.example.androidcourseshpp.di
+package com.example.androidcourseshpp.di.network
 
 import com.example.androidcourseshpp.data.source.local.userdata.LocalDataProvider
 import com.example.androidcourseshpp.data.source.network.api.auth.TokenRefreshAPI
 import com.example.androidcourseshpp.data.source.network.jwt.JWTManager
 import com.example.androidcourseshpp.data.source.network.jwt.TokenAuthenticator
-import com.example.androidcourseshpp.data.source.network.service.RetrofitServicesProvider
-import com.example.androidcourseshpp.data.source.network.service.ServicesProvider
-import com.example.androidcourseshpp.data.source.network.service.auth.AuthService
-import com.example.androidcourseshpp.data.source.network.service.auth.AuthServiceImpl
-import com.example.androidcourseshpp.data.source.network.service.contacts.ContactsService
-import com.example.androidcourseshpp.data.source.network.service.contacts.ContactsServiceImpl
-import com.example.androidcourseshpp.data.source.network.service.user.UserService
-import com.example.androidcourseshpp.data.source.network.service.user.UserServiceImpl
+import com.example.androidcourseshpp.di.MainOkHttpClient
+import com.example.androidcourseshpp.di.MainRetrofit
+import com.example.androidcourseshpp.di.TokenRefreshOkHttpClient
+import com.example.androidcourseshpp.di.TokenRefreshRetrofit
 import com.example.androidcourseshpp.domain.repository.ContactsLocalRepository
 import com.google.gson.Gson
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -28,27 +23,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 const val BASE_URL = "http://178.63.9.114:7777/api/"
-
-@Module
-@InstallIn(SingletonComponent::class)
-interface RetrofitServicesModules {
-
-    @Binds
-    @Singleton
-    fun bindAuthService(authServiceImpl: AuthServiceImpl): AuthService
-
-    @Binds
-    @Singleton
-    fun bindUserService(userServiceImpl: UserServiceImpl): UserService
-
-    @Binds
-    @Singleton
-    fun bindContactsService(contactsServiceImpl: ContactsServiceImpl): ContactsService
-
-    @Binds
-    @Singleton
-    fun bindServiceProvider(retrofitServicesProvider: RetrofitServicesProvider): ServicesProvider
-}
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -72,7 +46,8 @@ class RetrofitConfigModule {
         @TokenRefreshRetrofit retrofit: Retrofit,
         jwtManager: JWTManager,
         contactsLocalRepository: ContactsLocalRepository,
-        localDataProvider: LocalDataProvider
+        localDataProvider: LocalDataProvider,
+        tokenRefreshAPI: TokenRefreshAPI
     ): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(createResponseInterceptor())
@@ -80,7 +55,7 @@ class RetrofitConfigModule {
             .addInterceptor(createAuthorizationInterceptor(jwtManager))
             .authenticator(
                 TokenAuthenticator(
-                    tokenRefreshAPI = retrofit.create(TokenRefreshAPI::class.java),
+                    tokenRefreshAPI = tokenRefreshAPI,
                     jwtManager = jwtManager,
                     contactsLocalRepository = contactsLocalRepository,
                     localDataProvider = localDataProvider

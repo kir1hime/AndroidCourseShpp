@@ -15,8 +15,7 @@ import com.example.androidcourseshpp.ui.utils.loadImageFromURLCircled
 class ContactsAdapter(private val actions: ContactItemActions) :
     ListAdapter<SelectableContactItem, ContactsAdapter.ViewHolder>(ContactItemDiffUtilCallback) {
 
-    var selectedItems: MutableList<ContactItem> = mutableListOf()
-        private set
+    val selectedItems: MutableList<ContactItem> = mutableListOf()
 
     inner class ViewHolder(
         private val binding: ContactItemBinding,
@@ -34,7 +33,12 @@ class ContactsAdapter(private val actions: ContactItemActions) :
             switchComponentsVisibility(contactItem)
 
             checkBoxIsSelected.isChecked = selectedItems.contains(contactItem.item)
+            setListeners(contactItem)
+        }
 
+        fun bindPayLoad(contactItem: SelectableContactItem) = with(binding){
+            switchComponentsVisibility(contactItem)
+            checkBoxIsSelected.isChecked = selectedItems.contains(contactItem.item)
             setListeners(contactItem)
         }
 
@@ -113,6 +117,14 @@ class ContactsAdapter(private val actions: ContactItemActions) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(getItem(position))
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int, payloads: List<Any?>) {
+        if (payloads.isNotEmpty() && payloads[0] == SELECTION_MODE_PAYLOAD) {
+            holder.bindPayLoad(getItem(position))
+        } else {
+            super.onBindViewHolder(holder, position, payloads)
+        }
     }
 }
 

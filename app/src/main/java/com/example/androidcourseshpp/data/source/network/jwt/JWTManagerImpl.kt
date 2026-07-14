@@ -1,8 +1,8 @@
 package com.example.androidcourseshpp.data.source.network.jwt
 
 import android.content.SharedPreferences
-import javax.inject.Inject
 import com.example.androidcourseshpp.di.JWTManagerPref
+import javax.inject.Inject
 
 const val JWT_STORAGE = "jwtStorage"
 const val ACCESS_TOKEN = "accessToken"

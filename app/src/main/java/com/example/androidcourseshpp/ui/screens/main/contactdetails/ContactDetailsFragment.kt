@@ -88,7 +88,7 @@ class ContactDetailsFragment :
         }
     }
 
-    override fun setListeners() = with(binding) {
+    private fun setListeners() = with(binding) {
         imageButtonArrowBack.setOnClickListener {
             findNavController().navigateUp()
         }

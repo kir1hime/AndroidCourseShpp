@@ -54,7 +54,7 @@ class UserProfileFragment :
         }
     }
 
-    override fun setListeners() = with(binding) {
+    private fun setListeners() = with(binding) {
         buttonLogOut.setOnClickListener {
             viewModel.setEvent(UserProfileContract.Event.OnLogOutButtonClicked)
         }
@@ -66,9 +66,9 @@ class UserProfileFragment :
         }
     }
 
-    override fun setObservers() = with(binding) {
+    private fun setObservers() = with(binding) {
         var toast: Toast? = null
-        collectFlow(viewModel.effect) { effect ->
+        collectFlowWithLifecycle(viewModel.effect) { effect ->
             when (effect) {
                 is UserProfileContract.Effect.NavigateToContactList -> moveToMyContactsScreen()
                 is UserProfileContract.Effect.NavigateToSignInScreen -> moveToSignUpScreen()
@@ -84,7 +84,7 @@ class UserProfileFragment :
             }
         }
 
-        collectFlow(viewModel.state) { state ->
+        collectFlowWithLifecycle(viewModel.state) { state ->
             textViewName.text = state.userInfo.name
             textViewCareer.updateIfNotEmpty(state.userInfo.career)
             textViewHomeAddress.updateIfNotEmpty(state.userInfo.address)

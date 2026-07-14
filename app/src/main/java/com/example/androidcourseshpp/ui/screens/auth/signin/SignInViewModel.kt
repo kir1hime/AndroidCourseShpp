@@ -66,7 +66,6 @@ class SignInViewModel @Inject constructor(
             onResponseProcessingError = { setEffect(SignInContract.Effect.ShowToast(R.string.server_response_error)) },
             finally = { setState { copy(isProgressBarShowed = false) } }
         )
-
     }
 
     private fun navigateToSignUpScreen() {

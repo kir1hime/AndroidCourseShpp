@@ -51,7 +51,7 @@ class EditProfileFragment :
 
 
     @SuppressLint("ClickableViewAccessibility")
-    override fun setListeners() = with(binding) {
+    private fun setListeners() = with(binding) {
 
         buttonSave.setOnClickListener {
             defocusAllEditTexts()
@@ -123,8 +123,8 @@ class EditProfileFragment :
         viewModel.setEvent(EditProfileContract.Event.OnAddProfilePhotoImageViewClicked)
     }
 
-    override fun setObservers() = with(binding) {
-        collectFlow(viewModel.state) { state ->
+    private fun setObservers() = with(binding) {
+        collectFlowWithLifecycle(viewModel.state) { state ->
             val userInfo = state.userInfo
             editTextUsername.setText(userInfo.name)
             editTextCareer.setText(userInfo.career)
@@ -146,7 +146,7 @@ class EditProfileFragment :
         }
 
         var toast: Toast? = null
-        collectFlow(viewModel.effect) { effect ->
+        collectFlowWithLifecycle(viewModel.effect) { effect ->
             when (effect) {
                 is EditProfileContract.Effect.NavigateToChooseProfilePhotoDialog -> moveToChooseProfilePhotoDialog()
                 is EditProfileContract.Effect.NavigateToUserProfileScreen -> {

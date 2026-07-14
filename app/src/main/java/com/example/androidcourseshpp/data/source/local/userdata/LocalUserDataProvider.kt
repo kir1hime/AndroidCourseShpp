@@ -10,25 +10,26 @@ const val USER_SERVER_ID = "userServerId"
 const val USER_REMEMBER_STATE = "userSaveState"
 const val USER_PHOTOS = "userPhotos"
 const val DATABASE_SYNC = "databaseSync"
-const val DEFAULT_ID_VALUE: Int = -1
+
+const val DEFAULT_ID_VALUE: Long = -1L
 const val DEFAULT_AVATAR_VALUE = ""
 const val DEFAULT_USER_REMEMBER_STATE_VALUE = false
 
 
-class LocalDataProvider @Inject constructor(@param:DataProviderPref private val sharedPref: SharedPreferences) :
-    UserDataProvider, GalleryDataProvider, DatabaseSyncProvider {
+class LocalDataProviderImpl @Inject constructor(@param:DataProviderPref private val sharedPref: SharedPreferences) :
+    UserDataProvider, GalleryDataProvider {
 
     private val editor = sharedPref.edit()
 
-    override fun saveUserServerId(userServerId: Int) {
-        editor.putLong(USER_SERVER_ID, userServerId.toLong()).apply()
+    override fun saveUserServerId(userServerId: Long) {
+        editor.putLong(USER_SERVER_ID, userServerId).apply()
     }
 
     override fun getUserServerId() =
-        sharedPref.getLong(USER_SERVER_ID, DEFAULT_ID_VALUE.toLong()).toInt()
+        sharedPref.getLong(USER_SERVER_ID, DEFAULT_ID_VALUE)
 
     override fun clearUserServerId() {
-        editor.putLong(USER_SERVER_ID, DEFAULT_ID_VALUE.toLong()).apply()
+        editor.putLong(USER_SERVER_ID, DEFAULT_ID_VALUE).apply()
     }
 
     override fun saveUserAvatarUrl(avatar: String) {

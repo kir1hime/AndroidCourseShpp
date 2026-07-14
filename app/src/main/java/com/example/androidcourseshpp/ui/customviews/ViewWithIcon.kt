@@ -18,7 +18,6 @@ import androidx.core.graphics.drawable.toBitmap
 import com.example.androidcourseshpp.R
 import kotlin.math.abs
 import kotlin.math.max
-import kotlin.properties.Delegates
 
 
 @SuppressLint("ResourceType")
@@ -31,33 +30,33 @@ class ViewWithIcon @JvmOverloads constructor(
 
     private var icon: Bitmap? = null
 
-    private var iconWidth by Delegates.notNull<Float>()
-    private var iconHeight by Delegates.notNull<Float>()
-    private var iconColor by Delegates.notNull<Int>()
+    private var iconWidth = DEFAULT_FLOAT_VALUE
+    private var iconHeight = DEFAULT_FLOAT_VALUE
+    private var iconColor: Int = DEFAULT_INT_VALUE
 
-    private var iconPaddingStart by Delegates.notNull<Float>()
-    private var iconPaddingEnd by Delegates.notNull<Float>()
-    private var iconPaddingTop by Delegates.notNull<Float>()
-    private var iconPaddingBottom by Delegates.notNull<Float>()
+    private var iconPaddingStart = DEFAULT_FLOAT_VALUE
+    private var iconPaddingEnd = DEFAULT_FLOAT_VALUE
+    private var iconPaddingTop = DEFAULT_FLOAT_VALUE
+    private var iconPaddingBottom = DEFAULT_FLOAT_VALUE
 
-    private var textPaddingStart by Delegates.notNull<Float>()
-    private var textPaddingEnd by Delegates.notNull<Float>()
-    private var textPaddingTop by Delegates.notNull<Float>()
-    private var textPaddingBottom by Delegates.notNull<Float>()
+    private var textPaddingStart = DEFAULT_FLOAT_VALUE
+    private var textPaddingEnd = DEFAULT_FLOAT_VALUE
+    private var textPaddingTop = DEFAULT_FLOAT_VALUE
+    private var textPaddingBottom = DEFAULT_FLOAT_VALUE
 
-    private var textOriginX by Delegates.notNull<Float>()
-    private var textOriginY by Delegates.notNull<Float>()
+    private var textOriginX = DEFAULT_FLOAT_VALUE
+    private var textOriginY = DEFAULT_FLOAT_VALUE
 
-    private var iconOriginX by Delegates.notNull<Float>()
-    private var iconOriginY by Delegates.notNull<Float>()
+    private var iconOriginX = DEFAULT_FLOAT_VALUE
+    private var iconOriginY = DEFAULT_FLOAT_VALUE
 
-    private var text by Delegates.notNull<String>()
+    private var text = ""
 
-    private var textSize by Delegates.notNull<Float>()
-    private var textStyle by Delegates.notNull<Int>()
+    private var textSize = DEFAULT_FLOAT_VALUE
+    private var textStyle: Int = DEFAULT_INT_VALUE
     private lateinit var textFontFamily: Any
-    private var textColor by Delegates.notNull<Int>()
-    private var textLetterSpacing by Delegates.notNull<Float>()
+    private var textColor: Int = DEFAULT_INT_VALUE
+    private var textLetterSpacing = DEFAULT_FLOAT_VALUE
 
 
     private val textWidth by lazy {
@@ -71,35 +70,15 @@ class ViewWithIcon @JvmOverloads constructor(
         textPaint.fontMetrics
     }
 
-    private lateinit var iconPaint: Paint
-    private lateinit var textPaint: Paint
-
-    private lateinit var iconSpace: RectF
-
-    init {
-        if (attributesSet != null) {
-            initAttributes(attributesSet, defStyleAttr, defStyleRes)
-        } else {
-            initAttributesByDefault()
-        }
-        initPaints()
-    }
-
-    private fun initPaints() {
-        initIconPaint()
-        initTextPaint()
-    }
-
-    private fun initIconPaint() {
-        iconPaint = Paint(Paint.ANTI_ALIAS_FLAG)
-
-        if (iconColor != DEFAULT_INT_VALUE) {
-            iconPaint.colorFilter = PorterDuffColorFilter(iconColor, PorterDuff.Mode.SRC_IN)
+    private val iconPaint by lazy {
+        Paint(Paint.ANTI_ALIAS_FLAG).apply {
+            if (iconColor != DEFAULT_INT_VALUE) {
+                colorFilter = PorterDuffColorFilter(iconColor, PorterDuff.Mode.SRC_IN)
+            }
         }
     }
-
-    private fun initTextPaint() {
-        textPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+    private val textPaint by lazy {
+        Paint(Paint.ANTI_ALIAS_FLAG).apply {
             textSize = this@ViewWithIcon.textSize
             color = this@ViewWithIcon.textColor
             letterSpacing = textLetterSpacing
@@ -118,6 +97,13 @@ class ViewWithIcon @JvmOverloads constructor(
             } else {
                 Typeface.defaultFromStyle(textStyle)
             }
+        }
+    }
+    private lateinit var iconSpace: RectF
+
+    init {
+        if (attributesSet != null) {
+            initAttributes(attributesSet, defStyleAttr, defStyleRes)
         }
     }
 
