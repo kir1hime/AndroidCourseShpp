@@ -17,7 +17,7 @@ data class UserItem(
             name = name,
             career = career,
             avatarURL = avatarURL,
-            address = address
+            address = address,
         )
 }
 

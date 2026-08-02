@@ -194,7 +194,7 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
 
         val direction =
             AddContactsFragmentDirections.actionAddContactsFragmentToContactDetailsFragment(
-                userItem.toContactDetails(), true
+                userItem.toContactDetails(), userItem.isContact
             )
 
         findNavController().navigate(direction, extras)

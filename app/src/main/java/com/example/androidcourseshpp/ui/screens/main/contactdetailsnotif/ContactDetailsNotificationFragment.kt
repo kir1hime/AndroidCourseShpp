@@ -77,7 +77,7 @@ class ContactDetailsNotificationFragment :
                 name = name,
                 career = career,
                 avatarURL = avatarURL,
-                address = address
+                address = address,
             )
         }
         buttonAddToMyContacts.setOnClickListener {

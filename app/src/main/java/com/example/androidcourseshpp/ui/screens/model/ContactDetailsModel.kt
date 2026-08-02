@@ -10,7 +10,7 @@ data class ContactDetailsModel(
     val name: String,
     val career: String,
     val avatarURL: String,
-    val address: String
+    val address: String,
 ) : Parcelable {
     fun toContactInfo() =
         ContactInfo(
