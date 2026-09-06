@@ -14,7 +14,6 @@ import com.example.androidcourseshpp.ui.screens.main.addcontacts.model.toUserIte
 import com.example.androidcourseshpp.ui.screens.model.ContactDetailsModel
 import com.example.androidcourseshpp.ui.sync.ContactsSyncScheduler
 import com.example.androidcourseshpp.ui.utils.containsOrderedSequence
-import com.example.androidcourseshpp.ui.utils.executeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableSharedFlow

@@ -7,12 +7,9 @@ import com.example.androidcourseshpp.domain.utils.Result
 import com.example.androidcourseshpp.domain.utils.onError
 import com.example.androidcourseshpp.domain.utils.onSuccess
 import kotlinx.coroutines.flow.first
-import javax.inject.Inject
-import javax.inject.Singleton
 
 
-@Singleton
-class SyncContactsFromRemoteUseCase @Inject constructor(
+class SyncContactsFromRemoteUseCase (
     private val contactsLocalRepository: ContactsLocalRepository,
     private val contactsNetworkRepository: ContactsNetworkRepository
 ) {

@@ -19,7 +19,6 @@ import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.model.
 import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.model.toContactItem
 import com.example.androidcourseshpp.ui.sync.ContactsSyncScheduler
 import com.example.androidcourseshpp.ui.utils.containsOrderedSequence
-import com.example.androidcourseshpp.ui.utils.executeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableSharedFlow

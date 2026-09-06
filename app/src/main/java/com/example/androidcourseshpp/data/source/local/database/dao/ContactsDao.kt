@@ -41,8 +41,8 @@ interface ContactsDao {
         newContacts: List<ContactDbEntity>,
         deletedContactIds: List<Long>
     ) {
-        addContacts(newContacts)
         deleteContactsByIds(deletedContactIds)
+        addContacts(newContacts)
 
         deletedContactIds.forEach { contactId ->
             setContactSync(contactId, SyncState.SYNCED)

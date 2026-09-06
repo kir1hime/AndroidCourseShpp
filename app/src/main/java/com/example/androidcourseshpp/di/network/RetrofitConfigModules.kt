@@ -45,7 +45,6 @@ class RetrofitConfigModule {
     @Singleton
     @MainOkHttpClient
     fun provideMainOkHttpClient(
-        @TokenRefreshRetrofit retrofit: Retrofit,
         jwtManager: JWTManager,
         contactsLocalRepository: ContactsLocalRepository,
         userDataProvider: UserDataProvider,

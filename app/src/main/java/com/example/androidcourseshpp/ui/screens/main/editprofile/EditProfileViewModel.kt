@@ -5,7 +5,6 @@ import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.domain.usecase.user.UpdateUserInfoUseCase
 import com.example.androidcourseshpp.ui.BaseViewModel
 import com.example.androidcourseshpp.ui.screens.model.UserModel
-import com.example.androidcourseshpp.ui.utils.executeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.util.Date
 import javax.inject.Inject

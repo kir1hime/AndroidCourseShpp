@@ -6,7 +6,6 @@ import com.example.androidcourseshpp.ui.BaseViewModel
 import com.example.androidcourseshpp.ui.notifications.NotificationAction
 import com.example.androidcourseshpp.ui.notifications.NotificationService
 import com.example.androidcourseshpp.ui.screens.model.ContactDetailsModel
-import com.example.androidcourseshpp.ui.utils.executeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

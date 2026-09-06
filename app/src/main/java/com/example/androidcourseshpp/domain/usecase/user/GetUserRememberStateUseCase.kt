@@ -1,11 +1,9 @@
 package com.example.androidcourseshpp.domain.usecase.user
 
 import com.example.androidcourseshpp.domain.repository.UserLocalDataRepository
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class GetUserRememberStateUseCase @Inject constructor(
+
+class GetUserRememberStateUseCase (
     private val userLocalDataRepository: UserLocalDataRepository
 ) {
 

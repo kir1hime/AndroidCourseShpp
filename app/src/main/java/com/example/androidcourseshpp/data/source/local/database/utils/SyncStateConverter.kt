@@ -6,11 +6,11 @@ class SyncStateConverter {
 
     @TypeConverter
     fun fromSyncState(state: SyncState): String {
-        return state.name
+        return state.code
     }
 
     @TypeConverter
-    fun toSyncState(value: String): SyncState {
-        return SyncState.valueOf(value)
+    fun toSyncState(code: String): SyncState {
+        return SyncState.getSyncState(code)
     }
 }

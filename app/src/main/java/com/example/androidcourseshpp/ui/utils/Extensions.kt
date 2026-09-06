@@ -7,16 +7,11 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.widget.EditText
 import android.widget.ImageView
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import androidx.navigation.NavDirections
 import androidx.navigation.Navigator
 import com.bumptech.glide.Glide
 import com.example.androidcourseshpp.R
-import com.example.androidcourseshpp.domain.utils.AppError
-import com.example.androidcourseshpp.domain.utils.Result
-import kotlinx.coroutines.launch
 
 fun ImageView.loadImageFromURLCircled(
     context: Context,
@@ -93,43 +88,3 @@ fun NavController.navigate(
     }
 }
 
-fun <T> ViewModel.executeUseCase(
-    toExecute: suspend () -> Result<T>,
-    onSuccess: ((T) -> Unit)? = null,
-    onBackendError: (() -> Unit)? = null,
-    onConnectionError: (() -> Unit)? = null,
-    onResponseProcessingError: (() -> Unit)? = null,
-    onLocalStorageError: (() -> Unit)? = null,
-    onError: (() -> Unit)? = null,
-    onRemoteError: (() -> Unit)? = null,
-    finally: (() -> Unit)? = null
-) {
-    viewModelScope.launch {
-        when (val result = toExecute()) {
-            is Result.Success -> {
-                onSuccess?.invoke(result.data)
-            }
-            is Result.Error -> {
-                onError?.let {
-                    it.invoke()
-                    finally?.invoke()
-                    return@launch
-                }
-                onRemoteError?.let {
-                    if (result.error is AppError.BackendError || result.error is AppError.ResponseProcessingError) {
-                        it.invoke()
-                        finally?.invoke()
-                        return@launch
-                    }
-                }
-                when (result.error) {
-                    is AppError.BackendError -> onBackendError?.invoke()
-                    is AppError.ConnectionError -> onConnectionError?.invoke()
-                    is AppError.LocalStorageError -> onLocalStorageError?.invoke()
-                    is AppError.ResponseProcessingError -> onResponseProcessingError?.invoke()
-                }
-            }
-        }
-        finally?.invoke()
-    }
-}

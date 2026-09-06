@@ -1,9 +1,14 @@
 package com.example.androidcourseshpp.data.source.local.database.utils
 
+import androidx.sqlite.SQLiteException
 import com.example.androidcourseshpp.domain.entity.contact.SyncAction
 
-enum class SyncState {
-    SYNCED, ADDED, DELETED;
+enum class SyncState(val code: String) {
+    SYNCED("SYNCED"), ADDED("ADDED"), DELETED("DELETED");
+
+    companion object {
+        fun getSyncState(code: String) = entries.find { it.code == code } ?: throw SQLiteException()
+    }
 }
 
 fun SyncState.toSyncAction(): SyncAction {

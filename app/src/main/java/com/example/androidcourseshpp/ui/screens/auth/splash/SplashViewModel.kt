@@ -4,7 +4,6 @@ import com.example.androidcourseshpp.domain.usecase.user.GetUserRememberStateUse
 import com.example.androidcourseshpp.domain.usecase.user.GetUserUseCase
 import com.example.androidcourseshpp.ui.BaseViewModel
 import com.example.androidcourseshpp.ui.screens.model.toUserModel
-import com.example.androidcourseshpp.ui.utils.executeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 

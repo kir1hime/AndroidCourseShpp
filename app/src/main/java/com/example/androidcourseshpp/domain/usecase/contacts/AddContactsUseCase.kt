@@ -3,11 +3,8 @@ package com.example.androidcourseshpp.domain.usecase.contacts
 import com.example.androidcourseshpp.domain.entity.contact.ContactInfo
 import com.example.androidcourseshpp.domain.utils.AppError
 import com.example.androidcourseshpp.domain.utils.Result
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class AddContactsUseCase @Inject constructor(
+class AddContactsUseCase (
     private val addContactUseCase: AddContactUseCase
 ) {
 
