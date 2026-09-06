@@ -15,7 +15,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class NotificationServiceImpl @Inject constructor(@ApplicationContext private val context: Context) :
+class NotificationServiceImpl @Inject constructor(@param:ApplicationContext private val context: Context) :
     NotificationService {
 
     private val notificationManager =
@@ -30,7 +30,7 @@ class NotificationServiceImpl @Inject constructor(@ApplicationContext private va
             content = context.getString(R.string.add_contact_notif_content, userInfo.name),
             icon = R.drawable.ic_contact_added_notification,
             notificationId = CONTACT_ADDED_NOTIFICATION_ID,
-            link = with(userInfo) { "notification://user_details?name=$name&career=$career&address=$address&avatarURL=$avatarURL&notifId=$notificationActionId" }
+            link = with(userInfo) { "notification://user_details?id=$id&name=$name&career=$career&address=$address&avatarURL=$avatarURL&notifId=$notificationActionId" }
 
         )
     }
@@ -44,7 +44,7 @@ class NotificationServiceImpl @Inject constructor(@ApplicationContext private va
             content = context.getString(R.string.delete_contact_notif_content, userInfo.name),
             icon = R.drawable.ic_contact_removed_notification,
             notificationId = CONTACT_DELETED_NOTIFICATION_ID,
-            link = with(userInfo) { "notification://user_details?name=$name&career=$career&address=$address&avatarURL=$avatarURL&notifId=$notificationActionId" }
+            link = with(userInfo) { "notification://user_details?id=$id&name=$name&career=$career&address=$address&avatarURL=$avatarURL&notifId=$notificationActionId" }
         )
     }
 

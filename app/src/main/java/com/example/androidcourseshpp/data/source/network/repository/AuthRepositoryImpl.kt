@@ -4,10 +4,12 @@ import com.example.androidcourseshpp.data.source.network.jwt.JWTManager
 import com.example.androidcourseshpp.data.source.network.model.auth.SignInRequestModel
 import com.example.androidcourseshpp.data.source.network.model.auth.SignUpRequestModel
 import com.example.androidcourseshpp.data.source.network.service.auth.AuthService
+import com.example.androidcourseshpp.data.source.network.utils.wrapNetworkExceptions
 import com.example.androidcourseshpp.domain.entity.auth.SignInInfo
 import com.example.androidcourseshpp.domain.entity.auth.SignUpInfo
 import com.example.androidcourseshpp.domain.entity.user.UserInfo
 import com.example.androidcourseshpp.domain.repository.AuthRepository
+import com.example.androidcourseshpp.domain.utils.Result
 import com.example.androidcourseshpp.ui.utils.imageconvertor.ImageConverter
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -30,7 +32,7 @@ class AuthRepositoryImpl @Inject constructor(
         jwtManager.clearTokens()
     }
 
-    override suspend fun signIn(signInInfo: SignInInfo): UserInfo {
+    override suspend fun signIn(signInInfo: SignInInfo): Result<UserInfo> = wrapNetworkExceptions {
         val data = SignInRequestModel(email = signInInfo.email, password = signInInfo.password)
 
         val response = authService.singIn(data)
@@ -40,10 +42,10 @@ class AuthRepositoryImpl @Inject constructor(
             refreshToken = response.refreshToken
         )
 
-        return response.user.toUserInfo()
+        response.user.toUserInfo()
     }
 
-    override suspend fun singUp(signUpInfo: SignUpInfo): UserInfo {
+    override suspend fun singUp(signUpInfo: SignUpInfo): Result<UserInfo> = wrapNetworkExceptions {
         val data = SignUpRequestModel(
             userName = signUpInfo.userName,
             mobilePhone = signUpInfo.mobilePhone,
@@ -55,6 +57,6 @@ class AuthRepositoryImpl @Inject constructor(
 
         jwtManager.saveTokens(response.accessToken, response.refreshToken)
 
-        return response.user.toUserInfo()
+        response.user.toUserInfo()
     }
 }

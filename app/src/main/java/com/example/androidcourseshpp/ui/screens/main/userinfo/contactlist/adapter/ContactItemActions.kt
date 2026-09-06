@@ -9,7 +9,5 @@ interface ContactItemActions {
 
     fun showContactItemDetails(contactItem: ContactItem, avatar: ImageView)
 
-    fun showFloatingDeleteButton()
-
-    fun hideFloatingDeleteButton()
+    fun selectModeChangingListener(isSelectMode: Boolean)
 }

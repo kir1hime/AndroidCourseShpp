@@ -9,12 +9,12 @@ plugins {
 
 android {
     namespace = "com.example.androidcourseshpp"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.example.androidcourseshpp"
         minSdk = 24
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
@@ -41,27 +41,39 @@ android {
         }
     }
 
-    kotlinOptions {
-        jvmTarget = "11"
-    }
-
     buildFeatures {
         viewBinding = true
+    }
+
+
+}
+
+ksp {
+    arg("room.schemaLocation", "$projectDir/schemas")
+}
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+    compilerOptions {
+        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11)
     }
 }
 
 dependencies {
+    implementation(libs.androidx.swiperefreshlayout)
+    implementation(libs.room.ktx)
+    implementation(libs.room.runtime)
+    implementation(libs.androidx.hilt.common)
+    implementation(libs.androidx.work.runtime.ktx)
+    ksp(libs.room.compiler)
     implementation(libs.retrofit.gson)
     implementation(libs.gson)
     implementation(libs.okhttp)
     implementation(libs.logging.interceptor)
     implementation(libs.retrofit)
     implementation(libs.androidx.navigation.fragment.ktx)
-    implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.hilt.android)
+    implementation(libs.navigation.ui.ktx)
     implementation(libs.navigation.fragment.ktx)
     ksp(libs.hilt.android.compiler)
-    implementation(libs.androidx.fragment.ktx.v188)
     implementation(libs.javafaker)
     implementation(libs.androidx.fragment.ktx)
     implementation(libs.circleimageview)

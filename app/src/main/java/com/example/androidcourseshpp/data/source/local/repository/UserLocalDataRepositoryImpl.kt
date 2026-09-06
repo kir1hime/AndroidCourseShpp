@@ -1,19 +1,19 @@
 package com.example.androidcourseshpp.data.source.local.repository
 
 import com.example.androidcourseshpp.data.source.local.userdata.UserDataProvider
-import com.example.androidcourseshpp.domain.repository.UserLocalRepository
+import com.example.androidcourseshpp.domain.repository.UserLocalDataRepository
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class UserLocalRepositoryImpl @Inject constructor(private val userDataProvider: UserDataProvider) : UserLocalRepository {
+class UserLocalDataRepositoryImpl @Inject constructor(private val userDataProvider: UserDataProvider) :
+    UserLocalDataRepository {
     override fun saveUserServerId(userServerId: Long) {
         userDataProvider.saveUserServerId(userServerId)
     }
 
-    override fun getUserServerId(): Long {
-        return userDataProvider.getUserServerId()
-    }
+    override fun getUserServerId() = userDataProvider.getUserServerId()
+
 
     override fun clearUserServerId() {
         userDataProvider.clearUserServerId()
@@ -23,11 +23,17 @@ class UserLocalRepositoryImpl @Inject constructor(private val userDataProvider: 
         userDataProvider.saveUserAvatarUrl(avatar)
     }
 
-    override fun getUserAvatarUrl(): String {
-        return userDataProvider.getUserAvatarUrl()
-    }
+    override fun getUserAvatarUrl() = userDataProvider.getUserAvatarUrl()
+
 
     override fun clearUserAvatarUrl() {
         userDataProvider.clearUserAvatarUrl()
+    }
+
+    override fun isUserRemembered() = userDataProvider.isUserRemembered()
+
+
+    override fun setUserRememberState(toSaveUser: Boolean) {
+        userDataProvider.setUserRememberState(toSaveUser)
     }
 }

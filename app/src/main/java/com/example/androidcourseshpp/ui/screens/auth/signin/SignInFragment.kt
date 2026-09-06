@@ -2,6 +2,7 @@ package com.example.androidcourseshpp.ui.screens.auth.signin
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -22,13 +23,19 @@ class SignInFragment : BaseFragment<FragmentSignInBinding>
     }
 
     private fun setObservers() = with(binding) {
+        var toast: Toast? = null
         collectFlowWithLifecycle(viewModel.effect) { effect ->
             when (effect) {
                 is SignInContract.Effect.NavigateToSignUpScreen -> moveToSignUpScreen()
-                is SignInContract.Effect.ShowToast -> makeToast(effect.toastMessageResId)
                 is SignInContract.Effect.NavigateToUserProfileScreen -> moveToUserProfileScreen(
                     effect.userInfo
                 )
+
+                is SignInContract.Effect.ShowToast -> {
+                    toast?.cancel()
+                    toast = makeToast(effect.toastMessageResId)
+                    toast.show()
+                }
             }
         }
 

@@ -1,8 +1,8 @@
 package com.example.androidcourseshpp.data.source.network.model.auth
 
 import com.example.androidcourseshpp.data.source.network.model.UserModel
-import okhttp3.MultipartBody
 import com.google.gson.annotations.SerializedName
+import okhttp3.MultipartBody
 
 data class SignUpRequestModel(
     @SerializedName("email")

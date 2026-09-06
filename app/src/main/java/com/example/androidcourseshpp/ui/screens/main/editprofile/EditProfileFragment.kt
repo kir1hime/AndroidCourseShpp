@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
 import android.widget.EditText
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -144,12 +145,18 @@ class EditProfileFragment :
             setLoadingState(state.isProgressBarShowed)
         }
 
+        var toast: Toast? = null
         collectFlowWithLifecycle(viewModel.effect) { effect ->
             when (effect) {
-                is EditProfileContract.Effect.ShowToast -> makeToast(effect.toastMessageResId)
                 is EditProfileContract.Effect.NavigateToChooseProfilePhotoDialog -> moveToChooseProfilePhotoDialog()
                 is EditProfileContract.Effect.NavigateToUserProfileScreen -> {
                     moveBackToUserProfileScreen(effect.isUserDataChanged, effect.userInfo)
+                }
+
+                is EditProfileContract.Effect.ShowToast -> {
+                    toast?.cancel()
+                    toast = makeToast(effect.toastMessageResId)
+                    toast.show()
                 }
             }
         }

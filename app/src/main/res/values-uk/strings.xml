@@ -41,12 +41,13 @@
     <!--My contacts (activity_contacts.xml)-->
     <string name="contacts">Контакти</string>
     <string name="add_contact">Додати контакт</string>
+    <string name="cancel_select">Відмінити вибір</string>
     <string name="search_imagebutton">search_imagebutton</string>
     <string name="arrow_back_imagebutton">arrow_back_imagebutton</string>
 
     <!--My contacts ContactsActivity-->
-    <string name="snackbar_text">Скасувати видалення цього контакту?</string>
-    <string name="snackbar_action_text">Скасувати</string>
+    <string name="undo_deleting_contact_snack_bar_text">Скасувати видалення цього контакту?</string>
+    <string name="undo_deleting_contact_snack_bar_action_text">Скасувати</string>
 
     <!-- Add contact dialog -->
     <string name="profile_label">Профіль</string>
@@ -100,5 +101,6 @@
     <string name="add_to_my_contacts">ДОДАТИ ДО КОНТАКТІВ</string>
     <string name="delete_from_my_contacts">ВИДАЛИТИ З КОНТАКТІВ</string>
     <string name="add_contact_toast_message">Новий конакт було дадано</string>
+    <string name="undo_deleting_contacts_snack_bar_text">Скасувати видалення контактів</string>
 
 </resources>

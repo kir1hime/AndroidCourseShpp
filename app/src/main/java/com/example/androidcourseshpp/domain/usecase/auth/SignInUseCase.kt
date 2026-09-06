@@ -3,18 +3,25 @@ package com.example.androidcourseshpp.domain.usecase.auth
 import com.example.androidcourseshpp.domain.entity.auth.SignInInfo
 import com.example.androidcourseshpp.domain.entity.user.UserInfo
 import com.example.androidcourseshpp.domain.repository.AuthRepository
-import com.example.androidcourseshpp.domain.repository.UserLocalRepository
+import com.example.androidcourseshpp.domain.repository.UserLocalDataRepository
+import com.example.androidcourseshpp.domain.utils.Result
+import com.example.androidcourseshpp.domain.utils.onSuccess
 
-
-class SignInUseCase(
+class SignInUseCase (
     private val authRepository: AuthRepository,
-    private val userLocalRepository: UserLocalRepository
+    private val userLocalDataRepository: UserLocalDataRepository
 ) {
 
-    suspend operator fun invoke(signInInfo: SignInInfo, toRememberUser: Boolean): UserInfo {
-        val userInfo = authRepository.signIn(signInInfo)
-        if (toRememberUser) {
-            userLocalRepository.saveUserServerId(userInfo.id)
+    suspend operator fun invoke(
+        signInInfo: SignInInfo,
+        toRememberUser: Boolean
+    ): Result<UserInfo> {
+
+        val userInfo = authRepository.signIn(signInInfo).onSuccess { data ->
+            userLocalDataRepository.saveUserServerId(data.id)
+            if (toRememberUser) {
+                userLocalDataRepository.setUserRememberState(true)
+            }
         }
         return userInfo
     }

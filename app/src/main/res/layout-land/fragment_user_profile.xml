@@ -141,7 +141,7 @@
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/buttonViewMyContacts"
         android:layout_width="0dp"
-        android:layout_height="@dimen/view_my_contacts_bt_h"
+        android:layout_height="@dimen/main_action_bt_h"
         android:layout_marginHorizontal="@dimen/main_margin_side"
         android:layout_marginBottom="@dimen/bt_margin_bottom"
         android:background="@drawable/view_my_contacts_background"

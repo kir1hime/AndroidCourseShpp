@@ -1,5 +1,8 @@
 package com.example.androidcourseshpp.di.network
 
+import com.example.androidcourseshpp.data.source.local.userdata.DatabaseSyncProvider
+import com.example.androidcourseshpp.data.source.local.userdata.GalleryDataProvider
+import com.example.androidcourseshpp.data.source.local.userdata.UserDataProvider
 import com.example.androidcourseshpp.data.source.network.api.auth.TokenRefreshAPI
 import com.example.androidcourseshpp.data.source.network.jwt.JWTManager
 import com.example.androidcourseshpp.data.source.network.jwt.TokenAuthenticator
@@ -7,6 +10,7 @@ import com.example.androidcourseshpp.di.MainOkHttpClient
 import com.example.androidcourseshpp.di.MainRetrofit
 import com.example.androidcourseshpp.di.TokenRefreshOkHttpClient
 import com.example.androidcourseshpp.di.TokenRefreshRetrofit
+import com.example.androidcourseshpp.domain.repository.ContactsLocalRepository
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
@@ -42,6 +46,10 @@ class RetrofitConfigModule {
     @MainOkHttpClient
     fun provideMainOkHttpClient(
         jwtManager: JWTManager,
+        contactsLocalRepository: ContactsLocalRepository,
+        userDataProvider: UserDataProvider,
+        galleryDataProvider: GalleryDataProvider,
+        databaseSyncProvider: DatabaseSyncProvider,
         tokenRefreshAPI: TokenRefreshAPI
     ): OkHttpClient {
         return OkHttpClient.Builder()
@@ -50,8 +58,12 @@ class RetrofitConfigModule {
             .addInterceptor(createAuthorizationInterceptor(jwtManager))
             .authenticator(
                 TokenAuthenticator(
-                    tokenRefreshAPI,
-                    jwtManager
+                    tokenRefreshAPI = tokenRefreshAPI,
+                    jwtManager = jwtManager,
+                    userDataProvider = userDataProvider,
+                    galleryDataProvider = galleryDataProvider,
+                    databaseSyncProvider = databaseSyncProvider,
+                    contactsLocalRepository = contactsLocalRepository
                 )
             )
             .build()

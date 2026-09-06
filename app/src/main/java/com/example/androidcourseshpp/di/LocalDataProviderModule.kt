@@ -1,5 +1,6 @@
 package com.example.androidcourseshpp.di
 
+import com.example.androidcourseshpp.data.source.local.userdata.DatabaseSyncProvider
 import com.example.androidcourseshpp.data.source.local.userdata.GalleryDataProvider
 import com.example.androidcourseshpp.data.source.local.userdata.LocalDataProviderImpl
 import com.example.androidcourseshpp.data.source.local.userdata.UserDataProvider
@@ -21,4 +22,7 @@ interface LocalDataProviderModule {
     @Singleton
     fun bindGalleryDataProvider(localDataProviderImpl: LocalDataProviderImpl): GalleryDataProvider
 
+    @Binds
+    @Singleton
+    fun bindDatabaseSyncProvider(localDataProviderImpl: LocalDataProviderImpl): DatabaseSyncProvider
 }

@@ -1,11 +1,22 @@
 package com.example.androidcourseshpp.domain.usecase.contacts
 
-import com.example.androidcourseshpp.domain.entity.contact.ContactInfo
-import com.example.androidcourseshpp.domain.repository.ContactsRepository
+
+import com.example.androidcourseshpp.domain.utils.AppError
+import com.example.androidcourseshpp.domain.utils.Result
 
 
-class DeleteContactsUseCase(private val contactsRepository: ContactsRepository) {
-    suspend operator fun invoke(contacts: List<ContactInfo>) {
-        contactsRepository.deleteContacts(contacts)
+class DeleteContactsUseCase(private val deleteContactUseCase: DeleteContactUseCase) {
+    suspend operator fun invoke(contactIds: List<Long>): Result<Unit> {
+
+        contactIds.forEach { contactId ->
+            val result = deleteContactUseCase(contactId)
+            if (result is Result.Error) {
+                return Result.Error(
+                    AppError.LocalStorageError
+                )
+            }
+        }
+        return Result.Success(Unit)
+
     }
 }

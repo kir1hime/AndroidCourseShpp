@@ -1,8 +1,9 @@
 package com.example.androidcourseshpp.di.usecases
 
 import com.example.androidcourseshpp.domain.repository.AuthRepository
+import com.example.androidcourseshpp.domain.repository.ContactsLocalRepository
 import com.example.androidcourseshpp.domain.repository.GalleryRepository
-import com.example.androidcourseshpp.domain.repository.UserLocalRepository
+import com.example.androidcourseshpp.domain.repository.UserLocalDataRepository
 import com.example.androidcourseshpp.domain.usecase.auth.LogOutUseCase
 import com.example.androidcourseshpp.domain.usecase.auth.SignInUseCase
 import com.example.androidcourseshpp.domain.usecase.auth.SignUpUseCase
@@ -20,31 +21,33 @@ class AuthUseCasesModule {
     @Provides
     fun provideLogOutUseCase(
         authRepository: AuthRepository,
-        userLocalRepository: UserLocalRepository,
-        galleryRepository: GalleryRepository
+        userLocalDataRepository: UserLocalDataRepository,
+        galleryRepository: GalleryRepository,
+        contactsLocalRepository: ContactsLocalRepository
     ) = LogOutUseCase(
         authRepository = authRepository,
-        userLocalRepository = userLocalRepository,
-        galleryRepository = galleryRepository
+        userLocalDataRepository = userLocalDataRepository,
+        galleryRepository = galleryRepository,
+        contactsLocalRepository = contactsLocalRepository
     )
 
     @Singleton
     @Provides
     fun provideSingInUseCase(
         authRepository: AuthRepository,
-        userLocalRepository: UserLocalRepository
+        userLocalDataRepository: UserLocalDataRepository
     ) = SignInUseCase(
         authRepository = authRepository,
-        userLocalRepository = userLocalRepository
+        userLocalDataRepository = userLocalDataRepository
     )
 
     @Singleton
     @Provides
     fun provideSignUpUseCase(
         authRepository: AuthRepository,
-        userLocalRepository: UserLocalRepository
+        userLocalDataRepository: UserLocalDataRepository
     ) = SignUpUseCase(
         authRepository = authRepository,
-        userLocalRepository = userLocalRepository
+        userLocalDataRepository = userLocalDataRepository
     )
 }

@@ -36,6 +36,7 @@ open class BaseRetrofitService {
     }
 }
 
-class ConnectionException(cause: Exception) : Exception(cause)
+class ConnectionException(e: Exception) : Exception(e)
 class BackendException(message: String) : Exception(message)
-class ResponseProcessingException(cause: Exception) : Exception(cause)
+class ResponseProcessingException(e: Exception) : Exception(e)
+

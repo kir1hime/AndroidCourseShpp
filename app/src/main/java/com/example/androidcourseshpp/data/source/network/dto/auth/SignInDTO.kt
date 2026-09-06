@@ -1,7 +1,7 @@
 package com.example.androidcourseshpp.data.source.network.dto.auth
 
-import com.google.gson.annotations.SerializedName
 import com.example.androidcourseshpp.data.source.network.model.auth.SignInResponseModel
+import com.google.gson.annotations.SerializedName
 
 class SignInRequestDTO(
     @SerializedName("email")

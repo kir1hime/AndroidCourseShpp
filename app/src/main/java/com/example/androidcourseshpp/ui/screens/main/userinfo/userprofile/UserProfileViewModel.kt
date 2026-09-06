@@ -1,12 +1,14 @@
 package com.example.androidcourseshpp.ui.screens.main.userinfo.userprofile
 
 
+import androidx.lifecycle.viewModelScope
 import com.example.androidcourseshpp.domain.usecase.auth.LogOutUseCase
-import com.example.androidcourseshpp.domain.usecase.userlocal.GetUserAvatarUseCase
+import com.example.androidcourseshpp.domain.usecase.user.GetUserAvatarUseCase
 import com.example.androidcourseshpp.ui.BaseViewModel
 import com.example.androidcourseshpp.ui.screens.model.UserModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
+import kotlinx.coroutines.launch
 
 
 @HiltViewModel
@@ -59,8 +61,10 @@ class UserProfileViewModel @Inject constructor(
 
 
     private fun logOut() {
-        logOutUseCase()
-        setEffect(UserProfileContract.Effect.NavigateToSignInScreen)
+        viewModelScope.launch {
+            logOutUseCase()
+            setEffect(UserProfileContract.Effect.NavigateToSignInScreen)
+        }
     }
 
     private fun navigateToMyContacts() {

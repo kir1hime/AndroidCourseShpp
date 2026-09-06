@@ -43,42 +43,35 @@ class SignUpExtendedViewModel @Inject constructor(
         signUpUserInfo: SignUpModel,
         avatar: Bitmap
     ) {
-        if (isInputDataCorrect(userName, mobilePhone)) {
-            processNetworkExceptions(
-                toExecute = {
-                    setState { copy(isProgressBarShowed = true) }
-
-                    val userInfo = signUpUseCase(
-                        SignUpInfo(
-                            userName = userName,
-                            mobilePhone = mobilePhone,
-                            email = signUpUserInfo.email,
-                            password = signUpUserInfo.password,
-                            avatar = avatar
-                        ),
-                        toRememberUser = signUpUserInfo.toRememberUser
-                    ).toUserModel()
-
-                    setEffect(
-                        SignUpExtendedContract.Effect.NavigateToUserProfileScreen(
-                            userInfo
-                        )
-                    )
-                },
-                processBackendException = {
-                    setEffect(SignUpExtendedContract.Effect.ShowToast(R.string.email_already_registered_error))
-                },
-                processResponseProcessingException = {
-                    setEffect(SignUpExtendedContract.Effect.ShowToast(R.string.server_response_error))
-                },
-                processConnectionException = {
-                    setEffect(SignUpExtendedContract.Effect.ShowToast(R.string.connection_error))
-                },
-                finally = {
-                    setState { copy(isProgressBarShowed = false) }
-                }
-            )
+        if (!isInputDataCorrect(userName, mobilePhone)) {
+            return
         }
+        executeUseCase(
+            toExecute = {
+                setState { copy(isProgressBarShowed = true) }
+                signUpUseCase(
+                    SignUpInfo(
+                        userName = userName,
+                        mobilePhone = mobilePhone,
+                        email = signUpUserInfo.email,
+                        password = signUpUserInfo.password,
+                        avatar = avatar
+                    ),
+                    toRememberUser = signUpUserInfo.toRememberUser
+                )
+            },
+            onSuccess = { userInfo ->
+                setEffect(
+                    SignUpExtendedContract.Effect.NavigateToUserProfileScreen(
+                        userInfo.toUserModel()
+                    )
+                )
+            },
+            onBackendError = { setEffect(SignUpExtendedContract.Effect.ShowToast(R.string.email_already_registered_error)) },
+            onConnectionError = { setEffect(SignUpExtendedContract.Effect.ShowToast(R.string.connection_error)) },
+            onResponseProcessingError = { setEffect(SignUpExtendedContract.Effect.ShowToast(R.string.server_response_error)) },
+            finally = { setState { copy(isProgressBarShowed = false) } }
+        )
     }
 
     private fun isInputDataCorrect(

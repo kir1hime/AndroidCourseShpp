@@ -1,9 +1,10 @@
 package com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist
 
-import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.model.ContactItem
+import androidx.annotation.StringRes
 import com.example.androidcourseshpp.ui.ViewEffect
 import com.example.androidcourseshpp.ui.ViewEvent
 import com.example.androidcourseshpp.ui.ViewState
+import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.model.ContactItem
 
 class ContactListContract {
 
@@ -11,33 +12,26 @@ class ContactListContract {
         data object OnArrowBackButtonClicked : Event
         data object OnAddContactClicked : Event
         data object OnSearchButtonClicked : Event
-        data object OnHideSearchButtonCLicked : Event
-        data object LoadContactList : Event
+        data object OnHideSearchButtonClicked : Event
+        data object OnReloadContacts : Event
+        data object OnTryAgainButtonClicked : Event
+        data object OnGetBackDeletedContacts : Event
         data class OnSearchBarTextChanged(val input: String) : Event
-
-        data class SearchModeSwitched(val isSearchModeEnabled: Boolean) : Event
-        data class ContactItemAdded(val contactItem: ContactItem) :
-            Event
-
-        data class OnItemClicked(
-            val contact: ContactItem
-        ) : Event
-
-        data class ContactItemDeleted(
-            val contactItem: ContactItem
-        ) : Event
-
-        data class OnDeleteSelectedItemsFloatingButtonClicked(
-            val contactItems: List<ContactItem>
-        ) : Event
+        data class OnSelectModeChange(val isSelectMode: Boolean) : Event
+        data class OnSearchModeSwitched(val isSearchModeEnabled: Boolean) : Event
+        data class OnGetBackDeletedContact(val contactItem: ContactItem) : Event
+        data class OnItemClicked(val contact: ContactItem) : Event
+        data class OnContactItemDeleted(val contactItem: ContactItem) : Event
+        data class OnDeleteSelectedItemsFloatingButtonClicked(val contactItems: List<ContactItem>) : Event
     }
 
     sealed interface Effect : ViewEffect {
         data object ShowSearchBar : Effect
+        data object HideRefreshProgressBar : Effect
         data object HideSearchBar : Effect
         data object NavigateToUserProfileScreen : Effect
         data object NavigateToAddContactsScreen : Effect
-        data class ShowToast(val toastMessageResId: Int) : Effect
+        data class ShowToast(@param:StringRes val toastMessageResId: Int) : Effect
         data class NavigateToDetailsScreen(
             val contact: ContactItem
         ) : Effect
@@ -49,6 +43,7 @@ class ContactListContract {
         val contactList: List<ContactItem>,
         val isProgressBarShowed: Boolean,
         val isTryAgainButtonShowed: Boolean,
-        val isSearchMode: Boolean
+        val isSearchMode: Boolean,
+        val isSelectMode: Boolean,
     ) : ViewState
 }

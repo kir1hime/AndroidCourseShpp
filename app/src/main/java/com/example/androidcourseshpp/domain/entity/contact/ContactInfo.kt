@@ -7,3 +7,11 @@ data class ContactInfo(
     val address: String,
     val avatarURL: String
 )
+
+data class SyncContactInfo(val contactInfo: ContactInfo, val syncState: SyncAction)
+
+enum class SyncAction {
+    SYNCED,
+    ADDED,
+    DELETED
+}

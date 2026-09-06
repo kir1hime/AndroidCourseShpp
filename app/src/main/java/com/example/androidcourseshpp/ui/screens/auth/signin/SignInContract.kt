@@ -1,5 +1,6 @@
 package com.example.androidcourseshpp.ui.screens.auth.signin
 
+import androidx.annotation.StringRes
 import com.example.androidcourseshpp.ui.ViewEffect
 import com.example.androidcourseshpp.ui.ViewEvent
 import com.example.androidcourseshpp.ui.ViewState
@@ -21,7 +22,7 @@ class SignInContract {
 
         data class NavigateToUserProfileScreen(val userInfo: UserModel) : Effect
 
-        data class ShowToast(val toastMessageResId: Int) : Effect
+        data class ShowToast(@param:StringRes val toastMessageResId: Int) : Effect
     }
 
     data class UIState(

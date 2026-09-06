@@ -1,18 +1,23 @@
 package com.example.androidcourseshpp.domain.usecase.auth
 
 import com.example.androidcourseshpp.domain.repository.AuthRepository
+import com.example.androidcourseshpp.domain.repository.ContactsLocalRepository
 import com.example.androidcourseshpp.domain.repository.GalleryRepository
-import com.example.androidcourseshpp.domain.repository.UserLocalRepository
+import com.example.androidcourseshpp.domain.repository.UserLocalDataRepository
 
 class LogOutUseCase(
     private val authRepository: AuthRepository,
-    private val userLocalRepository: UserLocalRepository,
-    private val galleryRepository: GalleryRepository
+    private val userLocalDataRepository: UserLocalDataRepository,
+    private val galleryRepository: GalleryRepository,
+    private val contactsLocalRepository: ContactsLocalRepository
 ) {
-    operator fun invoke() {
+    suspend operator fun invoke() {
         authRepository.clearTokens()
-        userLocalRepository.clearUserServerId()
-        userLocalRepository.clearUserAvatarUrl()
+        userLocalDataRepository.clearUserServerId()
+        userLocalDataRepository.clearUserAvatarUrl()
+        userLocalDataRepository.setUserRememberState(false)
         galleryRepository.clearGalleryPhotos()
+        contactsLocalRepository.clearContacts()
+        contactsLocalRepository.setDatabaseSynced(false)
     }
 }
