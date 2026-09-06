@@ -1,3 +1,8 @@
 package com.example.androidcourseshpp.data.source.network.dto
 
-data class ErrorResponseDTO(val message: String)
+import com.google.gson.annotations.SerializedName
+
+data class ErrorResponseDTO(
+    @SerializedName("message")
+    val message: String
+)

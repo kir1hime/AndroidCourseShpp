@@ -133,8 +133,8 @@
         app:helperTextTextColor="@color/error_text_color"
         app:hintTextAppearance="@style/hint_style"
         app:hintTextColor="@color/input_hint_color"
-        app:layout_constraintBottom_toTopOf="@id/buttonGoogle"
-        app:layout_constraintTop_toBottomOf="@id/textViewFillOutTheProfile"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="RtlSymmetry">
 
         <com.google.android.material.textfield.TextInputEditText

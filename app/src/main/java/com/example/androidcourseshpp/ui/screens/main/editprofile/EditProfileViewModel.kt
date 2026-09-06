@@ -44,7 +44,6 @@ class EditProfileViewModel @Inject constructor(
             is EditProfileContract.Event.DateOfBirthdayUpdated -> updateDateOfBirthday(event.dateOfBirthday)
             is EditProfileContract.Event.OnSaveButtonClicked -> {
                 updateUserInfo()
-                navigateToUserProfileScreen()
             }
         }
     }
@@ -108,24 +107,22 @@ class EditProfileViewModel @Inject constructor(
     }
 
     private fun updateUserInfo() {
-        processNetworkExceptions(
-            toExecute = {
-                setState { copy(isProgressBarShowed = true) }
-                if (state.value.isUserDataChanged) {
+        if (state.value.isUserDataChanged) {
+            executeUseCase(
+                toExecute = {
+                    setState { copy(isProgressBarShowed = true) }
                     updateUserInfoUseCase(state.value.userInfo.toUserInfo())
-                }
-            },
-            processBackendException = {
-                setEffect(EditProfileContract.Effect.ShowToast(R.string.generic_error))
-            },
-            processResponseProcessingException = {
-                setEffect(EditProfileContract.Effect.ShowToast(R.string.generic_error))
-            },
-            processConnectionException = {
-                setEffect(EditProfileContract.Effect.ShowToast(R.string.connection_error))
-            },
-            finally = { setState { copy(isProgressBarShowed = false) } }
-        )
+                },
+                onSuccess = { navigateToUserProfileScreen() },
+                onRemoteError = {
+                    setEffect(EditProfileContract.Effect.ShowToast(R.string.generic_error))
+                },
+                onConnectionError = {
+                    setEffect(EditProfileContract.Effect.ShowToast(R.string.connection_error))
+                },
+                finally = { setState { copy(isProgressBarShowed = false) } }
+            )
+        }
     }
 
     private fun navigateToUserProfileScreen() {

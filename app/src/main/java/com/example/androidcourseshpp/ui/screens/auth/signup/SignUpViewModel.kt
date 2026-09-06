@@ -1,12 +1,12 @@
 package com.example.androidcourseshpp.ui.screens.auth.signup
 
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.ui.BaseViewModel
 import com.example.androidcourseshpp.ui.screens.auth.signup.model.SignUpModel
 import com.example.androidcourseshpp.ui.utils.PasswordErrorMessagesContainer
 import com.example.androidcourseshpp.ui.utils.SignUpValidator
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
 
 @HiltViewModel
@@ -45,7 +45,7 @@ class SignUpViewModel @Inject constructor() :
 
         if (!checkPassword(password)) {
             isPasswordCorrect = false
-            setState { copy(passwordHelperTextResId = definePasswordErrorMessage(password)) }
+            setState { copy(passwordHelperTextResId = definePasswordErrorMessageResId(password)) }
         } else {
             isPasswordCorrect = true
             setState { copy(passwordHelperTextResId = R.string.no_error) }
@@ -67,7 +67,7 @@ class SignUpViewModel @Inject constructor() :
     /**
      * function checks all types of password checks and returns certain error text
      * */
-    private fun definePasswordErrorMessage(
+    private fun definePasswordErrorMessageResId(
         inputPassword: String,
     ): Int {
 

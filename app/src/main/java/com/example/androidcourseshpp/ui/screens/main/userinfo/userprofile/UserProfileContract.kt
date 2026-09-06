@@ -1,5 +1,6 @@
 package com.example.androidcourseshpp.ui.screens.main.userinfo.userprofile
 
+import androidx.annotation.StringRes
 import com.example.androidcourseshpp.ui.ViewEffect
 import com.example.androidcourseshpp.ui.ViewEvent
 import com.example.androidcourseshpp.ui.ViewState
@@ -18,7 +19,7 @@ class UserProfileContract {
         data object NavigateToSignInScreen : Effect
         data object NavigateToContactList : Effect
         data class NavigateToEditProfileScreen(val userInfo: UserModel) : Effect
-        data class ShowToast(val toastMessageResId: Int) : Effect
+        data class ShowToast(@param:StringRes val toastMessageResId: Int) : Effect
     }
 
 

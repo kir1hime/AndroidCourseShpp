@@ -39,6 +39,8 @@
 
     <!-- Edit profile -->
     <color name="main_background_color">@color/bottom_view_color</color>
+    <color name="edit_profile_inputs_background_color">@color/bottom_view_color</color>
     <color name="edit_profile_inputs_text_color">#FFFFFF</color>
 
+    <color name="add_contact_background_color">@color/bottom_view_color</color>
 </resources>

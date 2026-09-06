@@ -26,7 +26,7 @@ class SignInViewModel @Inject constructor(
     override fun handleEvent(event: SignInContract.Event) {
         when (event) {
             is SignInContract.Event.OnSignUpLabelClicked -> navigateToSignUpScreen()
-            is SignInContract.Event.OnLoginButtonClicked -> logInUser(
+            is SignInContract.Event.OnLoginButtonClicked -> signIn(
                 email = event.email,
                 password = event.password,
                 toRememberUser = event.toRememberUser
@@ -34,22 +34,25 @@ class SignInViewModel @Inject constructor(
         }
     }
 
-    private fun logInUser(email: String, password: String, toRememberUser: Boolean) {
-        processNetworkExceptions(
+    private fun signIn(email: String, password: String, toRememberUser: Boolean) {
+        executeUseCase(
             toExecute = {
                 setState { copy(isProgressBarShowed = true) }
-                val userInfo =
-                    signInUseCase(SignInInfo(email, password), toRememberUser).toUserModel()
-
+                signInUseCase(
+                    signInInfo = SignInInfo(email = email, password = password),
+                    toRememberUser = toRememberUser
+                )
+            },
+            onSuccess = { userInfo ->
                 setState {
                     copy(
                         eMailHelperTextResId = R.string.no_error,
                         passwordHelperTextResId = R.string.no_error
                     )
                 }
-                setEffect(SignInContract.Effect.NavigateToUserProfileScreen(userInfo))
+                setEffect(SignInContract.Effect.NavigateToUserProfileScreen(userInfo.toUserModel()))
             },
-            processBackendException = {
+            onBackendError = {
                 setState {
                     copy(
                         eMailHelperTextResId = R.string.incorrect_input_data,
@@ -58,17 +61,9 @@ class SignInViewModel @Inject constructor(
                 }
                 setEffect(SignInContract.Effect.ShowToast(R.string.backend_error))
             },
-            processResponseProcessingException = {
-                setEffect(SignInContract.Effect.ShowToast(R.string.server_response_error))
-            },
-            processConnectionException = {
-                setEffect(SignInContract.Effect.ShowToast(R.string.connection_error))
-            },
-            finally = {
-                setState {
-                    copy(isProgressBarShowed = false)
-                }
-            }
+            onConnectionError = { setEffect(SignInContract.Effect.ShowToast(R.string.connection_error)) },
+            onResponseProcessingError = { setEffect(SignInContract.Effect.ShowToast(R.string.server_response_error)) },
+            finally = { setState { copy(isProgressBarShowed = false) } }
         )
     }
 

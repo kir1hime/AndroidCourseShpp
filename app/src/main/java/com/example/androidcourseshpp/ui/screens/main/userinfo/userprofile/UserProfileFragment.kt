@@ -4,7 +4,7 @@ import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.activity.OnBackPressedCallback
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.androidcourseshpp.R
@@ -26,13 +26,6 @@ class UserProfileFragment :
 
     private val viewModel by viewModels<UserProfileViewModel>()
 
-    private val onBackPressedCallback: OnBackPressedCallback =
-        object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                requireActivity().finish()
-            }
-        }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -40,15 +33,8 @@ class UserProfileFragment :
         updateUserInfo()
         setListeners()
         setObservers()
-        setOnBackPressedListener()
     }
 
-    private fun setOnBackPressedListener() {
-        requireActivity().onBackPressedDispatcher.addCallback(
-            viewLifecycleOwner,
-            onBackPressedCallback
-        )
-    }
 
     private fun setUserInfo() {
         val userInfo = requireActivity().intent.getParcelableExtra<UserModel>(USER_INFO)
@@ -81,6 +67,7 @@ class UserProfileFragment :
     }
 
     private fun setObservers() = with(binding) {
+        var toast: Toast? = null
         collectFlowWithLifecycle(viewModel.effect) { effect ->
             when (effect) {
                 is UserProfileContract.Effect.NavigateToContactList -> moveToMyContactsScreen()
@@ -89,7 +76,11 @@ class UserProfileFragment :
                     effect.userInfo
                 )
 
-                is UserProfileContract.Effect.ShowToast -> makeToast(effect.toastMessageResId)
+                is UserProfileContract.Effect.ShowToast -> {
+                    toast?.cancel()
+                    toast = makeToast(effect.toastMessageResId)
+                    toast.show()
+                }
             }
         }
 

@@ -172,7 +172,7 @@
         app:layout_constraintTop_toBottomOf="@id/textViewNoResultsFound" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingButtonArrowTop"
+        android:id="@+id/floatingButtonScrollUp"
         android:layout_width="@dimen/floating_arrow_top_bt_size"
         android:layout_height="@dimen/floating_arrow_top_bt_size"
         android:layout_marginEnd="@dimen/main_margin_side"

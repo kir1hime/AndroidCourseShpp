@@ -24,7 +24,7 @@ object ContactItemDiffUtilCallback : DiffUtil.ItemCallback<SelectableContactItem
         oldItem: SelectableContactItem,
         newItem: SelectableContactItem
     ): Any? {
-        if (oldItem.item == newItem.item && oldItem.isSelectionModeEnabled != newItem.isSelectionModeEnabled) {
+        if (oldItem.item == newItem.item && oldItem.isSelectMode != newItem.isSelectMode) {
             return SELECTION_MODE_PAYLOAD
         }
         return super.getChangePayload(oldItem, newItem)

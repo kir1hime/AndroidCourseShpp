@@ -7,11 +7,6 @@ import kotlinx.coroutines.flow.Flow
 
 class GetGalleryPhotosUseCase(private val galleryRepository: GalleryRepository) {
 
-    operator fun invoke(): Flow<List<GalleryItemInfo>> {
-        val photos: Flow<List<GalleryItemInfo>> =
-            galleryRepository.galleryPhotos
-
-        return photos
-    }
+    operator fun invoke(): Flow<List<GalleryItemInfo>> = galleryRepository.galleryPhotos
 
 }

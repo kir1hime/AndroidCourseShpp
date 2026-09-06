@@ -1,5 +1,6 @@
 package com.example.androidcourseshpp.ui.screens.main.addcontacts
 
+import androidx.annotation.StringRes
 import com.example.androidcourseshpp.ui.ViewEffect
 import com.example.androidcourseshpp.ui.ViewEvent
 import com.example.androidcourseshpp.ui.ViewState
@@ -12,7 +13,7 @@ class AddContactsContract {
         data object OnSearchButtonClicked : Event
         data object OnHideSearchButtonClicked : Event
         data object OnArrowTopFloatingButtonClicked : Event
-        data object LoadUserList : Event
+        data object OnTryAgainButtonClicked : Event
         data class OnUserItemClicked(val userItem: UserItem) : Event
         data class OnSearchBarTextChanged(val input: String) : Event
         data class SearchModeSwitched(val isSearchModeEnabled: Boolean) : Event
@@ -28,15 +29,14 @@ class AddContactsContract {
         data object HideSearchBar : Effect
         data object ScrollUserListToTop : Effect
         data class NavigateToDetailsScreen(val userItem: UserItem) : Effect
-        data class NavigateToContactListScreen(val isContactListChanged: Boolean) : Effect
-        data class ShowToast(val toastMessageResId: Int) : Effect
+        data object NavigateToContactListScreen : Effect
+        data class ShowToast(@param:StringRes val toastMessageResId: Int) : Effect
     }
 
     data class UIState(
         val userList: List<UserItem>,
         val isProgressBarShowed: Boolean,
         val isTryAgainButtonShowed: Boolean,
-        val isContactListChanged: Boolean,
         val isSearchMode: Boolean
     ) : ViewState
 }

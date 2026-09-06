@@ -2,19 +2,17 @@ package com.example.androidcourseshpp.ui.screens.main.userinfo
 
 import android.os.Bundle
 import android.view.View
+import androidx.activity.addCallback
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.databinding.FragmentUserinfoBinding
 import com.example.androidcourseshpp.ui.BaseFragment
 import com.example.androidcourseshpp.ui.screens.main.userinfo.adapter.UserInfoAdapter
-import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.ContactListFragment
 import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.Searchable
-import com.example.androidcourseshpp.ui.screens.main.userinfo.userprofile.UserProfileFragment
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
 class UserInfoFragment : BaseFragment<FragmentUserinfoBinding>(FragmentUserinfoBinding::inflate),
     TabSwitchable {
-    private val tabFragments = listOf(UserProfileFragment(), ContactListFragment())
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -22,8 +20,9 @@ class UserInfoFragment : BaseFragment<FragmentUserinfoBinding>(FragmentUserinfoB
         setListeners()
     }
 
-    private fun setListeners() = with(binding) {
-        tabLayoutUserInfo.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+    private fun setListeners() {
+        binding.tabLayoutUserInfo.addOnTabSelectedListener(object :
+            TabLayout.OnTabSelectedListener {
 
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 if (tab?.position == Tab.USER_PROFILE.ordinal) {
@@ -31,7 +30,6 @@ class UserInfoFragment : BaseFragment<FragmentUserinfoBinding>(FragmentUserinfoB
                     childFragmentManager.fragments.find { fragment ->
                         if (fragment is Searchable) {
                             fragment.hideSearchBar()
-                            true
                         }
                         false
                     }
@@ -44,10 +42,17 @@ class UserInfoFragment : BaseFragment<FragmentUserinfoBinding>(FragmentUserinfoB
             override fun onTabReselected(tab: TabLayout.Tab?) {
             }
         })
+
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+            when (Tab.entries[binding.viewPagerUserInformation.currentItem]) {
+                Tab.USER_PROFILE -> requireActivity().finish()
+                Tab.CONTACTS -> moveToUserProfileTab()
+            }
+        }
     }
 
     private fun initViewPager() = with(binding) {
-        val adapter = UserInfoAdapter(this@UserInfoFragment, tabFragments)
+        val adapter = UserInfoAdapter(this@UserInfoFragment)
         viewPagerUserInformation.adapter = adapter
         TabLayoutMediator(tabLayoutUserInfo, viewPagerUserInformation) { tabItem, position ->
 

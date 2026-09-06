@@ -1,7 +1,9 @@
 package com.example.androidcourseshpp.di.usecases
 
-import com.example.androidcourseshpp.domain.repository.ContactsRepository
+import com.example.androidcourseshpp.domain.repository.ContactsLocalRepository
+import com.example.androidcourseshpp.domain.repository.ContactsNetworkRepository
 import com.example.androidcourseshpp.domain.usecase.contacts.AddContactUseCase
+import com.example.androidcourseshpp.domain.usecase.contacts.AddContactsUseCase
 import com.example.androidcourseshpp.domain.usecase.contacts.DeleteContactUseCase
 import com.example.androidcourseshpp.domain.usecase.contacts.DeleteContactsUseCase
 import com.example.androidcourseshpp.domain.usecase.contacts.GetContactsUseCase
@@ -17,21 +19,31 @@ class ContactsUseCasesModule {
 
     @Singleton
     @Provides
-    fun provideAddContactUseCase(contactsRepository: ContactsRepository) =
-        AddContactUseCase(contactsRepository)
+    fun provideAddContactUseCase(contactsLocalRepository: ContactsLocalRepository) =
+        AddContactUseCase(contactsLocalRepository = contactsLocalRepository)
 
     @Singleton
     @Provides
-    fun provideDeleteContactUseCase(contactsRepository: ContactsRepository) =
-        DeleteContactUseCase(contactsRepository)
+    fun provideAddContactsUseCase(addContactUseCase: AddContactUseCase) =
+        AddContactsUseCase(addContactUseCase = addContactUseCase)
 
     @Singleton
     @Provides
-    fun provideDeleteContactsUseCase(contactsRepository: ContactsRepository) =
-        DeleteContactsUseCase(contactsRepository)
+    fun provideDeleteContactUseCase(contactsLocalRepository: ContactsLocalRepository) =
+        DeleteContactUseCase(contactsLocalRepository = contactsLocalRepository)
 
     @Singleton
     @Provides
-    fun provideGetContactsUseCase(contactsRepository: ContactsRepository) =
-        GetContactsUseCase(contactsRepository)
+    fun provideDeleteContactsUseCase(deleteContactUseCase: DeleteContactUseCase) =
+        DeleteContactsUseCase(deleteContactUseCase = deleteContactUseCase)
+
+    @Singleton
+    @Provides
+    fun provideGetContactsUseCase(
+        contactsLocalRepository: ContactsLocalRepository,
+        contactsNetworkRepository: ContactsNetworkRepository
+    ) = GetContactsUseCase(
+        contactsLocalRepository = contactsLocalRepository,
+        contactsNetworkRepository = contactsNetworkRepository
+    )
 }

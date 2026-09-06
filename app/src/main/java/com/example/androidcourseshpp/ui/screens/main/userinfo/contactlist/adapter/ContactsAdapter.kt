@@ -42,8 +42,9 @@ class ContactsAdapter(private val actions: ContactItemActions) :
             setListeners(contactItem)
         }
 
-        fun switchComponentsVisibility(contactItem: SelectableContactItem) = with(binding) {
-            if (contactItem.isSelectionModeEnabled) {
+        private fun switchComponentsVisibility(contactItem: SelectableContactItem) = with(binding) {
+
+            if (contactItem.isSelectMode) {
                 contactListItem.setBackgroundResource(R.drawable.contacts_item_background_selected_mode)
                 checkBoxIsSelected.visibility = View.VISIBLE
                 imageButtonDelete.visibility = View.GONE
@@ -53,18 +54,17 @@ class ContactsAdapter(private val actions: ContactItemActions) :
                 checkBoxIsSelected.visibility = View.GONE
                 imageButtonDelete.visibility = View.VISIBLE
 
-                actions.hideFloatingDeleteButton()
                 selectedItems.clear()
             }
         }
 
         private fun setListeners(contactItem: SelectableContactItem) = with(binding) {
             imageButtonDelete.setOnClickListener {
-                actions.deleteContactItem(contactItem.item, adapterPosition)
+                actions.deleteContactItem(contactItem.item, absoluteAdapterPosition)
             }
             contactListItem.setOnClickListener {
 
-                if (contactItem.isSelectionModeEnabled) {
+                if (contactItem.isSelectMode) {
                     onItemClickListenerInSelectableMode(contactItem)
 
                 } else {
@@ -77,7 +77,6 @@ class ContactsAdapter(private val actions: ContactItemActions) :
             }
 
             contactListItem.setOnLongClickListener {
-                actions.showFloatingDeleteButton()
                 selectedItems.add(contactItem.item)
                 changeMode(true)
                 true
@@ -99,8 +98,9 @@ class ContactsAdapter(private val actions: ContactItemActions) :
             }
         }
 
-        private fun changeMode(selectionModeEnabled: Boolean) {
-            val newList = currentList.map { it.copy(isSelectionModeEnabled = selectionModeEnabled) }
+        private fun changeMode(isSelectMode: Boolean) {
+            actions.selectModeChangingListener(isSelectMode)
+            val newList = currentList.map { it.copy(isSelectMode = isSelectMode) }
             submitList(newList)
         }
     }

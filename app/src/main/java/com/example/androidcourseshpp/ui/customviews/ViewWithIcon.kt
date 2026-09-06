@@ -2,6 +2,7 @@ package com.example.androidcourseshpp.ui.customviews
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Paint
@@ -83,12 +84,18 @@ class ViewWithIcon @JvmOverloads constructor(
             letterSpacing = textLetterSpacing
 
             typeface = if (textFontFamily is Int) {
-                Typeface.create(
-                    ResourcesCompat.getFont(context, (textFontFamily as Int)),
-                    textStyle
-                )
+                try {
+                    Typeface.create(
+                        ResourcesCompat.getFont(context, (textFontFamily as Int)),
+                        textStyle
+                    )
+                } catch (_: Resources.NotFoundException) {
+                    Typeface.defaultFromStyle(textStyle)
+                }
+            } else if (textFontFamily.toString().isNotEmpty()) {
+                Typeface.create(textFontFamily.toString(), textStyle)
             } else {
-                Typeface.create(textFontFamily.toString(), Typeface.NORMAL)
+                Typeface.defaultFromStyle(textStyle)
             }
         }
     }
@@ -253,8 +260,8 @@ class ViewWithIcon @JvmOverloads constructor(
 
             val textFontFamilyRes = getResourceId(2, DEFAULT_INT_VALUE)
             textFontFamily =
-                if (textFontFamilyRes != DEFAULT_INT_VALUE) textFontFamilyRes
-                else getString(2).toString()
+                if (textFontFamilyRes != -1) textFontFamilyRes
+                else getString(2) ?: ""
 
             textLetterSpacing = getFloat(3, DEFAULT_FLOAT_VALUE)
 
@@ -325,6 +332,23 @@ class ViewWithIcon @JvmOverloads constructor(
             )
 
         }
+    }
+
+    private fun initAttributesByDefault() {
+        iconWidth = DEFAULT_FLOAT_VALUE
+        iconHeight = DEFAULT_FLOAT_VALUE
+
+        iconColor = DEFAULT_INT_VALUE
+
+        iconPaddingStart = DEFAULT_FLOAT_VALUE
+        iconPaddingEnd = DEFAULT_FLOAT_VALUE
+        iconPaddingTop = DEFAULT_FLOAT_VALUE
+        iconPaddingBottom = DEFAULT_FLOAT_VALUE
+
+        textPaddingStart = DEFAULT_FLOAT_VALUE
+        textPaddingEnd = DEFAULT_FLOAT_VALUE
+        textPaddingTop = DEFAULT_FLOAT_VALUE
+        textPaddingBottom = DEFAULT_FLOAT_VALUE
     }
 
     companion object {

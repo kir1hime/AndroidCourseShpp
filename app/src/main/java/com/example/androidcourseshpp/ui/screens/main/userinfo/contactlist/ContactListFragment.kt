@@ -3,7 +3,7 @@ package com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
-import androidx.activity.OnBackPressedCallback
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.databinding.FragmentContactlistBinding
 import com.example.androidcourseshpp.ui.BaseFragment
-import com.example.androidcourseshpp.ui.screens.main.addcontacts.TO_RELOAD_CONTACT_LIST
 import com.example.androidcourseshpp.ui.screens.main.userinfo.TabSwitchable
 import com.example.androidcourseshpp.ui.screens.main.userinfo.UserInfoFragmentDirections
 import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.adapter.ContactItemActions
@@ -36,56 +35,32 @@ class ContactListFragment :
 
     private lateinit var sharedContactProfilePhoto: ImageView
 
-    private val onBackPressedCallback: OnBackPressedCallback =
-        object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                moveBackToUserProfileScreen()
-            }
-        }
-
     private lateinit var adapter: ContactsAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        reloadContactList()
 
         createContactListAdapter()
         initRecyclerView()
-        initSwipeToDeleteOfContactItem()
-
+        initDeleteContactSwipe()
         setListeners()
         setObservers()
-        setOnBackPressedListener()
-    }
 
-    private fun reloadContactList() {
-        val savedStateHandle = findNavController().currentBackStackEntry?.savedStateHandle
-
-        val toReloadLiveData =
-            savedStateHandle?.getLiveData<Boolean>(TO_RELOAD_CONTACT_LIST)
-
-        toReloadLiveData?.observe(viewLifecycleOwner) {
-            viewModel.setEvent(ContactListContract.Event.LoadContactList)
-            savedStateHandle.remove<Boolean>(
-                TO_RELOAD_CONTACT_LIST
-            )
-
-        }
     }
 
     private fun createContactListAdapter() {
         adapter = ContactsAdapter(getItemActions())
     }
 
-    private fun getItemActions(): ContactItemActions = with(binding) {
+    private fun getItemActions(): ContactItemActions {
         return object : ContactItemActions {
             override fun deleteContactItem(contactItem: ContactItem, position: Int) {
                 viewModel.setEvent(
-                    ContactListContract.Event.ContactItemDeleted(
+                    ContactListContract.Event.OnContactItemDeleted(
                         contactItem
                     )
                 )
-                showUndoDeletingItemSnackBar(contactItem)
+                showUndoDeletingContactSnackBar(contactItem)
             }
 
             override fun showContactItemDetails(contactItem: ContactItem, avatar: ImageView) {
@@ -93,21 +68,11 @@ class ContactListFragment :
                 viewModel.setEvent(ContactListContract.Event.OnItemClicked(contactItem))
             }
 
-            override fun showFloatingDeleteButton() {
-                floatingButtonDeleteSelectedItems.visibility = View.VISIBLE
-            }
-
-            override fun hideFloatingDeleteButton() {
-                floatingButtonDeleteSelectedItems.visibility = View.GONE
+            override fun selectModeChangingListener(isSelectMode: Boolean) {
+                setSelectModeViewsVisibility(isSelectMode)
+                viewModel.setEvent(ContactListContract.Event.OnSelectModeChange(isSelectMode))
             }
         }
-    }
-
-    private fun setOnBackPressedListener() {
-        requireActivity().onBackPressedDispatcher.addCallback(
-            viewLifecycleOwner,
-            onBackPressedCallback
-        )
     }
 
     private fun initRecyclerView() = with(binding.recyclerViewContacts) {
@@ -121,8 +86,40 @@ class ContactListFragment :
         )
     }
 
-    private fun setObservers() = with(binding) {
+    private fun setObservers() {
+        collectState()
+        collectEffects()
+    }
 
+    private fun collectEffects() {
+        var toast: Toast? = null
+        collectFlowWithLifecycle(viewModel.effect) { effect ->
+            when (effect) {
+                is ContactListContract.Effect.HideSearchBar -> hideSearchBar()
+                is ContactListContract.Effect.ShowSearchBar -> showSearchBar()
+                is ContactListContract.Effect.HideRefreshProgressBar -> binding.swipeRefresContactshLayout.isRefreshing =
+                    false
+
+                is ContactListContract.Effect.NavigateToUserProfileScreen -> moveBackToUserProfileScreen()
+                is ContactListContract.Effect.NavigateToAddContactsScreen -> moveToAddContactsScreen()
+                is ContactListContract.Effect.NavigateToDetailsScreen -> moveToDetailsScreen(
+                    effect.contact
+                )
+
+                is ContactListContract.Effect.ShowUndoDeletingItemSnackBar -> showUndoDeletingContactSnackBar(
+                    effect.deletedItem
+                )
+
+                is ContactListContract.Effect.ShowToast -> {
+                    toast?.cancel()
+                    toast = makeToast(effect.toastMessageResId)
+                    toast.show()
+                }
+            }
+        }
+    }
+
+    private fun collectState() = with(binding) {
         collectFlowWithLifecycle(viewModel.state) { state ->
             val contactList = state.contactList
 
@@ -140,7 +137,7 @@ class ContactListFragment :
                     adapter.submitList(filteredContactList.map { contactItem ->
                         SelectableContactItem(
                             contactItem,
-                            false
+                            state.isSelectMode
                         )
                     })
                 }
@@ -148,7 +145,7 @@ class ContactListFragment :
                 adapter.submitList(contactList.map { contactItem ->
                     SelectableContactItem(
                         contactItem,
-                        false
+                        state.isSelectMode
                     )
                 })
             }
@@ -158,23 +155,6 @@ class ContactListFragment :
             recyclerViewContacts.isVisible = !state.isTryAgainButtonShowed
             textViewNoResultsFound.isVisible = false
             textViewAdvice.isVisible = false
-        }
-
-        collectFlowWithLifecycle(viewModel.effect) { effect ->
-            when (effect) {
-                is ContactListContract.Effect.HideSearchBar -> hideSearchBar()
-                is ContactListContract.Effect.ShowSearchBar -> showSearchBar()
-                is ContactListContract.Effect.NavigateToUserProfileScreen -> moveBackToUserProfileScreen()
-                is ContactListContract.Effect.NavigateToAddContactsScreen -> moveToAddContactsScreen()
-                is ContactListContract.Effect.ShowToast -> makeToast(effect.toastMessageResId)
-                is ContactListContract.Effect.NavigateToDetailsScreen -> moveToDetailsScreen(
-                    effect.contact
-                )
-
-                is ContactListContract.Effect.ShowUndoDeletingItemSnackBar -> showUndoDeletingItemSnackBar(
-                    effect.deletedItem
-                )
-            }
         }
     }
 
@@ -186,30 +166,48 @@ class ContactListFragment :
             viewModel.setEvent(ContactListContract.Event.OnAddContactClicked)
         }
         floatingButtonDeleteSelectedItems.setOnClickListener {
+            val itemsToDelete = adapter.selectedItems.toList()
+            showUndoDeletingContactsSnackBar()
             viewModel.setEvent(
                 ContactListContract.Event.OnDeleteSelectedItemsFloatingButtonClicked(
-                    adapter.selectedItems
+                    itemsToDelete
                 )
             )
-            floatingButtonDeleteSelectedItems.visibility = View.GONE
+            viewModel.setEvent(ContactListContract.Event.OnSelectModeChange(false))
+            setSelectModeViewsVisibility(false)
         }
 
         buttonTryAgain.setOnClickListener {
-            viewModel.setEvent(ContactListContract.Event.LoadContactList)
+            viewModel.setEvent(ContactListContract.Event.OnTryAgainButtonClicked)
         }
 
         imageButtonSearch.setOnClickListener {
-            viewModel.setEvent(ContactListContract.Event.SearchModeSwitched(true))
+            viewModel.setEvent(ContactListContract.Event.OnSearchBarTextChanged(""))
+            viewModel.setEvent(ContactListContract.Event.OnSearchModeSwitched(true))
             viewModel.setEvent(ContactListContract.Event.OnSearchButtonClicked)
         }
         imageButtonHideSearch.setOnClickListener {
-            viewModel.setEvent(ContactListContract.Event.SearchModeSwitched(false))
-            viewModel.setEvent(ContactListContract.Event.OnHideSearchButtonCLicked)
+            viewModel.setEvent(ContactListContract.Event.OnSearchModeSwitched(false))
+            viewModel.setEvent(ContactListContract.Event.OnHideSearchButtonClicked)
         }
 
         editTextSearch.onChangeTextListener { sequence, _, _, _ ->
             viewModel.setEvent(ContactListContract.Event.OnSearchBarTextChanged(sequence.toString()))
         }
+
+        textViewCancelSelectMode.setOnClickListener {
+            setSelectModeViewsVisibility(false)
+            viewModel.setEvent(ContactListContract.Event.OnSelectModeChange(false))
+        }
+
+        swipeRefresContactshLayout.setOnRefreshListener {
+            viewModel.setEvent(ContactListContract.Event.OnReloadContacts)
+        }
+    }
+
+    private fun setSelectModeViewsVisibility(isVisible: Boolean) = with(binding) {
+        floatingButtonDeleteSelectedItems.isVisible = isVisible
+        textViewCancelSelectMode.isVisible = isVisible
     }
 
     override fun hideSearchBar(): Unit = with(binding) {
@@ -229,22 +227,36 @@ class ContactListFragment :
     }
 
 
-    private fun showUndoDeletingItemSnackBar(contactItem: ContactItem) {
+    private fun showUndoDeletingContactSnackBar(
+        contactItem: ContactItem
+    ) {
         val undoDeletingSnackBar = Snackbar.make(
             binding.root,
-            R.string.snackbar_text,
+            R.string.undo_deleting_contact_snack_bar_text,
             Snackbar.LENGTH_LONG
         )
 
-        undoDeletingSnackBar.setAction(R.string.snackbar_action_text) {
-            viewModel.setEvent(ContactListContract.Event.ContactItemAdded(contactItem))
-
+        undoDeletingSnackBar.setAction(R.string.undo_deleting_contact_snack_bar_action_text) {
+            viewModel.setEvent(ContactListContract.Event.OnGetBackDeletedContact(contactItem))
         }.setActionTextColor(ContextCompat.getColor(requireContext(), R.color.custom_primary_color))
 
         undoDeletingSnackBar.show()
     }
 
-    private fun initSwipeToDeleteOfContactItem() {
+    private fun showUndoDeletingContactsSnackBar() {
+        val undoDeletingSnackBar = Snackbar.make(
+            binding.root,
+            R.string.undo_deleting_contacts_snack_bar_text,
+            Snackbar.LENGTH_LONG
+        )
+        undoDeletingSnackBar.setAction(R.string.undo_deleting_contact_snack_bar_action_text) {
+            viewModel.setEvent(ContactListContract.Event.OnGetBackDeletedContacts)
+        }.setActionTextColor(ContextCompat.getColor(requireContext(), R.color.custom_primary_color))
+
+        undoDeletingSnackBar.show()
+    }
+
+    private fun initDeleteContactSwipe() {
         val helper =
             ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
 
@@ -257,12 +269,16 @@ class ContactListFragment :
                 }
 
                 override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                    val adapterPosition = viewHolder.adapterPosition
+                    val adapterPosition = viewHolder.absoluteAdapterPosition
 
-                    val deletedItem = viewModel.state.value.contactList[adapterPosition]
-                    showUndoDeletingItemSnackBar(deletedItem)
+                    val deletedItem = if (viewModel.state.value.isSearchMode) {
+                        viewModel.filteredContactList.value[adapterPosition]
+                    } else {
+                        viewModel.state.value.contactList[adapterPosition]
+                    }
+                    showUndoDeletingContactSnackBar(deletedItem)
                     viewModel.setEvent(
-                        ContactListContract.Event.ContactItemDeleted(
+                        ContactListContract.Event.OnContactItemDeleted(
                             deletedItem
                         )
                     )
@@ -282,7 +298,7 @@ class ContactListFragment :
         val extras = FragmentNavigatorExtras(sharedContactProfilePhoto to contactItem.id.toString())
 
         val direction = UserInfoFragmentDirections
-            .actionUserInfoFragmentToContactDetailsFragment(contactItem.toContactDetails())
+            .actionUserInfoFragmentToContactDetailsFragment(contactItem.toContactDetails(), true)
 
         findNavController().navigate(direction, extras)
     }

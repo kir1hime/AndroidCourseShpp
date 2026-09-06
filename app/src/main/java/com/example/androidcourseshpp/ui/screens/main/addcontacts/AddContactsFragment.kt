@@ -4,11 +4,13 @@ package com.example.androidcourseshpp.ui.screens.main.addcontacts
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.databinding.FragmentAddContactsBinding
 import com.example.androidcourseshpp.ui.BaseFragment
@@ -16,10 +18,12 @@ import com.example.androidcourseshpp.ui.screens.main.addcontacts.adapter.UserIte
 import com.example.androidcourseshpp.ui.screens.main.addcontacts.adapter.UserItemDecorations
 import com.example.androidcourseshpp.ui.screens.main.addcontacts.adapter.UsersAdapter
 import com.example.androidcourseshpp.ui.screens.main.addcontacts.model.UserItem
+import com.example.androidcourseshpp.ui.screens.main.contactdetails.REQUEST_CODE
+import com.example.androidcourseshpp.ui.screens.main.contactdetails.TO_RELOAD_USER_LIST
+import com.example.androidcourseshpp.ui.utils.navigate
 import com.example.androidcourseshpp.ui.utils.onChangeTextListener
 import dagger.hilt.android.AndroidEntryPoint
 
-const val TO_RELOAD_CONTACT_LIST = "reloadContactList"
 
 @AndroidEntryPoint
 class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
@@ -27,7 +31,7 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
 
     private val viewModel by viewModels<AddContactsViewModel>()
 
-    private lateinit var sharedUserProfilePhoto: ImageView
+    private var sharedUserProfilePhoto: ImageView? = null
     private val adapter by lazy {
         UsersAdapter(object : UserItemActions {
             override fun addToContacts(
@@ -53,10 +57,26 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setUserListReloadListener()
         initRecyclerView()
-
         setObservers()
         setListeners()
+    }
+
+    private fun setUserListReloadListener() {
+        parentFragmentManager.setFragmentResultListener(
+            REQUEST_CODE,
+            viewLifecycleOwner
+        ) { _, data ->
+            val userId = data.getLong(TO_RELOAD_USER_LIST)
+            val updatedList = viewModel.state.value.userList.toMutableList()
+            updatedList.map { user ->
+                if (user.id == userId) {
+                    user.isContact = true
+                }
+            }
+            adapter.submitList(updatedList)
+        }
     }
 
     private fun initRecyclerView() = with(binding.recyclerViewUsers) {
@@ -82,7 +102,6 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
             progressBarRequest.isVisible = state.isProgressBarShowed
             buttonTryAgain.isVisible = state.isTryAgainButtonShowed
             imageButtonSearch.isClickable = !progressBarRequest.isVisible
-            floatingButtonArrowTop.isVisible = !progressBarRequest.isVisible
         }
 
         collectFlowWithLifecycle(viewModel.filteredUserList) { filteredUserList ->
@@ -98,19 +117,23 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
             }
         }
 
+        var toast: Toast? = null
         collectFlowWithLifecycle(viewModel.effect) { effect ->
             when (effect) {
                 is AddContactsContract.Effect.ScrollUserListToTop -> scrollUserListToTop()
-                is AddContactsContract.Effect.ShowToast -> makeToast(effect.toastMessageResId)
                 is AddContactsContract.Effect.ShowSearchBar -> showSearchBar()
                 is AddContactsContract.Effect.HideSearchBar -> hideSearchBar()
-                is AddContactsContract.Effect.NavigateToContactListScreen -> moveToContactList(
-                    effect.isContactListChanged
-                )
+                is AddContactsContract.Effect.NavigateToContactListScreen -> moveToContactList()
 
                 is AddContactsContract.Effect.NavigateToDetailsScreen -> moveToDetailsScreen(
                     effect.userItem
                 )
+
+                is AddContactsContract.Effect.ShowToast -> {
+                    toast?.cancel()
+                    toast = makeToast(effect.toastMessageResId)
+                    toast.show()
+                }
             }
         }
     }
@@ -139,7 +162,7 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
             viewModel.setEvent(AddContactsContract.Event.OnArrowBackButtonClicked)
         }
         buttonTryAgain.setOnClickListener {
-            viewModel.setEvent(AddContactsContract.Event.LoadUserList)
+            viewModel.setEvent(AddContactsContract.Event.OnTryAgainButtonClicked)
         }
         imageButtonSearch.setOnClickListener {
             viewModel.setEvent(AddContactsContract.Event.SearchModeSwitched(true))
@@ -149,33 +172,46 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
             viewModel.setEvent(AddContactsContract.Event.SearchModeSwitched(false))
             viewModel.setEvent(AddContactsContract.Event.OnHideSearchButtonClicked)
         }
-        floatingButtonArrowTop.setOnClickListener {
+        floatingButtonScrollUp.setOnClickListener {
             viewModel.setEvent(AddContactsContract.Event.OnArrowTopFloatingButtonClicked)
         }
         editTextSearch.onChangeTextListener { sequence, _, _, _ ->
             viewModel.setEvent(AddContactsContract.Event.OnSearchBarTextChanged(sequence.toString()))
         }
+
+        recyclerViewUsers.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val layoutManager = recyclerViewUsers.layoutManager as LinearLayoutManager
+                floatingButtonScrollUp.isVisible =
+                    layoutManager.findLastVisibleItemPosition() >= MIN_ITEMS_TO_SHOW_SCROLL_UP
+            }
+        })
     }
 
     private fun moveToDetailsScreen(userItem: UserItem) {
-        val extras =
-            FragmentNavigatorExtras(sharedUserProfilePhoto to userItem.id.toString())
+        val extras = sharedUserProfilePhoto?.let { imageView ->
+            FragmentNavigatorExtras(imageView to userItem.id.toString())
+        }
 
         val direction =
             AddContactsFragmentDirections.actionAddContactsFragmentToContactDetailsFragment(
-                userItem.toContactDetails()
+                userItem.toContactDetails(), userItem.isContact
             )
 
         findNavController().navigate(direction, extras)
     }
 
-    private fun moveToContactList(isContactListChanged: Boolean) {
-        if (isContactListChanged) {
-            findNavController().previousBackStackEntry?.savedStateHandle?.set(
-                TO_RELOAD_CONTACT_LIST,
-                true
-            )
-        }
+    private fun moveToContactList() {
         findNavController().navigateUp()
+    }
+
+    override fun onDestroyView() {
+        sharedUserProfilePhoto = null
+        super.onDestroyView()
+    }
+
+    companion object {
+        const val MIN_ITEMS_TO_SHOW_SCROLL_UP = 50
     }
 }

@@ -1,15 +1,17 @@
 package com.example.androidcourseshpp.di
 
-import com.example.androidcourseshpp.domain.repository.ContactsRepository
-import com.example.androidcourseshpp.data.source.network.repository.ContactsRepositoryImpl
+import com.example.androidcourseshpp.data.source.local.database.repository.ContactsLocalRepositoryImpl
+import com.example.androidcourseshpp.domain.repository.ContactsNetworkRepository
+import com.example.androidcourseshpp.data.source.network.repository.ContactsNetworkRepositoryImpl
 import com.example.androidcourseshpp.domain.repository.GalleryRepository
 import com.example.androidcourseshpp.data.source.local.repository.GalleryRepositoryImpl
-import com.example.androidcourseshpp.data.source.local.repository.UserLocalRepositoryImpl
+import com.example.androidcourseshpp.data.source.local.repository.UserLocalDataRepositoryImpl
 import com.example.androidcourseshpp.data.source.network.repository.AuthRepositoryImpl
 import com.example.androidcourseshpp.domain.repository.UserRepository
 import com.example.androidcourseshpp.data.source.network.repository.UserRepositoryImpl
 import com.example.androidcourseshpp.domain.repository.AuthRepository
-import com.example.androidcourseshpp.domain.repository.UserLocalRepository
+import com.example.androidcourseshpp.domain.repository.ContactsLocalRepository
+import com.example.androidcourseshpp.domain.repository.UserLocalDataRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -22,7 +24,7 @@ interface RepositoriesModule {
 
     @Binds
     @Singleton
-    fun bindContactsRepository(contactsRepositoryImpl: ContactsRepositoryImpl): ContactsRepository
+    fun bindContactsRepository(contactsRepositoryImpl: ContactsNetworkRepositoryImpl): ContactsNetworkRepository
 
     @Binds
     @Singleton
@@ -38,6 +40,10 @@ interface RepositoriesModule {
 
     @Binds
     @Singleton
-    fun bindUserLocalRepository(userRepositoryImpl: UserLocalRepositoryImpl): UserLocalRepository
+    fun bindUserLocalRepository(userRepositoryImpl: UserLocalDataRepositoryImpl): UserLocalDataRepository
+
+    @Binds
+    @Singleton
+    fun bindContactsLocalRepository(contactsLocalRepositoryImpl: ContactsLocalRepositoryImpl): ContactsLocalRepository
 
 }
