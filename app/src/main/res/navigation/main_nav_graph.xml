@@ -14,7 +14,7 @@
             android:name="contactDetails"
             app:argType="com.example.androidcourseshpp.ui.screens.model.ContactDetailsModel" />
         <argument
-            android:name="toShowAddContactButton"
+            android:name="isContact"
             app:argType="boolean" />
     </fragment>
     <fragment
