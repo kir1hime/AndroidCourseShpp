@@ -4,7 +4,7 @@ import com.example.androidcourseshpp.data.source.network.api.auth.AuthAPI
 import com.example.androidcourseshpp.data.source.network.dto.auth.SignInRequestDTO
 import com.example.androidcourseshpp.data.source.network.model.auth.SignInRequestModel
 import com.example.androidcourseshpp.data.source.network.model.auth.SignUpRequestModel
-import com.example.androidcourseshpp.data.source.network.service.BaseRetrofitService
+import com.example.androidcourseshpp.data.source.network.utils.safeApiCall
 import okhttp3.RequestBody.Companion.toRequestBody
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -13,11 +13,11 @@ import javax.inject.Singleton
 @Singleton
 class AuthServiceImpl @Inject constructor(
     private val authApi: AuthAPI
-) : BaseRetrofitService(), AuthService {
+) : AuthService {
 
 
     override suspend fun signUp(data: SignUpRequestModel) =
-        processRetrofitExceptions {
+        safeApiCall {
             with(data) {
                 authApi.signUp(
                     email = email.toRequestBody(),
@@ -30,7 +30,7 @@ class AuthServiceImpl @Inject constructor(
         }
 
     override suspend fun singIn(data: SignInRequestModel) =
-        processRetrofitExceptions {
+        safeApiCall {
             val signInRequestDTO = SignInRequestDTO(
                 email = data.email,
                 password = data.password

@@ -6,6 +6,7 @@ import com.example.androidcourseshpp.data.source.network.service.contacts.Contac
 import com.example.androidcourseshpp.data.source.network.utils.wrapNetworkExceptions
 import com.example.androidcourseshpp.domain.entity.contact.ContactInfo
 import com.example.androidcourseshpp.domain.repository.ContactsNetworkRepository
+import com.example.androidcourseshpp.domain.utils.DataError
 import com.example.androidcourseshpp.domain.utils.Result
 import javax.inject.Inject
 
@@ -15,16 +16,17 @@ class ContactsNetworkRepositoryImpl @Inject constructor(
 ) : ContactsNetworkRepository {
 
 
-    override suspend fun addContact(contactId: Long) = wrapNetworkExceptions {
+    override suspend fun addContact(contactId: Long) {
         contactsService.addContact(
             ContactRequestModel(userDataProvider.getUserServerId(), contactId)
         )
     }
 
-    override suspend fun deleteContact(contactId: Long) = wrapNetworkExceptions {
-        contactsService.deleteContact(
+    override suspend fun deleteContact(contactId: Long): Result<Unit, DataError.Network> {
+        val responseResult = contactsService.deleteContact(
             ContactRequestModel(userDataProvider.getUserServerId(), contactId)
         )
+        return responseResult
     }
 
 
