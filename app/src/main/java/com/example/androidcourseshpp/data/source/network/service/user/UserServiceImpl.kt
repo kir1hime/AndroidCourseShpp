@@ -1,6 +1,9 @@
 package com.example.androidcourseshpp.data.source.network.service.user
 
 import com.example.androidcourseshpp.data.source.network.api.user.UserAPI
+import com.example.androidcourseshpp.data.source.network.mapper.toGetUserResponseModel
+import com.example.androidcourseshpp.data.source.network.mapper.toGetUsersResponseModel
+import com.example.androidcourseshpp.data.source.network.mapper.toUpdateUserRequestDTO
 import com.example.androidcourseshpp.data.source.network.model.user.UpdateUserRequestModel
 import com.example.androidcourseshpp.data.source.network.service.BaseRetrofitService
 import javax.inject.Inject
@@ -15,16 +18,16 @@ class UserServiceImpl @Inject constructor(
         processRetrofitExceptions {
             userApi.updateUserInfo(
                 userId = data.id,
-                updateUserRequestDTO = data.toUpdateUserDataDTO()
+                updateUserRequestDTO = data.toUpdateUserRequestDTO()
             )
         }
     }
 
     override suspend fun getUser(data: Long) = processRetrofitExceptions {
-        userApi.getUser(data).data
+        userApi.getUser(data).toGetUserResponseModel()
     }
 
     override suspend fun getUsers() = processRetrofitExceptions {
-        userApi.getUsers().data
+        userApi.getUsers().toGetUsersResponseModel()
     }
 }

@@ -7,7 +7,7 @@ import com.example.androidcourseshpp.data.source.network.model.auth.SignUpRespon
 
 interface AuthService {
 
-    suspend fun signUp(data: SignUpRequestModel): SignUpResponseModel
+    suspend fun signUp(signUpRequestModel: SignUpRequestModel): SignUpResponseModel
 
-    suspend fun singIn(data: SignInRequestModel): SignInResponseModel
+    suspend fun singIn(signInRequestModel: SignInRequestModel): SignInResponseModel
 }

@@ -1,7 +1,7 @@
 package com.example.androidcourseshpp.data.source.network.repository
 
 import com.example.androidcourseshpp.data.source.local.userdata.UserDataProvider
-import com.example.androidcourseshpp.data.source.network.model.contacts.ContactRequestModel
+import com.example.androidcourseshpp.data.source.network.mapper.toContactInfo
 import com.example.androidcourseshpp.data.source.network.service.contacts.ContactsService
 import com.example.androidcourseshpp.data.source.network.utils.wrapNetworkExceptions
 import com.example.androidcourseshpp.domain.entity.contact.ContactInfo
@@ -17,25 +17,24 @@ class ContactsNetworkRepositoryImpl @Inject constructor(
 
     override suspend fun addContact(contactId: Long) = wrapNetworkExceptions {
         contactsService.addContact(
-            ContactRequestModel(userDataProvider.getUserServerId(), contactId)
+            userId = userDataProvider.getUserServerId(),
+            contactId = contactId
         )
     }
 
     override suspend fun deleteContact(contactId: Long) = wrapNetworkExceptions {
         contactsService.deleteContact(
-            ContactRequestModel(userDataProvider.getUserServerId(), contactId)
+            userId = userDataProvider.getUserServerId(), contactId = contactId
         )
     }
 
 
     override suspend fun deleteContacts(contactIds: List<Long>): Result<Unit> =
         wrapNetworkExceptions {
-            contactIds.forEach { id ->
+            contactIds.forEach { contactId ->
                 contactsService.deleteContact(
-                    ContactRequestModel(
-                        userDataProvider.getUserServerId(),
-                        id
-                    )
+                    userId = userDataProvider.getUserServerId(),
+                    contactId = contactId
                 )
             }
         }
@@ -43,7 +42,6 @@ class ContactsNetworkRepositoryImpl @Inject constructor(
     override suspend fun loadContacts(): Result<List<ContactInfo>> = wrapNetworkExceptions {
         val response = contactsService.getUserContacts(userDataProvider.getUserServerId())
 
-        val contactItemList = response.contacts.map { contact -> contact.toContactInfo() }
-        contactItemList
+        response.contacts.map { contact -> contact.toContactInfo() }
     }
 }

@@ -1,7 +1,8 @@
 package com.example.androidcourseshpp.data.source.network.repository
 
 import com.example.androidcourseshpp.data.source.local.userdata.UserDataProvider
-import com.example.androidcourseshpp.data.source.network.model.user.toUpdateUserDataModel
+import com.example.androidcourseshpp.data.source.network.mapper.toUpdateUserModel
+import com.example.androidcourseshpp.data.source.network.mapper.toUserInfo
 import com.example.androidcourseshpp.data.source.network.service.user.UserService
 import com.example.androidcourseshpp.data.source.network.utils.wrapNetworkExceptions
 import com.example.androidcourseshpp.domain.entity.user.UserInfo
@@ -24,6 +25,6 @@ class UserRepositoryImpl @Inject constructor(
     }
 
     override suspend fun updateUserInfo(userInfo: UserInfo) = wrapNetworkExceptions {
-        userService.updateUserInfo(userInfo.toUpdateUserDataModel())
+        userService.updateUserInfo(userInfo.toUpdateUserModel())
     }
 }

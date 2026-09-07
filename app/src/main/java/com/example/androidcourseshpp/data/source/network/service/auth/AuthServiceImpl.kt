@@ -1,7 +1,9 @@
 package com.example.androidcourseshpp.data.source.network.service.auth
 
 import com.example.androidcourseshpp.data.source.network.api.auth.AuthAPI
-import com.example.androidcourseshpp.data.source.network.dto.auth.SignInRequestDTO
+import com.example.androidcourseshpp.data.source.network.mapper.toSignInRequestDTO
+import com.example.androidcourseshpp.data.source.network.mapper.toSignInResponseModel
+import com.example.androidcourseshpp.data.source.network.mapper.toSignUpResponseModel
 import com.example.androidcourseshpp.data.source.network.model.auth.SignInRequestModel
 import com.example.androidcourseshpp.data.source.network.model.auth.SignUpRequestModel
 import com.example.androidcourseshpp.data.source.network.service.BaseRetrofitService
@@ -16,26 +18,22 @@ class AuthServiceImpl @Inject constructor(
 ) : BaseRetrofitService(), AuthService {
 
 
-    override suspend fun signUp(data: SignUpRequestModel) =
+    override suspend fun signUp(signUpRequestModel: SignUpRequestModel) =
         processRetrofitExceptions {
-            with(data) {
+            with(signUpRequestModel) {
                 authApi.signUp(
                     email = email.toRequestBody(),
                     password = password.toRequestBody(),
                     name = userName.toRequestBody(),
                     phone = mobilePhone.toRequestBody(),
                     image = image
-                ).data
+                ).toSignUpResponseModel()
             }
         }
 
-    override suspend fun singIn(data: SignInRequestModel) =
+    override suspend fun singIn(signInRequestModel: SignInRequestModel) =
         processRetrofitExceptions {
-            val signInRequestDTO = SignInRequestDTO(
-                email = data.email,
-                password = data.password
-            )
-            authApi.singIn(signInRequestDTO).data
+            authApi.singIn(signInRequestDTO = signInRequestModel.toSignInRequestDTO())
+                .toSignInResponseModel()
         }
-
 }
