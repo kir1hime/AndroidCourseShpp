@@ -16,18 +16,18 @@ class UserRepositoryImpl @Inject constructor(
     private val userDataProvider: UserDataProvider
 ) : UserRepository {
 
-    override suspend fun getUsers(): Result<List<UserInfo>, DataError.Network> {
+    override suspend fun getUsers(): Result<List<UserInfo>, DataError.NetworkError> {
         val responseResult = userService.getUsers()
         return responseResult.mapResult { result -> result.users.map { user -> user.toUserInfo() } }
 
     }
 
-    override suspend fun getUser(): Result<UserInfo, DataError.Network> {
+    override suspend fun getUser(): Result<UserInfo, DataError.NetworkError> {
         val responseResult = userService.getUser(userId = userDataProvider.getUserServerId())
         return responseResult.mapResult { result -> result.user.toUserInfo() }
     }
 
-    override suspend fun updateUserInfo(userInfo: UserInfo): Result<UserInfo, DataError.Network> {
+    override suspend fun updateUserInfo(userInfo: UserInfo): Result<UserInfo, DataError.NetworkError> {
         val responseResult =
             userService.updateUserInfo(updateUserRequestModel = userInfo.toUpdateUserModel())
         return responseResult.mapResult { result -> result.user.toUserInfo() }

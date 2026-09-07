@@ -26,7 +26,7 @@ inline fun <D, E : RootError> Result<D, E>.onSuccess(action: (D) -> Unit): Resul
 
 inline fun <D, E : RootError> Result<D, E>.onError(action: (E) -> Unit): Result<D, E> {
     return when (this) {
-        is Result.Success-> this
+        is Result.Success -> this
         is Result.Error -> {
             action(error)
             this
@@ -35,7 +35,7 @@ inline fun <D, E : RootError> Result<D, E>.onError(action: (E) -> Unit): Result<
 }
 
 interface DataError : RootError {
-    enum class Network : DataError {
+    enum class NetworkError : DataError {
         CONNECTION_ERROR,
         UNKNOWN_ERROR,
         INCORRECT_REQUEST_ERROR,
@@ -47,4 +47,6 @@ interface DataError : RootError {
         SERVER_ERROR,
         SERIALIZATION_ERROR
     }
+
+    data object LocalError : DataError
 }

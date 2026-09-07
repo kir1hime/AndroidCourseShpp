@@ -35,7 +35,7 @@ class AuthRepositoryImpl @Inject constructor(
         jwtManager.clearTokens()
     }
 
-    override suspend fun signIn(signInInfo: SignInInfo): Result<UserInfo, DataError.Network> {
+    override suspend fun signIn(signInInfo: SignInInfo): Result<UserInfo, DataError.NetworkError> {
 
         val responseResult =
             authService.singIn(signInRequestModel = signInInfo.toSignInRequestModel())
@@ -53,7 +53,7 @@ class AuthRepositoryImpl @Inject constructor(
     }
 
 
-    override suspend fun singUp(signUpInfo: SignUpInfo): Result<UserInfo, DataError.Network> {
+    override suspend fun singUp(signUpInfo: SignUpInfo): Result<UserInfo, DataError.NetworkError> {
         val responseResult =
             authService.signUp(signUpRequestModel = signUpInfo.toSignUpRequestModel(imageConverter))
 

@@ -6,7 +6,7 @@ import com.example.androidcourseshpp.domain.utils.Result
 
 interface ContactsService {
 
-    suspend fun addContact(userId: Long, contactId: Long): Result<Unit, DataError.Network>
-    suspend fun deleteContact(userId: Long, contactId: Long): Result<Unit, DataError.Network>
-    suspend fun getUserContacts(userId: Long): Result<GetUserContactsResponseModel, DataError.Network>
+    suspend fun addContact(userId: Long, contactId: Long): Result<Unit, DataError.NetworkError>
+    suspend fun deleteContact(userId: Long, contactId: Long): Result<Unit, DataError.NetworkError>
+    suspend fun getUserContacts(userId: Long): Result<GetUserContactsResponseModel, DataError.NetworkError>
 }

@@ -9,7 +9,7 @@ import com.example.androidcourseshpp.domain.utils.Result
 
 interface AuthService {
 
-    suspend fun signUp(signUpRequestModel: SignUpRequestModel): Result<SignUpResponseModel, DataError.Network>
+    suspend fun signUp(signUpRequestModel: SignUpRequestModel): Result<SignUpResponseModel, DataError.NetworkError>
 
-    suspend fun singIn(signInRequestModel: SignInRequestModel): Result<SignInResponseModel, DataError.Network>
+    suspend fun singIn(signInRequestModel: SignInRequestModel): Result<SignInResponseModel, DataError.NetworkError>
 }

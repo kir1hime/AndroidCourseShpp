@@ -19,7 +19,7 @@ class ContactsNetworkRepositoryImpl @Inject constructor(
 ) : ContactsNetworkRepository {
 
 
-    override suspend fun addContact(contactId: Long): Result<Unit, DataError.Network> {
+    override suspend fun addContact(contactId: Long): Result<Unit, DataError.NetworkError> {
         val responseResult = contactsService.addContact(
             userId = userDataProvider.getUserServerId(), contactId = contactId
         )
@@ -27,7 +27,7 @@ class ContactsNetworkRepositoryImpl @Inject constructor(
     }
 
 
-    override suspend fun deleteContact(contactId: Long): Result<Unit, DataError.Network> {
+    override suspend fun deleteContact(contactId: Long): Result<Unit, DataError.NetworkError> {
         val responseResult = contactsService.deleteContact(
             userId = userDataProvider.getUserServerId(), contactId = contactId
         )
@@ -35,7 +35,7 @@ class ContactsNetworkRepositoryImpl @Inject constructor(
     }
 
 
-    override suspend fun deleteContacts(contactIds: List<Long>): Result<Unit, DataError.Network> =
+    override suspend fun deleteContacts(contactIds: List<Long>): Result<Unit, DataError.NetworkError> =
         coroutineScope {
             val userId = userDataProvider.getUserServerId()
 
@@ -54,7 +54,7 @@ class ContactsNetworkRepositoryImpl @Inject constructor(
         }
 
 
-    override suspend fun loadContacts(): Result<List<ContactInfo>, DataError.Network> {
+    override suspend fun loadContacts(): Result<List<ContactInfo>, DataError.NetworkError> {
         val responseResult =
             contactsService.getUserContacts(userId = userDataProvider.getUserServerId())
 

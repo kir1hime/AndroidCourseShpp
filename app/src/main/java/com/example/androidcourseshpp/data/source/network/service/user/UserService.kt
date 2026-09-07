@@ -9,7 +9,7 @@ import com.example.androidcourseshpp.domain.utils.Result
 
 interface UserService {
 
-    suspend fun updateUserInfo(updateUserRequestModel: UpdateUserRequestModel): Result<UpdateUserResponseModel, DataError.Network>
-    suspend fun getUser(userId: Long): Result<GetUserResponseModel, DataError.Network>
-    suspend fun getUsers(): Result<GetUsersResponseModel, DataError.Network>
+    suspend fun updateUserInfo(updateUserRequestModel: UpdateUserRequestModel): Result<UpdateUserResponseModel, DataError.NetworkError>
+    suspend fun getUser(userId: Long): Result<GetUserResponseModel, DataError.NetworkError>
+    suspend fun getUsers(): Result<GetUsersResponseModel, DataError.NetworkError>
 }
