@@ -39,13 +39,13 @@ class ContactsNetworkRepositoryImpl @Inject constructor(
         coroutineScope {
             val userId = userDataProvider.getUserServerId()
 
-            val deferredResults = contactIds.map { contactId ->
+            val deferredDeletionResults = contactIds.map { contactId ->
                 async {
                     contactsService.deleteContact(userId = userId, contactId = contactId)
                 }
             }
 
-            val results = deferredResults.awaitAll()
+            val results = deferredDeletionResults.awaitAll()
             val errorResult = results.find { result -> result is Result.Error }
             if (errorResult != null) {
                 return@coroutineScope errorResult
