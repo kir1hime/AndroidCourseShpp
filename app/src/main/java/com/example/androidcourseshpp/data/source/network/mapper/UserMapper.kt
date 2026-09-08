@@ -4,12 +4,10 @@ import com.example.androidcourseshpp.data.source.network.dto.common.UserDTO
 import com.example.androidcourseshpp.data.source.network.dto.user.GetUserResponseDTO
 import com.example.androidcourseshpp.data.source.network.dto.user.GetUsersResponseDTO
 import com.example.androidcourseshpp.data.source.network.dto.user.UpdateUserRequestDTO
-import com.example.androidcourseshpp.data.source.network.dto.user.UpdateUserResponseDTO
 import com.example.androidcourseshpp.data.source.network.model.common.UserModel
 import com.example.androidcourseshpp.data.source.network.model.user.GetUserResponseModel
 import com.example.androidcourseshpp.data.source.network.model.user.GetUsersResponseModel
 import com.example.androidcourseshpp.data.source.network.model.user.UpdateUserRequestModel
-import com.example.androidcourseshpp.data.source.network.model.user.UpdateUserResponseModel
 import com.example.androidcourseshpp.domain.entity.contact.ContactInfo
 import com.example.androidcourseshpp.domain.entity.user.UserInfo
 
@@ -52,10 +50,6 @@ fun UpdateUserRequestModel.toUpdateUserRequestDTO() =
         twitter = twitter,
         linkedin = linkedin
     )
-
-fun UpdateUserResponseDTO.toUpdateUserResponseModel() =
-    UpdateUserResponseModel(user = user.toUserModel())
-
 
 fun UserModel.toUserInfo() =
     UserInfo(

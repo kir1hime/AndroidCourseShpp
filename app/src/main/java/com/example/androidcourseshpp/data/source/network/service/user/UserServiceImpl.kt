@@ -4,7 +4,6 @@ import com.example.androidcourseshpp.data.source.network.api.user.UserAPI
 import com.example.androidcourseshpp.data.source.network.mapper.toGetUserResponseModel
 import com.example.androidcourseshpp.data.source.network.mapper.toGetUsersResponseModel
 import com.example.androidcourseshpp.data.source.network.mapper.toUpdateUserRequestDTO
-import com.example.androidcourseshpp.data.source.network.mapper.toUpdateUserResponseModel
 import com.example.androidcourseshpp.data.source.network.model.user.UpdateUserRequestModel
 import com.example.androidcourseshpp.data.source.network.utils.safeApiCall
 import javax.inject.Inject
@@ -17,11 +16,10 @@ class UserServiceImpl @Inject constructor(
 
     override suspend fun updateUserInfo(updateUserRequestModel: UpdateUserRequestModel) =
         safeApiCall {
-            val response = userApi.updateUserInfo(
+            userApi.updateUserInfo(
                 userId = updateUserRequestModel.id,
                 updateUserRequestDTO = updateUserRequestModel.toUpdateUserRequestDTO()
             )
-            response.toUpdateUserResponseModel()
         }
 
 

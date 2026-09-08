@@ -34,7 +34,7 @@ class ContactDetailsViewModel @Inject constructor(
                 setEffect(ContactDetailsContract.Effect.ShowToast(R.string.add_contact_toast_message))
                 setEffect(ContactDetailsContract.Effect.ContactWasAdded)
             },
-            onLocalStorageError = {
+            onLocalError = {
                 setEffect(ContactDetailsContract.Effect.ShowToast(R.string.generic_error))
             }
         )

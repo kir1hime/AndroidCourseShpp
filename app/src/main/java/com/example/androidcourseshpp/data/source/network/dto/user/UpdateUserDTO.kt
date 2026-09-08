@@ -1,6 +1,5 @@
 package com.example.androidcourseshpp.data.source.network.dto.user
 
-import com.example.androidcourseshpp.data.source.network.dto.common.UserDTO
 import com.google.gson.annotations.SerializedName
 import java.util.Date
 
@@ -23,10 +22,5 @@ data class UpdateUserRequestDTO(
     val twitter: String?,
     @SerializedName("linkedin")
     val linkedin: String?
-)
-
-data class UpdateUserResponseDTO(
-    @SerializedName("user")
-    val user: UserDTO
 )
 

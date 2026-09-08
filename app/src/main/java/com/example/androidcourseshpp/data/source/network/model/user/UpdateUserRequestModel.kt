@@ -1,6 +1,5 @@
 package com.example.androidcourseshpp.data.source.network.model.user
 
-import com.example.androidcourseshpp.data.source.network.model.common.UserModel
 import java.util.Date
 
 data class UpdateUserRequestModel(
@@ -15,8 +14,4 @@ data class UpdateUserRequestModel(
     val twitter: String? = null,
     val linkedin: String? = null,
     val image: String? = null
-)
-
-data class UpdateUserResponseModel(
-    val user: UserModel
 )

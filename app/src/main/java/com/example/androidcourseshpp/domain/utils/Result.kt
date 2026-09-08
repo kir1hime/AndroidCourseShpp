@@ -50,3 +50,5 @@ interface DataError : RootError {
 
     data object LocalError : DataError
 }
+
+data object UnknownError : RootError

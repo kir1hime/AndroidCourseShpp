@@ -3,6 +3,7 @@ package com.example.androidcourseshpp.ui.screens.main.editprofile
 
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.domain.usecase.user.UpdateUserInfoUseCase
+import com.example.androidcourseshpp.domain.utils.DataError
 import com.example.androidcourseshpp.ui.BaseViewModel
 import com.example.androidcourseshpp.ui.screens.model.UserModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -114,11 +115,14 @@ class EditProfileViewModel @Inject constructor(
                     updateUserInfoUseCase(state.value.userInfo.toUserInfo())
                 },
                 onSuccess = { navigateToUserProfileScreen() },
-                onRemoteError = {
-                    setEffect(EditProfileContract.Effect.ShowToast(R.string.generic_error))
-                },
-                onConnectionError = {
-                    setEffect(EditProfileContract.Effect.ShowToast(R.string.connection_error))
+                onNetworkError = { error ->
+                    when (error) {
+                        DataError.NetworkError.CONNECTION_ERROR -> {
+                            setEffect(EditProfileContract.Effect.ShowToast(R.string.connection_error))
+                        }
+
+                        else -> setEffect(EditProfileContract.Effect.ShowToast(R.string.generic_error))
+                    }
                 },
                 finally = { setState { copy(isProgressBarShowed = false) } }
             )

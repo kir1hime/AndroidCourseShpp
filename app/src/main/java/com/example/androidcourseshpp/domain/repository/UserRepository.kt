@@ -7,5 +7,5 @@ import com.example.androidcourseshpp.domain.utils.Result
 interface UserRepository {
     suspend fun getUsers(): Result<List<UserInfo>, DataError.NetworkError>
     suspend fun getUser(): Result<UserInfo, DataError.NetworkError>
-    suspend fun updateUserInfo(userInfo: UserInfo): Result<UserInfo, DataError.NetworkError>
+    suspend fun updateUserInfo(userInfo: UserInfo): Result<Unit, DataError.NetworkError>
 }

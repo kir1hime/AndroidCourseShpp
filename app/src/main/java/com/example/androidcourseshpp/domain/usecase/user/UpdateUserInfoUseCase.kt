@@ -11,7 +11,7 @@ class UpdateUserInfoUseCase(
     private val userLocalDataRepository: UserLocalDataRepository
 ) {
 
-    suspend operator fun invoke(userInfo: UserInfo): Result<UserInfo, DataError.NetworkError> {
+    suspend operator fun invoke(userInfo: UserInfo): Result<Unit, DataError.NetworkError> {
         val result = userRepository.updateUserInfo(userInfo)
         userLocalDataRepository.saveUserAvatarUrl(userInfo.avatar)
         return result

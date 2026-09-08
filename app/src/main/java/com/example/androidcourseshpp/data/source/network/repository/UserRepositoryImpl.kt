@@ -27,9 +27,9 @@ class UserRepositoryImpl @Inject constructor(
         return responseResult.mapResult { result -> result.user.toUserInfo() }
     }
 
-    override suspend fun updateUserInfo(userInfo: UserInfo): Result<UserInfo, DataError.NetworkError> {
+    override suspend fun updateUserInfo(userInfo: UserInfo): Result<Unit, DataError.NetworkError> {
         val responseResult =
             userService.updateUserInfo(updateUserRequestModel = userInfo.toUpdateUserModel())
-        return responseResult.mapResult { result -> result.user.toUserInfo() }
+        return responseResult
     }
 }
