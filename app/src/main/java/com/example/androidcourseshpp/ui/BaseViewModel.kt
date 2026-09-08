@@ -80,17 +80,17 @@ abstract class BaseViewModel<UIEvent : ViewEvent, UIEffect : ViewEffect, UIState
                 is Result.Success -> onSuccess.invoke(result.data)
                 is Result.Error<*> -> {
                     when (result.error) {
-                        is DataError.NetworkError -> onNetworkError.also { networkErrorHandler ->
-                            if (networkErrorHandler != null) {
-                                networkErrorHandler.invoke(result.error)
+                        is DataError.NetworkError -> onNetworkError.also {
+                            if (it != null) {
+                                it.invoke(result.error)
                             } else {
                                 onError.invoke(result.error)
                             }
                         }
 
-                        is DataError.LocalError -> onLocalError.also { localErrorHandler ->
-                            if (localErrorHandler != null) {
-                                localErrorHandler.invoke()
+                        is DataError.LocalError -> onLocalError.also {
+                            if (it != null) {
+                                it.invoke()
                             } else {
                                 onError.invoke(result.error)
                             }
@@ -98,8 +98,8 @@ abstract class BaseViewModel<UIEvent : ViewEvent, UIEffect : ViewEffect, UIState
 
                         else -> {
                             onUnknownError.also {
-                                if (onUnknownError != null) {
-                                    onUnknownError.invoke()
+                                if (it != null) {
+                                    it.invoke()
                                 } else {
                                     onError.invoke(result.error)
                                 }
