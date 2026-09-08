@@ -64,27 +64,27 @@ abstract class BaseViewModel<UIEvent : ViewEvent, UIEffect : ViewEffect, UIState
 
     protected fun <T> executeUseCase(
         toExecute: suspend () -> Result<T, RootError>,
-        onSuccess: ((T) -> Unit)? = null,
-        onError: ((RootError) -> Unit)? = null,
+        onSuccess: ((T) -> Unit) = {},
+        onError: ((RootError) -> Unit) = {},
         onNetworkError: ((DataError.NetworkError) -> Unit)? = null,
         onLocalError: (() -> Unit)? = null,
         onUnknownError: (() -> Unit)? = null,
-        finally: (() -> Unit)? = null,
+        finally: (() -> Unit) = {},
         coroutineExceptionHandler: CoroutineExceptionHandler = CoroutineExceptionHandler { _, _ ->
-            onError?.invoke(UnknownError)
+            onError.invoke(UnknownError)
         }
     ) {
 
         viewModelScope.launch(coroutineExceptionHandler) {
             when (val result = toExecute()) {
-                is Result.Success -> onSuccess?.invoke(result.data)
+                is Result.Success -> onSuccess.invoke(result.data)
                 is Result.Error<*> -> {
                     when (result.error) {
                         is DataError.NetworkError -> onNetworkError.also { networkErrorHandler ->
                             if (networkErrorHandler != null) {
                                 networkErrorHandler.invoke(result.error)
                             } else {
-                                onError?.invoke(result.error)
+                                onError.invoke(result.error)
                             }
                         }
 
@@ -92,7 +92,7 @@ abstract class BaseViewModel<UIEvent : ViewEvent, UIEffect : ViewEffect, UIState
                             if (localErrorHandler != null) {
                                 localErrorHandler.invoke()
                             } else {
-                                onError?.invoke(result.error)
+                                onError.invoke(result.error)
                             }
                         }
 
@@ -101,14 +101,14 @@ abstract class BaseViewModel<UIEvent : ViewEvent, UIEffect : ViewEffect, UIState
                                 if (onUnknownError != null) {
                                     onUnknownError.invoke()
                                 } else {
-                                    onError?.invoke(result.error)
+                                    onError.invoke(result.error)
                                 }
                             }
                         }
                     }
                 }
             }
-            finally?.invoke()
+            finally.invoke()
         }
     }
 }
