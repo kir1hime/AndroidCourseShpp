@@ -97,7 +97,13 @@ abstract class BaseViewModel<UIEvent : ViewEvent, UIEffect : ViewEffect, UIState
                         }
 
                         else -> {
-                            onUnknownError?.invoke()
+                            onUnknownError.also {
+                                if (onUnknownError != null) {
+                                    onUnknownError.invoke()
+                                } else {
+                                    onError?.invoke(result.error)
+                                }
+                            }
                         }
                     }
                 }
