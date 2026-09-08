@@ -68,7 +68,6 @@ abstract class BaseViewModel<UIEvent : ViewEvent, UIEffect : ViewEffect, UIState
         onError: ((RootError) -> Unit) = {},
         onNetworkError: ((DataError.NetworkError) -> Unit)? = null,
         onLocalError: (() -> Unit)? = null,
-        onUnknownError: (() -> Unit)? = null,
         finally: (() -> Unit) = {},
         coroutineExceptionHandler: CoroutineExceptionHandler = CoroutineExceptionHandler { _, _ ->
             onError.invoke(UnknownError)
@@ -97,13 +96,7 @@ abstract class BaseViewModel<UIEvent : ViewEvent, UIEffect : ViewEffect, UIState
                         }
 
                         else -> {
-                            onUnknownError.also {
-                                if (it != null) {
-                                    it.invoke()
-                                } else {
-                                    onError.invoke(result.error)
-                                }
-                            }
+                            onError.invoke(result.error)
                         }
                     }
                 }
