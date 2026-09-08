@@ -53,7 +53,7 @@ class ContactDetailsNotificationViewModel @Inject constructor(
                     notificationActionId = NotificationAction.ADD_CONTACT.ordinal
                 )
             },
-            onLocalStorageError = {
+            onLocalError = {
                 setEffect(ContactDetailsNotificationContract.Effect.ShowToast(R.string.generic_error))
             }
         )
@@ -75,7 +75,7 @@ class ContactDetailsNotificationViewModel @Inject constructor(
                     notificationActionId = NotificationAction.ADD_CONTACT.ordinal
                 )
             },
-            onLocalStorageError = {
+            onLocalError = {
                 setEffect(ContactDetailsNotificationContract.Effect.ShowToast(R.string.generic_error))
             }
         )

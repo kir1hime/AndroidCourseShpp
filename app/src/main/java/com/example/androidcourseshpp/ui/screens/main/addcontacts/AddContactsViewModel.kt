@@ -4,7 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.domain.usecase.contacts.AddContactUseCase
 import com.example.androidcourseshpp.domain.usecase.user.GetUsersUseCase
-import com.example.androidcourseshpp.domain.utils.AppError
+import com.example.androidcourseshpp.domain.utils.DataError
 import com.example.androidcourseshpp.domain.utils.Result
 import com.example.androidcourseshpp.ui.BaseViewModel
 import com.example.androidcourseshpp.ui.notifications.NotificationAction
@@ -121,7 +121,7 @@ class AddContactsViewModel @Inject constructor(
                     notificationActionId = NotificationAction.ADD_CONTACT.ordinal
                 )
             },
-            onLocalStorageError = {
+            onLocalError = {
                 setEffect(AddContactsContract.Effect.ShowToast(R.string.generic_error))
                 interruptFailureLoading()
             }
@@ -161,11 +161,12 @@ class AddContactsViewModel @Inject constructor(
                             )
                         }
                         when (result.error) {
-                            AppError.ConnectionError -> setEffect(
+                            DataError.NetworkError.CONNECTION_ERROR -> setEffect(
                                 AddContactsContract.Effect.ShowToast(
                                     R.string.connection_error
                                 )
                             )
+
                             else -> setEffect(
                                 AddContactsContract.Effect.ShowToast(
                                     R.string.generic_error

@@ -1,15 +1,18 @@
 package com.example.androidcourseshpp.data.source.network.repository
 
 import com.example.androidcourseshpp.data.source.network.jwt.JWTManager
-import com.example.androidcourseshpp.data.source.network.model.auth.SignInRequestModel
-import com.example.androidcourseshpp.data.source.network.model.auth.SignUpRequestModel
+import com.example.androidcourseshpp.data.source.network.mapper.toSignInRequestModel
+import com.example.androidcourseshpp.data.source.network.mapper.toSignUpRequestModel
+import com.example.androidcourseshpp.data.source.network.mapper.toUserInfo
 import com.example.androidcourseshpp.data.source.network.service.auth.AuthService
-import com.example.androidcourseshpp.data.source.network.utils.wrapNetworkExceptions
 import com.example.androidcourseshpp.domain.entity.auth.SignInInfo
 import com.example.androidcourseshpp.domain.entity.auth.SignUpInfo
 import com.example.androidcourseshpp.domain.entity.user.UserInfo
 import com.example.androidcourseshpp.domain.repository.AuthRepository
+import com.example.androidcourseshpp.domain.utils.DataError
 import com.example.androidcourseshpp.domain.utils.Result
+import com.example.androidcourseshpp.domain.utils.mapResult
+import com.example.androidcourseshpp.domain.utils.onSuccess
 import com.example.androidcourseshpp.ui.utils.imageconvertor.ImageConverter
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -18,7 +21,7 @@ import javax.inject.Singleton
 class AuthRepositoryImpl @Inject constructor(
     private val jwtManager: JWTManager,
     private val authService: AuthService,
-    private val imageConvertor: ImageConverter
+    private val imageConverter: ImageConverter
 ) : AuthRepository {
     override fun getAccessToken(): String? {
         return jwtManager.getAccessToken()
@@ -32,31 +35,34 @@ class AuthRepositoryImpl @Inject constructor(
         jwtManager.clearTokens()
     }
 
-    override suspend fun signIn(signInInfo: SignInInfo): Result<UserInfo> = wrapNetworkExceptions {
-        val data = SignInRequestModel(email = signInInfo.email, password = signInInfo.password)
+    override suspend fun signIn(signInInfo: SignInInfo): Result<UserInfo, DataError.NetworkError> {
 
-        val response = authService.singIn(data)
+        val responseResult =
+            authService.singIn(signInRequestModel = signInInfo.toSignInRequestModel())
 
-        jwtManager.saveTokens(
-            accessToken = response.accessToken,
-            refreshToken = response.refreshToken
-        )
+        responseResult.onSuccess { data ->
+            with(data) {
+                jwtManager.saveTokens(
+                    accessToken = accessToken,
+                    refreshToken = refreshToken
+                )
+            }
+        }
 
-        response.user.toUserInfo()
+        return responseResult.mapResult { it.user.toUserInfo() }
     }
 
-    override suspend fun singUp(signUpInfo: SignUpInfo): Result<UserInfo> = wrapNetworkExceptions {
-        val data = SignUpRequestModel(
-            userName = signUpInfo.userName,
-            mobilePhone = signUpInfo.mobilePhone,
-            email = signUpInfo.email,
-            password = signUpInfo.password,
-            image = imageConvertor.convertBitmapToMultipartBody(signUpInfo.avatar)
-        )
-        val response = authService.signUp(data)
 
-        jwtManager.saveTokens(response.accessToken, response.refreshToken)
+    override suspend fun singUp(signUpInfo: SignUpInfo): Result<UserInfo, DataError.NetworkError> {
+        val responseResult =
+            authService.signUp(signUpRequestModel = signUpInfo.toSignUpRequestModel(imageConverter))
 
-        response.user.toUserInfo()
+        responseResult.onSuccess { data ->
+            with(data) {
+                jwtManager.saveTokens(accessToken, refreshToken)
+            }
+        }
+
+        return responseResult.mapResult { it.user.toUserInfo() }
     }
 }

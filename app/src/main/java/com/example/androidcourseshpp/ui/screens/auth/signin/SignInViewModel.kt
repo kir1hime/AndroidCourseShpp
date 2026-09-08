@@ -4,6 +4,7 @@ package com.example.androidcourseshpp.ui.screens.auth.signin
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.domain.entity.auth.SignInInfo
 import com.example.androidcourseshpp.domain.usecase.auth.SignInUseCase
+import com.example.androidcourseshpp.domain.utils.DataError
 import com.example.androidcourseshpp.ui.BaseViewModel
 import com.example.androidcourseshpp.ui.screens.model.toUserModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -52,17 +53,27 @@ class SignInViewModel @Inject constructor(
                 }
                 setEffect(SignInContract.Effect.NavigateToUserProfileScreen(userInfo.toUserModel()))
             },
-            onBackendError = {
-                setState {
-                    copy(
-                        eMailHelperTextResId = R.string.incorrect_input_data,
-                        passwordHelperTextResId = R.string.incorrect_input_data
-                    )
+            onNetworkError = { error ->
+                when (error) {
+                    DataError.NetworkError.CONNECTION_ERROR -> {
+                        setEffect(SignInContract.Effect.ShowToast(R.string.connection_error))
+                    }
+
+                    DataError.NetworkError.INCORRECT_REQUEST_ERROR -> {
+                        setState {
+                            copy(
+                                eMailHelperTextResId = R.string.incorrect_input_data,
+                                passwordHelperTextResId = R.string.incorrect_input_data
+                            )
+                        }
+                        setEffect(SignInContract.Effect.ShowToast(R.string.backend_error))
+                    }
+
+                    else -> {
+                        setEffect(SignInContract.Effect.ShowToast(R.string.generic_error))
+                    }
                 }
-                setEffect(SignInContract.Effect.ShowToast(R.string.backend_error))
             },
-            onConnectionError = { setEffect(SignInContract.Effect.ShowToast(R.string.connection_error)) },
-            onResponseProcessingError = { setEffect(SignInContract.Effect.ShowToast(R.string.server_response_error)) },
             finally = { setState { copy(isProgressBarShowed = false) } }
         )
     }
