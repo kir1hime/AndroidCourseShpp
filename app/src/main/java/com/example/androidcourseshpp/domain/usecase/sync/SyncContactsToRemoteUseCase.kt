@@ -3,17 +3,17 @@ package com.example.androidcourseshpp.domain.usecase.sync
 import com.example.androidcourseshpp.domain.entity.contact.SyncAction
 import com.example.androidcourseshpp.domain.repository.ContactsLocalRepository
 import com.example.androidcourseshpp.domain.repository.ContactsNetworkRepository
-import com.example.androidcourseshpp.domain.utils.AppError
+import com.example.androidcourseshpp.domain.utils.DataError
 import com.example.androidcourseshpp.domain.utils.Result
 import com.example.androidcourseshpp.domain.utils.onError
 import com.example.androidcourseshpp.domain.utils.onSuccess
 import kotlinx.coroutines.flow.first
 
-class SyncContactsToRemoteUseCase (
+class SyncContactsToRemoteUseCase(
     private val contactsNetworkRepository: ContactsNetworkRepository,
     private val contactsLocalRepository: ContactsLocalRepository
 ) {
-    suspend operator fun invoke(): Result<Unit> {
+    suspend operator fun invoke(): Result<Unit, DataError> {
         val result = contactsLocalRepository.getContacts().first()
 
         if (result is Result.Success) {
@@ -42,9 +42,9 @@ class SyncContactsToRemoteUseCase (
                     else -> return@forEach
                 }
             }
-            return if (isAllContactsSynced) Result.Success(Unit) else Result.Error(AppError.BackendError)
+            return if (isAllContactsSynced) Result.Success(Unit) else Result.Error(DataError.NetworkError.SERVER_ERROR)
         } else {
-            return Result.Error(AppError.LocalStorageError)
+            return Result.Error(DataError.LocalError)
         }
     }
 }
