@@ -1,11 +1,11 @@
 package com.example.androidcourseshpp.di.network
 
-import com.example.androidcourseshpp.data.source.local.userdata.DatabaseSyncProvider
-import com.example.androidcourseshpp.data.source.local.userdata.GalleryDataProvider
-import com.example.androidcourseshpp.data.source.local.userdata.UserDataProvider
-import com.example.androidcourseshpp.data.source.network.api.auth.TokenRefreshAPI
-import com.example.androidcourseshpp.data.source.network.jwt.JWTManager
-import com.example.androidcourseshpp.data.source.network.jwt.TokenAuthenticator
+import com.example.androidcourseshpp.data.local.userdata.DatabaseSyncProvider
+import com.example.androidcourseshpp.data.local.userdata.GalleryDataProvider
+import com.example.androidcourseshpp.data.local.userdata.UserDataProvider
+import com.example.androidcourseshpp.data.network.api.auth.TokenRefreshAPI
+import com.example.androidcourseshpp.data.network.jwt.JWTManager
+import com.example.androidcourseshpp.data.network.jwt.TokenAuthenticator
 import com.example.androidcourseshpp.di.MainOkHttpClient
 import com.example.androidcourseshpp.di.MainRetrofit
 import com.example.androidcourseshpp.di.TokenRefreshOkHttpClient
