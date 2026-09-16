@@ -1,29 +1,54 @@
 package com.example.androidcourseshpp.domain.utils
 
 
-sealed class Result<out T> {
-    data class Success<T>(val data: T) : Result<T>()
-    data class Error(val error: AppError) : Result<Nothing>()
-
+sealed interface RootError
+sealed interface Result<out D, out E : RootError> {
+    data class Success<out D>(val data: D) : Result<D, Nothing>
+    data class Error<out E : RootError>(val error: E) : Result<Nothing, E>
 }
 
-sealed class AppError {
-    data object BackendError : AppError()
-    data object ConnectionError : AppError()
-    data object ResponseProcessingError : AppError()
-    data object LocalStorageError : AppError()
-}
-
-suspend fun <T> Result<T>.onSuccess(toExecute: suspend (T) -> Unit): Result<T> {
-    if (this is Result.Success) {
-        toExecute(this.data)
+inline fun <D, E : RootError, R> Result<D, E>.mapResult(map: (D) -> R): Result<R, E> {
+    return when (this) {
+        is Result.Success -> Result.Success(map(data))
+        is Result.Error -> Result.Error(error)
     }
-    return this
 }
 
-suspend fun <T> Result<T>.onError(toExecute: suspend () -> Unit): Result<T> {
-    if (this is Result.Error) {
-        toExecute()
+inline fun <D, E : RootError> Result<D, E>.onSuccess(action: (D) -> Unit): Result<D, E> {
+    return when (this) {
+        is Result.Error -> this
+        is Result.Success -> {
+            action(data)
+            this
+        }
     }
-    return this
 }
+
+inline fun <D, E : RootError> Result<D, E>.onError(action: (E) -> Unit): Result<D, E> {
+    return when (this) {
+        is Result.Success -> this
+        is Result.Error -> {
+            action(error)
+            this
+        }
+    }
+}
+
+interface DataError : RootError {
+    enum class NetworkError : DataError {
+        CONNECTION_ERROR,
+        UNKNOWN_ERROR,
+        INCORRECT_REQUEST_ERROR,
+        UNAUTHORIZED_ERROR,
+        ACCESS_DENIED_ERROR,
+        NOT_FOUNDED_ERROR,
+        REQUEST_TIMEOUT_ERROR,
+        TOO_MANY_REQUEST_ERROR,
+        SERVER_ERROR,
+        SERIALIZATION_ERROR
+    }
+
+    data object LocalError : DataError
+}
+
+data object UnknownError : RootError

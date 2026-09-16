@@ -1,7 +1,5 @@
 package com.example.androidcourseshpp.data.source.network.model.user
 
-import com.example.androidcourseshpp.data.source.network.dto.user.UpdateUserRequestDTO
-import com.example.androidcourseshpp.domain.entity.user.UserInfo
 import java.util.Date
 
 data class UpdateUserRequestModel(
@@ -16,27 +14,4 @@ data class UpdateUserRequestModel(
     val twitter: String? = null,
     val linkedin: String? = null,
     val image: String? = null
-) {
-    fun toUpdateUserDataDTO() = UpdateUserRequestDTO(
-        name = name,
-        phone = phone,
-        address = address,
-        career = career,
-        birthday = birthday,
-        facebook = facebook,
-        instagram = instagram,
-        twitter = twitter,
-        linkedin = linkedin
-    )
-}
-
-fun UserInfo.toUpdateUserDataModel() =
-    UpdateUserRequestModel(
-        id = id,
-        name = name,
-        phone = mobilePhone,
-        career = career,
-        address = address,
-        birthday = dateOfBirthday,
-        image = avatar
-    )
+)

@@ -2,19 +2,19 @@ package com.example.androidcourseshpp.domain.usecase.sync
 
 import com.example.androidcourseshpp.domain.repository.ContactsLocalRepository
 import com.example.androidcourseshpp.domain.repository.ContactsNetworkRepository
-import com.example.androidcourseshpp.domain.utils.AppError
+import com.example.androidcourseshpp.domain.utils.DataError
 import com.example.androidcourseshpp.domain.utils.Result
 import com.example.androidcourseshpp.domain.utils.onError
 import com.example.androidcourseshpp.domain.utils.onSuccess
 import kotlinx.coroutines.flow.first
 
 
-class SyncContactsFromRemoteUseCase (
+class SyncContactsFromRemoteUseCase(
     private val contactsLocalRepository: ContactsLocalRepository,
     private val contactsNetworkRepository: ContactsNetworkRepository
 ) {
 
-    suspend operator fun invoke(): Result<Unit> {
+    suspend operator fun invoke(): Result<Unit, DataError> {
         val result = contactsNetworkRepository.loadContacts()
         var isAllContactsSynced = true
 
@@ -47,6 +47,6 @@ class SyncContactsFromRemoteUseCase (
         return if (isAllContactsSynced) {
             Result.Success(Unit)
         } else
-            Result.Error(AppError.LocalStorageError)
+            Result.Error(DataError.LocalError)
     }
 }

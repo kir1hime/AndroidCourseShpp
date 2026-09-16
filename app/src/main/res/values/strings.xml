@@ -15,7 +15,6 @@
 
     <!-- Error -->
     <string name="backend_error">Server error</string>
-    <string name="server_response_error">Something went wrong. Please try again</string>
     <string name="connection_error">Check your internet connection</string>
     <string name="unauthorized_error">User is not authorized</string>
     <string name="generic_error">Something went wrong. Please try again.</string>

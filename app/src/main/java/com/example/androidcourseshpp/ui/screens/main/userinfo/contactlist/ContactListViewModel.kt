@@ -10,7 +10,7 @@ import com.example.androidcourseshpp.domain.usecase.contacts.DeleteContactUseCas
 import com.example.androidcourseshpp.domain.usecase.contacts.DeleteContactsUseCase
 import com.example.androidcourseshpp.domain.usecase.contacts.GetContactsUseCase
 import com.example.androidcourseshpp.domain.usecase.sync.SyncContactsFromRemoteUseCase
-import com.example.androidcourseshpp.domain.utils.AppError
+import com.example.androidcourseshpp.domain.utils.DataError
 import com.example.androidcourseshpp.domain.utils.Result
 import com.example.androidcourseshpp.ui.BaseViewModel
 import com.example.androidcourseshpp.ui.notifications.NotificationAction
@@ -106,13 +106,19 @@ class ContactListViewModel @Inject constructor(
             toExecute = {
                 syncContactsFromRemoteUseCase()
             },
-            onRemoteError = {
-                setEffect(ContactListContract.Effect.ShowToast(R.string.generic_error))
+            onNetworkError = { error ->
+                when (error) {
+                    DataError.NetworkError.CONNECTION_ERROR -> setEffect(
+                        ContactListContract.Effect.ShowToast(
+                            R.string.connection_error
+                        )
+                    )
+
+                    else -> setEffect(ContactListContract.Effect.ShowToast(R.string.generic_error))
+                }
+
             },
-            onConnectionError = {
-                setEffect(ContactListContract.Effect.ShowToast(R.string.connection_error))
-            },
-            onLocalStorageError = {
+            onLocalError = {
                 setEffect(ContactListContract.Effect.ShowToast(R.string.generic_error))
             },
             finally = { setEffect(ContactListContract.Effect.HideRefreshProgressBar) }
@@ -162,7 +168,7 @@ class ContactListViewModel @Inject constructor(
                 )
                 deletedContacts.push(contactItem)
             },
-            onLocalStorageError = {
+            onLocalError = {
                 setEffect(ContactListContract.Effect.ShowToast(R.string.generic_error))
             },
             finally = { setState { copy(isProgressBarShowed = false) } }
@@ -183,7 +189,7 @@ class ContactListViewModel @Inject constructor(
                     list.removeAll(contactItems)
                 }
             },
-            onLocalStorageError = {
+            onLocalError = {
                 setEffect(ContactListContract.Effect.ShowToast(R.string.generic_error))
             },
             finally = { setState { copy(isProgressBarShowed = false) } }
@@ -210,7 +216,7 @@ class ContactListViewModel @Inject constructor(
                     setEffect(ContactListContract.Effect.ShowUndoDeletingItemSnackBar(deletedItem))
                 }
             },
-            onLocalStorageError = {
+            onLocalError = {
                 setEffect(ContactListContract.Effect.ShowToast(R.string.generic_error))
             },
             finally = { setState { copy(isProgressBarShowed = false) } }
@@ -230,7 +236,7 @@ class ContactListViewModel @Inject constructor(
                 }
                 deletedContactsInMultiselectMode.clear()
             },
-            onLocalStorageError = {
+            onLocalError = {
                 setEffect(ContactListContract.Effect.ShowToast(R.string.generic_error))
             },
             finally = { setState { copy(isProgressBarShowed = false) } }
@@ -270,7 +276,7 @@ class ContactListViewModel @Inject constructor(
                             )
                         }
                         when (result.error) {
-                            AppError.ConnectionError -> setEffect(
+                            DataError.NetworkError.CONNECTION_ERROR -> setEffect(
                                 ContactListContract.Effect.ShowToast(
                                     R.string.connection_error
                                 )
@@ -314,6 +320,5 @@ class ContactListViewModel @Inject constructor(
             newFilteredList
         }
     }
-
 }
 

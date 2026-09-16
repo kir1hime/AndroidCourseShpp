@@ -2,8 +2,11 @@ package com.example.androidcourseshpp.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.androidcourseshpp.domain.utils.AppError
+import com.example.androidcourseshpp.domain.utils.DataError
 import com.example.androidcourseshpp.domain.utils.Result
+import com.example.androidcourseshpp.domain.utils.RootError
+import com.example.androidcourseshpp.domain.utils.UnknownError
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -59,46 +62,46 @@ abstract class BaseViewModel<UIEvent : ViewEvent, UIEffect : ViewEffect, UIState
         }
     }
 
-    protected fun <T> ViewModel.executeUseCase(
-        toExecute: suspend () -> Result<T>,
-        onSuccess: ((T) -> Unit)? = null,
-        onBackendError: (() -> Unit)? = null,
-        onConnectionError: (() -> Unit)? = null,
-        onResponseProcessingError: (() -> Unit)? = null,
-        onLocalStorageError: (() -> Unit)? = null,
-        onError: (() -> Unit)? = null,
-        onRemoteError: (() -> Unit)? = null,
-        finally: (() -> Unit)? = null
+    protected fun <T> executeUseCase(
+        toExecute: suspend () -> Result<T, RootError>,
+        onSuccess: ((T) -> Unit) = {},
+        onError: ((RootError) -> Unit) = {},
+        onNetworkError: ((DataError.NetworkError) -> Unit)? = null,
+        onLocalError: (() -> Unit)? = null,
+        finally: (() -> Unit) = {},
+        coroutineExceptionHandler: CoroutineExceptionHandler = CoroutineExceptionHandler { _, _ ->
+            onError.invoke(UnknownError)
+        }
     ) {
-        viewModelScope.launch {
+
+        viewModelScope.launch(coroutineExceptionHandler) {
             when (val result = toExecute()) {
-                is Result.Success -> {
-                    onSuccess?.invoke(result.data)
-                }
-                is Result.Error -> {
-                    onError?.let {
-                        it.invoke()
-                        finally?.invoke()
-                        return@launch
-                    }
-                    onRemoteError?.let {
-                        if (result.error is AppError.BackendError || result.error is AppError.ResponseProcessingError) {
-                            it.invoke()
-                            finally?.invoke()
-                            return@launch
-                        }
-                    }
+                is Result.Success -> onSuccess.invoke(result.data)
+                is Result.Error<*> -> {
                     when (result.error) {
-                        is AppError.BackendError -> onBackendError?.invoke()
-                        is AppError.ConnectionError -> onConnectionError?.invoke()
-                        is AppError.LocalStorageError -> onLocalStorageError?.invoke()
-                        is AppError.ResponseProcessingError -> onResponseProcessingError?.invoke()
+                        is DataError.NetworkError -> onNetworkError.also {
+                            if (it != null) {
+                                it.invoke(result.error)
+                            } else {
+                                onError.invoke(result.error)
+                            }
+                        }
+
+                        is DataError.LocalError -> onLocalError.also {
+                            if (it != null) {
+                                it.invoke()
+                            } else {
+                                onError.invoke(result.error)
+                            }
+                        }
+
+                        else -> {
+                            onError.invoke(result.error)
+                        }
                     }
                 }
             }
-            finally?.invoke()
+            finally.invoke()
         }
     }
-
 }
-

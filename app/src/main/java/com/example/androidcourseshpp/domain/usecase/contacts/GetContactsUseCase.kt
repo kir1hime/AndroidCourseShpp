@@ -4,7 +4,7 @@ import com.example.androidcourseshpp.domain.entity.contact.SyncAction
 import com.example.androidcourseshpp.domain.entity.contact.SyncContactInfo
 import com.example.androidcourseshpp.domain.repository.ContactsLocalRepository
 import com.example.androidcourseshpp.domain.repository.ContactsNetworkRepository
-import com.example.androidcourseshpp.domain.utils.AppError
+import com.example.androidcourseshpp.domain.utils.DataError
 import com.example.androidcourseshpp.domain.utils.Result
 import com.example.androidcourseshpp.domain.utils.onError
 import com.example.androidcourseshpp.domain.utils.onSuccess
@@ -13,11 +13,11 @@ import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
 
 
-class GetContactsUseCase (
+class GetContactsUseCase(
     private val contactsNetworkRepository: ContactsNetworkRepository,
     private val contactsLocalRepository: ContactsLocalRepository
 ) {
-    operator fun invoke(): Flow<Result<List<SyncContactInfo>>> = flow {
+    operator fun invoke(): Flow<Result<List<SyncContactInfo>, DataError>> = flow {
         if (contactsLocalRepository.isDatabaseSynced()) {
             emitAll(contactsLocalRepository.getContacts())
         } else {
@@ -36,7 +36,7 @@ class GetContactsUseCase (
                         emitAll(contactsLocalRepository.getContacts())
                     }
                     .onError {
-                        emit(Result.Error(AppError.LocalStorageError))
+                        emit(Result.Error(DataError.LocalError))
                     }
             } else if (serverResult is Result.Error) {
                 emit(Result.Error(serverResult.error))

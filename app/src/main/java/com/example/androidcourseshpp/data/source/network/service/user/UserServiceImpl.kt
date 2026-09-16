@@ -1,30 +1,33 @@
 package com.example.androidcourseshpp.data.source.network.service.user
 
 import com.example.androidcourseshpp.data.source.network.api.user.UserAPI
+import com.example.androidcourseshpp.data.source.network.mapper.toGetUserResponseModel
+import com.example.androidcourseshpp.data.source.network.mapper.toGetUsersResponseModel
+import com.example.androidcourseshpp.data.source.network.mapper.toUpdateUserRequestDTO
 import com.example.androidcourseshpp.data.source.network.model.user.UpdateUserRequestModel
-import com.example.androidcourseshpp.data.source.network.service.BaseRetrofitService
+import com.example.androidcourseshpp.data.source.network.utils.safeApiCall
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class UserServiceImpl @Inject constructor(
     private val userApi: UserAPI
-) : BaseRetrofitService(), UserService {
+) : UserService {
 
-    override suspend fun updateUserInfo(data: UpdateUserRequestModel) {
-        processRetrofitExceptions {
+    override suspend fun updateUserInfo(updateUserRequestModel: UpdateUserRequestModel) =
+        safeApiCall {
             userApi.updateUserInfo(
-                userId = data.id,
-                updateUserRequestDTO = data.toUpdateUserDataDTO()
+                userId = updateUserRequestModel.id,
+                updateUserRequestDTO = updateUserRequestModel.toUpdateUserRequestDTO()
             )
         }
+
+
+    override suspend fun getUser(userId: Long) = safeApiCall {
+        userApi.getUser(userId).toGetUserResponseModel()
     }
 
-    override suspend fun getUser(data: Long) = processRetrofitExceptions {
-        userApi.getUser(data).data
-    }
-
-    override suspend fun getUsers() = processRetrofitExceptions {
-        userApi.getUsers().data
+    override suspend fun getUsers() = safeApiCall {
+        userApi.getUsers().toGetUsersResponseModel()
     }
 }

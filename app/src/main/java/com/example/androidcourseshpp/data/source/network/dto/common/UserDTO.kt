@@ -1,11 +1,9 @@
-package com.example.androidcourseshpp.data.source.network.model
+package com.example.androidcourseshpp.data.source.network.dto.common
 
-import com.example.androidcourseshpp.domain.entity.contact.ContactInfo
-import com.example.androidcourseshpp.domain.entity.user.UserInfo
 import com.google.gson.annotations.SerializedName
 import java.util.Date
 
-data class UserModel(
+data class UserDTO(
     @SerializedName("id")
     val id: Long,
     @SerializedName("email")
@@ -30,24 +28,4 @@ data class UserModel(
     val linkedin: String?,
     @SerializedName("image")
     val image: String?
-) {
-    fun toUserInfo() =
-        UserInfo(
-            id = id,
-            name = name ?: "",
-            mobilePhone = phone ?: "",
-            address = address ?: "",
-            career = career ?: "",
-            avatar = image ?: "",
-            dateOfBirthday = birthday
-        )
-
-    fun toContactInfo() =
-        ContactInfo(
-            id = id,
-            name = name ?: "",
-            career = career ?: "",
-            address = address ?: "",
-            avatarURL = image ?: ""
-        )
-}
+)

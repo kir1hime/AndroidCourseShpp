@@ -1,16 +1,29 @@
 package com.example.androidcourseshpp.data.source.network.dto.auth
 
-import com.example.androidcourseshpp.data.source.network.model.auth.SignInResponseModel
+import com.example.androidcourseshpp.data.source.network.dto.common.UserDTO
 import com.google.gson.annotations.SerializedName
 
-class SignInRequestDTO(
+data class SignInRequestDTO(
     @SerializedName("email")
     val email: String,
     @SerializedName("password")
     val password: String
 )
 
-class SignInResponseDTO(
+data class SignInResponseDTO(
     @SerializedName("data")
-    val data: SignInResponseModel
+    val data: SignInResponseDataDTO
 )
+
+data class SignInResponseDataDTO(
+    @SerializedName("user")
+    val user: UserDTO,
+    @SerializedName("accessToken")
+    val accessToken: String,
+    @SerializedName("refreshToken")
+    val refreshToken: String
+)
+
+
+
+

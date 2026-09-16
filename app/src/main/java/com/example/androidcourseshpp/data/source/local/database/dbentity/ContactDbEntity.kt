@@ -32,16 +32,14 @@ data class ContactDbEntity(
         avatarURL = avatarURL,
         address = address
     )
-
-    companion object {
-        fun fromContactInfo(contact: ContactInfo) =
-            ContactDbEntity(
-                id = contact.id,
-                name = contact.name,
-                career = contact.career,
-                avatarURL = contact.avatarURL,
-                address = contact.address,
-                syncState = SyncState.ADDED
-            )
-    }
 }
+
+fun ContactInfo.toContactDBEntity() =
+    ContactDbEntity(
+        id = id,
+        name = name,
+        career = career,
+        address = address,
+        syncState = SyncState.ADDED,
+        avatarURL = avatarURL
+    )

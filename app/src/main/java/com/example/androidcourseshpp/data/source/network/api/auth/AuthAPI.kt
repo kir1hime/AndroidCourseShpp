@@ -23,5 +23,5 @@ interface AuthAPI {
     ): SignUpResponseDTO
 
     @POST("login")
-    suspend fun singIn(@Body singInRequestDTO: SignInRequestDTO): SignInResponseDTO
+    suspend fun singIn(@Body signInRequestDTO: SignInRequestDTO): SignInResponseDTO
 }

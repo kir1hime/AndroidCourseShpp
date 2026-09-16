@@ -4,6 +4,7 @@ import com.example.androidcourseshpp.domain.entity.auth.SignUpInfo
 import com.example.androidcourseshpp.domain.entity.user.UserInfo
 import com.example.androidcourseshpp.domain.repository.AuthRepository
 import com.example.androidcourseshpp.domain.repository.UserLocalDataRepository
+import com.example.androidcourseshpp.domain.utils.DataError
 import com.example.androidcourseshpp.domain.utils.Result
 import com.example.androidcourseshpp.domain.utils.onSuccess
 
@@ -12,7 +13,10 @@ class SignUpUseCase(
     private val userLocalDataRepository: UserLocalDataRepository
 ) {
 
-    suspend operator fun invoke(signUpInfo: SignUpInfo, toRememberUser: Boolean): Result<UserInfo> {
+    suspend operator fun invoke(
+        signUpInfo: SignUpInfo,
+        toRememberUser: Boolean
+    ): Result<UserInfo, DataError.NetworkError> {
         val userInfo = authRepository.singUp(signUpInfo).onSuccess { data ->
             userLocalDataRepository.saveUserServerId(data.id)
             if (toRememberUser) {

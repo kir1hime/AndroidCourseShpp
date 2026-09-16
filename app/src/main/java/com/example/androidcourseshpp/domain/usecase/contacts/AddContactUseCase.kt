@@ -3,12 +3,15 @@ package com.example.androidcourseshpp.domain.usecase.contacts
 import com.example.androidcourseshpp.domain.entity.contact.ContactInfo
 import com.example.androidcourseshpp.domain.entity.contact.SyncAction
 import com.example.androidcourseshpp.domain.repository.ContactsLocalRepository
-import com.example.androidcourseshpp.domain.utils.AppError
+import com.example.androidcourseshpp.domain.utils.DataError
 import com.example.androidcourseshpp.domain.utils.Result
 
 
-class AddContactUseCase(private val contactsLocalRepository: ContactsLocalRepository) {
-    suspend operator fun invoke(contactInfo: ContactInfo): Result<Unit> {
+class AddContactUseCase(
+    private val contactsLocalRepository: ContactsLocalRepository
+) {
+    suspend operator fun invoke(contactInfo: ContactInfo): Result<Unit, DataError.LocalError> {
+
         val getContactResult = contactsLocalRepository.getContactById(contactInfo.id)
 
         if (getContactResult is Result.Success) {
@@ -27,7 +30,6 @@ class AddContactUseCase(private val contactsLocalRepository: ContactsLocalReposi
                 }
             }
         }
-
-        return Result.Error(AppError.LocalStorageError)
+        return Result.Error(DataError.LocalError)
     }
 }
