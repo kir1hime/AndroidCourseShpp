@@ -1,14 +1,14 @@
 package com.example.androidcourseshpp.di
 
-import com.example.androidcourseshpp.data.local.database.repository.ContactsLocalRepositoryImpl
+import com.example.androidcourseshpp.data.source.local.database.repository.ContactsLocalRepositoryImpl
 import com.example.androidcourseshpp.domain.repository.ContactsNetworkRepository
-import com.example.androidcourseshpp.data.network.repository.ContactsNetworkRepositoryImpl
+import com.example.androidcourseshpp.data.source.network.repository.ContactsNetworkRepositoryImpl
 import com.example.androidcourseshpp.domain.repository.GalleryRepository
-import com.example.androidcourseshpp.data.local.repository.GalleryRepositoryImpl
-import com.example.androidcourseshpp.data.local.repository.UserLocalDataRepositoryImpl
-import com.example.androidcourseshpp.data.network.repository.AuthRepositoryImpl
+import com.example.androidcourseshpp.data.source.local.repository.GalleryRepositoryImpl
+import com.example.androidcourseshpp.data.source.local.repository.UserLocalDataRepositoryImpl
+import com.example.androidcourseshpp.data.source.network.repository.AuthRepositoryImpl
 import com.example.androidcourseshpp.domain.repository.UserRepository
-import com.example.androidcourseshpp.data.network.repository.UserRepositoryImpl
+import com.example.androidcourseshpp.data.source.network.repository.UserRepositoryImpl
 import com.example.androidcourseshpp.domain.repository.AuthRepository
 import com.example.androidcourseshpp.domain.repository.ContactsLocalRepository
 import com.example.androidcourseshpp.domain.repository.UserLocalDataRepository

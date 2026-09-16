@@ -2,7 +2,7 @@ package com.example.androidcourseshpp.di
 
 import android.content.Context
 import androidx.room.Room
-import com.example.androidcourseshpp.data.local.database.AppDatabase
+import com.example.androidcourseshpp.data.source.local.database.AppDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
