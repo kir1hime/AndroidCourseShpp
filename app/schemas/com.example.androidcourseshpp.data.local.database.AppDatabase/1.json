@@ -6,7 +6,7 @@
     "entities": [
       {
         "tableName": "contacts",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `name` TEXT NOT NULL, `career` TEXT NOT NULL, `address` TEXT NOT NULL, `sync_state` TEXT NOT NULL, `avatar_url` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `name` TEXT NOT NULL, `career` TEXT NOT NULL, `address` TEXT NOT NULL, `avatar_url` TEXT NOT NULL, `sync_state` TEXT NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -33,14 +33,14 @@
             "notNull": true
           },
           {
-            "fieldPath": "syncState",
-            "columnName": "sync_state",
+            "fieldPath": "avatarURL",
+            "columnName": "avatar_url",
             "affinity": "TEXT",
             "notNull": true
           },
           {
-            "fieldPath": "avatarURL",
-            "columnName": "avatar_url",
+            "fieldPath": "syncState",
+            "columnName": "sync_state",
             "affinity": "TEXT",
             "notNull": true
           }

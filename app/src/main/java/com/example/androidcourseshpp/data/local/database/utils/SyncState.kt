@@ -1,7 +1,7 @@
 package com.example.androidcourseshpp.data.local.database.utils
 
 import androidx.sqlite.SQLiteException
-import com.example.androidcourseshpp.domain.entity.contact.SyncAction
+import com.example.androidcourseshpp.domain.entity.sync.SyncStatus
 
 enum class SyncState(val code: String) {
     SYNCED("SYNCED"), ADDED("ADDED"), DELETED("DELETED");
@@ -11,19 +11,19 @@ enum class SyncState(val code: String) {
     }
 }
 
-fun SyncState.toSyncAction(): SyncAction {
+fun SyncState.toSyncAction(): SyncStatus {
     return when (this) {
-        SyncState.SYNCED -> SyncAction.SYNCED
-        SyncState.ADDED -> SyncAction.ADDED
-        SyncState.DELETED -> SyncAction.DELETED
+        SyncState.SYNCED -> SyncStatus.SYNCED
+        SyncState.ADDED -> SyncStatus.ADDED
+        SyncState.DELETED -> SyncStatus.DELETED
     }
 }
 
 
-fun SyncAction.toSyncState(): SyncState {
+fun SyncStatus.toSyncState(): SyncState {
     return when (this) {
-        SyncAction.SYNCED -> SyncState.SYNCED
-        SyncAction.ADDED -> SyncState.ADDED
-        SyncAction.DELETED -> SyncState.DELETED
+        SyncStatus.SYNCED -> SyncState.SYNCED
+        SyncStatus.ADDED -> SyncState.ADDED
+        SyncStatus.DELETED -> SyncState.DELETED
     }
 }

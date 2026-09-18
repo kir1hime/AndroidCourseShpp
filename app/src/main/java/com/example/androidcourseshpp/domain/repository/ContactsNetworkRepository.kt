@@ -5,9 +5,7 @@ import com.example.androidcourseshpp.domain.utils.DataError
 import com.example.androidcourseshpp.domain.utils.Result
 
 interface ContactsNetworkRepository {
-    suspend fun addContact(contactId: Long): Result<Unit, DataError.NetworkError>
-    suspend fun deleteContact(contactId: Long): Result<Unit, DataError.NetworkError>
-    suspend fun deleteContacts(contactIds: List<Long>): Result<Unit, DataError.NetworkError>
-
-    suspend fun loadContacts(): Result<List<ContactInfo>, DataError.NetworkError>
+    suspend fun addContacts(contactsIds: List<Long>): Result<Unit, DataError.NetworkError>
+    suspend fun deleteContacts(contactsIds: List<Long>): Result<Unit, DataError.NetworkError>
+    suspend fun getContacts(): Result<List<ContactInfo>, DataError.NetworkError>
 }

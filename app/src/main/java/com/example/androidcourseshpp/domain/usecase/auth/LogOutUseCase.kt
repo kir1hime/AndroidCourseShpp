@@ -18,6 +18,6 @@ class LogOutUseCase(
         userLocalDataRepository.setUserRememberState(false)
         galleryRepository.clearGalleryPhotos()
         contactsLocalRepository.clearContacts()
-        contactsLocalRepository.setDatabaseSynced(false)
+        //contactsLocalRepository.setDatabaseSynced(false)
     }
 }

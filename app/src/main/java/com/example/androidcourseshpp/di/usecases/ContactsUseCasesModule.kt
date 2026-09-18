@@ -1,7 +1,6 @@
 package com.example.androidcourseshpp.di.usecases
 
 import com.example.androidcourseshpp.domain.repository.ContactsLocalRepository
-import com.example.androidcourseshpp.domain.repository.ContactsNetworkRepository
 import com.example.androidcourseshpp.domain.usecase.contacts.AddContactUseCase
 import com.example.androidcourseshpp.domain.usecase.contacts.AddContactsUseCase
 import com.example.androidcourseshpp.domain.usecase.contacts.DeleteContactUseCase
@@ -24,8 +23,8 @@ class ContactsUseCasesModule {
 
     @Singleton
     @Provides
-    fun provideAddContactsUseCase(addContactUseCase: AddContactUseCase) =
-        AddContactsUseCase(addContactUseCase = addContactUseCase)
+    fun provideAddContactsUseCase(contactsLocalRepository: ContactsLocalRepository) =
+        AddContactsUseCase(contactsLocalRepository = contactsLocalRepository)
 
     @Singleton
     @Provides
@@ -34,16 +33,14 @@ class ContactsUseCasesModule {
 
     @Singleton
     @Provides
-    fun provideDeleteContactsUseCase(deleteContactUseCase: DeleteContactUseCase) =
-        DeleteContactsUseCase(deleteContactUseCase = deleteContactUseCase)
+    fun provideDeleteContactsUseCase(contactsLocalRepository: ContactsLocalRepository) =
+        DeleteContactsUseCase(contactsLocalRepository = contactsLocalRepository)
 
     @Singleton
     @Provides
     fun provideGetContactsUseCase(
-        contactsLocalRepository: ContactsLocalRepository,
-        contactsNetworkRepository: ContactsNetworkRepository
+        contactsLocalRepository: ContactsLocalRepository
     ) = GetContactsUseCase(
         contactsLocalRepository = contactsLocalRepository,
-        contactsNetworkRepository = contactsNetworkRepository
     )
 }

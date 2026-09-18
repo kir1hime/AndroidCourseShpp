@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface ContactsDao {
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addContact(contactDbEntity: ContactDbEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -33,8 +33,8 @@ interface ContactsDao {
     @Query("DELETE FROM contacts WHERE id IN (:ids)")
     suspend fun deleteContactsByIds(ids: List<Long>)
 
-    @Query("UPDATE contacts SET sync_state = :syncState WHERE id = :id")
-    suspend fun setContactSync(id: Long, syncState: SyncState)
+    @Query("UPDATE contacts SET sync_state = :syncState WHERE id IN (:ids)")
+    suspend fun setSyncState(ids: List<Long>, syncState: SyncState)
 
     @Transaction
     suspend fun refreshContacts(
@@ -43,13 +43,7 @@ interface ContactsDao {
     ) {
         deleteContactsByIds(deletedContactIds)
         addContacts(newContacts)
-
-        deletedContactIds.forEach { contactId ->
-            setContactSync(contactId, SyncState.SYNCED)
-        }
-        newContacts.forEach { contact ->
-            setContactSync(contact.id, SyncState.SYNCED)
-        }
     }
+
 
 }

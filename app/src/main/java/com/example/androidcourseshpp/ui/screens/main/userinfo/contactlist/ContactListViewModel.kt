@@ -1,9 +1,9 @@
 package com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist
 
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.example.androidcourseshpp.R
-import com.example.androidcourseshpp.domain.entity.contact.SyncAction
 import com.example.androidcourseshpp.domain.usecase.contacts.AddContactUseCase
 import com.example.androidcourseshpp.domain.usecase.contacts.AddContactsUseCase
 import com.example.androidcourseshpp.domain.usecase.contacts.DeleteContactUseCase
@@ -20,11 +20,9 @@ import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.model.
 import com.example.androidcourseshpp.ui.sync.ContactsSyncScheduler
 import com.example.androidcourseshpp.ui.utils.containsOrderedSequence
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.Stack
@@ -59,9 +57,23 @@ class ContactListViewModel @Inject constructor(
     private val contactsLoadingTrigger = MutableSharedFlow<Unit>(replay = 1)
 
     init {
-        loadContacts()
-        triggerContactsLoading()
-        contactListSyncScheduler.executeOnceSyncFromRemote()
+        Log.d("ViewModel", "1. Init started")
+
+      /*  viewModelScope.launch {
+            Log.d("ViewModel", "2. Calling sync")
+            syncContactsFromRemoteUseCase()
+        }*/
+
+        viewModelScope.launch {
+            syncContactsFromRemoteUseCase()
+            Log.d("ViewModel", "3. Starting collect")
+            getContactsUseCase().collect { resultList ->
+                if (resultList is Result.Success) {
+                    setState { copy(contactList = resultList.data.map { it.toContactItem() }) }
+                }
+                Log.d("from local", "4. Received result: $resultList")
+            }
+        }
     }
 
 
@@ -244,26 +256,27 @@ class ContactListViewModel @Inject constructor(
         )
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    private fun loadContacts() {
-        setState {
-            copy(
-                isProgressBarShowed = true,
-                isTryAgainButtonShowed = false
-            )
-        }
-        viewModelScope.launch {
-            contactsLoadingTrigger.flatMapLatest {
-                getContactsUseCase()
-            }.collect { result ->
 
-                when (result) {
-                    is Result.Success -> {
-                        setState { copy(isProgressBarShowed = false) }
+    /* @OptIn(ExperimentalCoroutinesApi::class)
+     private fun loadContacts() {
+         setState {
+             copy(
+                 isProgressBarShowed = true,
+                 isTryAgainButtonShowed = false
+             )
+         }
+         viewModelScope.launch {
+             contactsLoadingTrigger.flatMapLatest {
+                 getContactsUseCase()
+             }.collect { result ->
+                 when (result) {
+                     is Result.Success -> {
+                         syncContactsFromRemoteUseCase()
+                         setState { copy(isProgressBarShowed = false) }
 
-                        val contactList =
-                            result.data.filter { syncContact -> syncContact.syncState != SyncAction.DELETED }
-                                .map { syncContact -> syncContact.contactInfo.toContactItem() }
+                         val contactList =
+                             result.data*//*.filter { syncContact -> syncContact.syncState != SyncStatus.DELETED }*//*
+                                .map { syncContact -> syncContact.toContactItem() }
 
                         setState { copy(contactList = contactList) }
                     }
@@ -293,7 +306,7 @@ class ContactListViewModel @Inject constructor(
             }
         }
     }
-
+*/
     private fun triggerContactsLoading() {
         viewModelScope.launch {
             contactsLoadingTrigger.emit(Unit)
