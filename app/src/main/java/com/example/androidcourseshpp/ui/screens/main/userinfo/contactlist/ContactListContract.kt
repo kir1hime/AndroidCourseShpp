@@ -15,14 +15,15 @@ class ContactListContract {
         data object OnHideSearchButtonClicked : Event
         data object OnReloadContacts : Event
         data object OnTryAgainButtonClicked : Event
-        data object OnGetBackDeletedContacts : Event
+        data class OnGetBackDeletedContacts(val contactItems: List<ContactItem>) : Event
         data class OnSearchBarTextChanged(val input: String) : Event
         data class OnSelectModeChange(val isSelectMode: Boolean) : Event
         data class OnSearchModeSwitched(val isSearchModeEnabled: Boolean) : Event
         data class OnGetBackDeletedContact(val contactItem: ContactItem) : Event
         data class OnItemClicked(val contact: ContactItem) : Event
         data class OnContactItemDeleted(val contactItem: ContactItem) : Event
-        data class OnDeleteSelectedItemsFloatingButtonClicked(val contactItems: List<ContactItem>) : Event
+        data class OnDeleteSelectedItemsFloatingButtonClicked(val contactItems: List<ContactItem>) :
+            Event
     }
 
     sealed interface Effect : ViewEffect {

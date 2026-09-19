@@ -1,7 +1,6 @@
 package com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist
 
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.domain.usecase.contacts.AddContactUseCase
@@ -9,7 +8,6 @@ import com.example.androidcourseshpp.domain.usecase.contacts.AddContactsUseCase
 import com.example.androidcourseshpp.domain.usecase.contacts.DeleteContactUseCase
 import com.example.androidcourseshpp.domain.usecase.contacts.DeleteContactsUseCase
 import com.example.androidcourseshpp.domain.usecase.contacts.GetContactsUseCase
-import com.example.androidcourseshpp.domain.usecase.sync.SyncContactsFromRemoteUseCase
 import com.example.androidcourseshpp.domain.utils.DataError
 import com.example.androidcourseshpp.domain.utils.Result
 import com.example.androidcourseshpp.ui.BaseViewModel
@@ -20,7 +18,6 @@ import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.model.
 import com.example.androidcourseshpp.ui.sync.ContactsSyncScheduler
 import com.example.androidcourseshpp.ui.utils.containsOrderedSequence
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -38,7 +35,6 @@ class ContactListViewModel @Inject constructor(
     private val getContactsUseCase: GetContactsUseCase,
     private val notificationService: NotificationService,
     private val contactListSyncScheduler: ContactsSyncScheduler,
-    private val syncContactsFromRemoteUseCase: SyncContactsFromRemoteUseCase
 ) : BaseViewModel<ContactListContract.Event, ContactListContract.Effect, ContactListContract.UIState>() {
 
     override fun initState() = ContactListContract.UIState(
@@ -54,28 +50,10 @@ class ContactListViewModel @Inject constructor(
     private val _filteredContactList = MutableStateFlow(emptyList<ContactItem>())
     val filteredContactList: StateFlow<List<ContactItem>> get() = _filteredContactList
 
-    private val contactsLoadingTrigger = MutableSharedFlow<Unit>(replay = 1)
 
     init {
-        Log.d("ViewModel", "1. Init started")
-
-      /*  viewModelScope.launch {
-            Log.d("ViewModel", "2. Calling sync")
-            syncContactsFromRemoteUseCase()
-        }*/
-
-        viewModelScope.launch {
-            syncContactsFromRemoteUseCase()
-            Log.d("ViewModel", "3. Starting collect")
-            getContactsUseCase().collect { resultList ->
-                if (resultList is Result.Success) {
-                    setState { copy(contactList = resultList.data.map { it.toContactItem() }) }
-                }
-                Log.d("from local", "4. Received result: $resultList")
-            }
-        }
+        loadContacts()
     }
-
 
     override fun handleEvent(event: ContactListContract.Event) {
         when (event) {
@@ -93,7 +71,7 @@ class ContactListViewModel @Inject constructor(
             }
 
             is ContactListContract.Event.OnTryAgainButtonClicked -> {
-                triggerContactsLoading()
+                reloadContacts()
                 setState { copy(isTryAgainButtonShowed = false) }
             }
 
@@ -101,7 +79,9 @@ class ContactListViewModel @Inject constructor(
                 event.contactItem
             )
 
-            is ContactListContract.Event.OnGetBackDeletedContacts -> getBackDeletedContacts()
+            is ContactListContract.Event.OnGetBackDeletedContacts -> getBackDeletedContacts(
+                event.contactItems
+            )
 
             is ContactListContract.Event.OnDeleteSelectedItemsFloatingButtonClicked -> deleteListOfContacts(
                 event.contactItems
@@ -114,50 +94,11 @@ class ContactListViewModel @Inject constructor(
     }
 
     private fun reloadContacts() {
-        executeUseCase(
-            toExecute = {
-                syncContactsFromRemoteUseCase()
-            },
-            onNetworkError = { error ->
-                when (error) {
-                    DataError.NetworkError.CONNECTION_ERROR -> setEffect(
-                        ContactListContract.Effect.ShowToast(
-                            R.string.connection_error
-                        )
-                    )
-
-                    else -> setEffect(ContactListContract.Effect.ShowToast(R.string.generic_error))
+        viewModelScope.launch {
+            contactListSyncScheduler.executeObservableOnceSyncFromRemote().collect { syncState ->
+                if (syncState == ContactsSyncScheduler.SyncState.Success || syncState == ContactsSyncScheduler.SyncState.Failed) {
+                    setEffect(ContactListContract.Effect.HideRefreshProgressBar)
                 }
-
-            },
-            onLocalError = {
-                setEffect(ContactListContract.Effect.ShowToast(R.string.generic_error))
-            },
-            finally = { setEffect(ContactListContract.Effect.HideRefreshProgressBar) }
-        )
-    }
-
-    private fun changeSelectMode(isSelectMode: Boolean) {
-        setState { copy(isSelectMode = isSelectMode) }
-    }
-
-    private fun switchSearchMode(isSearchMode: Boolean) {
-        setState { copy(isSearchMode = isSearchMode) }
-    }
-
-    private fun hideSearchBar() {
-        setEffect(ContactListContract.Effect.HideSearchBar)
-    }
-
-    private fun showSearchBar() {
-        setEffect(ContactListContract.Effect.ShowSearchBar)
-    }
-
-    private fun updateFilteredContactListBy(input: String) {
-        updateFilteredContactList { list -> list.clear() }
-        state.value.contactList.forEach { contact ->
-            if (contact.name.containsOrderedSequence(input)) {
-                updateFilteredContactList { list -> list.add(contact) }
             }
         }
     }
@@ -167,7 +108,6 @@ class ContactListViewModel @Inject constructor(
             toExecute = {
                 setState { copy(isProgressBarShowed = true) }
                 deleteContactUseCase(contactItem.id)
-
             },
             onSuccess = {
                 contactListSyncScheduler.executeOnceSyncToRemote()
@@ -213,7 +153,6 @@ class ContactListViewModel @Inject constructor(
             toExecute = {
                 setState { copy(isProgressBarShowed = true) }
                 addContactUseCase(contactInfo = contactItem.toContactInfo())
-
             },
             onSuccess = {
                 contactListSyncScheduler.executeOnceSyncToRemote()
@@ -225,7 +164,11 @@ class ContactListViewModel @Inject constructor(
                 deletedContacts.pop()
                 if (!deletedContacts.isEmpty()) {
                     val deletedItem = deletedContacts.peek()
-                    setEffect(ContactListContract.Effect.ShowUndoDeletingItemSnackBar(deletedItem))
+                    setEffect(
+                        ContactListContract.Effect.ShowUndoDeletingItemSnackBar(
+                            deletedItem
+                        )
+                    )
                 }
             },
             onLocalError = {
@@ -235,12 +178,13 @@ class ContactListViewModel @Inject constructor(
         )
     }
 
-    private fun getBackDeletedContacts() {
+    private fun getBackDeletedContacts(contactItems: List<ContactItem>) {
         executeUseCase(
             toExecute = {
                 setState { copy(isProgressBarShowed = true) }
                 addContactsUseCase(
-                    contacts = deletedContactsInMultiselectMode.map { it.toContactInfo() })
+                    contacts = contactItems.map { it.toContactInfo() }
+                )
             }, onSuccess = {
                 contactListSyncScheduler.executeOnceSyncToRemote()
                 updateFilteredContactList { list ->
@@ -256,62 +200,62 @@ class ContactListViewModel @Inject constructor(
         )
     }
 
-
-    /* @OptIn(ExperimentalCoroutinesApi::class)
-     private fun loadContacts() {
-         setState {
-             copy(
-                 isProgressBarShowed = true,
-                 isTryAgainButtonShowed = false
-             )
-         }
-         viewModelScope.launch {
-             contactsLoadingTrigger.flatMapLatest {
-                 getContactsUseCase()
-             }.collect { result ->
-                 when (result) {
-                     is Result.Success -> {
-                         syncContactsFromRemoteUseCase()
-                         setState { copy(isProgressBarShowed = false) }
-
-                         val contactList =
-                             result.data*//*.filter { syncContact -> syncContact.syncState != SyncStatus.DELETED }*//*
-                                .map { syncContact -> syncContact.toContactItem() }
-
-                        setState { copy(contactList = contactList) }
+    private fun loadContacts() {
+        viewModelScope.launch {
+            contactListSyncScheduler.executeObservableOnceSyncFromRemote().collect { syncState ->
+                when (syncState) {
+                    ContactsSyncScheduler.SyncState.Failed -> setState {
+                        copy(
+                            isProgressBarShowed = false,
+                            isTryAgainButtonShowed = true
+                        )
                     }
 
-                    is Result.Error -> {
-                        setState {
-                            copy(
-                                isTryAgainButtonShowed = true,
-                                isProgressBarShowed = false
-                            )
-                        }
-                        when (result.error) {
-                            DataError.NetworkError.CONNECTION_ERROR -> setEffect(
-                                ContactListContract.Effect.ShowToast(
-                                    R.string.connection_error
-                                )
-                            )
+                    ContactsSyncScheduler.SyncState.Waiting -> setState {
+                        copy(
+                            isProgressBarShowed = true,
+                            isTryAgainButtonShowed = false
+                        )
+                    }
 
-                            else -> setEffect(
-                                ContactListContract.Effect.ShowToast(
-                                    R.string.generic_error
-                                )
-                            )
+                    ContactsSyncScheduler.SyncState.Success -> {
+                        launch {
+                            getContactsUseCase().collect { result ->
+                                when (result) {
+                                    is Result.Success -> {
+                                        val contactList =
+                                            result.data.map { syncContact -> syncContact.toContactItem() }
+                                        setState {
+                                            copy(contactList = contactList)
+                                        }
+                                    }
+                                    is Result.Error -> {
+                                        setState {
+                                            copy(isTryAgainButtonShowed = true)
+                                        }
+                                        when (result.error) {
+                                            DataError.NetworkError.CONNECTION_ERROR -> setEffect(
+                                                ContactListContract.Effect.ShowToast(
+                                                    R.string.connection_error
+                                                )
+                                            )
+                                            else -> setEffect(
+                                                ContactListContract.Effect.ShowToast(
+                                                    R.string.generic_error
+                                                )
+                                            )
+                                        }
+                                    }
+                                }
+                                setState { copy(isProgressBarShowed = false) }
+                            }
                         }
                     }
                 }
             }
         }
     }
-*/
-    private fun triggerContactsLoading() {
-        viewModelScope.launch {
-            contactsLoadingTrigger.emit(Unit)
-        }
-    }
+
 
     private fun navigateToDetailsScreen(contact: ContactItem) {
         setEffect(ContactListContract.Effect.NavigateToDetailsScreen(contact))
@@ -331,6 +275,31 @@ class ContactListViewModel @Inject constructor(
             val newFilteredList = currentList.toMutableList()
             toUpdate(newFilteredList)
             newFilteredList
+        }
+    }
+
+    private fun changeSelectMode(isSelectMode: Boolean) {
+        setState { copy(isSelectMode = isSelectMode) }
+    }
+
+    private fun switchSearchMode(isSearchMode: Boolean) {
+        setState { copy(isSearchMode = isSearchMode) }
+    }
+
+    private fun hideSearchBar() {
+        setEffect(ContactListContract.Effect.HideSearchBar)
+    }
+
+    private fun showSearchBar() {
+        setEffect(ContactListContract.Effect.ShowSearchBar)
+    }
+
+    private fun updateFilteredContactListBy(input: String) {
+        updateFilteredContactList { list -> list.clear() }
+        state.value.contactList.forEach { contact ->
+            if (contact.name.containsOrderedSequence(input)) {
+                updateFilteredContactList { list -> list.add(contact) }
+            }
         }
     }
 }

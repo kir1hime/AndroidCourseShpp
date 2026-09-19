@@ -15,14 +15,17 @@ class DeleteContactsUseCase(private val contactsLocalRepository: ContactsLocalRe
 
         if (localContactsResult is Result.Success) {
             val localContacts = localContactsResult.data
-            if (!localContacts.map { contact -> contact.contactInfo.id }.containsAll(contactIds)) {
+            val localContactsIds = localContacts.map { contact -> contact.contactInfo.id }
+            if (!localContactsIds.containsAll(contactIds)) {
                 return errorResult
             }
+            val deletedContacts =
+                localContacts.filter { contact -> contactIds.contains(contact.contactInfo.id) }
 
             val softDeletedContactsIds = mutableListOf<Long>()
             val hardDeletedContactsIds = mutableListOf<Long>()
 
-            localContacts.forEach { contact ->
+            deletedContacts.forEach { contact ->
                 val contactId = contact.contactInfo.id
                 val contactSyncStatus = contact.syncStatus
 

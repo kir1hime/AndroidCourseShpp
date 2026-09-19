@@ -6,8 +6,14 @@ import androidx.work.Constraints
 import androidx.work.ExistingWorkPolicy
 import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkInfo
 import androidx.work.WorkManager
+import androidx.work.await
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.map
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -24,44 +30,64 @@ class ContactsSyncScheduler @Inject constructor(
     private val workManager = WorkManager.getInstance(context)
 
     companion object {
-        private const val SYNC_FROM_REMOTE = "syncFromRemote"
-        private const val SYNC_TO_REMOTE = "syncToRemote"
+        private const val SYNC_QUEUE = "syncQueue"
         private const val BACKOFF_DELAY_IN_SECONDS = 30L
     }
 
     fun executeOnceSyncToRemote() {
         val workRequest = OneTimeWorkRequestBuilder<PushContactsWorker>()
             .setBackoffCriteria(
-                backoffPolicy = BackoffPolicy.EXPONENTIAL,
-                backoffDelay = BACKOFF_DELAY_IN_SECONDS,
+                BackoffPolicy.EXPONENTIAL,
+                BACKOFF_DELAY_IN_SECONDS,
                 TimeUnit.SECONDS
             )
-            .setConstraints(
-                networkConnectionConstraints
-            ).build()
+            .setConstraints(networkConnectionConstraints)
+            .build()
 
         workManager.enqueueUniqueWork(
-            uniqueWorkName = SYNC_TO_REMOTE,
-            ExistingWorkPolicy.KEEP,
+            SYNC_QUEUE,
+            ExistingWorkPolicy.APPEND_OR_REPLACE,
             workRequest
         )
     }
 
-
-    fun executeOnceSyncFromRemote() {
+    suspend fun executeObservableOnceSyncFromRemote(): Flow<SyncState> {
         val workRequest = OneTimeWorkRequestBuilder<UploadContactsWorker>()
             .setBackoffCriteria(
-                backoffPolicy = BackoffPolicy.EXPONENTIAL,
-                backoffDelay = BACKOFF_DELAY_IN_SECONDS,
+                BackoffPolicy.EXPONENTIAL,
+                BACKOFF_DELAY_IN_SECONDS,
                 TimeUnit.SECONDS
-            ).setConstraints(
-                networkConnectionConstraints
-            ).build()
+            )
+            .setConstraints(networkConnectionConstraints)
+            .build()
 
         workManager.enqueueUniqueWork(
-            uniqueWorkName = SYNC_FROM_REMOTE,
-            ExistingWorkPolicy.KEEP,
+            SYNC_QUEUE,
+            ExistingWorkPolicy.APPEND_OR_REPLACE,
             workRequest
-        )
+        ).await()
+
+        return workManager
+            .getWorkInfoByIdFlow(workRequest.id)
+            .filterNotNull()
+            .map { info ->
+                when (info.state) {
+                    WorkInfo.State.ENQUEUED,
+                    WorkInfo.State.RUNNING,
+                    WorkInfo.State.BLOCKED -> SyncState.Waiting
+
+                    WorkInfo.State.SUCCEEDED -> SyncState.Success
+
+                    WorkInfo.State.FAILED,
+                    WorkInfo.State.CANCELLED -> SyncState.Failed
+                }
+            }
+            .distinctUntilChanged()
+    }
+
+    sealed interface SyncState {
+        data object Waiting : SyncState
+        data object Success : SyncState
+        data object Failed : SyncState
     }
 }

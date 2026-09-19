@@ -13,11 +13,12 @@ interface ContactsLocalRepository {
     suspend fun getContactById(id: Long): Result<SyncContactInfo?, DataError.LocalError>
     suspend fun deleteContactById(id: Long): Result<Unit, DataError.LocalError>
     suspend fun clearContacts(): Result<Unit, DataError.LocalError>
-    suspend fun deleteContactsByIds(ids: List<Long>): Result<Unit, DataError.LocalError>
+    suspend fun deleteContactsByIds(contactIds: List<Long>): Result<Unit, DataError.LocalError>
+    suspend fun setSyncStatus(
+        contactsIds: List<Long>,
+        syncStatus: SyncStatus
+    ): Result<Unit, DataError.LocalError>
 
-    /*fun isDatabaseSynced(): Boolean
-    fun setDatabaseSynced(isSynced: Boolean)*/
-    suspend fun setSyncStatus(contactsIds: List<Long>, syncStatus: SyncStatus): Result<Unit, DataError.LocalError>
     suspend fun refreshContacts(
         newContacts: List<SyncContactInfo>,
         deletedContactsIds: List<Long>
