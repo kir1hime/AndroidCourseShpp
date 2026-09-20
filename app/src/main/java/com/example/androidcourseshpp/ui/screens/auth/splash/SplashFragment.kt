@@ -2,6 +2,7 @@ package com.example.androidcourseshpp.ui.screens.auth.splash
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.androidcourseshpp.databinding.FragmentSplashBinding
@@ -17,12 +18,18 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>(FragmentSplashBinding
     }
 
     private fun setObservers() {
+        var toast: Toast? = null
         collectFlowWithLifecycle(viewModel.effect) { effect ->
             when (effect) {
                 is SplashContract.Effect.NavigateToSignInScreen -> moveToSignInScreen()
                 is SplashContract.Effect.NavigateToUserProfileScreen -> moveToUserProfileScreen(
                     effect.userInfo
                 )
+                is SplashContract.Effect.ShowToast -> {
+                    toast?.cancel()
+                    toast = makeToast(effect.toastMessageResId)
+                    toast.show()
+                }
             }
         }
     }

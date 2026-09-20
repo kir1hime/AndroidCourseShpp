@@ -1,7 +1,9 @@
 package com.example.androidcourseshpp.ui.screens.auth.splash
 
+import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.domain.usecase.user.GetUserRememberStateUseCase
 import com.example.androidcourseshpp.domain.usecase.user.GetUserUseCase
+import com.example.androidcourseshpp.domain.utils.DataError
 import com.example.androidcourseshpp.ui.BaseViewModel
 import com.example.androidcourseshpp.ui.screens.model.toUserModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,9 +18,7 @@ class SplashViewModel @Inject constructor(
 
     override fun initState() = SplashContract.Sate
 
-    override fun handleEvent(event: SplashContract.Event) {
-
-    }
+    override fun handleEvent(event: SplashContract.Event) {}
 
     init {
         val isUserSaved = getUserRememberStateUseCase()
@@ -38,6 +38,14 @@ class SplashViewModel @Inject constructor(
                 setEffect(
                     SplashContract.Effect.NavigateToUserProfileScreen(userInfo.toUserModel())
                 )
+            },
+            onNetworkError = { error ->
+                val toastMessageId = if (error == DataError.NetworkError.CONNECTION_ERROR) {
+                    R.string.connection_error
+                } else {
+                    R.string.generic_error
+                }
+                setEffect(SplashContract.Effect.ShowToast(toastMessageId))
             },
             onError = { setEffect(SplashContract.Effect.NavigateToSignInScreen) }
         )
