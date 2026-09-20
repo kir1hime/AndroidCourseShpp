@@ -1,6 +1,5 @@
 package com.example.androidcourseshpp.data.network.jwt
 
-import com.example.androidcourseshpp.data.local.userdata.DatabaseSyncProvider
 import com.example.androidcourseshpp.data.local.userdata.GalleryDataProvider
 import com.example.androidcourseshpp.data.local.userdata.UserDataProvider
 import com.example.androidcourseshpp.data.network.api.auth.TokenRefreshAPI
@@ -16,8 +15,7 @@ class TokenAuthenticator(
     private val jwtManager: JWTManager,
     private val contactsLocalRepository: ContactsLocalRepository,
     private val userDataProvider: UserDataProvider,
-    private val galleryDataProvider: GalleryDataProvider,
-    private val databaseSyncProvider: DatabaseSyncProvider
+    private val galleryDataProvider: GalleryDataProvider
 ) : Authenticator {
 
     private val lock = Any()
@@ -45,7 +43,6 @@ class TokenAuthenticator(
                 userDataProvider.clearUserServerId()
                 userDataProvider.clearUserAvatarUrl()
                 galleryDataProvider.clearGalleryPhotos()
-                databaseSyncProvider.markDatabaseAsSynced(false)
                 runBlocking {
                     contactsLocalRepository.clearContacts()
                 }

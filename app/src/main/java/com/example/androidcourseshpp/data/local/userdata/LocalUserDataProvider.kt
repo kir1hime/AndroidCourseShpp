@@ -9,7 +9,6 @@ const val USER_AVATAR_URL = "userAvatar"
 const val USER_SERVER_ID = "userServerId"
 const val USER_REMEMBER_STATE = "userSaveState"
 const val USER_PHOTOS = "userPhotos"
-const val DATABASE_SYNC = "databaseSync"
 
 const val DEFAULT_ID_VALUE: Long = -1L
 const val DEFAULT_AVATAR_VALUE = ""
@@ -17,7 +16,7 @@ const val DEFAULT_USER_REMEMBER_STATE_VALUE = false
 
 
 class LocalDataProviderImpl @Inject constructor(@param:DataProviderPref private val sharedPref: SharedPreferences) :
-    UserDataProvider, GalleryDataProvider, DatabaseSyncProvider {
+    UserDataProvider, GalleryDataProvider {
 
     private val editor = sharedPref.edit()
 
@@ -60,12 +59,5 @@ class LocalDataProviderImpl @Inject constructor(@param:DataProviderPref private 
 
     override fun clearGalleryPhotos() {
         editor.putStringSet(USER_PHOTOS, emptySet<String>()).apply()
-    }
-
-    override fun isDatabaseSynced() =
-        sharedPref.getBoolean(DATABASE_SYNC, false)
-
-    override fun markDatabaseAsSynced(isSynced: Boolean) {
-        editor.putBoolean(DATABASE_SYNC, isSynced).apply()
     }
 }

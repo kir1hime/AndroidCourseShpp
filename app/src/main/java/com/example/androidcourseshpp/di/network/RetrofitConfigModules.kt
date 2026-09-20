@@ -1,6 +1,5 @@
 package com.example.androidcourseshpp.di.network
 
-import com.example.androidcourseshpp.data.local.userdata.DatabaseSyncProvider
 import com.example.androidcourseshpp.data.local.userdata.GalleryDataProvider
 import com.example.androidcourseshpp.data.local.userdata.UserDataProvider
 import com.example.androidcourseshpp.data.network.api.auth.TokenRefreshAPI
@@ -49,7 +48,6 @@ class RetrofitConfigModule {
         contactsLocalRepository: ContactsLocalRepository,
         userDataProvider: UserDataProvider,
         galleryDataProvider: GalleryDataProvider,
-        databaseSyncProvider: DatabaseSyncProvider,
         tokenRefreshAPI: TokenRefreshAPI
     ): OkHttpClient {
         return OkHttpClient.Builder()
@@ -62,7 +60,6 @@ class RetrofitConfigModule {
                     jwtManager = jwtManager,
                     userDataProvider = userDataProvider,
                     galleryDataProvider = galleryDataProvider,
-                    databaseSyncProvider = databaseSyncProvider,
                     contactsLocalRepository = contactsLocalRepository
                 )
             )
