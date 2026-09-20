@@ -72,6 +72,7 @@ class AddContactsViewModel @Inject constructor(
             )
         }
     }
+
     private fun addContact(
         userInfo: ContactDetailsModel,
         interruptSuccessLoading: () -> Unit,
@@ -124,27 +125,27 @@ class AddContactsViewModel @Inject constructor(
                                 isProgressBarShowed = false
                             )
                         }
-                        when (result.error) {
-                            DataError.NetworkError.CONNECTION_ERROR -> setEffect(
-                                AddContactsContract.Effect.ShowToast(
-                                    R.string.connection_error
-                                )
-                            )
 
-                            else -> setEffect(
-                                AddContactsContract.Effect.ShowToast(
-                                    R.string.generic_error
-                                )
-                            )
+                        val toastMessageResId = if (result.error is DataError.NetworkError) {
+                            result.error.toMessageResId()
+                        } else {
+                            R.string.generic_error
                         }
+                        setEffect(
+                            AddContactsContract.Effect.ShowToast(
+                                toastMessageResId
+                            )
+                        )
                     }
                 }
             }
         }
     }
+
     private fun navigateToDetailsScreen(userItem: UserItem) {
         setEffect(AddContactsContract.Effect.NavigateToDetailsScreen(userItem))
     }
+
     private fun scrollUsersListToTop() {
         setEffect(AddContactsContract.Effect.ScrollUserListToTop)
     }

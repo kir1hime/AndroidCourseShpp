@@ -236,17 +236,15 @@ class ContactListViewModel @Inject constructor(
                                     setState {
                                         copy(isTryAgainButtonShowed = true)
                                     }
-                                    when (result.error) {
-                                        DataError.NetworkError.CONNECTION_ERROR -> setEffect(
+                                    if (result.error is DataError.NetworkError) {
+                                        setEffect(
                                             ContactListContract.Effect.ShowToast(
-                                                R.string.connection_error
+                                                result.error.toMessageResId()
                                             )
                                         )
-
-                                        else -> setEffect(
-                                            ContactListContract.Effect.ShowToast(
-                                                R.string.generic_error
-                                            )
+                                    } else {
+                                        ContactListContract.Effect.ShowToast(
+                                            R.string.generic_error
                                         )
                                     }
                                 }

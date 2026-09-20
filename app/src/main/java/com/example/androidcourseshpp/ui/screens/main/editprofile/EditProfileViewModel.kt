@@ -1,9 +1,7 @@
 package com.example.androidcourseshpp.ui.screens.main.editprofile
 
 
-import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.domain.usecase.user.UpdateUserInfoUseCase
-import com.example.androidcourseshpp.domain.utils.DataError
 import com.example.androidcourseshpp.ui.BaseViewModel
 import com.example.androidcourseshpp.ui.screens.model.UserModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,8 +11,7 @@ import javax.inject.Inject
 @HiltViewModel
 class EditProfileViewModel @Inject constructor(
     private val updateUserInfoUseCase: UpdateUserInfoUseCase
-) :
-    BaseViewModel<EditProfileContract.Event, EditProfileContract.Effect, EditProfileContract.UIState>() {
+) : BaseViewModel<EditProfileContract.Event, EditProfileContract.Effect, EditProfileContract.UIState>() {
 
     override fun initState(): EditProfileContract.UIState {
         return (EditProfileContract.UIState(
@@ -116,13 +113,7 @@ class EditProfileViewModel @Inject constructor(
                 },
                 onSuccess = { navigateToUserProfileScreen() },
                 onNetworkError = { error ->
-                    when (error) {
-                        DataError.NetworkError.CONNECTION_ERROR -> {
-                            setEffect(EditProfileContract.Effect.ShowToast(R.string.connection_error))
-                        }
-
-                        else -> setEffect(EditProfileContract.Effect.ShowToast(R.string.generic_error))
-                    }
+                    setEffect(EditProfileContract.Effect.ShowToast(error.toMessageResId()))
                 },
                 finally = { setState { copy(isProgressBarShowed = false) } }
             )

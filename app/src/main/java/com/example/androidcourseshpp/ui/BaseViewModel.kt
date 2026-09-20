@@ -1,7 +1,9 @@
 package com.example.androidcourseshpp.ui
 
+import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.domain.utils.DataError
 import com.example.androidcourseshpp.domain.utils.Result
 import com.example.androidcourseshpp.domain.utils.RootError
@@ -103,5 +105,17 @@ abstract class BaseViewModel<UIEvent : ViewEvent, UIEffect : ViewEffect, UIState
             }
             finally.invoke()
         }
+    }
+
+    @StringRes
+    fun DataError.NetworkError.toMessageResId(): Int = when (this) {
+        DataError.NetworkError.CONNECTION_ERROR -> R.string.connection_error
+
+        DataError.NetworkError.REQUEST_TIMEOUT_ERROR,
+        DataError.NetworkError.TOO_MANY_REQUEST_ERROR,
+        DataError.NetworkError.NOT_FOUNDED_ERROR,
+        DataError.NetworkError.ACCESS_DENIED_ERROR -> R.string.backend_error
+
+        else -> R.string.generic_error
     }
 }

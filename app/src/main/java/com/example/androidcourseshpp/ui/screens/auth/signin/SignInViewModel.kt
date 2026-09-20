@@ -13,8 +13,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SignInViewModel @Inject constructor(
     private val signInUseCase: SignInUseCase
-) :
-    BaseViewModel<SignInContract.Event, SignInContract.Effect, SignInContract.UIState>() {
+) : BaseViewModel<SignInContract.Event, SignInContract.Effect, SignInContract.UIState>() {
 
     override fun initState(): SignInContract.UIState {
         return SignInContract.UIState(
@@ -54,25 +53,15 @@ class SignInViewModel @Inject constructor(
                 setEffect(SignInContract.Effect.NavigateToUserProfileScreen(userInfo.toUserModel()))
             },
             onNetworkError = { error ->
-                when (error) {
-                    DataError.NetworkError.CONNECTION_ERROR -> {
-                        setEffect(SignInContract.Effect.ShowToast(R.string.connection_error))
-                    }
-
-                    DataError.NetworkError.INCORRECT_REQUEST_ERROR -> {
-                        setState {
-                            copy(
-                                eMailHelperTextResId = R.string.incorrect_input_data,
-                                passwordHelperTextResId = R.string.incorrect_input_data
-                            )
-                        }
-                        setEffect(SignInContract.Effect.ShowToast(R.string.backend_error))
-                    }
-
-                    else -> {
-                        setEffect(SignInContract.Effect.ShowToast(R.string.generic_error))
+                if (error == DataError.NetworkError.INCORRECT_REQUEST_ERROR) {
+                    setState {
+                        copy(
+                            eMailHelperTextResId = R.string.incorrect_input_data,
+                            passwordHelperTextResId = R.string.incorrect_input_data
+                        )
                     }
                 }
+                setEffect(SignInContract.Effect.ShowToast(error.toMessageResId()))
             },
             finally = { setState { copy(isProgressBarShowed = false) } }
         )

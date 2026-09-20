@@ -13,8 +13,7 @@ import javax.inject.Inject
 class ContactDetailsViewModel @Inject constructor(
     private val addContactUseCase: AddContactUseCase,
     private val notificationService: NotificationService
-) :
-    BaseViewModel<ContactDetailsContract.Event, ContactDetailsContract.Effect, ContactDetailsContract.UIState>() {
+) : BaseViewModel<ContactDetailsContract.Event, ContactDetailsContract.Effect, ContactDetailsContract.UIState>() {
     override fun initState() = ContactDetailsContract.UIState
 
     override fun handleEvent(event: ContactDetailsContract.Event) {
