@@ -7,12 +7,16 @@ import com.example.androidcourseshpp.domain.utils.DataError
 import com.example.androidcourseshpp.domain.utils.Result
 import kotlinx.coroutines.flow.first
 
-class SyncContactsToRemoteUseCase(
+interface SyncContactsToRemoteUseCase {
+    suspend operator fun invoke(): Result<Unit, DataError>
+}
+
+class SyncContactsToRemoteUseCaseImpl(
     private val contactsNetworkRepository: ContactsNetworkRepository,
     private val contactsLocalRepository: ContactsLocalRepository
-) {
+) : SyncContactsToRemoteUseCase {
 
-    suspend operator fun invoke(): Result<Unit, DataError> {
+    override suspend operator fun invoke(): Result<Unit, DataError> {
         when (val localContactsResult = contactsLocalRepository.getContacts().first()) {
             is Result.Error -> {
                 return localContactsResult

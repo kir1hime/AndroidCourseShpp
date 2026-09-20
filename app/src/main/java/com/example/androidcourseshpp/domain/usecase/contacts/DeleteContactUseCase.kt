@@ -7,11 +7,15 @@ import com.example.androidcourseshpp.domain.utils.DataError
 import com.example.androidcourseshpp.domain.utils.Result
 import kotlinx.coroutines.flow.first
 
-class DeleteContactUseCase(
-    private val contactsLocalRepository: ContactsLocalRepository
-) {
+interface DeleteContactUseCase {
+    suspend operator fun invoke(contactId: Long): Result<Unit, DataError.LocalError>
+}
 
-    suspend operator fun invoke(contactId: Long): Result<Unit, DataError.LocalError> {
+class DeleteContactUseCaseImpl(
+    private val contactsLocalRepository: ContactsLocalRepository
+) : DeleteContactUseCase {
+
+    override suspend operator fun invoke(contactId: Long): Result<Unit, DataError.LocalError> {
         val localContactsResult = contactsLocalRepository.getContacts().first()
         val errorResult = Result.Error(DataError.LocalError)
 
@@ -24,7 +28,7 @@ class DeleteContactUseCase(
             if (deletedContact.syncStatus == SyncStatus.SYNCED) {
                 return contactsLocalRepository.setSyncStatus(
                     contactsIds = listOf(contactId),
-                   syncStatus =  SyncStatus.DELETED
+                    syncStatus = SyncStatus.DELETED
                 )
             }
             if (deletedContact.syncStatus == SyncStatus.ADDED) {

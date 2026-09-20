@@ -5,9 +5,15 @@ import com.example.androidcourseshpp.domain.repository.UserRepository
 import com.example.androidcourseshpp.domain.utils.DataError
 import com.example.androidcourseshpp.domain.utils.Result
 
-class GetUserUseCase(private val userRepository: UserRepository) {
+interface GetUserUseCase {
+    suspend operator fun invoke(): Result<UserInfo, DataError.NetworkError>
+}
 
-    suspend operator fun invoke(): Result<UserInfo, DataError.NetworkError> {
+class GetUserUseCaseImpl(
+    private val userRepository: UserRepository
+) : GetUserUseCase {
+
+    override suspend operator fun invoke(): Result<UserInfo, DataError.NetworkError> {
         val userInfo = userRepository.getUser()
         return userInfo
     }

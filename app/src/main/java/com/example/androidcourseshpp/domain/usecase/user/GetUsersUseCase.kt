@@ -11,12 +11,16 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 
-class GetUsersUseCase(
+interface GetUsersUseCase {
+    operator fun invoke(): Flow<Result<List<UserListItemInfo>, DataError>>
+}
+
+class GetUsersUseCaseImpl(
     private val userRepository: UserRepository,
     private val contactsLocalRepository: ContactsLocalRepository
-) {
+) : GetUsersUseCase {
 
-     operator fun invoke(): Flow<Result<List<UserListItemInfo>, DataError>> = flow {
+    override operator fun invoke(): Flow<Result<List<UserListItemInfo>, DataError>> = flow {
         val usersResult = userRepository.getUsers()
 
         if (usersResult is Result.Success) {

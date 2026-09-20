@@ -6,12 +6,16 @@ import com.example.androidcourseshpp.domain.repository.UserRepository
 import com.example.androidcourseshpp.domain.utils.DataError
 import com.example.androidcourseshpp.domain.utils.Result
 
-class UpdateUserInfoUseCase(
+interface UpdateUserInfoUseCase {
+    suspend operator fun invoke(userInfo: UserInfo): Result<Unit, DataError.NetworkError>
+}
+
+class UpdateUserInfoUseCaseImpl(
     private val userRepository: UserRepository,
     private val userLocalDataRepository: UserLocalDataRepository
-) {
+) : UpdateUserInfoUseCase {
 
-    suspend operator fun invoke(userInfo: UserInfo): Result<Unit, DataError.NetworkError> {
+    override suspend operator fun invoke(userInfo: UserInfo): Result<Unit, DataError.NetworkError> {
         val result = userRepository.updateUserInfo(userInfo)
         userLocalDataRepository.saveUserAvatarUrl(userInfo.avatar)
         return result

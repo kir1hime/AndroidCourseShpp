@@ -9,11 +9,15 @@ import com.example.androidcourseshpp.domain.utils.mapResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
+interface GetContactsUseCase {
+    operator fun invoke(): Flow<Result<List<ContactInfo>, DataError>>
+}
 
-class GetContactsUseCase(
+class GetContactsUseCaseImpl(
     private val contactsLocalRepository: ContactsLocalRepository
-) {
-    operator fun invoke(): Flow<Result<List<ContactInfo>, DataError>> {
+) : GetContactsUseCase {
+
+    override operator fun invoke(): Flow<Result<List<ContactInfo>, DataError>> {
         return contactsLocalRepository.getContacts()
             .map { result ->
                 result.mapResult { contactsList ->
