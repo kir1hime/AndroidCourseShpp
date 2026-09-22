@@ -62,7 +62,7 @@ class AddContactsViewModel @Inject constructor(
 
             is AddContactsContract.Event.OnTryAgainButtonClicked -> {
                 triggerUserLoadingLoading()
-                setState { copy(isTryAgainButtonShowed = false) }
+                setState { copy(isTryAgainButtonShowed = false, isProgressBarShowed = true) }
             }
 
             is AddContactsContract.Event.OnAddContactClicked -> addContact(

@@ -74,7 +74,7 @@ class ContactListViewModel @Inject constructor(
 
             is ContactListContract.Event.OnTryAgainButtonClicked -> {
                 reloadContacts()
-                setState { copy(isTryAgainButtonShowed = false) }
+                setState { copy(isTryAgainButtonShowed = false, isProgressBarShowed = true) }
             }
 
             is ContactListContract.Event.OnGetBackDeletedContact -> getBackDeletedContact(

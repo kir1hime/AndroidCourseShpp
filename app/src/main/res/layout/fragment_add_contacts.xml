@@ -94,15 +94,17 @@
         android:layout_height="@dimen/try_again_bt_h"
         android:background="@drawable/try_again_background"
         android:fontFamily="@font/open_sans"
+        android:paddingHorizontal="@dimen/try_again_button_padding_horizontal"
         android:text="@string/try_again"
         android:textColor="@color/try_again_button_text_color"
         android:textSize="@dimen/middle_text_size"
         android:textStyle="bold"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayoutSearch"

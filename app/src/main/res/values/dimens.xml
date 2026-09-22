@@ -165,6 +165,7 @@
     <dimen name="google_bt_text_padding_start">145dp</dimen>
     <dimen name="google_bt_text_padding_end">110dp</dimen>
     <dimen name="userinfo_tabLayout_h">35dp</dimen>
+    <dimen name="try_again_button_padding_horizontal">8dp</dimen>
 
     <!--view/textView dimens-->
     <dimen name="contacts_bar_h">149dp</dimen>
