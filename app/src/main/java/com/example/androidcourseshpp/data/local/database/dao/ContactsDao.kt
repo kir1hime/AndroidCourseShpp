@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface ContactsDao {
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addContact(contactDbEntity: ContactDbEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -33,23 +33,16 @@ interface ContactsDao {
     @Query("DELETE FROM contacts WHERE id IN (:ids)")
     suspend fun deleteContactsByIds(ids: List<Long>)
 
-    @Query("UPDATE contacts SET sync_state = :syncState WHERE id = :id")
-    suspend fun setContactSync(id: Long, syncState: SyncState)
+    @Query("UPDATE contacts SET sync_state = :syncState WHERE id IN (:ids)")
+    suspend fun setSyncState(ids: List<Long>, syncState: SyncState)
+
+    @Query("SELECT id FROM contacts WHERE sync_state != :synced")
+    suspend fun getSyncedContactsIds(synced: SyncState = SyncState.SYNCED): List<Long>
 
     @Transaction
-    suspend fun refreshContacts(
-        newContacts: List<ContactDbEntity>,
-        deletedContactIds: List<Long>
-    ) {
-        deleteContactsByIds(deletedContactIds)
-        addContacts(newContacts)
-
-        deletedContactIds.forEach { contactId ->
-            setContactSync(contactId, SyncState.SYNCED)
-        }
-        newContacts.forEach { contact ->
-            setContactSync(contact.id, SyncState.SYNCED)
-        }
+    suspend fun refreshContacts(newContacts: List<ContactDbEntity>, deletedContactIds: List<Long>) {
+        val syncedContactIds = getSyncedContactsIds().toSet()
+        deleteContactsByIds(deletedContactIds.filter { contactId -> contactId !in syncedContactIds })
+        addContacts(newContacts.filter {contact -> contact.id !in syncedContactIds })
     }
-
 }

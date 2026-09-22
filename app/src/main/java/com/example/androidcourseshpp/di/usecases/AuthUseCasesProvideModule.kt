@@ -5,8 +5,12 @@ import com.example.androidcourseshpp.domain.repository.ContactsLocalRepository
 import com.example.androidcourseshpp.domain.repository.GalleryRepository
 import com.example.androidcourseshpp.domain.repository.UserLocalDataRepository
 import com.example.androidcourseshpp.domain.usecase.auth.LogOutUseCase
+import com.example.androidcourseshpp.domain.usecase.auth.LogOutUseCaseImpl
 import com.example.androidcourseshpp.domain.usecase.auth.SignInUseCase
+import com.example.androidcourseshpp.domain.usecase.auth.SignInUseCaseImpl
 import com.example.androidcourseshpp.domain.usecase.auth.SignUpUseCase
+import com.example.androidcourseshpp.domain.usecase.auth.SignUpUseCaseImpl
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,7 +19,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class AuthUseCasesModule {
+class AuthUseCasesProvideModule {
 
     @Singleton
     @Provides
@@ -24,7 +28,7 @@ class AuthUseCasesModule {
         userLocalDataRepository: UserLocalDataRepository,
         galleryRepository: GalleryRepository,
         contactsLocalRepository: ContactsLocalRepository
-    ) = LogOutUseCase(
+    ) = LogOutUseCaseImpl(
         authRepository = authRepository,
         userLocalDataRepository = userLocalDataRepository,
         galleryRepository = galleryRepository,
@@ -36,7 +40,7 @@ class AuthUseCasesModule {
     fun provideSingInUseCase(
         authRepository: AuthRepository,
         userLocalDataRepository: UserLocalDataRepository
-    ) = SignInUseCase(
+    ) = SignInUseCaseImpl(
         authRepository = authRepository,
         userLocalDataRepository = userLocalDataRepository
     )
@@ -46,8 +50,28 @@ class AuthUseCasesModule {
     fun provideSignUpUseCase(
         authRepository: AuthRepository,
         userLocalDataRepository: UserLocalDataRepository
-    ) = SignUpUseCase(
+    ) = SignUpUseCaseImpl(
         authRepository = authRepository,
         userLocalDataRepository = userLocalDataRepository
     )
+}
+
+@Module
+@InstallIn(SingletonComponent::class)
+interface AuthUseCasesBindModule {
+
+    @Binds
+    fun bindSignInUseCase(
+        signInUseCaseImpl: SignInUseCaseImpl
+    ): SignInUseCase
+
+    @Binds
+    fun bindSignUpUseCase(
+        signUpUseCaseImpl: SignUpUseCaseImpl
+    ): SignUpUseCase
+
+    @Binds
+    fun bindLogOutUseCase(
+        logOutUseCaseImpl: LogOutUseCaseImpl
+    ): LogOutUseCase
 }

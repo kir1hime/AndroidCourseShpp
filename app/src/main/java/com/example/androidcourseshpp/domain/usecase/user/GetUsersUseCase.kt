@@ -1,45 +1,48 @@
 package com.example.androidcourseshpp.domain.usecase.user
 
-import com.example.androidcourseshpp.domain.entity.contact.SyncAction
-import com.example.androidcourseshpp.domain.entity.user.UserListItemInfo
-import com.example.androidcourseshpp.domain.entity.user.toUserItemInfo
+import com.example.androidcourseshpp.domain.entity.user.UserListItem
+import com.example.androidcourseshpp.domain.entity.user.toUserItem
 import com.example.androidcourseshpp.domain.repository.ContactsLocalRepository
 import com.example.androidcourseshpp.domain.repository.UserRepository
 import com.example.androidcourseshpp.domain.utils.DataError
 import com.example.androidcourseshpp.domain.utils.Result
+import com.example.androidcourseshpp.domain.utils.mapResult
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 
-class GetUsersUseCase(
+interface GetUsersUseCase {
+    operator fun invoke(): Flow<Result<List<UserListItem>, DataError>>
+}
+
+class GetUsersUseCaseImpl(
     private val userRepository: UserRepository,
     private val contactsLocalRepository: ContactsLocalRepository
-) {
+) : GetUsersUseCase {
 
-    suspend operator fun invoke(): Flow<Result<List<UserListItemInfo>, DataError>> {
-
+    override operator fun invoke(): Flow<Result<List<UserListItem>, DataError>> = flow {
         val usersResult = userRepository.getUsers()
-        if (usersResult is Result.Error) {
-            return flow { emit(Result.Error(usersResult.error)) }
-        }
-        val users = (usersResult as Result.Success).data
-            .map { user -> user.toUserItemInfo(isContact = false) }
 
-        return flow {
-            contactsLocalRepository.getContacts().collect { contacts ->
-                if (contacts is Result.Error) {
-                    emit(Result.Error(contacts.error))
-                    return@collect
+        if (usersResult is Result.Success) {
+            val localContactsResult = contactsLocalRepository.getContacts().first()
+
+            if (localContactsResult is Result.Success) {
+                val localContacts = localContactsResult.data
+                val localContactsIds = localContacts.map { contact -> contact.contactInfo.id }
+                val isContact: (Long) -> Boolean = { id -> localContactsIds.contains(id) }
+
+                val usersList = usersResult.mapResult { usersList ->
+                    usersList.map { user -> user.toUserItem(isContact(user.id)) }
                 }
 
-                val contactIds = (contacts as Result.Success).data
-                    .filter { it.syncState != SyncAction.DELETED }
-                    .map { it.contactInfo.id }
+                emit(usersList)
 
-                val updatedUsers = users.map { user ->
-                    user.copy(isContact = contactIds.contains(user.id))
-                }
-                emit(Result.Success(updatedUsers))
+            } else {
+                emit(Result.Error(DataError.LocalError))
             }
+
+        } else {
+            emit(usersResult.mapResult { emptyList() })
         }
     }
 }

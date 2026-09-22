@@ -97,7 +97,7 @@ class ContactListFragment :
             when (effect) {
                 is ContactListContract.Effect.HideSearchBar -> hideSearchBar()
                 is ContactListContract.Effect.ShowSearchBar -> showSearchBar()
-                is ContactListContract.Effect.HideRefreshProgressBar -> binding.swipeRefresContactshLayout.isRefreshing =
+                is ContactListContract.Effect.HideRefreshProgressBar -> binding.swipeRefreshContactsLayout.isRefreshing =
                     false
 
                 is ContactListContract.Effect.NavigateToUserProfileScreen -> moveBackToUserProfileScreen()
@@ -166,11 +166,11 @@ class ContactListFragment :
             viewModel.setEvent(ContactListContract.Event.OnAddContactClicked)
         }
         floatingButtonDeleteSelectedItems.setOnClickListener {
-            val itemsToDelete = adapter.selectedItems.toList()
-            showUndoDeletingContactsSnackBar()
+            val itemsToDelete = adapter.selectedItems
+            showUndoDeletingContactsSnackBar(itemsToDelete.toList())
             viewModel.setEvent(
                 ContactListContract.Event.OnDeleteSelectedItemsFloatingButtonClicked(
-                    itemsToDelete
+                    itemsToDelete.toList()
                 )
             )
             viewModel.setEvent(ContactListContract.Event.OnSelectModeChange(false))
@@ -187,6 +187,7 @@ class ContactListFragment :
             viewModel.setEvent(ContactListContract.Event.OnSearchButtonClicked)
         }
         imageButtonHideSearch.setOnClickListener {
+            it.hideKeyboard()
             viewModel.setEvent(ContactListContract.Event.OnSearchModeSwitched(false))
             viewModel.setEvent(ContactListContract.Event.OnHideSearchButtonClicked)
         }
@@ -200,7 +201,7 @@ class ContactListFragment :
             viewModel.setEvent(ContactListContract.Event.OnSelectModeChange(false))
         }
 
-        swipeRefresContactshLayout.setOnRefreshListener {
+        swipeRefreshContactsLayout.setOnRefreshListener {
             viewModel.setEvent(ContactListContract.Event.OnReloadContacts)
         }
     }
@@ -243,14 +244,14 @@ class ContactListFragment :
         undoDeletingSnackBar.show()
     }
 
-    private fun showUndoDeletingContactsSnackBar() {
+    private fun showUndoDeletingContactsSnackBar(contactItems: List<ContactItem>) {
         val undoDeletingSnackBar = Snackbar.make(
             binding.root,
             R.string.undo_deleting_contacts_snack_bar_text,
             Snackbar.LENGTH_LONG
         )
         undoDeletingSnackBar.setAction(R.string.undo_deleting_contact_snack_bar_action_text) {
-            viewModel.setEvent(ContactListContract.Event.OnGetBackDeletedContacts)
+            viewModel.setEvent(ContactListContract.Event.OnGetBackDeletedContacts(contactItems))
         }.setActionTextColor(ContextCompat.getColor(requireContext(), R.color.custom_primary_color))
 
         undoDeletingSnackBar.show()

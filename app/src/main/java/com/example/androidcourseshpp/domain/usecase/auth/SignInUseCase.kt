@@ -8,16 +8,22 @@ import com.example.androidcourseshpp.domain.utils.DataError
 import com.example.androidcourseshpp.domain.utils.Result
 import com.example.androidcourseshpp.domain.utils.onSuccess
 
-class SignInUseCase (
-    private val authRepository: AuthRepository,
-    private val userLocalDataRepository: UserLocalDataRepository
-) {
-
+interface SignInUseCase {
     suspend operator fun invoke(
         signInInfo: SignInInfo,
         toRememberUser: Boolean
-    ): Result<UserInfo, DataError.NetworkError> {
+    ): Result<UserInfo, DataError.NetworkError>
+}
 
+class SignInUseCaseImpl(
+    private val authRepository: AuthRepository,
+    private val userLocalDataRepository: UserLocalDataRepository
+) : SignInUseCase {
+
+    override suspend operator fun invoke(
+        signInInfo: SignInInfo,
+        toRememberUser: Boolean
+    ): Result<UserInfo, DataError.NetworkError> {
         val userInfo = authRepository.signIn(signInInfo).onSuccess { data ->
             userLocalDataRepository.saveUserServerId(data.id)
             if (toRememberUser) {

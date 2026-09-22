@@ -50,7 +50,7 @@ class AddContactsViewModel @Inject constructor(
 
     override fun handleEvent(event: AddContactsContract.Event) {
         when (event) {
-            is AddContactsContract.Event.OnArrowTopFloatingButtonClicked -> scrollUserListToTop()
+            is AddContactsContract.Event.OnArrowTopFloatingButtonClicked -> scrollUsersListToTop()
             is AddContactsContract.Event.SearchModeSwitched -> switchSearchMode(event.isSearchModeEnabled)
             is AddContactsContract.Event.OnHideSearchButtonClicked -> hideSearchBar()
             is AddContactsContract.Event.OnSearchButtonClicked -> showSearchBar()
@@ -72,37 +72,6 @@ class AddContactsViewModel @Inject constructor(
             )
         }
     }
-
-    private fun scrollUserListToTop() {
-        setEffect(AddContactsContract.Effect.ScrollUserListToTop)
-    }
-
-    private fun switchSearchMode(isSearchMode: Boolean) {
-        setState { copy(isSearchMode = isSearchMode) }
-    }
-
-    private fun updateFilteredUserListBy(input: String) {
-        val filteredContactList = mutableListOf<UserItem>()
-        state.value.userList.forEach { user ->
-            if (user.name.containsOrderedSequence(input)) {
-                filteredContactList.add(user)
-            }
-        }
-        _filteredUserList.value = filteredContactList
-    }
-
-    private fun showSearchBar() {
-        setEffect(AddContactsContract.Effect.ShowSearchBar)
-    }
-
-    private fun hideSearchBar() {
-        setEffect(AddContactsContract.Effect.HideSearchBar)
-    }
-
-    private fun navigateToPreviousScreen() {
-        setEffect(AddContactsContract.Effect.NavigateToContactListScreen)
-    }
-
 
     private fun addContact(
         userInfo: ContactDetailsModel,
@@ -126,10 +95,6 @@ class AddContactsViewModel @Inject constructor(
                 interruptFailureLoading()
             }
         )
-    }
-
-    private fun navigateToDetailsScreen(userItem: UserItem) {
-        setEffect(AddContactsContract.Effect.NavigateToDetailsScreen(userItem))
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -160,23 +125,55 @@ class AddContactsViewModel @Inject constructor(
                                 isProgressBarShowed = false
                             )
                         }
-                        when (result.error) {
-                            DataError.NetworkError.CONNECTION_ERROR -> setEffect(
-                                AddContactsContract.Effect.ShowToast(
-                                    R.string.connection_error
-                                )
-                            )
 
-                            else -> setEffect(
-                                AddContactsContract.Effect.ShowToast(
-                                    R.string.generic_error
-                                )
-                            )
+                        val toastMessageResId = if (result.error is DataError.NetworkError) {
+                            result.error.toMessageResId()
+                        } else {
+                            R.string.generic_error
                         }
+                        setEffect(
+                            AddContactsContract.Effect.ShowToast(
+                                toastMessageResId
+                            )
+                        )
                     }
                 }
             }
         }
+    }
+
+    private fun navigateToDetailsScreen(userItem: UserItem) {
+        setEffect(AddContactsContract.Effect.NavigateToDetailsScreen(userItem))
+    }
+
+    private fun scrollUsersListToTop() {
+        setEffect(AddContactsContract.Effect.ScrollUserListToTop)
+    }
+
+    private fun switchSearchMode(isSearchMode: Boolean) {
+        setState { copy(isSearchMode = isSearchMode) }
+    }
+
+    private fun updateFilteredUserListBy(input: String) {
+        val filteredContactList = mutableListOf<UserItem>()
+        state.value.userList.forEach { user ->
+            if (user.name.containsOrderedSequence(input)) {
+                filteredContactList.add(user)
+            }
+        }
+        _filteredUserList.value = filteredContactList
+    }
+
+    private fun showSearchBar() {
+        setEffect(AddContactsContract.Effect.ShowSearchBar)
+    }
+
+    private fun hideSearchBar() {
+        setEffect(AddContactsContract.Effect.HideSearchBar)
+    }
+
+    private fun navigateToPreviousScreen() {
+        setEffect(AddContactsContract.Effect.NavigateToContactListScreen)
     }
 
     private fun triggerUserLoadingLoading() {

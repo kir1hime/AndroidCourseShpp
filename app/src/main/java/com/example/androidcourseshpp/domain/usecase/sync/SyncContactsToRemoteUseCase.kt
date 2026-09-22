@@ -1,50 +1,59 @@
 package com.example.androidcourseshpp.domain.usecase.sync
 
-import com.example.androidcourseshpp.domain.entity.contact.SyncAction
+import com.example.androidcourseshpp.domain.entity.sync.SyncStatus
 import com.example.androidcourseshpp.domain.repository.ContactsLocalRepository
 import com.example.androidcourseshpp.domain.repository.ContactsNetworkRepository
 import com.example.androidcourseshpp.domain.utils.DataError
 import com.example.androidcourseshpp.domain.utils.Result
-import com.example.androidcourseshpp.domain.utils.onError
-import com.example.androidcourseshpp.domain.utils.onSuccess
 import kotlinx.coroutines.flow.first
 
-class SyncContactsToRemoteUseCase(
+interface SyncContactsToRemoteUseCase {
+    suspend operator fun invoke(): Result<Unit, DataError>
+}
+
+class SyncContactsToRemoteUseCaseImpl(
     private val contactsNetworkRepository: ContactsNetworkRepository,
     private val contactsLocalRepository: ContactsLocalRepository
-) {
-    suspend operator fun invoke(): Result<Unit, DataError> {
-        val result = contactsLocalRepository.getContacts().first()
+) : SyncContactsToRemoteUseCase {
 
-        if (result is Result.Success) {
-            val contacts = result.data
-            var isAllContactsSynced = true
-
-            contacts.filter { it.syncState != SyncAction.SYNCED }.forEach { contact ->
-                val contactId = contact.contactInfo.id
-
-                when (contact.syncState) {
-                    SyncAction.ADDED -> {
-                        contactsNetworkRepository.addContact(contactId).onSuccess {
-                            contactsLocalRepository.setSyncStateToContact(
-                                contactId,
-                                SyncAction.SYNCED
-                            )
-                        }.onError { isAllContactsSynced = false }
-                    }
-
-                    SyncAction.DELETED -> {
-                        contactsNetworkRepository.deleteContact(contactId).onSuccess {
-                            contactsLocalRepository.deleteContactById(contactId)
-                        }.onError { isAllContactsSynced = false }
-                    }
-
-                    else -> return@forEach
-                }
+    override suspend operator fun invoke(): Result<Unit, DataError> {
+        when (val localContactsResult = contactsLocalRepository.getContacts().first()) {
+            is Result.Error -> {
+                return localContactsResult
             }
-            return if (isAllContactsSynced) Result.Success(Unit) else Result.Error(DataError.NetworkError.SERVER_ERROR)
-        } else {
-            return Result.Error(DataError.LocalError)
+
+            is Result.Success -> {
+                val localContacts = localContactsResult.data
+
+                val addedContactsIds =
+                    localContacts.filter { contact -> contact.syncStatus == SyncStatus.ADDED }
+                        .map { it.contactInfo.id }
+                val deletedContactsIds =
+                    localContacts.filter { contact -> contact.syncStatus == SyncStatus.DELETED }
+                        .map { it.contactInfo.id }
+
+                if (addedContactsIds.isNotEmpty()) {
+                    val addingContactsResult =
+                        contactsNetworkRepository.addContacts(addedContactsIds)
+                    if (addingContactsResult is Result.Error) return addingContactsResult
+
+                    val markingContactsAsSyncedResult =
+                        contactsLocalRepository.setSyncStatus(addedContactsIds, SyncStatus.SYNCED)
+                    if (markingContactsAsSyncedResult is Result.Error) return markingContactsAsSyncedResult
+                }
+
+                if (deletedContactsIds.isNotEmpty()) {
+                    val deletingContactsFromRemoteResult =
+                        contactsNetworkRepository.deleteContacts(deletedContactsIds)
+                    if (deletingContactsFromRemoteResult is Result.Error) return deletingContactsFromRemoteResult
+
+                    val deletingContactsFromLocalResult =
+                        contactsLocalRepository.deleteContactsByIds(deletedContactsIds)
+                    if (deletingContactsFromLocalResult is Result.Error) return deletingContactsFromLocalResult
+                }
+                return Result.Success(Unit)
+            }
         }
     }
 }
+

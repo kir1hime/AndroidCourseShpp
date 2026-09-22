@@ -4,9 +4,14 @@ import com.example.androidcourseshpp.domain.entity.gallery.GalleryItemInfo
 import com.example.androidcourseshpp.domain.repository.GalleryRepository
 import kotlinx.coroutines.flow.Flow
 
+interface GetGalleryPhotosUseCase {
+    operator fun invoke(): Flow<List<GalleryItemInfo>>
+}
 
-class GetGalleryPhotosUseCase(private val galleryRepository: GalleryRepository) {
+class GetGalleryPhotosUseCaseImpl(
+    private val galleryRepository: GalleryRepository
+) : GetGalleryPhotosUseCase {
 
-    operator fun invoke(): Flow<List<GalleryItemInfo>> = galleryRepository.galleryPhotos
+    override operator fun invoke(): Flow<List<GalleryItemInfo>> = galleryRepository.galleryPhotos
 
 }

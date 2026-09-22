@@ -1,6 +1,6 @@
 package com.example.androidcourseshpp.domain.entity.user
 
-data class UserListItemInfo(
+data class UserListItem(
     val id: Long,
     val name: String,
     val career: String,

@@ -12,8 +12,8 @@ data class UserInfo(
     val avatar: String
 )
 
-fun UserInfo.toUserItemInfo(isContact: Boolean) =
-    UserListItemInfo(
+fun UserInfo.toUserItem(isContact: Boolean) =
+    UserListItem(
         id = id,
         name = name,
         career = career,

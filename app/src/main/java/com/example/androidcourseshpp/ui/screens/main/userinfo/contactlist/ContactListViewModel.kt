@@ -3,13 +3,11 @@ package com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist
 
 import androidx.lifecycle.viewModelScope
 import com.example.androidcourseshpp.R
-import com.example.androidcourseshpp.domain.entity.contact.SyncAction
 import com.example.androidcourseshpp.domain.usecase.contacts.AddContactUseCase
 import com.example.androidcourseshpp.domain.usecase.contacts.AddContactsUseCase
 import com.example.androidcourseshpp.domain.usecase.contacts.DeleteContactUseCase
 import com.example.androidcourseshpp.domain.usecase.contacts.DeleteContactsUseCase
 import com.example.androidcourseshpp.domain.usecase.contacts.GetContactsUseCase
-import com.example.androidcourseshpp.domain.usecase.sync.SyncContactsFromRemoteUseCase
 import com.example.androidcourseshpp.domain.utils.DataError
 import com.example.androidcourseshpp.domain.utils.Result
 import com.example.androidcourseshpp.ui.BaseViewModel
@@ -20,15 +18,14 @@ import com.example.androidcourseshpp.ui.screens.main.userinfo.contactlist.model.
 import com.example.androidcourseshpp.ui.sync.ContactsSyncScheduler
 import com.example.androidcourseshpp.ui.utils.containsOrderedSequence
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.Stack
 import javax.inject.Inject
+import kotlin.time.Duration.Companion.milliseconds
 
 
 @HiltViewModel
@@ -40,7 +37,6 @@ class ContactListViewModel @Inject constructor(
     private val getContactsUseCase: GetContactsUseCase,
     private val notificationService: NotificationService,
     private val contactListSyncScheduler: ContactsSyncScheduler,
-    private val syncContactsFromRemoteUseCase: SyncContactsFromRemoteUseCase
 ) : BaseViewModel<ContactListContract.Event, ContactListContract.Effect, ContactListContract.UIState>() {
 
     override fun initState() = ContactListContract.UIState(
@@ -56,14 +52,10 @@ class ContactListViewModel @Inject constructor(
     private val _filteredContactList = MutableStateFlow(emptyList<ContactItem>())
     val filteredContactList: StateFlow<List<ContactItem>> get() = _filteredContactList
 
-    private val contactsLoadingTrigger = MutableSharedFlow<Unit>(replay = 1)
 
     init {
         loadContacts()
-        triggerContactsLoading()
-        contactListSyncScheduler.executeOnceSyncFromRemote()
     }
-
 
     override fun handleEvent(event: ContactListContract.Event) {
         when (event) {
@@ -81,7 +73,7 @@ class ContactListViewModel @Inject constructor(
             }
 
             is ContactListContract.Event.OnTryAgainButtonClicked -> {
-                triggerContactsLoading()
+                reloadContacts()
                 setState { copy(isTryAgainButtonShowed = false) }
             }
 
@@ -89,7 +81,9 @@ class ContactListViewModel @Inject constructor(
                 event.contactItem
             )
 
-            is ContactListContract.Event.OnGetBackDeletedContacts -> getBackDeletedContacts()
+            is ContactListContract.Event.OnGetBackDeletedContacts -> getBackDeletedContacts(
+                event.contactItems
+            )
 
             is ContactListContract.Event.OnDeleteSelectedItemsFloatingButtonClicked -> deleteListOfContacts(
                 event.contactItems
@@ -102,27 +96,187 @@ class ContactListViewModel @Inject constructor(
     }
 
     private fun reloadContacts() {
+        viewModelScope.launch {
+            launch {
+                contactListSyncScheduler.executeObservableOnceSyncFromRemote()
+                    .collect { syncState ->
+                        if (syncState == ContactsSyncScheduler.SyncState.Success || syncState == ContactsSyncScheduler.SyncState.Failed) {
+                            setEffect(ContactListContract.Effect.HideRefreshProgressBar)
+                        }
+                    }
+            }
+            launch {
+                delay(5000.milliseconds)
+                setEffect(
+                    ContactListContract.Effect.ShowToast(R.string.connection_error)
+                )
+                setEffect(ContactListContract.Effect.HideRefreshProgressBar)
+            }
+        }
+    }
+
+    private fun deleteContact(contactItem: ContactItem) {
         executeUseCase(
             toExecute = {
-                syncContactsFromRemoteUseCase()
+                deleteContactUseCase(contactItem.id)
             },
-            onNetworkError = { error ->
-                when (error) {
-                    DataError.NetworkError.CONNECTION_ERROR -> setEffect(
-                        ContactListContract.Effect.ShowToast(
-                            R.string.connection_error
-                        )
-                    )
-
-                    else -> setEffect(ContactListContract.Effect.ShowToast(R.string.generic_error))
+            onSuccess = {
+                contactListSyncScheduler.executeOnceSyncToRemote()
+                updateFilteredContactList { list ->
+                    list.remove(contactItem)
                 }
+                notificationService.showContactDeletedNotification(
+                    userInfo = contactItem.toContactDetails(),
+                    notificationActionId = NotificationAction.DELETE_CONTACT.ordinal
+                )
+                deletedContacts.push(contactItem)
+            },
+            onLocalError = {
+                setEffect(ContactListContract.Effect.ShowToast(R.string.generic_error))
+            }
+        )
+    }
 
+    private fun deleteListOfContacts(contactItems: List<ContactItem>) {
+        executeUseCase(
+            toExecute = {
+                deleteContactsUseCase(contactItems.map { it.id })
+            },
+            onSuccess = {
+                deletedContactsInMultiselectMode.clear()
+                deletedContactsInMultiselectMode.addAll(contactItems.toList())
+                contactListSyncScheduler.executeOnceSyncToRemote()
+                updateFilteredContactList { list ->
+                    list.removeAll(contactItems)
+                }
             },
             onLocalError = {
                 setEffect(ContactListContract.Effect.ShowToast(R.string.generic_error))
             },
-            finally = { setEffect(ContactListContract.Effect.HideRefreshProgressBar) }
         )
+    }
+
+    private fun getBackDeletedContact(contactItem: ContactItem) {
+        executeUseCase(
+            toExecute = {
+                addContactUseCase(contactInfo = contactItem.toContactInfo())
+            },
+            onSuccess = {
+                contactListSyncScheduler.executeOnceSyncToRemote()
+
+                updateFilteredContactList { list ->
+                    list.add(contactItem)
+                }
+
+                deletedContacts.pop()
+                if (!deletedContacts.isEmpty()) {
+                    val deletedItem = deletedContacts.peek()
+                    setEffect(
+                        ContactListContract.Effect.ShowUndoDeletingItemSnackBar(
+                            deletedItem
+                        )
+                    )
+                }
+            },
+            onLocalError = {
+                setEffect(ContactListContract.Effect.ShowToast(R.string.generic_error))
+            }
+        )
+    }
+
+    private fun getBackDeletedContacts(contactItems: List<ContactItem>) {
+        executeUseCase(
+            toExecute = {
+                addContactsUseCase(
+                    contacts = contactItems.map { it.toContactInfo() }
+                )
+            }, onSuccess = {
+                contactListSyncScheduler.executeOnceSyncToRemote()
+                updateFilteredContactList { list ->
+                    list.addAll(deletedContactsInMultiselectMode)
+                }
+                deletedContactsInMultiselectMode.clear()
+            },
+            onLocalError = {
+                setEffect(ContactListContract.Effect.ShowToast(R.string.generic_error))
+            }
+        )
+    }
+
+    private fun loadContacts() {
+        setState {
+            copy(
+                isProgressBarShowed = true,
+                isTryAgainButtonShowed = false
+            )
+        }
+        viewModelScope.launch {
+            contactListSyncScheduler.executeObservableOnceSyncFromRemote().collect { syncState ->
+                if (syncState == ContactsSyncScheduler.SyncState.Failed) {
+                    setState {
+                        copy(
+                            isProgressBarShowed = false,
+                            isTryAgainButtonShowed = true
+                        )
+                    }
+                }
+                if (syncState == ContactsSyncScheduler.SyncState.Success) {
+                    launch {
+                        getContactsUseCase().collect { result ->
+                            when (result) {
+                                is Result.Success -> {
+                                    val contactList =
+                                        result.data.map { syncContact -> syncContact.toContactItem() }
+                                    setState {
+                                        copy(contactList = contactList)
+                                    }
+                                }
+
+                                is Result.Error -> {
+                                    setState {
+                                        copy(isTryAgainButtonShowed = true)
+                                    }
+                                    if (result.error is DataError.NetworkError) {
+                                        setEffect(
+                                            ContactListContract.Effect.ShowToast(
+                                                result.error.toMessageResId()
+                                            )
+                                        )
+                                    } else {
+                                        ContactListContract.Effect.ShowToast(
+                                            R.string.generic_error
+                                        )
+                                    }
+                                }
+                            }
+                            setState { copy(isProgressBarShowed = false) }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+    private fun navigateToDetailsScreen(contact: ContactItem) {
+        setEffect(ContactListContract.Effect.NavigateToDetailsScreen(contact))
+    }
+
+    private fun navigateToPreviousScreen() {
+        setEffect(ContactListContract.Effect.NavigateToUserProfileScreen)
+    }
+
+    private fun navigateToAddContactsScreen() {
+        setEffect(ContactListContract.Effect.HideSearchBar)
+        setEffect(ContactListContract.Effect.NavigateToAddContactsScreen)
+    }
+
+    private fun updateFilteredContactList(toUpdate: (MutableList<ContactItem>) -> Unit) {
+        _filteredContactList.update { currentList ->
+            val newFilteredList = currentList.toMutableList()
+            toUpdate(newFilteredList)
+            newFilteredList
+        }
     }
 
     private fun changeSelectMode(isSelectMode: Boolean) {
@@ -147,177 +301,6 @@ class ContactListViewModel @Inject constructor(
             if (contact.name.containsOrderedSequence(input)) {
                 updateFilteredContactList { list -> list.add(contact) }
             }
-        }
-    }
-
-    private fun deleteContact(contactItem: ContactItem) {
-        executeUseCase(
-            toExecute = {
-                setState { copy(isProgressBarShowed = true) }
-                deleteContactUseCase(contactItem.id)
-
-            },
-            onSuccess = {
-                contactListSyncScheduler.executeOnceSyncToRemote()
-                updateFilteredContactList { list ->
-                    list.remove(contactItem)
-                }
-                notificationService.showContactDeletedNotification(
-                    userInfo = contactItem.toContactDetails(),
-                    notificationActionId = NotificationAction.DELETE_CONTACT.ordinal
-                )
-                deletedContacts.push(contactItem)
-            },
-            onLocalError = {
-                setEffect(ContactListContract.Effect.ShowToast(R.string.generic_error))
-            },
-            finally = { setState { copy(isProgressBarShowed = false) } }
-        )
-    }
-
-    private fun deleteListOfContacts(contactItems: List<ContactItem>) {
-        executeUseCase(
-            toExecute = {
-                setState { copy(isProgressBarShowed = true) }
-                deleteContactsUseCase(contactItems.map { it.id })
-            },
-            onSuccess = {
-                deletedContactsInMultiselectMode.clear()
-                deletedContactsInMultiselectMode.addAll(contactItems.toList())
-                contactListSyncScheduler.executeOnceSyncToRemote()
-                updateFilteredContactList { list ->
-                    list.removeAll(contactItems)
-                }
-            },
-            onLocalError = {
-                setEffect(ContactListContract.Effect.ShowToast(R.string.generic_error))
-            },
-            finally = { setState { copy(isProgressBarShowed = false) } }
-        )
-    }
-
-    private fun getBackDeletedContact(contactItem: ContactItem) {
-        executeUseCase(
-            toExecute = {
-                setState { copy(isProgressBarShowed = true) }
-                addContactUseCase(contactInfo = contactItem.toContactInfo())
-
-            },
-            onSuccess = {
-                contactListSyncScheduler.executeOnceSyncToRemote()
-
-                updateFilteredContactList { list ->
-                    list.add(contactItem)
-                }
-
-                deletedContacts.pop()
-                if (!deletedContacts.isEmpty()) {
-                    val deletedItem = deletedContacts.peek()
-                    setEffect(ContactListContract.Effect.ShowUndoDeletingItemSnackBar(deletedItem))
-                }
-            },
-            onLocalError = {
-                setEffect(ContactListContract.Effect.ShowToast(R.string.generic_error))
-            },
-            finally = { setState { copy(isProgressBarShowed = false) } }
-        )
-    }
-
-    private fun getBackDeletedContacts() {
-        executeUseCase(
-            toExecute = {
-                setState { copy(isProgressBarShowed = true) }
-                addContactsUseCase(
-                    contacts = deletedContactsInMultiselectMode.map { it.toContactInfo() })
-            }, onSuccess = {
-                contactListSyncScheduler.executeOnceSyncToRemote()
-                updateFilteredContactList { list ->
-                    list.addAll(deletedContactsInMultiselectMode)
-                }
-                deletedContactsInMultiselectMode.clear()
-            },
-            onLocalError = {
-                setEffect(ContactListContract.Effect.ShowToast(R.string.generic_error))
-            },
-            finally = { setState { copy(isProgressBarShowed = false) } }
-
-        )
-    }
-
-    @OptIn(ExperimentalCoroutinesApi::class)
-    private fun loadContacts() {
-        setState {
-            copy(
-                isProgressBarShowed = true,
-                isTryAgainButtonShowed = false
-            )
-        }
-        viewModelScope.launch {
-            contactsLoadingTrigger.flatMapLatest {
-                getContactsUseCase()
-            }.collect { result ->
-
-                when (result) {
-                    is Result.Success -> {
-                        setState { copy(isProgressBarShowed = false) }
-
-                        val contactList =
-                            result.data.filter { syncContact -> syncContact.syncState != SyncAction.DELETED }
-                                .map { syncContact -> syncContact.contactInfo.toContactItem() }
-
-                        setState { copy(contactList = contactList) }
-                    }
-
-                    is Result.Error -> {
-                        setState {
-                            copy(
-                                isTryAgainButtonShowed = true,
-                                isProgressBarShowed = false
-                            )
-                        }
-                        when (result.error) {
-                            DataError.NetworkError.CONNECTION_ERROR -> setEffect(
-                                ContactListContract.Effect.ShowToast(
-                                    R.string.connection_error
-                                )
-                            )
-
-                            else -> setEffect(
-                                ContactListContract.Effect.ShowToast(
-                                    R.string.generic_error
-                                )
-                            )
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    private fun triggerContactsLoading() {
-        viewModelScope.launch {
-            contactsLoadingTrigger.emit(Unit)
-        }
-    }
-
-    private fun navigateToDetailsScreen(contact: ContactItem) {
-        setEffect(ContactListContract.Effect.NavigateToDetailsScreen(contact))
-    }
-
-    private fun navigateToPreviousScreen() {
-        setEffect(ContactListContract.Effect.NavigateToUserProfileScreen)
-    }
-
-    private fun navigateToAddContactsScreen() {
-        setEffect(ContactListContract.Effect.HideSearchBar)
-        setEffect(ContactListContract.Effect.NavigateToAddContactsScreen)
-    }
-
-    private fun updateFilteredContactList(toUpdate: (MutableList<ContactItem>) -> Unit) {
-        _filteredContactList.update { currentList ->
-            val newFilteredList = currentList.toMutableList()
-            toUpdate(newFilteredList)
-            newFilteredList
         }
     }
 }

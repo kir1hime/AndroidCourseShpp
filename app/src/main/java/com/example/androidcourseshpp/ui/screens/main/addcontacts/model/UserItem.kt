@@ -1,6 +1,6 @@
 package com.example.androidcourseshpp.ui.screens.main.addcontacts.model
 
-import com.example.androidcourseshpp.domain.entity.user.UserListItemInfo
+import com.example.androidcourseshpp.domain.entity.user.UserListItem
 import com.example.androidcourseshpp.ui.screens.model.ContactDetailsModel
 
 data class UserItem(
@@ -21,7 +21,7 @@ data class UserItem(
         )
 }
 
-fun UserListItemInfo.toUserItem() =
+fun UserListItem.toUserItem() =
     UserItem(
         id = id,
         name = name,

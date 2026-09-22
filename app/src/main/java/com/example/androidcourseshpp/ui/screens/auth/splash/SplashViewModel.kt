@@ -16,9 +16,7 @@ class SplashViewModel @Inject constructor(
 
     override fun initState() = SplashContract.Sate
 
-    override fun handleEvent(event: SplashContract.Event) {
-
-    }
+    override fun handleEvent(event: SplashContract.Event) {}
 
     init {
         val isUserSaved = getUserRememberStateUseCase()
@@ -38,6 +36,9 @@ class SplashViewModel @Inject constructor(
                 setEffect(
                     SplashContract.Effect.NavigateToUserProfileScreen(userInfo.toUserModel())
                 )
+            },
+            onNetworkError = { error ->
+                setEffect(SplashContract.Effect.ShowToast(error.toMessageResId()))
             },
             onError = { setEffect(SplashContract.Effect.NavigateToSignInScreen) }
         )

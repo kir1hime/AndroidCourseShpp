@@ -8,12 +8,19 @@ import com.example.androidcourseshpp.domain.utils.DataError
 import com.example.androidcourseshpp.domain.utils.Result
 import com.example.androidcourseshpp.domain.utils.onSuccess
 
-class SignUpUseCase(
+interface SignUpUseCase {
+    suspend operator fun invoke(
+        signUpInfo: SignUpInfo,
+        toRememberUser: Boolean
+    ): Result<UserInfo, DataError.NetworkError>
+}
+
+class SignUpUseCaseImpl(
     private val authRepository: AuthRepository,
     private val userLocalDataRepository: UserLocalDataRepository
-) {
+) : SignUpUseCase {
 
-    suspend operator fun invoke(
+    override suspend operator fun invoke(
         signUpInfo: SignUpInfo,
         toRememberUser: Boolean
     ): Result<UserInfo, DataError.NetworkError> {

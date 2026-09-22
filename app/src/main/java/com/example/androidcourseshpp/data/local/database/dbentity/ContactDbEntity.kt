@@ -5,6 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.androidcourseshpp.data.local.database.utils.SyncState
 import com.example.androidcourseshpp.data.local.database.utils.toSyncAction
+import com.example.androidcourseshpp.data.local.database.utils.toSyncState
 import com.example.androidcourseshpp.domain.entity.contact.ContactInfo
 import com.example.androidcourseshpp.domain.entity.contact.SyncContactInfo
 
@@ -16,16 +17,16 @@ data class ContactDbEntity(
     val name: String,
     val career: String,
     val address: String,
-    @ColumnInfo("sync_state") val syncState: SyncState = SyncState.SYNCED,
-    @ColumnInfo("avatar_url") val avatarURL: String
+    @ColumnInfo("avatar_url") val avatarURL: String,
+    @ColumnInfo("sync_state") val syncState: SyncState
 ) {
     fun toSyncContactInfo() =
         SyncContactInfo(
             contactInfo = this.toContactInfo(),
-            syncState = syncState.toSyncAction()
+            syncStatus = syncState.toSyncAction()
         )
 
-    fun toContactInfo() = ContactInfo(
+    private fun toContactInfo() = ContactInfo(
         id = id,
         name = name,
         career = career,
@@ -34,12 +35,12 @@ data class ContactDbEntity(
     )
 }
 
-fun ContactInfo.toContactDBEntity() =
+fun SyncContactInfo.toContactDBEntity() =
     ContactDbEntity(
-        id = id,
-        name = name,
-        career = career,
-        address = address,
-        syncState = SyncState.ADDED,
-        avatarURL = avatarURL
+        id = contactInfo.id,
+        name = contactInfo.name,
+        career = contactInfo.career,
+        address = contactInfo.address,
+        syncState = syncStatus.toSyncState(),
+        avatarURL = contactInfo.avatarURL
     )

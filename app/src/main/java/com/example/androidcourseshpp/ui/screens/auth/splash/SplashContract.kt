@@ -15,6 +15,7 @@ class SplashContract {
 
         data class NavigateToUserProfileScreen(val userInfo: UserModel) : Effect
         data object NavigateToSignInScreen : Effect
+        data class ShowToast(val toastMessageResId: Int) : Effect
     }
 
 }

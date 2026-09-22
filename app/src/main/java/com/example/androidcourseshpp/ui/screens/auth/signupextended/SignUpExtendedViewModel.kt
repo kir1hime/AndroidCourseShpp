@@ -4,7 +4,6 @@ import android.graphics.Bitmap
 import com.example.androidcourseshpp.R
 import com.example.androidcourseshpp.domain.entity.auth.SignUpInfo
 import com.example.androidcourseshpp.domain.usecase.auth.SignUpUseCase
-import com.example.androidcourseshpp.domain.utils.DataError
 import com.example.androidcourseshpp.ui.BaseViewModel
 import com.example.androidcourseshpp.ui.screens.auth.signup.model.SignUpModel
 import com.example.androidcourseshpp.ui.screens.model.toUserModel
@@ -69,19 +68,7 @@ class SignUpExtendedViewModel @Inject constructor(
                 )
             },
             onNetworkError = { error ->
-                when (error) {
-                    DataError.NetworkError.CONNECTION_ERROR -> {
-                        setEffect(SignUpExtendedContract.Effect.ShowToast(R.string.connection_error))
-                    }
-
-                    DataError.NetworkError.INCORRECT_REQUEST_ERROR -> {
-                        setEffect(SignUpExtendedContract.Effect.ShowToast(R.string.email_already_registered_error))
-                    }
-
-                    else -> {
-                        setEffect(SignUpExtendedContract.Effect.ShowToast(R.string.generic_error))
-                    }
-                }
+                setEffect(SignUpExtendedContract.Effect.ShowToast(error.toMessageResId()))
             },
             finally = { setState { copy(isProgressBarShowed = false) } }
         )

@@ -70,7 +70,7 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
         ) { _, data ->
             val userId = data.getLong(TO_RELOAD_USER_LIST)
             val updatedList = viewModel.state.value.userList.toMutableList()
-            updatedList.map { user ->
+            updatedList.forEach { user ->
                 if (user.id == userId) {
                     user.isContact = true
                 }
@@ -82,7 +82,6 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
     private fun initRecyclerView() = with(binding.recyclerViewUsers) {
         layoutManager = LinearLayoutManager(requireContext())
         adapter = this@AddContactsFragment.adapter
-
         addItemDecoration(
             UserItemDecorations(resources.getDimensionPixelSize(R.dimen.contacts_recycle_view_space_size_between_items))
         )
@@ -139,9 +138,7 @@ class AddContactsFragment : BaseFragment<FragmentAddContactsBinding>
     }
 
     private fun scrollUserListToTop() = with(binding) {
-        recyclerViewUsers.scrollToPosition(
-            0
-        )
+        recyclerViewUsers.scrollToPosition(0)
     }
 
     private fun hideSearchBar() = with(binding) {

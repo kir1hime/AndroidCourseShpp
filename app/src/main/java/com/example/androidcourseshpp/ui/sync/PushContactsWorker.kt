@@ -16,9 +16,11 @@ class PushContactsWorker @AssistedInject constructor(
 ) : CoroutineWorker(context, workerParameters) {
 
     override suspend fun doWork(): Result {
-        return when (syncContactsToRemoteUseCase()) {
+        val result = syncContactsToRemoteUseCase()
+        return when (result) {
             is com.example.androidcourseshpp.domain.utils.Result.Success -> Result.success()
-            is com.example.androidcourseshpp.domain.utils.Result.Error -> Result.failure()
+            is com.example.androidcourseshpp.domain.utils.Result.Error ->
+                if (runAttemptCount < 5) Result.retry() else Result.failure()
         }
     }
 }

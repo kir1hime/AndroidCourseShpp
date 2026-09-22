@@ -13,8 +13,7 @@ import javax.inject.Inject
 class ChooseProfilePhotoViewModel @Inject constructor(
     private val getGalleryPhotosUseCase: GetGalleryPhotosUseCase,
     private val addGalleryPhotoUseCase: AddGalleryPhotoUseCase
-) :
-    BaseViewModel<ChooseProfilePhotoContract.Event, ChooseProfilePhotoContract.Effect, ChooseProfilePhotoContract.UIState>() {
+) : BaseViewModel<ChooseProfilePhotoContract.Event, ChooseProfilePhotoContract.Effect, ChooseProfilePhotoContract.UIState>() {
 
     init {
         viewModelScope.launch {

@@ -4,10 +4,8 @@ import com.example.androidcourseshpp.data.local.database.dao.ContactsDao
 import com.example.androidcourseshpp.data.local.database.dbentity.toContactDBEntity
 import com.example.androidcourseshpp.data.local.database.utils.safeDBQuery
 import com.example.androidcourseshpp.data.local.database.utils.toSyncState
-import com.example.androidcourseshpp.data.local.userdata.DatabaseSyncProvider
-import com.example.androidcourseshpp.domain.entity.contact.ContactInfo
-import com.example.androidcourseshpp.domain.entity.contact.SyncAction
 import com.example.androidcourseshpp.domain.entity.contact.SyncContactInfo
+import com.example.androidcourseshpp.domain.entity.sync.SyncStatus
 import com.example.androidcourseshpp.domain.repository.ContactsLocalRepository
 import com.example.androidcourseshpp.domain.utils.DataError
 import com.example.androidcourseshpp.domain.utils.Result
@@ -17,15 +15,14 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class ContactsLocalRepositoryImpl @Inject constructor(
-    private val contactsDao: ContactsDao,
-    private val databaseSyncProvider: DatabaseSyncProvider
+    private val contactsDao: ContactsDao
 ) : ContactsLocalRepository {
 
-    override suspend fun addContact(contact: ContactInfo) = safeDBQuery {
+    override suspend fun addContact(contact: SyncContactInfo) = safeDBQuery {
         contactsDao.addContact(contactDbEntity = contact.toContactDBEntity())
     }
 
-    override suspend fun addContacts(contacts: List<ContactInfo>) = safeDBQuery {
+    override suspend fun addContacts(contacts: List<SyncContactInfo>) = safeDBQuery {
         contactsDao.addContacts(
             contactDbEntities = contacts.map { contact ->
                 contact.toContactDBEntity()
@@ -54,30 +51,25 @@ class ContactsLocalRepositoryImpl @Inject constructor(
         contactsDao.clearContacts()
     }
 
-    override suspend fun deleteContactsByIds(ids: List<Long>) = safeDBQuery {
-        contactsDao.deleteContactsByIds(ids)
+    override suspend fun deleteContactsByIds(contactIds: List<Long>) = safeDBQuery {
+        contactsDao.deleteContactsByIds(contactIds)
     }
 
-    override suspend fun setSyncStateToContact(contactId: Long, syncAction: SyncAction) =
+    override suspend fun setSyncStatus(contactsIds: List<Long>, syncStatus: SyncStatus) =
         safeDBQuery {
-            contactsDao.setContactSync(id = contactId, syncState = syncAction.toSyncState())
+            contactsDao.setSyncState(contactsIds, syncStatus.toSyncState())
         }
 
     override suspend fun refreshContacts(
-        newContacts: List<ContactInfo>,
-        deletedContactIds: List<Long>
+        newContacts: List<SyncContactInfo>,
+        deletedContactsIds: List<Long>
     ) = safeDBQuery {
-        val newDBEntities = newContacts.map { contact -> contact.toContactDBEntity() }
+        val newDBEntities =
+            newContacts.map { contact -> contact.toContactDBEntity() }
 
         contactsDao.refreshContacts(
             newContacts = newDBEntities,
-            deletedContactIds = deletedContactIds
+            deletedContactIds = deletedContactsIds
         )
-    }
-
-    override fun isDatabaseSynced() = databaseSyncProvider.isDatabaseSynced()
-
-    override fun setDatabaseSynced(isSynced: Boolean) {
-        databaseSyncProvider.markDatabaseAsSynced(isSynced)
     }
 }

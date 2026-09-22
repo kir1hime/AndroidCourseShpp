@@ -19,33 +19,21 @@ class ContactsNetworkRepositoryImpl @Inject constructor(
 ) : ContactsNetworkRepository {
 
 
-    override suspend fun addContact(contactId: Long): Result<Unit, DataError.NetworkError> {
+    private suspend fun addContact(contactId: Long): Result<Unit, DataError.NetworkError> {
         val responseResult = contactsService.addContact(
             userId = userDataProvider.getUserServerId(), contactId = contactId
         )
         return responseResult
     }
 
-
-    override suspend fun deleteContact(contactId: Long): Result<Unit, DataError.NetworkError> {
-        val responseResult = contactsService.deleteContact(
-            userId = userDataProvider.getUserServerId(), contactId = contactId
-        )
-        return responseResult
-    }
-
-
-    override suspend fun deleteContacts(contactIds: List<Long>): Result<Unit, DataError.NetworkError> =
+    override suspend fun addContacts(contactsIds: List<Long>): Result<Unit, DataError.NetworkError> =
         coroutineScope {
-            val userId = userDataProvider.getUserServerId()
-
-            val deferredDeletionResults = contactIds.map { contactId ->
+            val deferredAddingResults = contactsIds.map { contact ->
                 async {
-                    contactsService.deleteContact(userId = userId, contactId = contactId)
+                    addContact(contact)
                 }
             }
-
-            val results = deferredDeletionResults.awaitAll()
+            val results = deferredAddingResults.awaitAll()
             val errorResult = results.find { result -> result is Result.Error }
             if (errorResult != null) {
                 return@coroutineScope errorResult
@@ -54,7 +42,31 @@ class ContactsNetworkRepositoryImpl @Inject constructor(
         }
 
 
-    override suspend fun loadContacts(): Result<List<ContactInfo>, DataError.NetworkError> {
+    private suspend fun deleteContact(contactId: Long): Result<Unit, DataError.NetworkError> {
+        val responseResult = contactsService.deleteContact(
+            userId = userDataProvider.getUserServerId(), contactId = contactId
+        )
+        return responseResult
+    }
+
+
+    override suspend fun deleteContacts(contactsIds: List<Long>): Result<Unit, DataError.NetworkError> =
+        coroutineScope {
+            val deferredDeletingResults = contactsIds.map { contactId ->
+                async {
+                    deleteContact(contactId)
+                }
+            }
+            val results = deferredDeletingResults.awaitAll()
+            val errorResult = results.find { result -> result is Result.Error }
+            if (errorResult != null) {
+                return@coroutineScope errorResult
+            }
+            Result.Success(Unit)
+        }
+
+
+    override suspend fun getContacts(): Result<List<ContactInfo>, DataError.NetworkError> {
         val responseResult =
             contactsService.getUserContacts(userId = userDataProvider.getUserServerId())
 
