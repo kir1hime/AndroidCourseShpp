@@ -1,7 +1,7 @@
 package com.example.androidcourseshpp.domain.usecase.user
 
-import com.example.androidcourseshpp.domain.entity.user.UserListItemInfo
-import com.example.androidcourseshpp.domain.entity.user.toUserItemInfo
+import com.example.androidcourseshpp.domain.entity.user.UserListItem
+import com.example.androidcourseshpp.domain.entity.user.toUserItem
 import com.example.androidcourseshpp.domain.repository.ContactsLocalRepository
 import com.example.androidcourseshpp.domain.repository.UserRepository
 import com.example.androidcourseshpp.domain.utils.DataError
@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 
 interface GetUsersUseCase {
-    operator fun invoke(): Flow<Result<List<UserListItemInfo>, DataError>>
+    operator fun invoke(): Flow<Result<List<UserListItem>, DataError>>
 }
 
 class GetUsersUseCaseImpl(
@@ -20,7 +20,7 @@ class GetUsersUseCaseImpl(
     private val contactsLocalRepository: ContactsLocalRepository
 ) : GetUsersUseCase {
 
-    override operator fun invoke(): Flow<Result<List<UserListItemInfo>, DataError>> = flow {
+    override operator fun invoke(): Flow<Result<List<UserListItem>, DataError>> = flow {
         val usersResult = userRepository.getUsers()
 
         if (usersResult is Result.Success) {
@@ -28,14 +28,14 @@ class GetUsersUseCaseImpl(
 
             if (localContactsResult is Result.Success) {
                 val localContacts = localContactsResult.data
+                val localContactsIds = localContacts.map { contact -> contact.contactInfo.id }
+                val isContact: (Long) -> Boolean = { id -> localContactsIds.contains(id) }
 
-                emit(usersResult.mapResult { userList ->
-                    userList.map { user ->
-                        user.toUserItemInfo(
-                            isContact = localContacts.map { it.contactInfo.id }.contains(user.id)
-                        )
-                    }
-                })
+                val usersList = usersResult.mapResult { usersList ->
+                    usersList.map { user -> user.toUserItem(isContact(user.id)) }
+                }
+
+                emit(usersList)
 
             } else {
                 emit(Result.Error(DataError.LocalError))
