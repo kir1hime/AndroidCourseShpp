@@ -102,6 +102,9 @@ class EditProfileFragment :
                 )
             )
         }
+        imageViewArrowBack.setOnClickListener {
+            findNavController().navigateUp()
+        }
     }
 
 
