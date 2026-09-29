@@ -98,7 +98,7 @@ class RetrofitConfigModule {
         val accessToken = jwtManager.getAccessToken()
         val modifiedRequest = chain.request().newBuilder()
         if (accessToken != "") {
-            modifiedRequest.addHeader("Authorization", "Bearer $accessToken").build()
+            modifiedRequest.addHeader("Authorization", "Bearer $accessToken")
         }
         chain.proceed(modifiedRequest.build())
 
@@ -109,7 +109,7 @@ class RetrofitConfigModule {
 
         val modifiedRequest = chain.request().newBuilder()
         if (refreshToken != null) {
-            modifiedRequest.addHeader("RefreshToken", refreshToken).build()
+            modifiedRequest.addHeader("RefreshToken", refreshToken)
         }
         chain.proceed(modifiedRequest.build())
 
@@ -126,9 +126,7 @@ class RetrofitConfigModule {
             bodyString = "$bodyString}"
         }
         bodyString.replace("nll", "null")
-        return@Interceptor response.newBuilder().body(bodyString.toResponseBody(contentType))
-            .build()
-
+        response.newBuilder().body(bodyString.toResponseBody(contentType)).build()
     }
 }
 
