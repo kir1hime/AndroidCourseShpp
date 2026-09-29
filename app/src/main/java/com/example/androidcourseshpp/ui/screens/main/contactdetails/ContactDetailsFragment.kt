@@ -2,7 +2,6 @@ package com.example.androidcourseshpp.ui.screens.main.contactdetails
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -43,22 +42,10 @@ class ContactDetailsFragment :
                 is ContactDetailsContract.Effect.ContactWasAdded -> {
                     parentFragmentManager.setFragmentResult(
                         REQUEST_CODE,
-                        bundleOf(TO_RELOAD_USER_LIST to args.contactDetails.id)
+                        Bundle().apply { putLong(TO_RELOAD_USER_LIST, args.contactDetails.id) }
                     )
                 }
             }
-        }
-    }
-
-    private fun renderUI(isAddToMyContactsButtonVisible: Boolean) = with(binding) {
-        if (isAddToMyContactsButtonVisible) {
-            buttonAddToMyContacts.visibility = View.INVISIBLE
-            buttonOutlineMessage.visibility = View.INVISIBLE
-            buttonFilledMessage.visibility = View.VISIBLE
-        } else {
-            buttonAddToMyContacts.visibility = View.VISIBLE
-            buttonOutlineMessage.visibility = View.VISIBLE
-            buttonFilledMessage.visibility = View.INVISIBLE
         }
     }
 
@@ -93,8 +80,20 @@ class ContactDetailsFragment :
             findNavController().navigateUp()
         }
         buttonAddToMyContacts.setOnClickListener {
-            renderUI(isAddToMyContactsButtonVisible = false)
+            renderUI(isContact = true)
             viewModel.setEvent(ContactDetailsContract.Event.OnAddContactButtonClicked(args.contactDetails))
+        }
+    }
+
+    private fun renderUI(isContact: Boolean) = with(binding) {
+        if (isContact) {
+            buttonAddToMyContacts.visibility = View.INVISIBLE
+            buttonOutlineMessage.visibility = View.INVISIBLE
+            buttonFilledMessage.visibility = View.VISIBLE
+        } else {
+            buttonAddToMyContacts.visibility = View.VISIBLE
+            buttonOutlineMessage.visibility = View.VISIBLE
+            buttonFilledMessage.visibility = View.INVISIBLE
         }
     }
 }
