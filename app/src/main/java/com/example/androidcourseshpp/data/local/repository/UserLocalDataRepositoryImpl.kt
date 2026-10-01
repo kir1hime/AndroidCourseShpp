@@ -8,32 +8,29 @@ import javax.inject.Singleton
 @Singleton
 class UserLocalDataRepositoryImpl @Inject constructor(private val userDataProvider: UserDataProvider) :
     UserLocalDataRepository {
-    override fun saveUserServerId(userServerId: Long) {
+    override suspend fun saveUserServerId(userServerId: Long) {
         userDataProvider.saveUserServerId(userServerId)
     }
 
-    override fun getUserServerId() = userDataProvider.getUserServerId()
-
-
-    override fun clearUserServerId() {
+    override suspend fun clearUserServerId() {
         userDataProvider.clearUserServerId()
     }
 
-    override fun saveUserAvatarUrl(avatar: String) {
+    override suspend fun saveUserAvatarUrl(avatar: String) {
         userDataProvider.saveUserAvatarUrl(avatar)
     }
 
-    override fun getUserAvatarUrl() = userDataProvider.getUserAvatarUrl()
+    override suspend fun getUserAvatarUrl() = userDataProvider.getUserAvatarUrl()
 
 
-    override fun clearUserAvatarUrl() {
+    override suspend fun clearUserAvatarUrl() {
         userDataProvider.clearUserAvatarUrl()
     }
 
-    override fun isUserRemembered() = userDataProvider.isUserRemembered()
+    override suspend fun isUserRemembered() = userDataProvider.isUserRemembered()
 
 
-    override fun setUserRememberState(toSaveUser: Boolean) {
+    override suspend fun setUserRememberState(toSaveUser: Boolean) {
         userDataProvider.setUserRememberState(toSaveUser)
     }
 }

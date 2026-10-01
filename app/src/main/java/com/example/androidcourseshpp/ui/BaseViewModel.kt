@@ -113,8 +113,10 @@ abstract class BaseViewModel<UIEvent : ViewEvent, UIEffect : ViewEffect, UIState
 
         DataError.NetworkError.REQUEST_TIMEOUT_ERROR,
         DataError.NetworkError.TOO_MANY_REQUEST_ERROR,
-        DataError.NetworkError.NOT_FOUNDED_ERROR,
+        DataError.NetworkError.NOT_FOUND_ERROR,
         DataError.NetworkError.ACCESS_DENIED_ERROR -> R.string.backend_error
+
+        DataError.NetworkError.UNAUTHORIZED_ERROR -> R.string.unauthorized_error
 
         else -> R.string.generic_error
     }

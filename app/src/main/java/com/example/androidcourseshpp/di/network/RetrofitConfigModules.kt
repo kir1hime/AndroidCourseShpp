@@ -3,8 +3,10 @@ package com.example.androidcourseshpp.di.network
 import com.example.androidcourseshpp.data.local.userdata.GalleryDataProvider
 import com.example.androidcourseshpp.data.local.userdata.UserDataProvider
 import com.example.androidcourseshpp.data.network.api.auth.TokenRefreshAPI
+import com.example.androidcourseshpp.data.network.jwt.AuthorizationInterceptor
 import com.example.androidcourseshpp.data.network.jwt.JWTManager
 import com.example.androidcourseshpp.data.network.jwt.TokenAuthenticator
+import com.example.androidcourseshpp.data.network.jwt.TokenRefreshInterceptor
 import com.example.androidcourseshpp.di.MainOkHttpClient
 import com.example.androidcourseshpp.di.MainRetrofit
 import com.example.androidcourseshpp.di.TokenRefreshOkHttpClient
@@ -48,12 +50,13 @@ class RetrofitConfigModule {
         contactsLocalRepository: ContactsLocalRepository,
         userDataProvider: UserDataProvider,
         galleryDataProvider: GalleryDataProvider,
-        tokenRefreshAPI: TokenRefreshAPI
+        tokenRefreshAPI: TokenRefreshAPI,
+        authorizationInterceptor: AuthorizationInterceptor
     ): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(createResponseInterceptor())
             .addInterceptor(createLoggingInterceptor())
-            .addInterceptor(createAuthorizationInterceptor(jwtManager))
+            .addInterceptor(authorizationInterceptor)
             .authenticator(
                 TokenAuthenticator(
                     tokenRefreshAPI = tokenRefreshAPI,
@@ -82,8 +85,9 @@ class RetrofitConfigModule {
     @Provides
     @Singleton
     @TokenRefreshOkHttpClient
-    fun provideTokenRefreshOkHttpClient(jwtManager: JWTManager) =
-        OkHttpClient.Builder().addInterceptor(createAuthenticationInterceptor(jwtManager)).build()
+    fun provideTokenRefreshOkHttpClient(
+        refreshInterceptor: TokenRefreshInterceptor
+    ) = OkHttpClient.Builder().addInterceptor(refreshInterceptor).build()
 
 
     @Provides
@@ -93,27 +97,6 @@ class RetrofitConfigModule {
     private fun createLoggingInterceptor() = HttpLoggingInterceptor().setLevel(
         HttpLoggingInterceptor.Level.BODY
     )
-
-    private fun createAuthorizationInterceptor(jwtManager: JWTManager) = Interceptor { chain ->
-        val accessToken = jwtManager.getAccessToken()
-        val modifiedRequest = chain.request().newBuilder()
-        if (accessToken != "") {
-            modifiedRequest.addHeader("Authorization", "Bearer $accessToken")
-        }
-        chain.proceed(modifiedRequest.build())
-
-    }
-
-    private fun createAuthenticationInterceptor(jwtManager: JWTManager) = Interceptor { chain ->
-        val refreshToken = jwtManager.getRefreshToken()
-
-        val modifiedRequest = chain.request().newBuilder()
-        if (refreshToken != null) {
-            modifiedRequest.addHeader("RefreshToken", refreshToken)
-        }
-        chain.proceed(modifiedRequest.build())
-
-    }
 
     private fun createResponseInterceptor() = Interceptor { chain ->
         val response = chain.proceed(chain.request())

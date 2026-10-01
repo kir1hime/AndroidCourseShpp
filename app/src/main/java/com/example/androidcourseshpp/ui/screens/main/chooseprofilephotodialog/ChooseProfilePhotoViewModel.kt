@@ -41,9 +41,11 @@ class ChooseProfilePhotoViewModel @Inject constructor(
     }
 
     private fun addNewPhotoToGallery(photo: String) {
-        addGalleryPhotoUseCase(photo)
-        setEffect(ChooseProfilePhotoContract.Effect.SendPhotoToParentFragment(photo))
-        navigateToParentFragment()
+        viewModelScope.launch {
+            addGalleryPhotoUseCase(photo)
+            setEffect(ChooseProfilePhotoContract.Effect.SendPhotoToParentFragment(photo))
+            navigateToParentFragment()
+        }
     }
 
     private fun navigateToParentFragment() {

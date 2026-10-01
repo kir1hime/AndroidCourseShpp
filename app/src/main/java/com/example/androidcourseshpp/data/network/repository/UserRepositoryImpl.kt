@@ -4,6 +4,7 @@ import com.example.androidcourseshpp.data.local.userdata.UserDataProvider
 import com.example.androidcourseshpp.data.network.mapper.toUpdateUserModel
 import com.example.androidcourseshpp.data.network.mapper.toUserInfo
 import com.example.androidcourseshpp.data.network.service.user.UserService
+import com.example.androidcourseshpp.data.network.utils.safeAuthorizedCall
 import com.example.androidcourseshpp.domain.entity.user.UserInfo
 import com.example.androidcourseshpp.domain.repository.UserRepository
 import com.example.androidcourseshpp.domain.utils.DataError
@@ -22,10 +23,11 @@ class UserRepositoryImpl @Inject constructor(
 
     }
 
-    override suspend fun getUser(): Result<UserInfo, DataError.NetworkError> {
-        val responseResult = userService.getUser(userId = userDataProvider.getUserServerId())
-        return responseResult.mapResult { result -> result.user.toUserInfo() }
-    }
+    override suspend fun getUser(): Result<UserInfo, DataError.NetworkError> =
+        safeAuthorizedCall(userDataProvider) { userServerId ->
+            val responseResult = userService.getUser(userServerId)
+            responseResult.mapResult { result -> result.user.toUserInfo() }
+        }
 
     override suspend fun updateUserInfo(userInfo: UserInfo): Result<Unit, DataError.NetworkError> {
         val responseResult =

@@ -24,6 +24,7 @@ class LogOutUseCaseImpl(
         userLocalDataRepository.clearUserAvatarUrl()
         userLocalDataRepository.setUserRememberState(false)
         galleryRepository.clearGalleryPhotos()
+        println(galleryRepository.galleryPhotos.value)
         return contactsLocalRepository.clearContacts()
     }
 }

@@ -23,15 +23,8 @@ class AuthRepositoryImpl @Inject constructor(
     private val authService: AuthService,
     private val imageConverter: ImageConverter
 ) : AuthRepository {
-    override fun getAccessToken(): String? {
-        return jwtManager.getAccessToken()
-    }
 
-    override fun getRefreshToken(): String? {
-        return jwtManager.getRefreshToken()
-    }
-
-    override fun clearTokens() {
+    override suspend fun clearTokens() {
         jwtManager.clearTokens()
     }
 

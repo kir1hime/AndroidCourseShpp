@@ -41,11 +41,12 @@ interface DataError : RootError {
         INCORRECT_REQUEST_ERROR,
         UNAUTHORIZED_ERROR,
         ACCESS_DENIED_ERROR,
-        NOT_FOUNDED_ERROR,
+        NOT_FOUND_ERROR,
         REQUEST_TIMEOUT_ERROR,
         TOO_MANY_REQUEST_ERROR,
         SERVER_ERROR,
-        SERIALIZATION_ERROR
+        SERIALIZATION_ERROR,
+        CURRENT_USER_NOT_FOUND
     }
 
     data object LocalError : DataError

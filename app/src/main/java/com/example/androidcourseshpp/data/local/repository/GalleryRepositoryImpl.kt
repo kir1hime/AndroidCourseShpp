@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -26,7 +27,7 @@ class GalleryRepositoryImpl @Inject constructor(private val galleryDataProvider:
     private val _galleryPhotos = MutableStateFlow(getPhotos())
     override val galleryPhotos: StateFlow<List<GalleryItemInfo>> = _galleryPhotos.asStateFlow()
 
-    override fun addPhoto(photoURL: String) {
+    override suspend fun addPhoto(photoURL: String) {
         val newItem = GalleryItemInfo(id = _galleryPhotos.value.size + 1, photoURL = photoURL)
 
         _galleryPhotos.update { photoList ->
@@ -47,19 +48,22 @@ class GalleryRepositoryImpl @Inject constructor(private val galleryDataProvider:
         galleryDataProvider.saveUserGalleryPhotos(photoURLSet)
     }
 
-    override fun clearGalleryPhotos() {
+    override suspend fun clearGalleryPhotos() {
         galleryDataProvider.clearGalleryPhotos()
+        _galleryPhotos.update {
+            defaultStringPhotos.mapIndexed { index, url -> GalleryItemInfo(index, url) }
+        }
     }
 
-    private fun getPhotos(): List<GalleryItemInfo> {
-        return if (galleryDataProvider.getUserGalleryPhotos().isEmpty()) {
+    private fun getPhotos(): List<GalleryItemInfo> = runBlocking {
+        if (galleryDataProvider.getUserGalleryPhotos().isNullOrEmpty()) {
             defaultStringPhotos.mapIndexed { index, photoURL ->
                 GalleryItemInfo(index, photoURL)
             }
         } else {
-            galleryDataProvider.getUserGalleryPhotos().mapIndexed { index, photoURL ->
+            galleryDataProvider.getUserGalleryPhotos()?.mapIndexed { index, photoURL ->
                 GalleryItemInfo(index, photoURL)
-            }
+            } ?: emptyList()
         }
     }
 }

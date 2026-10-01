@@ -58,31 +58,37 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach 
 }
 
 dependencies {
-    implementation(libs.androidx.swiperefreshlayout)
-    implementation(libs.room.ktx)
-    implementation(libs.room.runtime)
-    implementation(libs.androidx.hilt.common)
-    implementation(libs.androidx.work.runtime.ktx)
-    ksp(libs.room.compiler)
-    implementation(libs.retrofit.gson)
-    implementation(libs.gson)
-    implementation(libs.okhttp)
-    implementation(libs.logging.interceptor)
-    implementation(libs.retrofit)
     implementation(libs.androidx.navigation.fragment.ktx)
-    implementation(libs.hilt.android)
+    implementation(libs.androidx.work.runtime.ktx)
     implementation(libs.navigation.ui.ktx)
-    implementation(libs.navigation.fragment.ktx)
-    ksp(libs.hilt.android.compiler)
-    implementation(libs.javafaker)
     implementation(libs.androidx.fragment.ktx)
-    implementation(libs.circleimageview)
-    implementation(libs.glide)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+
+    implementation(libs.androidx.swiperefreshlayout)
+
+    implementation(libs.room.ktx)
+    implementation(libs.room.runtime)
+    ksp(libs.room.compiler)
+
+    implementation(libs.androidx.hilt.common)
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
+
+    implementation(libs.retrofit.gson)
+    implementation(libs.gson)
+    implementation(libs.okhttp)
+    implementation(libs.logging.interceptor)
+    implementation(libs.retrofit)
+
+    implementation(libs.circleimageview)
+    implementation(libs.glide)
+
+    implementation(libs.datastore)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

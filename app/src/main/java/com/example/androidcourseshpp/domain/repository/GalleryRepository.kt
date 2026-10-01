@@ -5,7 +5,6 @@ import kotlinx.coroutines.flow.StateFlow
 
 interface GalleryRepository {
     val galleryPhotos: StateFlow<List<GalleryItemInfo>>
-
-    fun addPhoto(photoURL: String)
-    fun clearGalleryPhotos()
+    suspend fun addPhoto(photoURL: String)
+    suspend fun clearGalleryPhotos()
 }

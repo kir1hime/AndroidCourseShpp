@@ -7,9 +7,7 @@ import com.example.androidcourseshpp.domain.utils.DataError
 import com.example.androidcourseshpp.domain.utils.Result
 
 interface AuthRepository {
-    fun getAccessToken(): String?
-    fun getRefreshToken(): String?
-    fun clearTokens()
+    suspend fun clearTokens()
     suspend fun signIn(signInInfo: SignInInfo): Result<UserInfo, DataError.NetworkError>
     suspend fun singUp(signUpInfo: SignUpInfo): Result<UserInfo, DataError.NetworkError>
 }
