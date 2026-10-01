@@ -1,40 +1,36 @@
 package com.example.androidcourseshpp.data.network.jwt
 
-import android.content.SharedPreferences
-import com.example.androidcourseshpp.di.JWTManagerPref
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.stringPreferencesKey
+import com.example.androidcourseshpp.data.common.BasePreferencesProvider
+import com.example.androidcourseshpp.di.JWTManagerPreferences
 import javax.inject.Inject
 
-const val JWT_STORAGE = "jwtStorage"
-const val ACCESS_TOKEN = "accessToken"
-const val REFRESH_TOKEN = "refreshToken"
+private object JWTPreferencesKeys {
+    val ACCESS_TOKEN = stringPreferencesKey("accessToken")
+    val REFRESH_TOKEN = stringPreferencesKey("refreshToken")
+}
 
+class JWTManagerImpl @Inject constructor(
+    @param:JWTManagerPreferences private val jwtPreferences: DataStore<Preferences>
+) : BasePreferencesProvider(jwtPreferences), JWTManager {
 
-class JWTManagerImpl @Inject constructor(@JWTManagerPref private val sharedPref: SharedPreferences) :
-    JWTManager {
-
-    private val editor = sharedPref.edit()
-
-    override fun getAccessToken() =
-        sharedPref.getString(ACCESS_TOKEN, null)
-
-
-    private fun saveAccessToken(token: String?) {
-        editor.putString(ACCESS_TOKEN, token).apply()
+    override suspend fun getAccessToken(): String? {
+        return getPreference(JWTPreferencesKeys.ACCESS_TOKEN)
     }
 
-    override fun getRefreshToken() =
-        sharedPref.getString(REFRESH_TOKEN, null)
-
-    private fun saveRefreshToken(token: String?) {
-        editor.putString(REFRESH_TOKEN, token).apply()
+    override suspend fun getRefreshToken(): String? {
+        return getPreference(JWTPreferencesKeys.REFRESH_TOKEN)
     }
 
-    override fun saveTokens(accessToken: String?, refreshToken: String?) {
-        saveAccessToken(accessToken)
-        saveRefreshToken(refreshToken)
+    override suspend fun saveTokens(accessToken: String, refreshToken: String) {
+        savePreference(JWTPreferencesKeys.ACCESS_TOKEN, accessToken)
+        savePreference(JWTPreferencesKeys.REFRESH_TOKEN, refreshToken)
     }
 
-    override fun clearTokens() {
-        saveTokens(null, null)
+    override suspend fun clearTokens() {
+        clearPreference(JWTPreferencesKeys.ACCESS_TOKEN)
+        clearPreference(JWTPreferencesKeys.REFRESH_TOKEN)
     }
 }

@@ -1,7 +1,7 @@
 package com.example.androidcourseshpp.data.local.userdata
 
 interface GalleryDataProvider {
-    fun saveUserGalleryPhotos(photoURLs: Set<String>)
-    fun getUserGalleryPhotos(): Set<String>
-    fun clearGalleryPhotos()
+    suspend fun saveUserGalleryPhotos(photosURLs: Set<String>)
+    suspend fun getUserGalleryPhotos(): Set<String>?
+    suspend fun clearGalleryPhotos()
 }

@@ -4,11 +4,11 @@ import javax.inject.Qualifier
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
-annotation class DataProviderPref
+annotation class UserInfoPreferences
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
-annotation class JWTManagerPref
+annotation class JWTManagerPreferences
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
