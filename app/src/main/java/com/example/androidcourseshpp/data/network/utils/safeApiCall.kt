@@ -52,9 +52,8 @@ private fun handleHttpException(
 
     return when (exception.code()) {
         400 -> Result.Error(DataError.NetworkError.INCORRECT_REQUEST_ERROR)
-        401 -> Result.Error(DataError.NetworkError.UNAUTHORIZED_ERROR)
         403 -> Result.Error(DataError.NetworkError.ACCESS_DENIED_ERROR)
-        404 -> Result.Error(DataError.NetworkError.NOT_FOUND_ERROR)
+        404 -> Result.Error(DataError.NetworkError.UNAUTHORIZED_ERROR)
         408 -> Result.Error(DataError.NetworkError.REQUEST_TIMEOUT_ERROR)
         429 -> Result.Error(DataError.NetworkError.TOO_MANY_REQUEST_ERROR)
         in 500..599 -> Result.Error(DataError.NetworkError.SERVER_ERROR)

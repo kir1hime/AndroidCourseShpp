@@ -42,8 +42,8 @@ class SplashViewModel @Inject constructor(
             },
             onNetworkError = { error ->
                 setEffect(SplashContract.Effect.ShowToast(error.toMessageResId()))
-            },
-            onError = { setEffect(SplashContract.Effect.NavigateToSignInScreen) }
+                setEffect(SplashContract.Effect.NavigateToSignInScreen)
+            }
         )
     }
 }
